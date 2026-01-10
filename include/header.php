@@ -46,7 +46,7 @@
             </div>
 
             <!-- LOGIN -->
-            <a href="#login"
+            <a href="/php/login.php"
                 class="flex items-center justify-center h-10 px-7 bg-primary text-white text-sm font-bold rounded-lg
                        hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-primary/30">
                 Iniciar sesión
@@ -75,7 +75,7 @@
         <button onclick="setLang('EN')" class="border px-5 py-2 rounded-lg">EN</button>
     </div>
 
-    <a href="#login"
+    <a href="/php/login.php"
         class="mt-8 px-8 py-3 bg-primary rounded-xl font-bold text-white hover:bg-primary/90 transition">
         Iniciar sesión
     </a>
@@ -86,10 +86,9 @@
 
     <!-- VIDEO BG -->
     <div class="absolute inset-0 z-0">
-        <video class="w-full h-full object-cover" autoplay muted loop playsinline>
+       <video class="w-full h-full object-cover" autoplay muted loop playsinline>
             <source src="/public/video/santamarta-video-tayrona.mp4" type="video/mp4">
         </video>
-        <div class="absolute inset-0 bg-black/40"></div>
     </div>
 
     <!-- CONTENT -->
@@ -163,4 +162,16 @@
     document.addEventListener("click", () => {
         langMenu.classList.add("hidden");
     });
+
+
+    //para el idioma
+    function setLang(lang) {
+        if (lang === 'EN') {
+            // Redirige a la carpeta de inglés
+            window.location.href = '/en/index.php';
+        } else {
+            // Redirige a la raíz o carpeta de español
+            window.location.href = '/index.php';
+        }
+    }
 </script>

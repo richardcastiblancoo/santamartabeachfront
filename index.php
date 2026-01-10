@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="light" lang="es">
+<html class="light" lang="es-CO">
 
 <head>
     <!-- los metadatos -->
@@ -10,10 +10,23 @@
     <meta name="author" content="santamartabeachfront">
     <meta name="robots" content="index, follow">
     <!-- opengraph -->
-
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.santamartabeachfront.com">
+    <meta property="og:title" content="Santamartabeachfront">
+    <meta property="og:description" content="Vive la experiencia rente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
+    <meta property="og:image" content="https://www.tusitio.com/imagen-de-portada.jpg">
+    <!-- opengraph twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.tusitio.com/">
+    <meta name="twitter:title" content="Título de tu Página">
+    <meta name="twitter:description" content="Descripción para Twitter.">
+    <meta name="twitter:image" content="https://www.tusitio.com/imagen-de-portada.jpg">
     <!-- titulo -->
     <title>santamartabeachfront - Alquiler de Apartamentos</title>
     <!-- links css y logo -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#000000">
+
     <link rel="canonical" href="https://www.santamartabeachfront.com">
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -48,6 +61,16 @@
         }
     </script>
 
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker registrado', reg))
+                    .catch(err => console.warn('Error al registrar SW', err));
+            });
+        }
+    </script>
+
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
@@ -70,4 +93,5 @@
     <script src="/js/main.js"></script>
 
 </body>
+
 </html>
