@@ -28,7 +28,7 @@
                     <div class="flex min-w-[280px] flex-1 flex-col gap-2">
                         <div class="flex items-center p-1 justify-between mb-2">
                             <button class="hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-1"><span class="material-symbols-outlined dark:text-white">chevron_left</span></button>
-                            <p class="text-[#111618] dark:text-white text-base font-bold text-center">Enero 2024</p>
+                            <p class="text-[#111618] dark:text-white text-base font-bold text-center">Enero 2026</p>
                             <div class="w-8"></div>
                         </div>
                         <div class="grid grid-cols-7 gap-y-2 text-center">
@@ -76,7 +76,7 @@
                     <div class="flex min-w-[280px] flex-1 flex-col gap-2">
                         <div class="flex items-center p-1 justify-between mb-2">
                             <div class="w-8"></div>
-                            <p class="text-[#111618] dark:text-white text-base font-bold text-center">Febrero 2024</p>
+                            <p class="text-[#111618] dark:text-white text-base font-bold text-center">Febrero 2026</p>
                             <button class="hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-1"><span class="material-symbols-outlined dark:text-white">chevron_right</span></button>
                         </div>
                         <div class="grid grid-cols-7 gap-y-2 text-center">
@@ -97,6 +97,24 @@
                             <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">8</span>
                             <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">9</span>
                             <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">10</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">11</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">12</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">13</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">14</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">15</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">16</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">17</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">18</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">19</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">20</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">21</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">22</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">23</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">24</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">25</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">26</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">27</span>
+                            <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">28</span>
                         </div>
                     </div>
                 </div>

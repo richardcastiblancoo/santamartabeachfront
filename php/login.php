@@ -94,7 +94,7 @@
                         </a>
                     </div>
                 </div>
-                
+
                 <form action="login_usuario_be.php" method="POST" class="flex flex-col gap-5">
                     <label class="flex flex-col flex-1 gap-2">
                         <p class="text-[#111618] dark:text-white text-sm font-bold leading-normal">Usuario</p>
@@ -139,6 +139,9 @@
             </div>
         </div>
     </div>
+
+
+    <script src="/js/login.js"></script>
 
 </body>
 

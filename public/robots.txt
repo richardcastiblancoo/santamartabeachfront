@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /php/    # Evita que indexen tu lógica interna o carpetas privadas
-Sitemap: https://tusitio.com/sitemap.xml
+Sitemap: https://santamartabeachfront.com/sitemap.xml
