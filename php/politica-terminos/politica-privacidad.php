@@ -69,7 +69,7 @@
             <div class="flex flex-wrap justify-between items-end gap-3 mb-8 border-b border-gray-100 dark:border-gray-800 pb-6">
                 <div class="flex min-w-72 flex-col gap-2">
                     <h1 class="text-[#111618] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Políticas y Términos</h1>
-                    <p class="text-[#617c89] dark:text-gray-400 text-base font-normal">Última actualización: 1 Febrero, 2026</p>
+                    <p class="text-[#617c89] dark:text-gray-400 text-base font-normal">Última actualización: 24 de mayo, 2024</p>
                 </div>
             </div>
             <div class="flex flex-col lg:flex-row gap-12">

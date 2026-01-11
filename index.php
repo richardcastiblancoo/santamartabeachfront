@@ -89,8 +89,7 @@
 
     <?php include 'include/foorter.php'; ?>
 
-
-    <script src="/js/main.js"></script>
+    <script src="sw.js"></script>
 
 </body>
 

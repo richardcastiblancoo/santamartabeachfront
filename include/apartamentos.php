@@ -39,9 +39,9 @@
                         <span class="text-2xl font-extrabold text-[#111618] dark:text-white">$210</span>
                         <span class="text-gray-500 text-sm">/noche</span>
                     </div>
-                    <button class="bg-primary/10 text-primary hover:bg-primary hover:text-white px-5 py-2 rounded-xl font-bold text-sm transition-colors">
+                    <a href="/php/reserva-apartamento/apartamento.php" class="bg-primary/10 text-primary hover:bg-primary hover:text-white px-5 py-2 rounded-xl font-bold text-sm transition-colors">
                         Ver detalles
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

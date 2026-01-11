@@ -86,23 +86,22 @@
                 </div>
                 <div>
                     <div class="flex border-b border-[#dbe2e6] dark:border-gray-700 w-full">
-                        <a class="flex flex-1 items-center justify-center border-b-[3px] border-b-[#111618] dark:border-b-primary text-[#111618] dark:text-white pb-3 pt-2 transition-colors cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5" href="/php/registro.php">
+                        <a class="flex flex-1 items-center justify-center border-b-[3px] border-b-[#111618] dark:border-b-primary text-[#111618] dark:text-white pb-3 pt-2 transition-colors cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5" href="#">
                             <p class="text-sm font-bold leading-normal tracking-[0.015em]">Iniciar Sesión</p>
                         </a>
-                        <a class="flex flex-1 items-center justify-center border-b-[3px] border-b-transparent text-[#617c89] dark:text-gray-500 pb-3 pt-2 hover:text-[#111618] dark:hover:text-gray-300 transition-colors cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5" href="/php/registro.php">
+                        <a class="flex flex-1 items-center justify-center border-b-[3px] border-b-transparent text-[#617c89] dark:text-gray-500 pb-3 pt-2 hover:text-[#111618] dark:hover:text-gray-300 transition-colors cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5" href="/auth/registro.php">
                             <p class="text-sm font-bold leading-normal tracking-[0.015em]">Registrarse</p>
                         </a>
                     </div>
                 </div>
-
-                <form action="login_usuario_be.php" method="POST" class="flex flex-col gap-5">
+                <form class="flex flex-col gap-5">
                     <label class="flex flex-col flex-1 gap-2">
-                        <p class="text-[#111618] dark:text-white text-sm font-bold leading-normal">Usuario</p>
+                        <p class="text-[#111618] dark:text-white text-sm font-bold leading-normal">Correo electrónico</p>
                         <div class="relative">
                             <div class="absolute left-4 top-1/2 -translate-y-1/2 text-[#617c89] dark:text-gray-400">
-                                <span class="material-symbols-outlined text-[20px]">person</span>
+                                <span class="material-symbols-outlined text-[20px]">mail</span>
                             </div>
-                            <input name="usuario" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#111618] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/20 border border-[#dbe2e6] dark:border-gray-600 bg-white dark:bg-[#1a2c34] focus:border-primary h-12 pl-11 pr-4 placeholder:text-[#617c89] dark:placeholder:text-gray-500 text-base font-normal leading-normal transition-shadow" placeholder="juanperez123" type="text" required />
+                            <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#111618] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/20 border border-[#dbe2e6] dark:border-gray-600 bg-white dark:bg-[#1a2c34] focus:border-primary h-12 pl-11 pr-4 placeholder:text-[#617c89] dark:placeholder:text-gray-500 text-base font-normal leading-normal transition-shadow" placeholder="nombre@ejemplo.com" type="email" value="" />
                         </div>
                     </label>
                     <label class="flex flex-col flex-1 gap-2">
@@ -114,7 +113,7 @@
                             <div class="absolute left-4 top-1/2 -translate-y-1/2 text-[#617c89] dark:text-gray-400">
                                 <span class="material-symbols-outlined text-[20px]">lock</span>
                             </div>
-                            <input name="password" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#111618] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/20 border border-[#dbe2e6] dark:border-gray-600 bg-white dark:bg-[#1a2c34] focus:border-primary h-12 pl-11 pr-12 placeholder:text-[#617c89] dark:placeholder:text-gray-500 text-base font-normal leading-normal transition-shadow" placeholder="••••••••" type="password" required />
+                            <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#111618] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/20 border border-[#dbe2e6] dark:border-gray-600 bg-white dark:bg-[#1a2c34] focus:border-primary h-12 pl-11 pr-12 placeholder:text-[#617c89] dark:placeholder:text-gray-500 text-base font-normal leading-normal transition-shadow" placeholder="••••••••" type="password" value="" />
                             <button class="absolute right-0 top-0 h-full px-4 text-[#617c89] dark:text-gray-400 hover:text-[#111618] dark:hover:text-white transition-colors" type="button">
                                 <span class="material-symbols-outlined text-[20px]">visibility_off</span>
                             </button>
@@ -126,7 +125,7 @@
                 </form>
                 <div class="flex flex-col items-center gap-4 mt-2">
                     <p class="text-sm text-[#617c89] dark:text-gray-400">
-                        ¿No tienes una cuenta? <a class="text-primary font-bold hover:underline" href="/php/registro.php">Regístrate aquí</a>
+                        ¿No tienes una cuenta? <a class="text-primary font-bold hover:underline" href="#">Regístrate aquí</a>
                     </p>
                     <div class="flex gap-4">
                         <a class="text-xs font-medium text-[#617c89] dark:text-gray-500 hover:text-[#111618] dark:hover:text-gray-300" href="#">Ayuda</a>
@@ -139,10 +138,6 @@
             </div>
         </div>
     </div>
-
-
-    <script src="/js/login.js"></script>
-
 </body>
 
 </html>
