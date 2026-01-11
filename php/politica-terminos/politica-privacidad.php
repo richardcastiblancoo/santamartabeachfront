@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="light" lang="es">
+<html class="dark" lang="es">
 
 <head>
     <meta charset="utf-8" />
@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link rel="shortcut icon" href="/public/img/logo-portada.png" type="image/x-icon">
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -46,30 +47,46 @@
 
 <body class="bg-background-light dark:bg-background-dark text-[#111618] dark:text-white transition-colors duration-200">
     <div class="layout-container flex h-full grow flex-col">
-        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f3f4] dark:border-b-gray-800 bg-white dark:bg-background-dark px-10 py-4 sticky top-0 z-50">
+        <header class="flex items-center justify-between border-b border-solid border-b-[#f0f3f4] dark:border-b-gray-800 bg-white dark:bg-background-dark px-6 md:px-10 py-4 sticky top-0 z-50">
             <div class="flex items-center gap-4 text-[#111618] dark:text-white">
-                <div class="size-6 text-primary">
-                    <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_6_330)">
-                            <path clip-rule="evenodd" d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z" fill="currentColor" fill-rule="evenodd"></path>
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_6_330">
-                                <rect fill="white" height="48" width="48"></rect>
-                            </clipPath>
-                        </defs>
-                    </svg>
+                <div class="size-12 md:size-16 text-primary flex items-center justify-center">
+                    <img src="/public/img/logo-portada.png" class="w-full h-auto" alt="Logo">
                 </div>
-                <h2 class="text-[#111618] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Santamartabeachfront</h2>
+                <h2 class="hidden md:block text-[#111618] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Santamartabeachfront</h2>
             </div>
-            <div class="flex flex-1 justify-end items-center">
+
+            <nav class="hidden lg:flex items-center gap-8">
+                <a href="/" class="text-sm font-bold text-[#111618] dark:text-gray-300 hover:text-primary transition-colors">Inicio</a>
+                <a href="/apartamentos" class="text-sm font-bold text-[#111618] dark:text-gray-300 hover:text-primary transition-colors">Apartamentos</a>
+                <a href="/nosotros" class="text-sm font-bold text-[#111618] dark:text-gray-300 hover:text-primary transition-colors">Nosotros</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <div class="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full p-1">
+
+                    <div class="relative lang-dropdown">
+                        <button class="flex items-center gap-2 text-white text-sm font-medium h-10 px-3 rounded-lg hover:bg-white/10 transition-colors">
+                            <span id="currentLang">ES</span>
+                            <span class="material-symbols-outlined text-sm">expand_more</span>
+                        </button>
+                        <div class="lang-menu hidden absolute top-full right-0 mt-2 w-40 bg-white rounded-xl shadow-2xl py-2 z-[60]">
+                            <a href="#" data-lang="ES" class="block px-4 py-2 hover:bg-gray-100 text-sm">Español</a>
+                            <a href="#" data-lang="EN" class="block px-4 py-2 hover:bg-gray-100 text-sm">English</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button class="lg:hidden p-2 text-gray-600 dark:text-gray-300">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
             </div>
         </header>
         <main class="flex-1 max-w-[1280px] mx-auto w-full px-4 md:px-10 py-8">
             <div class="flex flex-wrap justify-between items-end gap-3 mb-8 border-b border-gray-100 dark:border-gray-800 pb-6">
                 <div class="flex min-w-72 flex-col gap-2">
                     <h1 class="text-[#111618] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Políticas y Términos</h1>
-                    <p class="text-[#617c89] dark:text-gray-400 text-base font-normal">Última actualización: 24 de mayo, 2024</p>
+                    <p class="text-[#617c89] dark:text-gray-400 text-base font-normal">Última actualización: 1 de febrero, 2026</p>
                 </div>
             </div>
             <div class="flex flex-col lg:flex-row gap-12">
@@ -104,12 +121,13 @@
                         <div class="mt-4 pt-6 border-t border-gray-100 dark:border-gray-800">
                             <div class="bg-primary/5 p-4 rounded-lg">
                                 <p class="text-xs text-primary font-bold mb-2 uppercase">¿Necesitas ayuda?</p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Si tienes dudas sobre nuestras políticas, contáctanos a soporte@santamarta.com</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Si tienes dudas sobre nuestras políticas, contáctanos a 17clouds@gmail.com</p>
                             </div>
                         </div>
                     </div>
                 </aside>
                 <div class="flex-1 bg-white dark:bg-background-dark rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-8 md:p-12 overflow-hidden">
+
                     <section class="mb-12 scroll-mt-24" id="intro">
                         <h2 class="text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center gap-2">
                             <span class="text-primary">1.</span> Introducción
@@ -123,6 +141,7 @@
                             </p>
                         </div>
                     </section>
+
                     <section class="mb-12 scroll-mt-24" id="data">
                         <h2 class="text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center gap-2">
                             <span class="text-primary">2.</span> Uso de Datos y Privacidad
@@ -145,6 +164,7 @@
                             </li>
                         </ul>
                     </section>
+
                     <section class="mb-12 scroll-mt-24" id="cancel">
                         <h2 class="text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center gap-2">
                             <span class="text-primary">3.</span> Cancelaciones y Reembolsos
@@ -177,6 +197,7 @@
                             </table>
                         </div>
                     </section>
+
                     <section class="mb-12 scroll-mt-24" id="resp">
                         <h2 class="text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center gap-2">
                             <span class="text-primary">4.</span> Responsabilidades del Huésped
@@ -203,6 +224,7 @@
                             </div>
                         </div>
                     </section>
+
                     <section class="scroll-mt-24" id="intellect">
                         <h2 class="text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center gap-2">
                             <span class="text-primary">5.</span> Propiedad Intelectual
@@ -211,27 +233,83 @@
                             Todo el contenido de este sitio web, incluyendo textos, logotipos, imágenes y diseño de interfaz, es propiedad exclusiva de Santamartabeachfront o sus licenciantes. Queda prohibida su reproducción total o parcial sin autorización expresa.
                         </p>
                     </section>
+
                 </div>
             </div>
         </main>
-        <footer class="bg-white dark:bg-background-dark border-t border-gray-100 dark:border-gray-800 py-10 mt-12">
-            <div class="max-w-[1280px] mx-auto px-10 flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="flex items-center gap-3">
-                    <div class="size-5 text-primary">
-                        <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z" fill="currentColor"></path>
-                        </svg>
-                    </div>
-                    <span class="text-[#111618] dark:text-white font-bold text-sm">Santamartabeachfront © 2024</span>
-                </div>
-                <div class="flex gap-6">
-                    <a class="text-xs text-gray-500 hover:text-primary transition-colors" href="#">Aviso Legal</a>
-                    <a class="text-xs text-gray-500 hover:text-primary transition-colors" href="#">Cookies</a>
-                    <a class="text-xs text-gray-500 hover:text-primary transition-colors" href="#">Mapa del sitio</a>
-                </div>
-            </div>
-        </footer>
     </div>
+
+    <script>
+        const btnEs = document.getElementById('lang-es');
+        const btnEn = document.getElementById('lang-en');
+
+        btnEn.addEventListener('click', () => {
+            btnEn.classList.add('bg-primary', 'text-white');
+            btnEn.classList.remove('text-gray-500');
+            btnEs.classList.remove('bg-primary', 'text-white');
+            btnEs.classList.add('text-gray-500');
+            // Aquí podrías redirigir a la versión en inglés: window.location.href = '/en/terms.html';
+        });
+
+        btnEs.addEventListener('click', () => {
+            btnEs.classList.add('bg-primary', 'text-white');
+            btnEs.classList.remove('text-gray-500');
+            btnEn.classList.remove('bg-primary', 'text-white');
+            btnEn.classList.add('text-gray-500');
+        });
+
+        //
+        //para el idioma
+        const langBtn = document.querySelector(".lang-dropdown button");
+        const langMenu = document.querySelector(".lang-menu");
+        const currentLang = document.getElementById("currentLang");
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        const savedLang = localStorage.getItem("lang") || "ES";
+        currentLang.textContent = savedLang;
+
+        langBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            langMenu.classList.toggle("hidden");
+        });
+
+        document.querySelectorAll(".lang-menu a").forEach((item) => {
+            item.addEventListener("click", (e) => {
+                e.preventDefault();
+                setLang(item.dataset.lang);
+                langMenu.classList.add("hidden");
+            });
+        });
+
+        function setLang(lang) {
+            localStorage.setItem("lang", lang);
+            currentLang.textContent = lang;
+            mobileMenu.classList.add("hidden");
+        }
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+        });
+
+        function closeMobile() {
+            mobileMenu.classList.add("hidden");
+        }
+
+        document.addEventListener("click", () => {
+            langMenu.classList.add("hidden");
+        });
+
+        function setLang(lang) {
+            if (lang === 'EN') {
+                // Redirige a la carpeta de inglés
+                window.location.href = '/en/index.php';
+            } else {
+                // Redirige a la raíz o carpeta de español
+                window.location.href = '/index.php';
+            }
+        }
+    </script>
 
 </body>
 

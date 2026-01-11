@@ -1,13 +1,15 @@
 <header class="absolute top-0 left-0 w-full z-50 flex items-center justify-between whitespace-nowrap px-6 py-6 md:px-10 transition-all duration-300">
     <div class="flex items-center gap-4 text-white">
-        <div class="size-8 text-primary">
-            <span class="material-symbols-outlined text-3xl font-variation-fill">apartment</span>
+        <div class="size-20 text-primary flex items-center justify-center">
+            <img src="/public/img/logo-portada.png" class="w-full h-auto" alt="Logo">
         </div>
-        <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em] whitespace-nowrap">
-            Santamartabeachfront
+        <!-- Ocultar título en móviles -->
+        <h2 class="hidden md:block text-white text-xl font-bold leading-tight tracking-[-0.015em] whitespace-nowrap">
+            Santamarta<span class="text-blue-500">beachfront</span>
         </h2>
     </div>
 
+    <!-- Menú desktop -->
     <div class="hidden md:flex flex-1 justify-end gap-8">
         <div class="flex items-center gap-9">
             <a class="text-white text-sm font-medium hover:text-primary transition-colors" href="#apartamentos">Apartamentos</a>
@@ -33,28 +35,40 @@
         </div>
     </div>
 
+    <!-- Botón hamburguesa visible solo en móviles -->
     <button id="menuBtn" class="md:hidden text-white">
         <span class="material-symbols-outlined text-3xl">menu</span>
     </button>
 </header>
 
-<div id="mobileMenu" class="fixed inset-0 bg-black/95 z-40 hidden flex-col items-center justify-center gap-8 text-white text-xl md:hidden">
-    <a href="#apartamentos" onclick="closeMobile()">Apartamentos</a>
-    <a href="#ubicacion" onclick="closeMobile()">Ubicación</a>
-    <a href="#nosotros" onclick="closeMobile()">Nosotros</a>
-    <a href="#contacto" onclick="closeMobile()">Contacto</a>
-    <div class="flex gap-6 mt-6">
-        <button onclick="setLang('ES')" class="border px-5 py-2 rounded-lg">ES</button>
-        <button onclick="setLang('EN')" class="border px-5 py-2 rounded-lg">EN</button>
+
+<div id="mobileMenu" class="fixed inset-0 bg-black/95 z-40 hidden flex flex-col items-center justify-center px-8 py-12 text-white md:hidden">
+    
+    <!-- Navegación -->
+    <nav class="flex flex-col items-center gap-6 text-lg font-semibold">
+        <a href="#apartamentos" onclick="closeMobile()" class="hover:text-primary transition">Apartamentos</a>
+        <a href="#ubicacion" onclick="closeMobile()" class="hover:text-primary transition">Ubicación</a>
+        <a href="#nosotros" onclick="closeMobile()" class="hover:text-primary transition">Nosotros</a>
+        <a href="#contacto" onclick="closeMobile()" class="hover:text-primary transition">Contacto</a>
+    </nav>
+
+    <!-- Selector de idioma -->
+    <div class="flex gap-4 mt-10">
+        <button onclick="setLang('ES')" class="px-6 py-2 rounded-lg border border-white/30 hover:bg-white hover:text-black transition">ES</button>
+        <button onclick="setLang('EN')" class="px-6 py-2 rounded-lg border border-white/30 hover:bg-white hover:text-black transition">EN</button>
     </div>
-    <a href="/php/login.php" class="mt-8 px-8 py-3 bg-primary rounded-xl font-bold text-white hover:bg-primary/90 transition">
+
+    <!-- Botón login -->
+    <a href="/php/login.php" class="mt-12 w-full max-w-xs text-center px-8 py-3 bg-primary rounded-xl font-bold text-white hover:bg-primary/90 transition shadow-lg">
         Iniciar sesión
     </a>
 </div>
 
+
+
 <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-gray-900">
     <div class="absolute inset-0 z-0">
-       <video class="w-full h-full object-cover" autoplay muted loop playsinline>
+        <video class="w-full h-full object-cover" autoplay muted loop playsinline>
             <source src="/public/video/santamarta-video-tayrona.mp4" type="video/mp4">
         </video>
     </div>
@@ -63,7 +77,7 @@
         <h1 class="text-white text-5xl md:text-7xl lg:text-8xl font-black leading-tight tracking-tight">
             Vive la experiencia en<br>
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-cyan-300 animate-back-and-forth inline-block">
-               Santa marta frente al mar
+                Santa marta frente al mar
             </span>
         </h1>
 
@@ -137,6 +151,4 @@
             window.location.href = '/index.php';
         }
     }
-    
 </script>
-

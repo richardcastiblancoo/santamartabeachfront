@@ -17,7 +17,7 @@
 
             <section class="space-y-6">
                 <figure class="flex items-center gap-2 text-blue-500">
-                    <span class="material-symbols-outlined text-3xl" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">apartment</span>
+                    <img src="/public/img/logo-portada.png" width="50px" alt="">
                     <figcaption class="text-xl font-bold text-white tracking-tight">
                         Santamarta<span class="text-blue-500">beachfront</span>
                     </figcaption>
