@@ -2,9 +2,34 @@
 <html class="light" lang="en">
 
 <head>
+    
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="description" content="Live the beachfront experience. The best apartments at Santamartabeachfront await you. Wake up to the sound of the waves.">
+    <meta name="keywords" content="Santa Marta apartments, vacation rentals Santa Marta, beachfront apartments, Santa Marta hotels, Rodadero lodging, Playa Salguero accommodation, apartments with pool Santa Marta, Santa Marta tourism, Colombian Caribbean vacations">
+    <meta name="author" content="santamartabeachfront">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.santamartabeachfront.com">
+    <meta property="og:title" content="Santamartabeachfront">
+    <meta property="og:description" content="Live the beachfront experience. The best apartments at Santamartabeachfront await you. Wake up to the sound of the waves.">
+    <meta property="og:image" content="https://www.tusitio.com/imagen-de-portada.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.tusitio.com/">
+    <meta name="twitter:title" content="Santamartabeachfront - Beachfront Rentals">
+    <meta name="twitter:description" content="Experience the best beachfront apartments in Santa Marta. Book your stay today.">
+    <meta name="twitter:image" content="https://www.tusitio.com/imagen-de-portada.jpg">
+
+    <title>Santamartabeachfront - Apartment Rentals</title>
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#000000">
+
+
     <title>Santamartabeachfront - Beachfront Apartment Rentals</title>
+    <link rel="stylesheet" href="/css/style.css">
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />

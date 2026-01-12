@@ -7,6 +7,7 @@ const urlsToCache = [
   '/icon-192x192.png'
 ];
 
+
 // Instalación: Almacena los archivos en caché
 self.addEventListener('install', e => {
   e.waitUntil(

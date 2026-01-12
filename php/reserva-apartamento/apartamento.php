@@ -212,6 +212,8 @@
                     <p class="mt-4 font-bold text-lg">Pozos Colorados, Santa Marta</p>
                     <p class="text-sm text-[#617c89] dark:text-slate-400 mt-1">Un sector exclusivo y tranquilo, perfecto para disfrutar del mar sin multitudes.</p>
                 </section>
+
+                
                 <section class="pt-12 mt-12 border-t border-slate-200 dark:border-slate-800">
                     <h3 class="text-xl font-bold mb-6">Restaurantes Recomendados</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -266,6 +268,8 @@
                     </div>
                 </section>
             </div>
+
+
             <div class="lg:col-span-1">
                 <div class="sticky top-28 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-6">
                     <div class="flex justify-between items-baseline mb-6">
@@ -331,6 +335,9 @@
             </div>
         </div>
     </main>
+
+
+
     <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pt-16 pb-8">
         <div class="max-w-[1280px] mx-auto px-4 md:px-10 lg:px-40">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
