@@ -93,14 +93,14 @@
                     </a>
                 </div>
 
-                <form class="flex flex-col gap-5">
+                <form action="login_usuario_be.php" method="POST" class="flex flex-col gap-5">
                     <label class="flex flex-col gap-2">
                         <p data-key="label-user" class="text-sm font-bold text-[#111618] dark:text-white">Usuario</p>
                         <div class="relative">
                             <div class="absolute left-4 top-1/2 -translate-y-1/2 text-[#617c89] dark:text-gray-400">
                                 <span class="material-symbols-outlined text-[20px]">person</span>
                             </div>
-                            <input class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="Ej: JuanPerez" type="text" />
+                            <input name="usuario" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="Ej: JuanPerez" type="text" required />
                         </div>
                     </label>
                     
@@ -113,7 +113,7 @@
                             <div class="absolute left-4 top-1/2 -translate-y-1/2 text-[#617c89] dark:text-gray-400">
                                 <span class="material-symbols-outlined text-[20px]">lock</span>
                             </div>
-                            <input class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="••••••••" type="password" />
+                            <input name="password" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="••••••••" type="password" required />
                         </div>
                     </label>
 

@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<?php
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    echo '<script>alert("Por favor inicia sesión"); window.location = "../../auth/login.php";</script>';
+    die();
+}
+?>
 <html class="dark" lang="es">
 
 <head>

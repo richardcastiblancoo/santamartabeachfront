@@ -98,17 +98,22 @@
                     </a>
                 </div>
 
-                <form class="flex flex-col gap-4">
+                <form action="registro_usuario_be.php" method="POST" class="flex flex-col gap-4">
                     <div class="flex gap-4">
                         <label class="flex flex-col flex-1 gap-2">
-                            <p data-key="label-username" class="text-[#111618] dark:text-white text-sm font-bold">Nombre de usuario</p>
-                            <input class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 px-4 focus:ring-primary focus:border-primary" placeholder="Ej: Juan77" type="text" />
+                            <p data-key="label-name" class="text-[#111618] dark:text-white text-sm font-bold">Nombre</p>
+                            <input name="nombre" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 px-4 focus:ring-primary focus:border-primary" placeholder="Juan" type="text" required />
                         </label>
                         <label class="flex flex-col flex-1 gap-2">
                             <p data-key="label-lastname" class="text-[#111618] dark:text-white text-sm font-bold">Apellido</p>
-                            <input class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 px-4 focus:ring-primary focus:border-primary" placeholder="Pérez" type="text" />
+                            <input name="apellido" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 px-4 focus:ring-primary focus:border-primary" placeholder="Pérez" type="text" required />
                         </label>
                     </div>
+
+                    <label class="flex flex-col gap-2">
+                        <p data-key="label-username" class="text-[#111618] dark:text-white text-sm font-bold">Nombre de usuario</p>
+                        <input name="usuario" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 px-4 focus:ring-primary focus:border-primary" placeholder="Ej: Juan77" type="text" required />
+                    </label>
 
                     <label class="flex flex-col gap-2">
                         <p data-key="label-email" class="text-[#111618] dark:text-white text-sm font-bold">Correo electrónico</p>
@@ -116,7 +121,7 @@
                             <div class="absolute left-4 top-1/2 -translate-y-1/2 text-[#617c89] dark:text-gray-400">
                                 <span class="material-symbols-outlined text-[20px]">mail</span>
                             </div>
-                            <input class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="nombre@ejemplo.com" type="email" />
+                            <input name="email" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="nombre@ejemplo.com" type="email" required />
                         </div>
                     </label>
 
@@ -126,7 +131,7 @@
                             <div class="absolute left-4 top-1/2 -translate-y-1/2 text-[#617c89] dark:text-gray-400">
                                 <span class="material-symbols-outlined text-[20px]">lock</span>
                             </div>
-                            <input class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="••••••••" type="password" />
+                            <input name="password" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="••••••••" type="password" required />
                         </div>
                     </label>
 
@@ -181,6 +186,7 @@
                 "reg-subtitle": "Join our community to get started.",
                 "tab-login": "Login",
                 "tab-register": "Sign Up",
+                "label-name": "First Name",
                 "label-username": "Username",
                 "label-lastname": "Last Name",
                 "label-email": "Email Address",
