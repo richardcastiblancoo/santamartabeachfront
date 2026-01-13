@@ -1,3 +1,26 @@
+<?php
+include '../../auth/conexion_be.php';
+
+// Obtener el ID del apartamento de la URL
+$id_apartamento = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Consultar la base de datos con promedio de calificaciones
+$sql = "SELECT a.*, 
+        COALESCE(AVG(r.calificacion), 0) as promedio_calificacion, 
+        COUNT(r.id) as total_resenas 
+        FROM apartamentos a 
+        LEFT JOIN resenas r ON a.id = r.apartamento_id 
+        WHERE a.id = $id_apartamento 
+        GROUP BY a.id";
+$result = $conn->query($sql);
+
+if ($result && $result->num_rows > 0) {
+    $apartamento = $result->fetch_assoc();
+} else {
+    // Redirigir o mostrar mensaje si no se encuentra
+    $apartamento = null;
+}
+?>
 <!DOCTYPE html>
 <html class="light" lang="es">
 
@@ -67,12 +90,13 @@
         </div>
     </header>
     <main class="max-w-[1280px] mx-auto px-4 md:px-10 lg:px-40 py-6">
+        <?php if ($apartamento): ?>
         <div class="flex flex-wrap justify-between items-end gap-4 py-4">
             <div class="flex flex-col gap-2">
-                <h1 class="text-[#111618] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Penthouse Vista Coral</h1>
+                <h1 class="text-[#111618] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]"><?php echo $apartamento['titulo']; ?></h1>
                 <div class="flex items-center gap-2 text-[#617c89] dark:text-slate-400">
                     <span class="material-symbols-outlined text-sm">location_on</span>
-                    <p class="text-base font-normal">Pozos Colorados, Santa Marta · ★ 4.98 (124 reseñas)</p>
+                    <p class="text-base font-normal"><?php echo $apartamento['ubicacion']; ?> · ★ <?php echo $apartamento['total_resenas'] > 0 ? number_format($apartamento['promedio_calificacion'], 1) : '0 (Sin reseñas)'; ?> (<?php echo $apartamento['total_resenas']; ?> reseñas)</p>
                 </div>
             </div>
             <div class="flex gap-3">
@@ -81,38 +105,35 @@
                 </button>
             </div>
         </div>
+        
+        <?php 
+        $ruta_img = '/assets/img/apartamentos/' . $apartamento['imagen_principal'];
+        ?>
+        
         <div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-3 h-[400px] md:h-[550px] mt-4 rounded-2xl overflow-hidden relative">
             <div class="md:col-span-2 md:row-span-2 relative group overflow-hidden">
-                <div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-700 group-hover:scale-105" data-alt="Panoramic luxury living room with ocean view" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA8GTJDcsWIDIU2lIxsx9pze8b2kKJawBPSFbWWKRYHFqfCbncQjUunYPh5CiDR5go2eR5Ukw6UULHoPxWf5rz5ruWk8UXUz16L_LtzZ9eN5R1SBLn5gMBLrLKGviiNETSJS_rISWj0z6fl04EGERM0wO4CIok7zwwK4AgKWFny8pgJzBrllpxhBshUu9c7UdjDIgjNHT1Y21SmadAFSD_A3Sb0dP8kL-oo1M4OjP8BWCjcvODdjDwbfGVJLH16PVW9n8MkRrJ_Juk");'></div>
+                <div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-700 group-hover:scale-105" data-alt="<?php echo $apartamento['titulo']; ?>" style='background-image: url("<?php echo $ruta_img; ?>");'></div>
                 <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 cursor-pointer">
                     <div class="w-16 h-16 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center border border-white/50">
                         <span class="material-symbols-outlined text-white text-4xl">fullscreen</span>
                     </div>
                 </div>
             </div>
+            <!-- Imágenes secundarias (placeholders por ahora, ya que solo subimos una) -->
             <div class="hidden md:block relative group overflow-hidden cursor-pointer">
-                <div class="w-full h-full bg-center bg-no-repeat bg-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAvAyYu3XWGJRdYMROmTcaWFIEt1no5KfLsf8ku8v8bTs03lfcI9zuVll2PIpvOFiyF52-8OubxxntEzrCzpDPqsObCUMIPt8czGWY9oAZIRFu2qJgIQl4RutL6bzaif0hAJvs3tVURvsaViGUXsVooSYYht6G3teJnfhRA-nbGeZ1vF5kDjltnfC5H8qiu57jJtno7Cn083qlXsgnuPyrVHZEhUshL02jd1xUknNZbrIUkQVm6_2ymGdv8UxnLNEuMPepxJCi4J9I");'></div>
-                <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
-                    <div class="w-10 h-10 rounded-full bg-primary/90 flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-white text-[24px] fill-1">play_arrow</span>
-                    </div>
-                </div>
-                <span class="absolute bottom-2 left-2 px-2 py-0.5 bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold rounded uppercase tracking-wider">Video Tour</span>
+                <div class="w-full h-full bg-center bg-no-repeat bg-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500" style='background-image: url("<?php echo $ruta_img; ?>");'></div>
             </div>
             <div class="hidden md:block group overflow-hidden">
-                <div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDYGAMQJRoVBfnODIeIU5t6EMK4nevMeTMZ1yuijkQuEqfc16Z24oUD1BfnPuos0s1yOXjjCs2cux67-wb8AszEm-RoznGqPcu7xQN-4eBb0GLGytA8pKfrUjCGG1687iNttbGf6dic36nmSB2hoLidr0EIRxx3GGwstVmyqwQeBcn-LtTVaPzOJWhFu99wlnqFVvegSdkswm9Vkg4vsBptWvYTDWPxmkIlKUn4Ok1Xq3Invxb2x_nxjJO4v6_SnT6c1CKwGAr6wxg");'></div>
+                <div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" style='background-image: url("<?php echo $ruta_img; ?>");'></div>
             </div>
             <div class="hidden md:block group overflow-hidden">
-                <div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAYLX3qStWLnPu-tMks2fqtnjzvxvUzsut7_mXB8S9LzMCdlFkzZJ7G-urLGJ6-unoqykCURHHxqFT17xQwcDZTju7ceUwWRhZhmDP0khM_RC_DRn0dp8p1VHlcQuYwuOngvVmzDqjt3f5gxJAsqqo3R77PrMH0fBrCqBum45RKB9OEKi4YSjTJMahhK0l4Dz7wiZtTkciYBCU9cAXkWFG82wx9OrW71JMCevl6bINv79VZVdyA15OZVhXvQZHfumvwcEWgMCu6DEM");'></div>
+                <div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" style='background-image: url("<?php echo $ruta_img; ?>");'></div>
             </div>
             <div class="hidden md:block relative group overflow-hidden">
-                <div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDw2R_ticv9IzZvGwdw859baEcn-DF73TJVdGs_wp00jbFUL1Z9CcPDgjdFXTGbTPEjNvT1sHB6ZI-3hv1y3_UepAr4aBUGCey7RXmdIujTV-Jqhm5XPYZVdgTWJYKkBJE4RZVQCRKmg9skxj-FsOzaVgGLn3ibkMcEdm52EjYtIDWhDKuRDVuDXeLtIVzluDzUPJ60kHUAguYlZSSd63vq1_wc7TwnefDgq--xsNZIhdVsEy4jpz3ZaMAcHLT7pFo4Xtsn0jgaoM0");'></div>
+                <div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" style='background-image: url("<?php echo $ruta_img; ?>");'></div>
                 <div class="absolute bottom-4 right-4 flex flex-col gap-2">
                     <button class="bg-white/95 backdrop-blur-sm px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 border border-slate-200 shadow-xl hover:bg-white transition-all transform active:scale-95">
-                        <span class="material-symbols-outlined text-[18px]">photo_library</span> Ver 24 fotos
-                    </button>
-                    <button class="bg-primary/95 backdrop-blur-sm px-4 py-2.5 rounded-xl text-xs font-bold text-white flex items-center gap-2 border border-primary/20 shadow-xl hover:bg-primary transition-all transform active:scale-95">
-                        <span class="material-symbols-outlined text-[18px]">videocam</span> Ver 3 videos
+                        <span class="material-symbols-outlined text-[18px]">photo_library</span> Ver fotos
                     </button>
                 </div>
             </div>
@@ -120,20 +141,31 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 py-10">
             <div class="lg:col-span-2">
                 <div class="border-b border-slate-200 dark:border-slate-800 pb-6 mb-8">
-                    <h2 class="text-2xl font-bold mb-2">Alojamiento entero: Penthouse de lujo</h2>
-                    <p class="text-[#617c89] dark:text-slate-400">4 Huéspedes · 2 Dormitorios · 2 Camas · 2 Baños</p>
+                    <h2 class="text-2xl font-bold mb-2">Alojamiento entero: <?php echo $apartamento['titulo']; ?></h2>
+                    <p class="text-[#617c89] dark:text-slate-400"><?php echo $apartamento['capacidad']; ?> Huéspedes · <?php echo $apartamento['habitaciones']; ?> Dormitorios · <?php echo $apartamento['banos']; ?> Baños</p>
                 </div>
                 <section class="mb-10">
                     <h3 class="text-xl font-bold mb-4">Sobre este apartamento</h3>
                     <p class="text-[#4b5563] dark:text-slate-300 leading-relaxed">
-                        Despierta con el sonido de las olas en este exclusivo penthouse frente al mar en Pozos Colorados. Diseñado con un estilo moderno y minimalista, el espacio ofrece techos altos, ventanales de piso a techo y una terraza privada con jacuzzi.
-                        <br /><br />
-                        El edificio cuenta con acceso directo a la playa, piscina infinita en el último piso, gimnasio de última generación y seguridad 24/7. Ideal para parejas o familias pequeñas que buscan una experiencia de lujo en el Caribe colombiano.
+                        <?php echo nl2br($apartamento['descripcion']); ?>
                     </p>
                     <button class="mt-4 text-primary font-bold flex items-center gap-1 hover:underline">
                         Mostrar más <span class="material-symbols-outlined">chevron_right</span>
                     </button>
                 </section>
+
+                <?php if (!empty($apartamento['video'])): 
+                    $video_url = $apartamento['video'];
+                    $embed_url = str_replace("watch?v=", "embed/", $video_url);
+                    $embed_url = str_replace("youtu.be/", "youtube.com/embed/", $embed_url);
+                ?>
+                <section class="mb-10">
+                    <h3 class="text-xl font-bold mb-4">Video del alojamiento</h3>
+                    <div class="aspect-video rounded-xl overflow-hidden bg-black">
+                        <iframe class="w-full h-full" src="<?php echo $embed_url; ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </section>
+                <?php endif; ?>
                 <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
                     <h3 class="text-xl font-bold mb-6">Lo que este lugar ofrece</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -169,7 +201,7 @@
                 <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
                     <div class="flex items-center gap-2 mb-6">
                         <span class="material-symbols-outlined text-primary fill-1">star</span>
-                        <h3 class="text-xl font-bold">4.98 · 124 reseñas</h3>
+                        <h3 class="text-xl font-bold"><?php echo $apartamento['total_resenas'] > 0 ? number_format($apartamento['promedio_calificacion'], 1) . ' · ' . $apartamento['total_resenas'] . ' reseñas' : 'Sin reseñas'; ?></h3>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="flex flex-col gap-4">
@@ -270,70 +302,81 @@
             </div>
 
 
+            <!-- Sidebar de Reserva -->
             <div class="lg:col-span-1">
                 <div class="sticky top-28 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-6">
                     <div class="flex justify-between items-baseline mb-6">
                         <div>
-                            <span class="text-2xl font-black">$240 USD</span>
+                            <span class="text-2xl font-black">$<?php echo number_format($apartamento['precio'], 0, ',', '.'); ?></span>
                             <span class="text-[#617c89] text-base"> / noche</span>
                         </div>
                         <div class="flex items-center gap-1 text-sm font-semibold">
-                            <span class="material-symbols-outlined text-primary text-[18px] fill-1">star</span> 4.98
+                            <span class="material-symbols-outlined text-primary text-[18px] fill-1">star</span> <?php echo $apartamento['total_resenas'] > 0 ? number_format($apartamento['promedio_calificacion'], 1) : '0'; ?>
                         </div>
                     </div>
                     <div class="rounded-xl border border-slate-300 dark:border-slate-700 overflow-hidden mb-4">
                         <div class="grid grid-cols-2 border-b border-slate-300 dark:border-slate-700">
                             <div class="p-3 border-r border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
                                 <p class="text-[10px] font-black uppercase text-[#111618] dark:text-white">Llegada</p>
-                                <p class="text-sm font-medium">24/05/2024</p>
+                                <input type="date" class="w-full bg-transparent border-none p-0 text-sm font-medium focus:ring-0" />
                             </div>
                             <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
                                 <p class="text-[10px] font-black uppercase text-[#111618] dark:text-white">Salida</p>
-                                <p class="text-sm font-medium">29/05/2024</p>
+                                <input type="date" class="w-full bg-transparent border-none p-0 text-sm font-medium focus:ring-0" />
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 p-3 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer items-center gap-4">
-                            <div class="border-r border-slate-300 dark:border-slate-700 pr-3">
-                                <p class="text-[10px] font-black uppercase text-[#111618] dark:text-white">Adultos</p>
-                                <div class="flex items-center justify-between">
-                                    <p class="text-sm font-medium">2</p>
-                                    <span class="material-symbols-outlined text-lg">expand_more</span>
-                                </div>
-                            </div>
-                            <div class="pl-1">
-                                <p class="text-[10px] font-black uppercase text-[#111618] dark:text-white">Niños</p>
-                                <div class="flex items-center justify-between">
-                                    <p class="text-sm font-medium">0</p>
-                                    <span class="material-symbols-outlined text-lg">expand_more</span>
-                                </div>
-                            </div>
+                        <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+                            <p class="text-[10px] font-black uppercase text-[#111618] dark:text-white">Huéspedes</p>
+                            <select class="w-full bg-transparent border-none p-0 text-sm font-medium focus:ring-0">
+                                <?php for($i = 1; $i <= $apartamento['capacidad']; $i++): ?>
+                                    <option value="<?php echo $i; ?>"><?php echo $i; ?> Huésped<?php echo $i > 1 ? 'es' : ''; ?></option>
+                                <?php endfor; ?>
+                            </select>
                         </div>
                     </div>
                     <button class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 mb-4">
                         Reservar ahora
                     </button>
                     <p class="text-center text-sm text-[#617c89] mb-6">No se te cobrará nada todavía</p>
+                    
+                    <?php 
+                    $precio = $apartamento['precio'];
+                    $noches = 5; // Ejemplo
+                    $subtotal = $precio * $noches;
+                    $limpieza = 80000;
+                    $servicio = 120000;
+                    $total = $subtotal + $limpieza + $servicio;
+                    ?>
+                    
                     <div class="space-y-3 mb-6">
                         <div class="flex justify-between text-base">
-                            <span class="underline text-[#4b5563] dark:text-slate-300">$240 USD x 5 noches</span>
-                            <span class="font-medium">$1,200 USD</span>
+                            <span class="underline text-[#4b5563] dark:text-slate-300">$<?php echo number_format($precio, 0, ',', '.'); ?> x <?php echo $noches; ?> noches</span>
+                            <span class="font-medium">$<?php echo number_format($subtotal, 0, ',', '.'); ?></span>
                         </div>
                         <div class="flex justify-between text-base">
                             <span class="underline text-[#4b5563] dark:text-slate-300">Tarifa de limpieza</span>
-                            <span class="font-medium">$45 USD</span>
+                            <span class="font-medium">$<?php echo number_format($limpieza, 0, ',', '.'); ?></span>
                         </div>
                         <div class="flex justify-between text-base">
                             <span class="underline text-[#4b5563] dark:text-slate-300">Comisión de servicio</span>
-                            <span class="font-medium">$120 USD</span>
+                            <span class="font-medium">$<?php echo number_format($servicio, 0, ',', '.'); ?></span>
                         </div>
                     </div>
                     <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center font-bold text-lg">
                         <span>Total</span>
-                        <span>$1,365 USD</span>
+                        <span>$<?php echo number_format($total, 0, ',', '.'); ?></span>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <?php else: ?>
+            <div class="text-center py-20">
+                <h1 class="text-3xl font-bold mb-4">Apartamento no encontrado</h1>
+                <p class="mb-8">El apartamento que buscas no existe o ha sido eliminado.</p>
+                <a href="/" class="bg-primary text-white px-6 py-3 rounded-lg font-bold">Volver al inicio</a>
+            </div>
+        <?php endif; ?>
     </main>
 
 

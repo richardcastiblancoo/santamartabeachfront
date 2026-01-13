@@ -37,7 +37,48 @@ $sql = "CREATE TABLE IF NOT EXISTS usuarios (
 )";
 
 if ($conn->query($sql) !== TRUE) {
-    echo "Error creando tabla: " . $conn->error;
+    echo "Error creando tabla usuarios: " . $conn->error;
+}
+
+// Crear tabla de apartamentos si no existe
+$sql_apartamentos = "CREATE TABLE IF NOT EXISTS apartamentos (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    descripcion TEXT NOT NULL,
+    precio DECIMAL(10, 2) NOT NULL,
+    ubicacion VARCHAR(100) NOT NULL,
+    habitaciones INT(3) NOT NULL,
+    banos INT(3) NOT NULL,
+    capacidad INT(3) NOT NULL,
+    imagen_principal VARCHAR(255) NOT NULL,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)";
+
+if ($conn->query($sql_apartamentos) !== TRUE) {
+    echo "Error creando tabla apartamentos: " . $conn->error;
+}
+
+// Intentar añadir la columna 'video' si la tabla ya existía sin ella
+try {
+    $conn->query("ALTER TABLE apartamentos ADD COLUMN video VARCHAR(255) DEFAULT NULL AFTER imagen_principal");
+} catch (Exception $e) {
+    // Ignorar error si la columna ya existe
+}
+
+// Crear tabla de reseñas si no existe
+$sql_resenas = "CREATE TABLE IF NOT EXISTS resenas (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    apartamento_id INT(6) UNSIGNED NOT NULL,
+    usuario_id INT(6) UNSIGNED NOT NULL,
+    calificacion INT(1) NOT NULL,
+    comentario TEXT,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (apartamento_id) REFERENCES apartamentos(id) ON DELETE CASCADE,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+)";
+
+if ($conn->query($sql_resenas) !== TRUE) {
+    echo "Error creando tabla resenas: " . $conn->error;
 }
 
 // Intentar añadir la columna 'usuario' si la tabla ya existía sin ella
