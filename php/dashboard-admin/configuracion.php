@@ -1,5 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
+    echo '<script>alert("Acceso denegado. Por favor, inicia sesión como administrador."); window.location = "../../auth/login.php";</script>';
+    exit;
+}
+?>
 <!DOCTYPE html>
-<html class="light" lang="es">
+<html class="dark" lang="es">
 
 <head>
     <meta charset="utf-8" />
@@ -103,7 +110,7 @@
                         <span class="material-symbols-outlined fill-1">settings</span>
                         <span class="text-sm font-semibold">Configuración</span>
                     </a>
-                    <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-red-50 hover:text-red-600 transition-colors group" href="#">
+                    <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-red-50 hover:text-red-600 transition-colors group" href="../../auth/cerrar_sesion.php">
                         <span class="material-symbols-outlined group-hover:text-red-600 transition-colors">logout</span>
                         <span class="text-sm font-medium">Cerrar Sesión</span>
                     </a>
@@ -111,10 +118,10 @@
             </div>
             <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800">
                 <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
-                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM");'></div>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM'; ?>");'></div>
                     <div class="flex flex-col overflow-hidden">
-                        <span class="text-sm font-bold truncate dark:text-white">Carlos Admin</span>
-                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate">admin@santamarta.com</span>
+                        <span class="text-sm font-bold truncate dark:text-white"><?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
+                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo $_SESSION['email']; ?></span>
                     </div>
                 </div>
             </div>
@@ -166,41 +173,43 @@
                                     <h2 class="text-xl font-bold text-text-main dark:text-white">Perfil Personal</h2>
                                     <p class="text-sm text-text-secondary mt-1">Actualiza tu información pública y datos de contacto.</p>
                                 </div>
-                                <div class="flex flex-col md:flex-row gap-8">
+                                <form action="actualizar_perfil_be.php" method="POST" enctype="multipart/form-data" class="flex flex-col md:flex-row gap-8">
+                                    <input type="hidden" name="update_profile" value="1">
                                     <div class="flex flex-col items-center gap-4">
                                         <div class="relative group">
                                             <div class="size-32 rounded-full overflow-hidden bg-background-light dark:bg-gray-800 border-2 border-[#f0f3f4] dark:border-gray-700">
-                                                <img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM" />
+                                                <img alt="Profile" class="w-full h-full object-cover" src="<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM'; ?>" />
                                             </div>
-                                            <button class="absolute bottom-0 right-0 bg-primary hover:bg-primary-hover text-white p-2 rounded-full shadow-lg border-2 border-white dark:border-gray-900 transition-all scale-90 group-hover:scale-100">
+                                            <label for="file-upload" class="absolute bottom-0 right-0 bg-primary hover:bg-primary-hover text-white p-2 rounded-full shadow-lg border-2 border-white dark:border-gray-900 transition-all scale-90 group-hover:scale-100 cursor-pointer">
                                                 <span class="material-symbols-outlined text-sm">photo_camera</span>
-                                            </button>
+                                            </label>
+                                            <input id="file-upload" name="imagen" type="file" class="hidden" accept="image/*" onchange="this.form.submit()">
                                         </div>
                                         <div class="text-center">
                                             <p class="text-xs text-text-secondary">Sube una imagen de al menos 400x400px</p>
-                                            <button class="mt-2 text-xs font-bold text-primary hover:underline">Eliminar foto</button>
+                                            <button type="submit" name="borrar_imagen" value="1" class="mt-2 text-xs font-bold text-primary hover:underline">Eliminar foto</button>
                                         </div>
                                     </div>
-                                    <form class="flex-1 space-y-5">
+                                    <div class="flex-1 space-y-5">
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div class="space-y-2">
                                                 <label class="block text-sm font-medium text-text-main dark:text-white">Nombre</label>
-                                                <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" type="text" value="Carlos" />
+                                                <input name="nombre" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" type="text" value="<?php echo $_SESSION['nombre']; ?>" />
                                             </div>
                                             <div class="space-y-2">
                                                 <label class="block text-sm font-medium text-text-main dark:text-white">Apellido</label>
-                                                <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" type="text" value="Admin" />
+                                                <input name="apellido" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" type="text" value="<?php echo $_SESSION['apellido']; ?>" />
                                             </div>
                                             <div class="space-y-2 md:col-span-2">
                                                 <label class="block text-sm font-medium text-text-main dark:text-white">Correo Electrónico</label>
-                                                <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" type="email" value="admin@santamarta.com" />
+                                                <input name="email" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" type="email" value="<?php echo $_SESSION['email']; ?>" />
                                             </div>
                                         </div>
                                         <div class="flex items-center justify-end pt-4">
-                                            <button class="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg font-semibold transition-colors" type="button">Guardar Cambios</button>
+                                            <button class="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg font-semibold transition-colors" type="submit">Guardar Cambios</button>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="space-y-6 hidden" id="appearance-settings">
@@ -276,21 +285,22 @@
                                     <h2 class="text-xl font-bold text-text-main dark:text-white">Cambio de Contraseña</h2>
                                     <p class="text-sm text-text-secondary mt-1">Asegúrate de usar una contraseña segura para proteger tu cuenta.</p>
                                 </div>
-                                <form class="space-y-4 max-w-lg">
+                                <form action="actualizar_perfil_be.php" method="POST" class="space-y-4 max-w-lg">
+                                    <input type="hidden" name="update_password" value="1">
                                     <div class="space-y-2">
                                         <label class="block text-sm font-medium text-text-main dark:text-white">Contraseña Actual</label>
-                                        <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="••••••••" type="password" />
+                                        <input name="current_password" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="••••••••" type="password" required />
                                     </div>
                                     <div class="space-y-2">
                                         <label class="block text-sm font-medium text-text-main dark:text-white">Nueva Contraseña</label>
-                                        <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Mínimo 8 caracteres" type="password" />
+                                        <input name="new_password" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Mínimo 8 caracteres" type="password" required />
                                     </div>
                                     <div class="space-y-2">
                                         <label class="block text-sm font-medium text-text-main dark:text-white">Confirmar Nueva Contraseña</label>
-                                        <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Repite la contraseña" type="password" />
+                                        <input name="confirm_password" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Repite la contraseña" type="password" required />
                                     </div>
                                     <div class="pt-2">
-                                        <button class="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg font-semibold transition-colors" type="button">Actualizar Contraseña</button>
+                                        <button class="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg font-semibold transition-colors" type="submit">Actualizar Contraseña</button>
                                     </div>
                                 </form>
                             </div>

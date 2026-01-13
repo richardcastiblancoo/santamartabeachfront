@@ -15,11 +15,15 @@ if (mysqli_num_rows($validar_login) > 0) {
     $nombre = $row['nombre'];
     
     if (password_verify($password, $password_bd)) {
-        $_SESSION['usuario'] = $usuario;
-        $_SESSION['nombre'] = $nombre;
-        $_SESSION['rol'] = $rol;
-        
-        if ($rol == 'Admin') {
+                $_SESSION['id'] = $row['id'];
+                $_SESSION['usuario'] = $usuario;
+                $_SESSION['nombre'] = $nombre;
+                $_SESSION['apellido'] = $row['apellido'];
+                $_SESSION['email'] = $row['email'];
+                $_SESSION['imagen'] = $row['imagen'];
+                $_SESSION['rol'] = $rol;
+                
+                if ($rol == 'Admin') {
             header("location: ../php/dashboard-admin/dashboard.php");
         } else {
             header("location: ../php/dashboard-huesped/huesped.php");

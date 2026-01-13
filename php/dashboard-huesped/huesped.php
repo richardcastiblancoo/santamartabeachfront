@@ -89,6 +89,9 @@ if (!isset($_SESSION['usuario'])) {
                 </button>
                 <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-white dark:border-gray-700 shadow-sm cursor-pointer" style='background-image: url("https://avatar.iran.liara.run/public/30");'>
                 </div>
+                <a href="../../auth/cerrar_sesion.php" class="flex items-center justify-center rounded-full size-10 hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-500 hover:text-red-600 transition-colors" title="Cerrar Sesión">
+                    <span class="material-symbols-outlined">logout</span>
+                </a>
             </div>
         </div>
     </header>

@@ -31,12 +31,27 @@ $sql = "CREATE TABLE IF NOT EXISTS usuarios (
     usuario VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    imagen VARCHAR(255) DEFAULT NULL,
     rol VARCHAR(20) NOT NULL,
     reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )";
 
 if ($conn->query($sql) !== TRUE) {
     echo "Error creando tabla: " . $conn->error;
+}
+
+// Intentar añadir la columna 'usuario' si la tabla ya existía sin ella
+try {
+    $conn->query("ALTER TABLE usuarios ADD COLUMN usuario VARCHAR(50) NOT NULL UNIQUE AFTER apellido");
+} catch (Exception $e) {
+    // Ignorar error si la columna ya existe
+}
+
+// Intentar añadir la columna 'imagen' si la tabla ya existía sin ella
+try {
+    $conn->query("ALTER TABLE usuarios ADD COLUMN imagen VARCHAR(255) DEFAULT NULL AFTER password");
+} catch (Exception $e) {
+    // Ignorar error si la columna ya existe
 }
 
 // Verificar si existe el usuario admin por defecto
@@ -49,7 +64,7 @@ if ($result->num_rows == 0) {
     // Crear usuario admin por defecto
     $password_admin = password_hash("123456", PASSWORD_DEFAULT);
     $sql_admin = "INSERT INTO usuarios (nombre, apellido, usuario, email, password, rol)
-    VALUES ('Admin', 'Sistema', '$usuario_admin', '$email_admin', '$password_admin', 'Admin')";
+    VALUES ('Carlos', 'Admin', '$usuario_admin', '$email_admin', '$password_admin', 'Admin')";
 
     if ($conn->query($sql_admin) !== TRUE) {
         echo "Error creando usuario admin: " . $conn->error;

@@ -108,7 +108,7 @@
                         <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
                         <span class="text-sm font-medium">Configuración</span>
                     </a>
-                    <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-red-50 hover:text-red-600 transition-colors group" href="#">
+                    <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-red-50 hover:text-red-600 transition-colors group" href="../../auth/cerrar_sesion.php">
                         <span class="material-symbols-outlined group-hover:text-red-600 transition-colors">logout</span>
                         <span class="text-sm font-medium">Cerrar Sesión</span>
                     </a>
