@@ -67,6 +67,25 @@ if (isset($_POST['update_profile'])) {
     }
 }
 
+if (isset($_POST['update_username'])) {
+    $new_username = $_POST['new_username'];
+    
+    // Check if username exists
+    $check_user = mysqli_query($conn, "SELECT * FROM usuarios WHERE usuario = '$new_username' AND id != '$id_usuario'");
+    if (mysqli_num_rows($check_user) > 0) {
+        echo '<script>alert("El nombre de usuario ya está en uso."); window.location = "configuracion.php";</script>';
+        exit;
+    }
+
+    $sql_update = "UPDATE usuarios SET usuario = '$new_username' WHERE id = '$id_usuario'";
+    if (mysqli_query($conn, $sql_update)) {
+        $_SESSION['usuario'] = $new_username;
+        echo '<script>alert("Nombre de usuario actualizado."); window.location = "configuracion.php";</script>';
+    } else {
+        echo '<script>alert("Error al actualizar usuario."); window.location = "configuracion.php";</script>';
+    }
+}
+
 if (isset($_POST['update_password'])) {
     $current_pass = $_POST['current_password'];
     $new_pass = $_POST['new_password'];

@@ -2,8 +2,11 @@
 session_start();
 include '../../auth/conexion_be.php';
 
-// Obtener todas las PQR con información del usuario
-$sql = "SELECT pqr.*, usuarios.nombre, usuarios.apellido, usuarios.imagen, usuarios.email 
+// Obtener todas las PQR con información del usuario y la última respuesta
+$sql = "SELECT pqr.*, usuarios.nombre, usuarios.apellido, usuarios.imagen, usuarios.email,
+        (SELECT mensaje FROM respuestas_pqr WHERE pqr_id = pqr.id ORDER BY id DESC LIMIT 1) as respuesta_mensaje,
+        (SELECT archivo FROM respuestas_pqr WHERE pqr_id = pqr.id ORDER BY id DESC LIMIT 1) as respuesta_archivo,
+        (SELECT fecha_respuesta FROM respuestas_pqr WHERE pqr_id = pqr.id ORDER BY id DESC LIMIT 1) as respuesta_fecha
         FROM pqr 
         JOIN usuarios ON pqr.usuario_id = usuarios.id 
         ORDER BY pqr.fecha_creacion DESC";
@@ -27,7 +30,7 @@ $resueltas_res = mysqli_query($conn, $resueltas_sql);
 $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
 ?>
 <!DOCTYPE html>
-<html class="light" lang="es">
+<html class="dark" lang="es">
 
 <head>
     <meta charset="utf-8" />
@@ -140,10 +143,10 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
             </div>
             <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800">
                 <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
-                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" data-alt="Admin profile picture showing a professional headshot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM");'></div>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['nombre'] . ' ' . $_SESSION['apellido']) . '&background=random'; ?>");'></div>
                     <div class="flex flex-col overflow-hidden">
-                        <span class="text-sm font-bold truncate dark:text-white">Carlos Admin</span>
-                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate">admin@santamarta.com</span>
+                        <span class="text-sm font-bold truncate dark:text-white"><?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
+                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo $_SESSION['email']; ?></span>
                     </div>
                 </div>
             </div>
@@ -157,15 +160,25 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Gestión de PQR</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
-                    <div class="hidden md:flex max-w-md w-full relative">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">search</span>
-                        <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white placeholder:text-text-secondary" placeholder="Buscar por ticket, usuario o asunto..." type="text" />
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button class="relative size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
+                    <div class="flex items-center gap-2 relative">
+                        <button id="notification-btn" class="relative size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors" onclick="toggleNotifications()">
                             <span class="material-symbols-outlined">notifications</span>
-                            <span class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border border-white dark:border-gray-900"></span>
+                            <span id="notification-badge" class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border border-white dark:border-gray-900 hidden"></span>
                         </button>
+                        
+                        <!-- Dropdown de Notificaciones -->
+                        <div id="notification-dropdown" class="absolute top-12 right-0 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-[#f0f3f4] dark:border-gray-700 hidden z-50 overflow-hidden">
+                            <div class="p-3 border-b border-[#f0f3f4] dark:border-gray-700 flex justify-between items-center">
+                                <h3 class="font-bold text-sm text-text-main dark:text-white">Notificaciones</h3>
+                                <span class="text-xs text-primary font-medium cursor-pointer hover:underline" onclick="markAllRead()">Marcar leídas</span>
+                            </div>
+                            <div id="notification-list" class="max-h-[300px] overflow-y-auto">
+                                <!-- Items insertados vía JS -->
+                            </div>
+                            <div class="p-2 border-t border-[#f0f3f4] dark:border-gray-700 text-center">
+                                <a href="#" class="text-xs text-text-secondary hover:text-primary transition-colors">Ver todas las notificaciones</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -175,15 +188,19 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
                         <div class="p-4 border-b border-[#f0f3f4] dark:border-gray-800">
                             <div class="flex items-center justify-between mb-4">
                                 <h2 class="text-lg font-bold text-text-main dark:text-white">Bandeja de Entrada</h2>
-                                <button class="text-primary hover:text-primary-hover p-1 rounded-md hover:bg-primary/10">
-                                    <span class="material-symbols-outlined">refresh</span>
+                                <button onclick="location.reload()" class="bg-primary hover:bg-primary-hover text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-colors shadow-sm flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">refresh</span>
+                                    Refrescar
                                 </button>
                             </div>
+                            
+                            <!-- Cambiar estado a eliminado -->
+
                             <div class="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
-                                <button class="px-3 py-1.5 rounded-full text-xs font-semibold bg-primary text-white whitespace-nowrap">Todas (<?php echo $total_pqr; ?>)</button>
-                                <button class="px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 whitespace-nowrap">Nuevas (<?php echo $nuevas_pqr; ?>)</button>
-                                <button class="px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 whitespace-nowrap">En Progreso (<?php echo $progreso_pqr; ?>)</button>
-                                <button class="px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 whitespace-nowrap">Resueltas (<?php echo $resueltas_pqr; ?>)</button>
+                                <button onclick="filterPQR('all', this)" class="filter-tab px-3 py-1.5 rounded-full text-xs font-semibold bg-primary text-white whitespace-nowrap transition-colors">Todas (<?php echo $total_pqr; ?>)</button>
+                                <button onclick="filterPQR('Pendiente', this)" class="filter-tab px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 whitespace-nowrap transition-colors">Nuevas (<?php echo $nuevas_pqr; ?>)</button>
+                                <button onclick="filterPQR('En Progreso', this)" class="filter-tab px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 whitespace-nowrap transition-colors">En Progreso (<?php echo $progreso_pqr; ?>)</button>
+                                <button onclick="filterPQR('Resuelto', this)" class="filter-tab px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 whitespace-nowrap transition-colors">Resueltas (<?php echo $resueltas_pqr; ?>)</button>
                             </div>
                             <div class="relative">
                                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-sm">filter_list</span>
@@ -199,7 +216,9 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
                             <?php
                             if (mysqli_num_rows($result) > 0) {
                                 while($row = mysqli_fetch_assoc($result)) {
-                                    $imagen_usuario = !empty($row['imagen']) ? '../../' . $row['imagen'] : 'https://ui-avatars.com/api/?name=' . urlencode($row['nombre'] . ' ' . $row['apellido']) . '&background=random';
+                                    $imagen_usuario = !empty($row['imagen']) 
+                                        ? (strpos($row['imagen'], 'assets/') === 0 ? '../../' . $row['imagen'] : '../../assets/img/usuarios/' . $row['imagen'])
+                                        : 'https://ui-avatars.com/api/?name=' . urlencode($row['nombre'] . ' ' . $row['apellido']) . '&background=random';
                                     $estado_color = '';
                                     $estado_dot = '';
                                     
@@ -234,11 +253,12 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
                                     }
 
                                     echo '
-                                    <div class="p-4 cursor-pointer border-l-4 transition-colors ' . $bg_class . '" onclick="verDetallePQR(' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . ')">
+                                    <div class="pqr-item p-4 cursor-pointer border-l-4 transition-colors ' . $bg_class . '" data-status="' . $row['estado'] . '" onclick="verDetallePQR(' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . ')">
                                         <div class="flex justify-between items-start mb-1">
                                             <div class="flex items-center gap-2">
                                                 <span class="w-2 h-2 rounded-full ' . $estado_dot . '"></span>
                                                 <span class="text-xs font-bold ' . $estado_color . ' uppercase">PQR #' . $row['id'] . '</span>
+                                                <span class="text-[10px] font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-1.5 py-0.5 rounded border border-gray-200 dark:border-gray-600 ml-1">' . htmlspecialchars($row['tipo'] ?? 'Petición') . '</span>
                                             </div>
                                             <span class="text-xs text-text-secondary">' . $tiempo . '</span>
                                         </div>
@@ -258,37 +278,21 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
                         </div>
                     </div>
                     <div class="flex-1 flex flex-col bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm overflow-hidden h-full">
-                        <div class="p-6 border-b border-[#f0f3f4] dark:border-gray-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                            <div>
-                                <div class="flex items-center gap-3 mb-1">
-                                    <h2 class="text-xl font-bold text-text-main dark:text-white">Queja #2023</h2>
-                                    <span class="bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 text-xs px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Nueva</span>
-                                </div>
-                                <p class="text-sm text-text-secondary">Creado el 20 de Marzo, 2024 a las 10:30 AM</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-text-secondary bg-background-light hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                    <span class="material-symbols-outlined text-lg">history</span>
-                                    Historial
-                                </button>
-                                <button class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors shadow-sm">
-                                    <span class="material-symbols-outlined text-lg">check_circle</span>
-                                    Marcar Resuelto
-                                </button>
-                            </div>
-                        </div>
-                        <div class="flex-1 overflow-y-auto p-6 space-y-6" id="detalle-pqr-container">
-                            <div class="flex items-center justify-center h-full text-text-secondary">
-                                <p>Selecciona una PQR para ver los detalles.</p>
+                        <!-- Header estático eliminado -->
+                        <div class="flex-1 overflow-y-auto p-6 space-y-6 flex items-center justify-center" id="detalle-pqr-placeholder">
+                            <div class="text-center text-text-secondary">
+                                <span class="material-symbols-outlined text-4xl mb-2 opacity-50">inbox</span>
+                                <p>Selecciona una PQR para ver la conversación completa.</p>
                             </div>
                         </div>
                         
-                        <!-- Historial del Usuario -->
-                        <div class="px-6 py-4 border-t border-[#f0f3f4] dark:border-gray-800 bg-background-light/30 dark:bg-gray-900/20 hidden" id="historial-container">
-                            <h5 class="text-sm font-bold text-text-main dark:text-white mb-3">Historial de solicitudes de este usuario</h5>
-                            <div class="space-y-2 max-h-40 overflow-y-auto pr-2" id="historial-list">
-                                <!-- Se llena dinámicamente -->
-                            </div>
+                        <!-- Conversación -->
+                        <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-white dark:bg-gray-900" id="conversacion-container" style="display: none;">
+                            <!-- El contenido inicial de la PQR se moverá aquí dinámicamente -->
+                            <div id="mensaje-inicial-container"></div>
+                            
+                            <!-- Las respuestas se cargarán aquí -->
+                            <div id="respuestas-list" class="space-y-6 pt-6 border-t border-[#f0f3f4] dark:border-gray-800"></div>
                         </div>
 
                         <div class="p-6 border-t border-[#f0f3f4] dark:border-gray-800 bg-background-light/50 dark:bg-gray-900/30 hidden" id="respuesta-pqr-container">
@@ -332,11 +336,167 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
     </div>
 
     <script>
+        let currentPqrId = null;
+
+        let lastNotificationCount = 0;
+        let currentNotifications = [];
+
+        function requestNotificationPermission() {
+            if ("Notification" in window && Notification.permission !== "granted") {
+                Notification.requestPermission();
+            }
+        }
+
+        function checkNotifications() {
+            fetch('check_notifications.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const badge = document.getElementById('notification-badge');
+                        const list = document.getElementById('notification-list');
+                        
+                        // Actualizar badge
+                        if (data.count > 0) {
+                            badge.classList.remove('hidden');
+                            badge.textContent = ''; 
+                        } else {
+                            badge.classList.add('hidden');
+                        }
+                        
+                        // Alerta y Notificación del sistema
+                        if (data.count > lastNotificationCount) {
+                            // Reproducir sonido si es posible
+                            try {
+                                const audio = new Audio('../../assets/sounds/notification.mp3');
+                                audio.play().catch(e => console.log('Audio autoplay blocked'));
+                            } catch (e) {}
+
+                            // Mostrar notificación del navegador
+                            if ("Notification" in window && Notification.permission === "granted") {
+                                const newPqr = data.notifications[0];
+                                if (newPqr) {
+                                    let imagenUsuario = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(newPqr.nombre + ' ' + newPqr.apellido) + '&background=random';
+                                    if (newPqr.imagen) {
+                                        imagenUsuario = newPqr.imagen.startsWith('assets/') ? '../../' + newPqr.imagen : '../../assets/img/usuarios/' + newPqr.imagen;
+                                    }
+                                    
+                                    // Para notificaciones nativas, la imagen debe ser una URL absoluta o relativa válida accesible
+                                    // Nota: Las notificaciones del sistema a veces no muestran imágenes grandes dependiendo del OS
+                                    new Notification("Nueva PQR Recibida", {
+                                        body: `${newPqr.nombre} ${newPqr.apellido}: ${newPqr.asunto}`,
+                                        icon: imagenUsuario, // Intentar mostrar la foto del usuario en la notificación
+                                        image: imagenUsuario // Algunos navegadores soportan esto para imagen grande
+                                    });
+                                }
+                            }
+                        }
+                        lastNotificationCount = data.count;
+
+                        // Guardar notificaciones actuales
+                        currentNotifications = data.notifications;
+
+                        // Actualizar lista
+                        if (data.notifications.length > 0) {
+                            let html = '';
+                            data.notifications.forEach((notif, index) => {
+                                let imagenUsuario = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(notif.nombre + ' ' + notif.apellido) + '&background=random';
+                                if (notif.imagen) {
+                                    imagenUsuario = notif.imagen.startsWith('assets/') ? '../../' + notif.imagen : '../../assets/img/usuarios/' + notif.imagen;
+                                }
+                                const time = new Date(notif.fecha_creacion).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'});
+                                
+                                html += `
+                                    <div class="p-3 border-b border-[#f0f3f4] dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer transition-colors" onclick="abrirNotificacion(${index})">
+                                        <div class="flex gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-cover bg-center shrink-0" style="background-image: url('${imagenUsuario}');"></div>
+                                            <div class="flex-1 overflow-hidden">
+                                                <div class="flex justify-between items-start">
+                                                    <p class="text-sm font-bold text-text-main dark:text-white truncate">${notif.nombre} ${notif.apellido}</p>
+                                                    <span class="text-[10px] text-text-secondary">${time}</span>
+                                                </div>
+                                                <p class="text-xs text-primary font-medium mb-0.5">Nueva PQR #${notif.id}</p>
+                                                <p class="text-xs text-text-secondary truncate">${notif.asunto}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            list.innerHTML = html;
+                        } else {
+                            list.innerHTML = '<div class="p-4 text-center text-xs text-text-secondary">No tienes nuevas notificaciones</div>';
+                        }
+                    }
+                })
+                .catch(err => console.error('Error checking notifications:', err));
+        }
+
+        function abrirNotificacion(index) {
+            const notif = currentNotifications[index];
+            if (notif) {
+                verDetallePQR(notif);
+                toggleNotifications();
+            }
+        }
+
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notification-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        
+        function markAllRead() {
+            document.getElementById('notification-badge').classList.add('hidden');
+        }
+
+        // Solicitar permiso al cargar
+        document.addEventListener('DOMContentLoaded', requestNotificationPermission);
+
+        // Iniciar polling
+        setInterval(checkNotifications, 10000); 
+        checkNotifications();
+
+        function filterPQR(status, btn) {
+            // Actualizar estado activo de los botones
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('bg-primary', 'text-white');
+                tab.classList.add('bg-gray-100', 'text-text-secondary', 'hover:bg-gray-200', 'dark:bg-gray-800', 'dark:hover:bg-gray-700');
+            });
+            
+            // Si btn no está definido (carga inicial o llamada externa), buscar el botón correspondiente
+            if (!btn) {
+                // Lógica opcional si se necesitara persistir el filtro
+                return;
+            }
+
+            btn.classList.remove('bg-gray-100', 'text-text-secondary', 'hover:bg-gray-200', 'dark:bg-gray-800', 'dark:hover:bg-gray-700');
+            btn.classList.add('bg-primary', 'text-white');
+
+            // Filtrar items
+            const items = document.querySelectorAll('.pqr-item');
+            let visibleCount = 0;
+            items.forEach(item => {
+                if (status === 'all' || item.dataset.status === status) {
+                    item.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+        
+        // Función cambiarEstadoHeader eliminada
+
         function verDetallePQR(pqr) {
-            const container = document.getElementById('detalle-pqr-container');
+            currentPqrId = pqr.id;
+            const placeholder = document.getElementById('detalle-pqr-placeholder');
+            const conversacionContainer = document.getElementById('conversacion-container');
+            const mensajeInicialContainer = document.getElementById('mensaje-inicial-container');
+            const respuestasList = document.getElementById('respuestas-list');
             const respuestaContainer = document.getElementById('respuesta-pqr-container');
-            const historialContainer = document.getElementById('historial-container');
-            const historialList = document.getElementById('historial-list');
+            
+            // Ocultar placeholder y mostrar conversación
+            placeholder.style.display = 'none';
+            conversacionContainer.style.display = 'block';
+            respuestaContainer.classList.remove('hidden');
             
             // Asignar ID al formulario de respuesta
             document.getElementById('respuesta-pqr-id').value = pqr.id;
@@ -351,7 +511,10 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
             }
 
             // Imagen del usuario
-            const imagenUsuario = pqr.imagen ? '../../' + pqr.imagen : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(pqr.nombre + ' ' + pqr.apellido) + '&background=random';
+            let imagenUsuario = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(pqr.nombre + ' ' + pqr.apellido) + '&background=random';
+            if (pqr.imagen) {
+                imagenUsuario = pqr.imagen.startsWith('assets/') ? '../../' + pqr.imagen : '../../assets/img/usuarios/' + pqr.imagen;
+            }
             
             // Estado y color
             let estadoColor = 'text-red-600 dark:text-red-400';
@@ -368,8 +531,9 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
             const fecha = new Date(pqr.fecha_creacion);
             const fechaFormateada = fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) + ' a las ' + fecha.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 
-            const html = `
-                <div class="bg-background-light dark:bg-gray-900/50 p-4 rounded-lg flex items-center gap-4 border border-[#f0f3f4] dark:border-gray-800">
+            // Renderizar mensaje inicial
+            mensajeInicialContainer.innerHTML = `
+                <div class="bg-background-light dark:bg-gray-800 p-4 rounded-lg flex items-center gap-4 border border-[#f0f3f4] dark:border-gray-700 mb-6">
                     <div class="w-12 h-12 rounded-full bg-cover bg-center shrink-0 border-2 border-white dark:border-gray-700 shadow-sm" style="background-image: url('${imagenUsuario}');"></div>
                     <div class="flex-1">
                         <h4 class="font-bold text-text-main dark:text-white">${pqr.nombre} ${pqr.apellido}</h4>
@@ -378,63 +542,107 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
                     <div class="flex flex-col items-end gap-1">
                         <div class="${estadoBg} ${estadoColor} text-xs px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">${pqr.estado}</div>
                         <span class="text-xs text-text-secondary">ID: #${pqr.id}</span>
+                        <span class="text-[10px] font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-1.5 py-0.5 rounded border border-gray-200 dark:border-gray-600 uppercase tracking-wider mt-1">${pqr.tipo || 'Petición'}</span>
                     </div>
                 </div>
-                <div class="space-y-6">
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 rounded-full bg-cover bg-center shrink-0 mt-1" style="background-image: url('${imagenUsuario}');"></div>
-                        <div class="flex-1 space-y-2">
-                            <div class="flex items-baseline justify-between">
-                                <span class="font-bold text-text-main dark:text-white">${pqr.nombre} ${pqr.apellido}</span>
-                                <span class="text-xs text-text-secondary" title="${fechaFormateada}">${fechaFormateada}</span>
-                            </div>
-                            <div class="bg-background-light dark:bg-gray-800 p-4 rounded-r-xl rounded-bl-xl text-text-main dark:text-gray-200 text-sm leading-relaxed border border-[#f0f3f4] dark:border-gray-700">
-                                <p class="mb-2 font-bold">Asunto: ${pqr.asunto}</p>
-                                <p>${pqr.mensaje}</p>
-                            </div>
+                
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-full bg-cover bg-center shrink-0 mt-1" style="background-image: url('${imagenUsuario}');"></div>
+                    <div class="flex-1 space-y-2">
+                        <div class="flex items-baseline justify-between">
+                            <span class="font-bold text-text-main dark:text-white">${pqr.nombre} ${pqr.apellido}</span>
+                            <span class="text-xs text-text-secondary">${fechaFormateada}</span>
+                        </div>
+                        <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-r-xl rounded-bl-xl text-text-main dark:text-gray-200 text-sm leading-relaxed border border-blue-100 dark:border-blue-800/50">
+                            <p class="mb-2 font-bold text-primary">Asunto: ${pqr.asunto}</p>
+                            <p>${pqr.mensaje}</p>
                         </div>
                     </div>
                 </div>
             `;
             
-            container.innerHTML = html;
-            respuestaContainer.classList.remove('hidden');
-            historialContainer.classList.remove('hidden');
-
-            // Cargar historial
-            fetch(`obtener_historial_pqr.php?usuario_id=${pqr.usuario_id}&current_pqr=${pqr.id}`)
+            // Cargar respuestas
+            respuestasList.innerHTML = '<div class="flex justify-center p-4"><div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div></div>';
+            
+            fetch(`obtener_respuestas_pqr.php?pqr_id=${pqr.id}`)
                 .then(response => response.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        let historyHtml = '';
-                        data.forEach(item => {
-                            let itemColor = 'text-red-500';
-                            if (item.estado === 'En Progreso') itemColor = 'text-yellow-500';
-                            if (item.estado === 'Resuelto') itemColor = 'text-green-500';
-                            
-                            const itemDate = new Date(item.fecha_creacion).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
-                            
-                            historyHtml += `
-                                <div class="flex items-center justify-between p-2 hover:bg-white dark:hover:bg-gray-800 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-gray-100 dark:hover:border-gray-700">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-xs font-bold text-text-secondary">#${item.id}</span>
-                                        <span class="text-xs text-text-main dark:text-gray-300 truncate max-w-[150px]">${item.asunto}</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-[10px] ${itemColor}">${item.estado}</span>
-                                        <span class="text-[10px] text-text-secondary">${itemDate}</span>
-                                    </div>
-                                </div>
-                            `;
-                        });
-                        historialList.innerHTML = historyHtml;
-                    } else {
-                        historialList.innerHTML = '<p class="text-xs text-text-secondary p-2">No hay otras solicitudes de este usuario.</p>';
+                .then(respuestas => {
+                    respuestasList.innerHTML = '';
+                    
+                    if (respuestas.length === 0) {
+                        respuestasList.innerHTML = '<p class="text-center text-xs text-text-secondary py-4 italic">No hay respuestas aún. Sé el primero en responder.</p>';
+                        return;
                     }
+
+                    respuestas.forEach(resp => {
+                        const fechaResp = new Date(resp.fecha_respuesta);
+                        const fechaRespFormateada = fechaResp.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) + ' a las ' + fechaResp.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                        
+                        // Determinar si es respuesta de admin (siempre lo es por ahora en respuestas_pqr, pero preparamos por si acaso)
+                        // Como respuestas_pqr tiene admin_id, asumimos que es el admin actual o cualquier admin
+                        const esAdmin = true; 
+                        
+                        let archivoHtml = '';
+                        if (resp.archivo) {
+                            const nombreArchivo = resp.archivo.split('/').pop();
+                            const extension = nombreArchivo.split('.').pop().toLowerCase();
+                            const esImagen = ['jpg', 'jpeg', 'png', 'gif'].includes(extension);
+                            
+                            if (esImagen) {
+                                archivoHtml = `
+                                    <div class="mt-3">
+                                        <a href="../../${resp.archivo}" target="_blank" class="block max-w-xs rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:opacity-90 transition-opacity">
+                                            <img src="../../${resp.archivo}" alt="Adjunto" class="w-full h-auto object-cover">
+                                        </a>
+                                    </div>
+                                `;
+                            } else {
+                                archivoHtml = `
+                                    <div class="mt-3">
+                                        <a href="../../${resp.archivo}" target="_blank" class="inline-flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group">
+                                            <div class="p-1.5 bg-primary/10 rounded-md group-hover:bg-primary/20 transition-colors">
+                                                <span class="material-symbols-outlined text-primary text-sm">description</span>
+                                            </div>
+                                            <span class="text-sm text-text-main dark:text-gray-300 font-medium">${nombreArchivo}</span>
+                                            <span class="material-symbols-outlined text-text-secondary text-sm">open_in_new</span>
+                                        </a>
+                                    </div>
+                                `;
+                            }
+                        }
+
+                        // Admin avatar (usar el del admin que respondió o uno genérico si no se encuentra)
+                        // Asegurar que usamos la imagen del admin devuelta por el backend
+                        let adminImg = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(resp.nombre || 'Admin') + '&background=13a4ec&color=fff';
+                        if (resp.imagen && resp.imagen.trim() !== '') {
+                            adminImg = resp.imagen.startsWith('assets/') ? '../../' + resp.imagen : '../../assets/img/usuarios/' + resp.imagen;
+                        }
+
+                        const html = `
+                             <div class="flex gap-4 flex-row-reverse">
+                                 <div class="w-10 h-10 rounded-full bg-cover bg-center shrink-0 mt-1 ring-2 ring-primary/20" style="background-image: url('${adminImg}');" title="${resp.nombre} ${resp.apellido}"></div>
+                                 <div class="flex-1 space-y-2 flex flex-col items-end">
+                                     <div class="flex items-baseline justify-between w-full flex-row-reverse">
+                                         <span class="font-bold text-text-main dark:text-white">${resp.nombre} ${resp.apellido} <span class="text-xs font-normal text-primary ml-1">(Admin)</span></span>
+                                         <span class="text-xs text-text-secondary">${fechaRespFormateada}</span>
+                                     </div>
+                                     <div class="bg-white dark:bg-gray-800 p-4 rounded-l-xl rounded-br-xl text-text-main dark:text-gray-200 text-sm leading-relaxed border border-[#f0f3f4] dark:border-gray-700 shadow-sm w-full">
+                                         <p class="whitespace-pre-wrap">${resp.mensaje}</p>
+                                         ${archivoHtml}
+                                     </div>
+                                 </div>
+                             </div>
+                         `;
+                        
+                        respuestasList.insertAdjacentHTML('beforeend', html);
+                    });
+                    
+                    // Scroll al fondo
+                    conversacionContainer.scrollTop = conversacionContainer.scrollHeight;
                 })
                 .catch(err => {
-                    console.error('Error cargando historial:', err);
-                    historialList.innerHTML = '<p class="text-xs text-red-500 p-2">Error al cargar historial.</p>';
+                    console.error('Error cargando respuestas:', err);
+                    respuestasList.innerHTML = '<p class="text-center text-xs text-red-500 py-4">Error al cargar la conversación.</p>';
                 });
         }
     </script>

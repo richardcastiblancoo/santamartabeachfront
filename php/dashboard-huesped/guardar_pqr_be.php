@@ -9,10 +9,11 @@ if (!isset($_SESSION['usuario'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usuario_id = $_SESSION['id'];
+    $tipo = mysqli_real_escape_string($conn, $_POST['tipo']);
     $asunto = mysqli_real_escape_string($conn, $_POST['asunto']);
     $mensaje = mysqli_real_escape_string($conn, $_POST['mensaje']);
 
-    if (empty($asunto) || empty($mensaje)) {
+    if (empty($asunto) || empty($mensaje) || empty($tipo)) {
         echo '
             <script>
                 alert("Por favor, completa todos los campos.");
@@ -22,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-    $query = "INSERT INTO pqr (usuario_id, asunto, mensaje) VALUES ('$usuario_id', '$asunto', '$mensaje')";
+    $query = "INSERT INTO pqr (usuario_id, tipo, asunto, mensaje) VALUES ('$usuario_id', '$tipo', '$asunto', '$mensaje')";
 
     if (mysqli_query($conn, $query)) {
         echo '

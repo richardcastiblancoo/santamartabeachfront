@@ -52,6 +52,20 @@ CREATE TABLE IF NOT EXISTS respuestas_pqr (
     FOREIGN KEY (admin_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );
 
+-- Crear la tabla de Reservas
+CREATE TABLE IF NOT EXISTS reservas (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT(6) UNSIGNED,
+    apartamento_id INT(6) UNSIGNED,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    total DECIMAL(10, 2) NOT NULL,
+    estado VARCHAR(20) DEFAULT 'Pendiente', -- 'Confirmada', 'Pendiente', 'Cancelada', 'Completada'
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (apartamento_id) REFERENCES apartamentos(id) ON DELETE CASCADE
+);
+
 -- NOTA: El usuario administrador por defecto se crea automáticamente 
 -- desde el archivo php/conexion_be.php con la contraseña encriptada correctamente.
 -- Usuario (Login): admin

@@ -118,11 +118,23 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                 <a data-key="nav-reservations" class="text-[#111618] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Mis Reservas</a>
                 <a data-key="nav-favorites" class="text-[#111618] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Favoritos</a>
             </nav>
-            <div class="flex items-center gap-3">
-                <button class="flex items-center justify-center rounded-full size-10 hover:bg-gray-100 dark:hover:bg-gray-800 text-[#111618] dark:text-white transition-colors relative">
+            <div class="flex items-center gap-3 relative">
+                <button id="notification-btn" class="flex items-center justify-center rounded-full size-10 hover:bg-gray-100 dark:hover:bg-gray-800 text-[#111618] dark:text-white transition-colors relative" onclick="toggleNotifications()">
                     <span class="material-symbols-outlined">notifications</span>
-                    <span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-[#1a2c35]"></span>
+                    <span id="notification-badge" class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-[#1a2c35] hidden"></span>
                 </button>
+                
+                <!-- Dropdown de Notificaciones -->
+                <div id="notification-dropdown" class="absolute top-12 right-0 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 hidden z-50 overflow-hidden">
+                    <div class="p-3 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                        <h3 class="font-bold text-sm text-[#111618] dark:text-white">Notificaciones</h3>
+                        <span class="text-xs text-primary font-medium cursor-pointer hover:underline" onclick="markAllRead()">Marcar leídas</span>
+                    </div>
+                    <div id="notification-list" class="max-h-[300px] overflow-y-auto">
+                        <!-- Items insertados vía JS -->
+                    </div>
+                </div>
+
                 <div onclick="openConfigModal()" class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-white dark:border-gray-700 shadow-sm cursor-pointer transition-transform hover:scale-105" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../' . $_SESSION['imagen'] : 'https://avatar.iran.liara.run/public/30'; ?>");'>
                 </div>
                 <a href="../../auth/cerrar_sesion.php" class="flex items-center justify-center rounded-full size-10 hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-500 hover:text-red-600 transition-colors" title="Cerrar Sesión">
@@ -298,7 +310,10 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                                 ?>
                                 <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer" onclick="verDetallePQR(<?php echo $pqr['id']; ?>)">
                                     <div class="flex justify-between items-start mb-1">
-                                        <span class="text-xs font-bold text-gray-500">#<?php echo $pqr['id']; ?></span>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-xs font-bold text-gray-500">#<?php echo $pqr['id']; ?></span>
+                                            <span class="text-[10px] font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-1.5 py-0.5 rounded border border-gray-200 dark:border-gray-600"><?php echo htmlspecialchars($pqr['tipo'] ?? 'Petición'); ?></span>
+                                        </div>
                                         <span class="<?php echo $estadoClass; ?> text-[10px] font-bold px-2 py-0.5 rounded-full uppercase"><?php echo $pqr['estado']; ?></span>
                                     </div>
                                     <h4 class="text-sm font-bold text-[#111618] dark:text-white mb-1 line-clamp-1"><?php echo htmlspecialchars($pqr['asunto']); ?></h4>
@@ -365,6 +380,14 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                         </a>
                     </div>
                     <div class="p-8 space-y-6">
+                        <div>
+                            <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Tipo de Solicitud</label>
+                            <select name="tipo" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" required>
+                                <option value="Petición">Petición</option>
+                                <option value="Queja">Queja</option>
+                                <option value="Reclamo">Reclamo</option>
+                            </select>
+                        </div>
                         <div>
                             <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Asunto</label>
                             <input name="asunto" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-gray-400" placeholder="Ej: Problema con el aire acondicionado" type="text" required />
@@ -493,7 +516,10 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                         <div class="flex flex-col gap-4">
                             <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700">
                                 <div class="flex justify-between items-start mb-2">
-                                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Tu Solicitud #${pqr.id}</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Solicitud #${pqr.id}</span>
+                                        <span class="text-[10px] font-medium bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600 uppercase tracking-wider">${pqr.tipo || 'Petición'}</span>
+                                    </div>
                                     <span class="${estadoColor} text-xs px-2 py-0.5 rounded-full font-bold uppercase">${pqr.estado}</span>
                                 </div>
                                 <h4 class="text-lg font-bold text-[#111618] dark:text-white mb-2">${pqr.asunto}</h4>
@@ -506,7 +532,10 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                         html += `<div class="relative pl-4 border-l-2 border-gray-200 dark:border-gray-700 space-y-6 mt-4">`;
                         
                         respuestas.forEach(res => {
-                            const adminImg = res.imagen ? '../../' + res.imagen : `https://ui-avatars.com/api/?name=${encodeURIComponent(res.nombre + ' ' + res.apellido)}&background=random`;
+                            let adminImg = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(res.nombre + ' ' + res.apellido) + '&background=13a4ec&color=fff';
+                            if (res.imagen && res.imagen.trim() !== '') {
+                                adminImg = res.imagen.startsWith('assets/') ? '../../' + res.imagen : '../../assets/img/usuarios/' + res.imagen;
+                            }
                             
                             html += `
                                 <div class="relative">
@@ -658,6 +687,121 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        // Notificaciones y Alertas
+        let lastNotificationCountHuesped = 0;
+        let currentNotificationsHuesped = [];
+
+        function requestNotificationPermission() {
+            if ("Notification" in window && Notification.permission !== "granted") {
+                Notification.requestPermission();
+            }
+        }
+
+        function checkNotificationsHuesped() {
+            fetch('check_notifications_huesped.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const badge = document.getElementById('notification-badge');
+                        const list = document.getElementById('notification-list');
+                        
+                        // Actualizar badge
+                        if (data.count > 0) {
+                            badge.classList.remove('hidden');
+                        } else {
+                            badge.classList.add('hidden');
+                        }
+                        
+                        // Alerta y Notificación del sistema
+                        // Nota: Para mejorar la experiencia, en un sistema real deberíamos rastrear IDs de notificaciones ya vistas
+                        // Aquí usamos un contador simple que funciona si llegan nuevas y el total aumenta
+                        if (data.count > lastNotificationCountHuesped) {
+                            // Reproducir sonido
+                            try {
+                                const audio = new Audio('../../assets/sounds/notification.mp3');
+                                audio.play().catch(e => {});
+                            } catch (e) {}
+
+                            // Mostrar notificación nativa
+                            if ("Notification" in window && Notification.permission === "granted") {
+                                const newResp = data.notifications[0];
+                                if (newResp) {
+                                    let adminImg = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(newResp.nombre + ' ' + newResp.apellido) + '&background=13a4ec&color=fff';
+                                    if (newResp.imagen && newResp.imagen.trim() !== '') {
+                                        adminImg = newResp.imagen.startsWith('assets/') ? '../../' + newResp.imagen : '../../assets/img/usuarios/' + newResp.imagen;
+                                    }
+
+                                    new Notification("Nueva respuesta de soporte", {
+                                        body: `${newResp.nombre} ha respondido a tu PQR: ${newResp.asunto}`,
+                                        icon: adminImg,
+                                        image: adminImg
+                                    });
+                                }
+                            }
+                        }
+                        lastNotificationCountHuesped = data.count;
+                        currentNotificationsHuesped = data.notifications;
+
+                        // Actualizar lista dropdown
+                        if (data.notifications.length > 0) {
+                            let html = '';
+                            data.notifications.forEach((notif, index) => {
+                                let adminImg = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(notif.nombre + ' ' + notif.apellido) + '&background=13a4ec&color=fff';
+                                if (notif.imagen && notif.imagen.trim() !== '') {
+                                    adminImg = notif.imagen.startsWith('assets/') ? '../../' + notif.imagen : '../../assets/img/usuarios/' + notif.imagen;
+                                }
+                                
+                                const time = new Date(notif.fecha_respuesta).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'});
+                                
+                                html += `
+                                    <div class="p-3 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer transition-colors" onclick="abrirNotificacionHuesped(${index})">
+                                        <div class="flex gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-cover bg-center shrink-0" style="background-image: url('${adminImg}');"></div>
+                                            <div class="flex-1 overflow-hidden">
+                                                <div class="flex justify-between items-start">
+                                                    <p class="text-sm font-bold text-[#111618] dark:text-white truncate">${notif.nombre} ${notif.apellido}</p>
+                                                    <span class="text-[10px] text-gray-400">${time}</span>
+                                                </div>
+                                                <p class="text-xs text-primary font-medium mb-0.5">Respuesta a PQR #${notif.pqr_id}</p>
+                                                <p class="text-xs text-gray-500 truncate">${notif.mensaje}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            list.innerHTML = html;
+                        } else {
+                            list.innerHTML = '<div class="p-4 text-center text-xs text-gray-500">No tienes notificaciones nuevas</div>';
+                        }
+                    }
+                })
+                .catch(err => console.error('Error notifications:', err));
+        }
+
+        function abrirNotificacionHuesped(index) {
+            const notif = currentNotificationsHuesped[index];
+            if (notif) {
+                verDetallePQR(notif.pqr_id);
+                toggleNotifications();
+            }
+        }
+
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notification-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        
+        function markAllRead() {
+            document.getElementById('notification-badge').classList.add('hidden');
+        }
+
+        // Iniciar al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            requestNotificationPermission();
+            checkNotificationsHuesped();
+            setInterval(checkNotificationsHuesped, 10000); // Polling cada 10s
+        });
     </script>
 </body>
 

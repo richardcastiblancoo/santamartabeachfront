@@ -135,18 +135,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Ajustes de Cuenta</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
-                    <div class="hidden md:flex max-w-md w-full relative">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">search</span>
-                        <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white placeholder:text-text-secondary" placeholder="Buscar en perfil..." type="text" />
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button class="relative size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
-                            <span class="material-symbols-outlined">notifications</span>
-                        </button>
-                        <button class="size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
-                            <span class="material-symbols-outlined">help</span>
-                        </button>
-                    </div>
+                    
                 </div>
             </header>
             <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth bg-background-light dark:bg-background-dark">
@@ -282,6 +271,28 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                         <div class="space-y-6 hidden" id="security-settings">
                             <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm p-6">
                                 <div class="mb-6 pb-4 border-b border-[#f0f3f4] dark:border-gray-800">
+                                    <h2 class="text-xl font-bold text-text-main dark:text-white">Cambio de Usuario</h2>
+                                    <p class="text-sm text-text-secondary mt-1">Actualiza tu nombre de usuario.</p>
+                                </div>
+                                <form action="actualizar_perfil_be.php" method="POST" class="space-y-4 max-w-lg">
+                                    <input type="hidden" name="update_username" value="1">
+                                    <div class="space-y-2">
+                                        <label class="block text-sm font-medium text-text-main dark:text-white">Usuario</label>
+                                        <div class="relative">
+                                            <input id="new_username" name="new_username" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-4 pr-10 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Nombre de usuario" type="password" required value="<?php echo $_SESSION['usuario']; ?>" />
+                                            <button type="button" onclick="togglePassword('new_username')" class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-main">
+                                                <span class="material-symbols-outlined text-lg">visibility</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="pt-2">
+                                        <button class="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg font-semibold transition-colors" type="submit">Actualizar Usuario</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm p-6">
+                                <div class="mb-6 pb-4 border-b border-[#f0f3f4] dark:border-gray-800">
                                     <h2 class="text-xl font-bold text-text-main dark:text-white">Cambio de Contraseña</h2>
                                     <p class="text-sm text-text-secondary mt-1">Asegúrate de usar una contraseña segura para proteger tu cuenta.</p>
                                 </div>
@@ -306,7 +317,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                             </div>
 
 
-                           
+
 
                         </div>
                     </div>
@@ -345,6 +356,20 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                 const span = activeBtn.querySelector('span:last-child');
                 if (span) span.classList.remove('font-medium');
                 if (span) span.classList.add('font-semibold');
+            }
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.nextElementSibling;
+            const icon = button.querySelector('span');
+            
+            if (input.type === "password") {
+                input.type = "text";
+                icon.textContent = "visibility_off";
+            } else {
+                input.type = "password";
+                icon.textContent = "visibility";
             }
         }
     </script>

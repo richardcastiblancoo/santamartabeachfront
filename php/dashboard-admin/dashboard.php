@@ -4,9 +4,26 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
     echo '<script>alert("Acceso denegado. Por favor, inicia sesión como administrador."); window.location = "../../auth/login.php";</script>';
     die();
 }
+
+include '../../auth/conexion_be.php';
+
+// Consultas para las tarjetas y secciones
+$total_reservas = $conn->query("SELECT COUNT(*) as count FROM reservas")->fetch_assoc()['count'];
+$total_pqr = $conn->query("SELECT COUNT(*) as count FROM pqr")->fetch_assoc()['count'];
+// $total_apartamentos = $conn->query("SELECT COUNT(*) as count FROM apartamentos")->fetch_assoc()['count']; // Si se necesitara el total
+
+// Obtener apartamentos
+$apartamentos_res = $conn->query("SELECT * FROM apartamentos LIMIT 6");
+
+// Obtener reservas recientes
+$reservas_res = $conn->query("SELECT r.*, u.nombre, u.apellido, u.email, a.titulo, a.imagen_principal FROM reservas r JOIN usuarios u ON r.usuario_id = u.id JOIN apartamentos a ON r.apartamento_id = a.id ORDER BY r.fecha_creacion DESC LIMIT 10");
+
+// Obtener PQR recientes
+$pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen FROM pqr p JOIN usuarios u ON p.usuario_id = u.id ORDER BY p.fecha_creacion DESC LIMIT 5");
+
 ?>
 <!DOCTYPE html>
-<html class="light" lang="es">
+<html class="dark" lang="es">
 
 <head>
     <meta charset="utf-8" />
@@ -141,10 +158,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Panel de Control</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
-                    <div class="hidden md:flex max-w-md w-full relative">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">search</span>
-                        <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white placeholder:text-text-secondary" placeholder="Buscar..." type="text" />
-                    </div>
+
                     <div class="flex items-center gap-2">
                         <button class="relative size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
                             <span class="material-symbols-outlined">notifications</span>
@@ -168,14 +182,12 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                                 <div class="size-10 bg-primary/10 rounded-lg flex items-center justify-center">
                                     <span class="material-symbols-outlined text-primary text-xl">calendar_month</span>
                                 </div>
-                                <span class="text-green-500 text-xs font-bold flex items-center gap-0.5">
-                                    <span class="material-symbols-outlined text-xs">trending_up</span> +12%
-                                </span>
+
                             </div>
                             <div>
                                 <h3 class="text-text-secondary dark:text-gray-400 text-sm font-medium">Total de Reservas</h3>
                                 <div class="flex items-baseline gap-2 mt-1">
-                                    <span class="text-3xl font-bold text-text-main dark:text-white">1,284</span>
+                                    <span class="text-3xl font-bold text-text-main dark:text-white"><?php echo $total_reservas; ?></span>
                                 </div>
                             </div>
                             <a class="mt-4 text-xs font-bold text-primary hover:underline flex items-center gap-1 group/link" href="#bookings-section">
@@ -188,12 +200,12 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                                 <div class="size-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
                                     <span class="material-symbols-outlined text-orange-600 text-xl">contact_support</span>
                                 </div>
-                                <span class="bg-red-100 text-red-600 text-[10px] px-1.5 py-0.5 rounded-full font-bold">8 Urgentes</span>
+
                             </div>
                             <div>
                                 <h3 class="text-text-secondary dark:text-gray-400 text-sm font-medium">Total de PQR</h3>
                                 <div class="flex items-baseline gap-2 mt-1">
-                                    <span class="text-3xl font-bold text-text-main dark:text-white">42</span>
+                                    <span class="text-3xl font-bold text-text-main dark:text-white"><?php echo $total_pqr; ?></span>
                                 </div>
                             </div>
                             <a class="mt-4 text-xs font-bold text-primary hover:underline flex items-center gap-1 group/link" href="#pqr-section">
@@ -217,13 +229,14 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <?php while ($apt = $apartamentos_res->fetch_assoc()): ?>
                         <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm flex items-center gap-4 hover:border-primary/30 transition-colors">
-                            <div class="w-20 h-20 rounded-lg bg-cover bg-center shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB2nUO0stMlK7B-JmGLBQUNZkVnyyJqNVZEiQEkzpBC7GwYEoNfZzHvpy7SP2904tIst4IJX2LVed9GhcZq4AczfeG9qtATUKxP9RiUKJdIzlFxsuWhkc_6V7id5p4oM-8MQPKqoH5PrVm0IijfYQDGsGvOSF3Gbwmt6Iu9KFZEc4GyPVBZzzGAvRP3ZwEKxCq63y5zN9T4xt-MWJKiUVsjHrJtzKlKLil4eNF7w4bwtipLBq14ierFj2TDQzSjmjSFGv9tZaB6Ekg");'></div>
+                            <div class="w-20 h-20 rounded-lg bg-cover bg-center shrink-0" style='background-image: url("<?php echo !empty($apt['imagen_principal']) ? $apt['imagen_principal'] : 'https://placehold.co/400'; ?>");'></div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex justify-between items-start">
                                     <div class="truncate">
-                                        <h4 class="font-bold text-text-main dark:text-white truncate">Suite Panorámica 201</h4>
-                                        <p class="text-[11px] text-text-secondary">Rodadero • 2 Hab • 4 Pax</p>
+                                        <h4 class="font-bold text-text-main dark:text-white truncate"><?php echo $apt['titulo']; ?></h4>
+                                        <p class="text-[11px] text-text-secondary"><?php echo $apt['ubicacion']; ?> • <?php echo $apt['habitaciones']; ?> Hab • <?php echo $apt['capacidad']; ?> Pax</p>
                                     </div>
                                     <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Activo</span>
                                 </div>
@@ -233,38 +246,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm flex items-center gap-4 hover:border-primary/30 transition-colors">
-                            <div class="w-20 h-20 rounded-lg bg-cover bg-center shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBH5a1VYfABPsvW73_GQfTc-eXT7aTVSJprnKRP3RM0TW3qIS2MklHlU9zyV-Dynlj8jRurZ4SRX6Ui5HFmrMN6j5uYfs1ZwyRTNjsDnAG2k9wLSSf-_Yj9YWZf2W3Z-k7a_bJD_uIc16wPYckC-cdoRg3-B0M_6OkA87D-5lumZlqOMmpC06h3nyTr0vTZRMHqgTAdTmSBO3J_mLJaGWveCLqK2bHFb8PDejNRkCLeRDuOGqTAyqf5WOeEsf0RI8r_KI-P53I4sKE");'></div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex justify-between items-start">
-                                    <div class="truncate">
-                                        <h4 class="font-bold text-text-main dark:text-white truncate">Penthouse Vista Mar</h4>
-                                        <p class="text-[11px] text-text-secondary">Pozos Colorados • 3 Hab • 8 Pax</p>
-                                    </div>
-                                    <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Activo</span>
-                                </div>
-                                <div class="mt-2 flex gap-3">
-                                    <button class="text-[11px] font-medium text-text-secondary hover:text-primary flex items-center gap-1"><span class="material-symbols-outlined text-xs">edit</span> Editar</button>
-                                    <button class="text-[11px] font-medium text-text-secondary hover:text-primary flex items-center gap-1"><span class="material-symbols-outlined text-xs">visibility</span> Ver</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm flex items-center gap-4 hover:border-primary/30 transition-colors">
-                            <div class="w-20 h-20 rounded-lg bg-cover bg-center shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB2nUO0stMlK7B-JmGLBQUNZkVnyyJqNVZEiQEkzpBC7GwYEoNfZzHvpy7SP2904tIst4IJX2LVed9GhcZq4AczfeG9qtATUKxP9RiUKJdIzlFxsuWhkc_6V7id5p4oM-8MQPKqoH5PrVm0IijfYQDGsGvOSF3Gbwmt6Iu9KFZEc4GyPVBZzzGAvRP3ZwEKxCq63y5zN9T4xt-MWJKiUVsjHrJtzKlKLil4eNF7w4bwtipLBq14ierFj2TDQzSjmjSFGv9tZaB6Ekg");'></div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex justify-between items-start">
-                                    <div class="truncate">
-                                        <h4 class="font-bold text-text-main dark:text-white truncate">Estudio Moderno 4B</h4>
-                                        <p class="text-[11px] text-text-secondary">Bello Horizonte • 1 Hab • 2 Pax</p>
-                                    </div>
-                                    <span class="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Mantenimiento</span>
-                                </div>
-                                <div class="mt-2 flex gap-3">
-                                    <button class="text-[11px] font-medium text-text-secondary hover:text-primary flex items-center gap-1"><span class="material-symbols-outlined text-xs">edit</span> Editar</button>
-                                    <button class="text-[11px] font-medium text-text-secondary hover:text-primary flex items-center gap-1"><span class="material-symbols-outlined text-xs">visibility</span> Ver</button>
-                                </div>
-                            </div>
-                        </div>
+                        <?php endwhile; ?>
                     </div>
                 </section>
                 <section class="pt-8 border-t border-[#f0f3f4] dark:border-gray-800" id="bookings-section">
@@ -295,27 +277,52 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-[#f0f3f4] dark:divide-gray-800 text-sm">
+                                    <?php if ($reservas_res->num_rows > 0): ?>
+                                    <?php while ($reserva = $reservas_res->fetch_assoc()): ?>
                                     <tr class="group hover:bg-background-light dark:hover:bg-gray-800 transition-colors">
                                         <td class="px-6 py-3">
                                             <div class="flex items-center gap-2">
-                                                <div class="w-8 h-8 rounded bg-cover bg-center shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB2nUO0stMlK7B-JmGLBQUNZkVnyyJqNVZEiQEkzpBC7GwYEoNfZzHvpy7SP2904tIst4IJX2LVed9GhcZq4AczfeG9qtATUKxP9RiUKJdIzlFxsuWhkc_6V7id5p4oM-8MQPKqoH5PrVm0IijfYQDGsGvOSF3Gbwmt6Iu9KFZEc4GyPVBZzzGAvRP3ZwEKxCq63y5zN9T4xt-MWJKiUVsjHrJtzKlKLil4eNF7w4bwtipLBq14ierFj2TDQzSjmjSFGv9tZaB6Ekg");'></div>
-                                                <span class="font-bold text-xs text-text-main dark:text-white">Suite 201</span>
+                                                <div class="w-8 h-8 rounded bg-cover bg-center shrink-0" style='background-image: url("<?php echo !empty($reserva['imagen_principal']) ? $reserva['imagen_principal'] : 'https://placehold.co/100'; ?>");'></div>
+                                                <span class="font-bold text-xs text-text-main dark:text-white"><?php echo $reserva['titulo']; ?></span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-3">
                                             <div class="flex flex-col">
-                                                <span class="font-bold text-xs text-text-main dark:text-white">Ana García</span>
-                                                <span class="text-[10px] text-text-secondary">ana.garcia@email.com</span>
+                                                <span class="font-bold text-xs text-text-main dark:text-white"><?php echo $reserva['nombre'] . ' ' . $reserva['apellido']; ?></span>
+                                                <span class="text-[10px] text-text-secondary"><?php echo $reserva['email']; ?></span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-3 text-text-main dark:text-white font-medium text-xs">12 Mar - 15 Mar</td>
+                                        <td class="px-6 py-3 text-text-main dark:text-white font-medium text-xs">
+                                            <?php echo date('d M', strtotime($reserva['fecha_inicio'])) . ' - ' . date('d M', strtotime($reserva['fecha_fin'])); ?>
+                                        </td>
                                         <td class="px-6 py-3">
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-800">Confirmada</span>
+                                            <?php
+                                            $estadoClass = '';
+                                            switch($reserva['estado']) {
+                                                case 'Confirmada': $estadoClass = 'bg-green-100 text-green-800'; break;
+                                                case 'Pendiente': $estadoClass = 'bg-yellow-100 text-yellow-800'; break;
+                                                case 'Cancelada': $estadoClass = 'bg-red-100 text-red-800'; break;
+                                                case 'Completada': $estadoClass = 'bg-blue-100 text-blue-800'; break;
+                                                default: $estadoClass = 'bg-gray-100 text-gray-800';
+                                            }
+                                            ?>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold <?php echo $estadoClass; ?>"><?php echo $reserva['estado']; ?></span>
                                         </td>
                                         <td class="px-6 py-3 text-right">
                                             <button class="bg-primary/10 text-primary hover:bg-primary/20 px-2.5 py-1 rounded text-[10px] font-bold transition-colors">Detalles</button>
                                         </td>
                                     </tr>
+                                    <?php endwhile; ?>
+                                    <?php else: ?>
+                                    <tr>
+                                        <td colspan="5" class="px-6 py-8 text-center text-text-secondary dark:text-gray-400">
+                                            <div class="flex flex-col items-center gap-2">
+                                                <span class="material-symbols-outlined text-4xl opacity-20">calendar_month</span>
+                                                <span class="text-sm">No hay reservas recientes</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -330,21 +337,23 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                         <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3 Nuevas</span>
                     </div>
                     <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm flex flex-col divide-y divide-[#f0f3f4] dark:divide-gray-800">
+                        <?php while ($pqr = $pqr_res->fetch_assoc()): ?>
                         <div class="p-4 hover:bg-background-light dark:hover:bg-gray-800 transition-colors cursor-pointer relative group flex items-start gap-4">
-                            <div class="bg-cover bg-center rounded-full size-10 shrink-0 border border-gray-100 shadow-sm" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCkt-6r3iuswTFaKexpdZFqCCBrXa5Z2rQeVfODjqUm7P9qlMVu2fw2kL0IqtQi7WNI7GMZJHr7q8KCdJOxHVOK09R2anAgSSu3FcLTE_FHeaCmkaSzKJ7zjWehMtTkLZoLEC4iWD95FCTWF7b70ae1-UZDb4FczwUTdMVLDCi94shtUbbfigVvVTRTn-KSjcY2YDMdX4N3Z9PpnBq0BYGxqR2nJANxxTXqHmbVyO_sTIxAV4p9Y5NJl3rz9BEFHySButmaVDpHFZQ");'></div>
+                            <div class="bg-cover bg-center rounded-full size-10 shrink-0 border border-gray-100 shadow-sm" style='background-image: url("<?php echo !empty($pqr['imagen']) ? '../../assets/img/usuarios/' . $pqr['imagen'] : 'https://placehold.co/100'; ?>");'></div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex justify-between items-baseline mb-0.5">
-                                    <p class="font-bold text-sm text-text-main dark:text-white">Roberto Gómez</p>
-                                    <p class="text-[10px] text-text-secondary font-medium uppercase">Hace 2 horas</p>
+                                    <p class="font-bold text-sm text-text-main dark:text-white"><?php echo $pqr['nombre'] . ' ' . $pqr['apellido']; ?></p>
+                                    <p class="text-[10px] text-text-secondary font-medium uppercase"><?php echo date('d M H:i', strtotime($pqr['fecha_creacion'])); ?></p>
                                 </div>
-                                <h5 class="text-xs font-semibold text-text-main mb-0.5">Aire acondicionado - Suite 201</h5>
-                                <p class="text-xs text-text-secondary dark:text-gray-400 line-clamp-1">Problema con el aire acondicionado en la suite 201, por favor revisar urgente.</p>
+                                <h5 class="text-xs font-semibold text-text-main mb-0.5"><?php echo $pqr['asunto']; ?></h5>
+                                <p class="text-xs text-text-secondary dark:text-gray-400 line-clamp-1"><?php echo $pqr['mensaje']; ?></p>
                                 <div class="mt-2 flex gap-2">
                                     <button class="text-[10px] font-bold bg-primary text-white px-3 py-1 rounded hover:bg-primary-hover transition-colors">Responder</button>
                                     <button class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-text-secondary px-3 py-1 rounded hover:bg-gray-200 transition-colors">Ver hilo</button>
                                 </div>
                             </div>
                         </div>
+                        <?php endwhile; ?>
                     </div>
                 </section>
             </main>

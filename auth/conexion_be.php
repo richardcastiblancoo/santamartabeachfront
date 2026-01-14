@@ -132,4 +132,63 @@ if ($result->num_rows == 0) {
         $conn->query("UPDATE usuarios SET usuario = 'admin' WHERE id = $id_admin");
     }
 }
+
+// Crear tabla de PQR si no existe
+$sql_pqr = "CREATE TABLE IF NOT EXISTS pqr (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT(6) UNSIGNED,
+    asunto VARCHAR(100) NOT NULL,
+    mensaje TEXT NOT NULL,
+    estado VARCHAR(20) DEFAULT 'Pendiente',
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+)";
+
+if ($conn->query($sql_pqr) !== TRUE) {
+    echo "Error creando tabla pqr: " . $conn->error;
+}
+
+// Crear tabla de reservas si no existe
+$sql_reservas = "CREATE TABLE IF NOT EXISTS reservas (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT(6) UNSIGNED,
+    apartamento_id INT(6) UNSIGNED,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    total DECIMAL(10, 2) NOT NULL,
+    estado VARCHAR(20) DEFAULT 'Pendiente',
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (apartamento_id) REFERENCES apartamentos(id) ON DELETE CASCADE
+)";
+
+if ($conn->query($sql_reservas) !== TRUE) {
+    echo "Error creando tabla reservas: " . $conn->error;
+}
+
+/*
+// Insertar datos de prueba en reservas si está vacía
+$check_reservas = "SELECT count(*) as count FROM reservas";
+$result_reservas = $conn->query($check_reservas);
+if ($result_reservas) {
+    $row_res = $result_reservas->fetch_assoc();
+    if ($row_res['count'] == 0) {
+        // Obtener IDs válidos
+        $user_res = $conn->query("SELECT id FROM usuarios LIMIT 1");
+        $apt_res = $conn->query("SELECT id FROM apartamentos LIMIT 1");
+        
+        if ($user_res->num_rows > 0 && $apt_res->num_rows > 0) {
+            $uid = $user_res->fetch_assoc()['id'];
+            $aid = $apt_res->fetch_assoc()['id'];
+            
+            $insert_reservas = "INSERT INTO reservas (usuario_id, apartamento_id, fecha_inicio, fecha_fin, total, estado) VALUES 
+            ($uid, $aid, DATE_ADD(CURDATE(), INTERVAL 5 DAY), DATE_ADD(CURDATE(), INTERVAL 10 DAY), 1250.00, 'Confirmada'),
+            ($uid, $aid, DATE_ADD(CURDATE(), INTERVAL 12 DAY), DATE_ADD(CURDATE(), INTERVAL 15 DAY), 2100.00, 'Pendiente'),
+            ($uid, $aid, DATE_ADD(CURDATE(), INTERVAL -5 DAY), DATE_ADD(CURDATE(), INTERVAL -1 DAY), 650.00, 'Completada')";
+            
+            $conn->query($insert_reservas);
+        }
+    }
+}
+*/
 ?>
