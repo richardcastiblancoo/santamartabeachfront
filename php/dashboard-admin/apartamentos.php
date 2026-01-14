@@ -7,6 +7,9 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
 }
 include '../../auth/conexion_be.php';
 ?>
+
+
+
 <html class="light" lang="es">
 
 <head>
@@ -18,6 +21,7 @@ include '../../auth/conexion_be.php';
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -205,6 +209,9 @@ include '../../auth/conexion_be.php';
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center gap-2">
+                                                    <a class="p-2 text-text-secondary hover:text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer" href="../reserva-apartamento/apartamento.php?id=<?php echo $row['id']; ?>" target="_blank" title="Vista Previa">
+                                                        <span class="material-symbols-outlined">visibility</span>
+                                                    </a>
                                                     <a class="p-2 text-text-secondary hover:text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer" onclick='editarApartamento(<?php echo $row_json; ?>)' href="#apartment-modal" title="Editar">
                                                         <span class="material-symbols-outlined">edit</span>
                                                     </a>
@@ -254,13 +261,18 @@ include '../../auth/conexion_be.php';
                             </section>
 
                             <section class="space-y-4">
-                                <h4 class="text-sm font-bold text-text-main dark:text-white uppercase tracking-wider">Video (Opcional)</h4>
-                                <div class="space-y-2">
-                                    <label class="text-xs font-semibold text-text-secondary">URL del Video (YouTube/Vimeo)</label>
-                                    <div class="relative">
-                                        <span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-sm">play_circle</span>
-                                        <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="https://www.youtube.com/watch?v=..." type="url" name="video" />
-                                    </div>
+                                <h4 class="text-sm font-bold text-text-main dark:text-white uppercase tracking-wider">Galería de Imágenes (Opcional)</h4>
+                                <div class="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-background-light dark:hover:bg-gray-800 transition-colors group">
+                                    <input type="file" name="imagenes_galeria[]" multiple accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"/>
+                                    <p class="mt-2 text-xs text-text-secondary">Selecciona varias imágenes para la galería.</p>
+                                </div>
+                            </section>
+
+                            <section class="space-y-4">
+                                <h4 class="text-sm font-bold text-text-main dark:text-white uppercase tracking-wider">Videos (Opcional)</h4>
+                                <div class="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-background-light dark:hover:bg-gray-800 transition-colors group">
+                                    <input type="file" name="videos_galeria[]" multiple accept="video/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"/>
+                                    <p class="mt-2 text-xs text-text-secondary">Selecciona videos para cargar (mp4, webm, ogg).</p>
                                 </div>
                             </section>
 
@@ -326,6 +338,92 @@ include '../../auth/conexion_be.php';
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function verApartamento(apartamento) {
+            // Llenar datos en el modal
+            document.getElementById('preview-image').src = '../../assets/img/apartamentos/' + apartamento.imagen_principal;
+            document.getElementById('preview-title').innerText = apartamento.titulo;
+            document.getElementById('preview-location').innerText = apartamento.ubicacion;
+            
+            // Formatear precio
+            const precioFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(apartamento.precio);
+            document.getElementById('preview-price').innerText = precioFormateado + ' / noche';
+            
+            document.getElementById('preview-description').innerText = apartamento.descripcion;
+            document.getElementById('preview-habitaciones').innerText = apartamento.habitaciones + ' Habitaciones';
+            document.getElementById('preview-banos').innerText = apartamento.banos + ' Baños';
+            document.getElementById('preview-capacidad').innerText = apartamento.capacidad + ' Huéspedes';
+
+            // Mostrar modal
+            const modal = document.getElementById('preview-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // Evitar scroll de fondo
+        }
+
+        function cerrarPreview() {
+            const modal = document.getElementById('preview-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = ''; // Restaurar scroll
+        }
+
+        function editarApartamento(apartamento) {
+            document.getElementById('modal-title').innerText = 'Editar Apartamento';
+            document.getElementById('apartamento_id').value = apartamento.id;
+            document.querySelector('input[name="titulo"]').value = apartamento.titulo;
+            document.querySelector('textarea[name="descripcion"]').value = apartamento.descripcion;
+            document.querySelector('input[name="precio"]').value = apartamento.precio;
+            document.querySelector('input[name="ubicacion"]').value = apartamento.ubicacion;
+            document.querySelector('input[name="habitaciones"]').value = apartamento.habitaciones;
+            document.querySelector('input[name="banos"]').value = apartamento.banos;
+            document.querySelector('input[name="capacidad"]').value = apartamento.capacidad;
+            // document.querySelector('input[name="video"]').value = apartamento.video || ''; // Ya no se usa URL de video
+            
+            // Imagen no es requerida al editar
+            document.getElementById('imagen_input').required = false;
+        }
+
+        function eliminarApartamento(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto! El apartamento será eliminado permanentemente.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#13a4ec',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo',
+                cancelButtonText: 'Cancelar',
+                background: '#fff',
+                color: '#111618',
+                customClass: {
+                    popup: 'dark:bg-[#1a2c35] dark:text-white',
+                    title: 'dark:text-white',
+                    content: 'dark:text-gray-300'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'eliminar_apartamento_be.php?id=' + id;
+                }
+            })
+        }
+
+        // Limpiar formulario al abrir modal para nuevo apartamento
+        document.querySelector('a[href="#apartment-modal"]').addEventListener('click', function() {
+            if (!this.getAttribute('onclick')) { // Solo si no es el botón de editar
+                document.getElementById('form-apartamento').reset();
+                document.getElementById('modal-title').innerText = 'Nuevo Apartamento';
+                document.getElementById('apartamento_id').value = '';
+                document.getElementById('imagen_input').required = true;
+            }
+        });
+    </script>
+</body>
+</html> </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function editarApartamento(apartamento) {
             document.getElementById('modal-title').innerText = 'Editar Apartamento';
@@ -337,16 +435,34 @@ include '../../auth/conexion_be.php';
             document.querySelector('input[name="habitaciones"]').value = apartamento.habitaciones;
             document.querySelector('input[name="banos"]').value = apartamento.banos;
             document.querySelector('input[name="capacidad"]').value = apartamento.capacidad;
-            document.querySelector('input[name="video"]').value = apartamento.video || '';
+            // document.querySelector('input[name="video"]').value = apartamento.video || ''; // Ya no se usa URL de video
             
             // Imagen no es requerida al editar
             document.getElementById('imagen_input').required = false;
         }
 
         function eliminarApartamento(id) {
-            if (confirm('¿Estás seguro de que deseas eliminar este apartamento? Esta acción no se puede deshacer.')) {
-                window.location.href = 'eliminar_apartamento_be.php?id=' + id;
-            }
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto! El apartamento será eliminado permanentemente.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#13a4ec',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo',
+                cancelButtonText: 'Cancelar',
+                background: '#fff',
+                color: '#111618',
+                customClass: {
+                    popup: 'dark:bg-[#1a2c35] dark:text-white',
+                    title: 'dark:text-white',
+                    content: 'dark:text-gray-300'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'eliminar_apartamento_be.php?id=' + id;
+                }
+            })
         }
 
         // Limpiar formulario al abrir modal para nuevo apartamento

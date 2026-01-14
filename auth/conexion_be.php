@@ -81,6 +81,20 @@ if ($conn->query($sql_resenas) !== TRUE) {
     echo "Error creando tabla resenas: " . $conn->error;
 }
 
+// Crear tabla de galería multimedia (fotos y videos adicionales)
+$sql_galeria = "CREATE TABLE IF NOT EXISTS galeria_apartamentos (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    apartamento_id INT(6) UNSIGNED NOT NULL,
+    tipo ENUM('imagen', 'video') NOT NULL,
+    ruta VARCHAR(255) NOT NULL,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (apartamento_id) REFERENCES apartamentos(id) ON DELETE CASCADE
+)";
+
+if ($conn->query($sql_galeria) !== TRUE) {
+    echo "Error creando tabla galeria_apartamentos: " . $conn->error;
+}
+
 // Intentar añadir la columna 'usuario' si la tabla ya existía sin ella
 try {
     $conn->query("ALTER TABLE usuarios ADD COLUMN usuario VARCHAR(50) NOT NULL UNIQUE AFTER apellido");

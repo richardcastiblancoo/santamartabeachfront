@@ -20,6 +20,26 @@ if ($result && $result->num_rows > 0) {
     // Redirigir o mostrar mensaje si no se encuentra
     $apartamento = null;
 }
+
+// Consultar galería de imágenes
+$sql_imagenes = "SELECT * FROM galeria_apartamentos WHERE apartamento_id = $id_apartamento AND tipo = 'imagen'";
+$result_imagenes = $conn->query($sql_imagenes);
+$imagenes_galeria = [];
+if ($result_imagenes && $result_imagenes->num_rows > 0) {
+    while($row = $result_imagenes->fetch_assoc()) {
+        $imagenes_galeria[] = $row['ruta'];
+    }
+}
+
+// Consultar galería de videos
+$sql_videos = "SELECT * FROM galeria_apartamentos WHERE apartamento_id = $id_apartamento AND tipo = 'video'";
+$result_videos = $conn->query($sql_videos);
+$videos_galeria = [];
+if ($result_videos && $result_videos->num_rows > 0) {
+    while($row = $result_videos->fetch_assoc()) {
+        $videos_galeria[] = $row['ruta'];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html class="light" lang="es">

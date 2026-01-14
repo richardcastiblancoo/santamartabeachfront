@@ -5,6 +5,28 @@ if (!isset($_SESSION['usuario'])) {
     echo '<script>alert("Por favor inicia sesión"); window.location = "../../auth/login.php";</script>';
     die();
 }
+
+include '../../auth/conexion_be.php';
+
+// Obtener apartamentos publicados
+$sql_apartamentos = "SELECT * FROM apartamentos ORDER BY fecha_creacion DESC";
+$result_apartamentos = $conn->query($sql_apartamentos);
+
+// Obtener PQR del usuario
+$usuario_id = $_SESSION['id'];
+$sql_pqr = "SELECT * FROM pqr WHERE usuario_id = '$usuario_id' ORDER BY fecha_creacion DESC";
+$result_pqr = $conn->query($sql_pqr);
+
+$pqr_list = [];
+$num_pqr_activas = 0;
+if ($result_pqr && $result_pqr->num_rows > 0) {
+    while($row = $result_pqr->fetch_assoc()) {
+        $pqr_list[] = $row;
+        if($row['estado'] != 'Resuelto') {
+            $num_pqr_activas++;
+        }
+    }
+}
 ?>
 <html class="dark" lang="es">
 
@@ -39,6 +61,20 @@ if (!isset($_SESSION['usuario'])) {
         }
     </script>
     <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #475569;
+        }
+        
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
@@ -87,7 +123,7 @@ if (!isset($_SESSION['usuario'])) {
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-[#1a2c35]"></span>
                 </button>
-                <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-white dark:border-gray-700 shadow-sm cursor-pointer" style='background-image: url("https://avatar.iran.liara.run/public/30");'>
+                <div onclick="openConfigModal()" class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-white dark:border-gray-700 shadow-sm cursor-pointer transition-transform hover:scale-105" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../' . $_SESSION['imagen'] : 'https://avatar.iran.liara.run/public/30'; ?>");'>
                 </div>
                 <a href="../../auth/cerrar_sesion.php" class="flex items-center justify-center rounded-full size-10 hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-500 hover:text-red-600 transition-colors" title="Cerrar Sesión">
                     <span class="material-symbols-outlined">logout</span>
@@ -99,7 +135,7 @@ if (!isset($_SESSION['usuario'])) {
     <main class="flex-1 w-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 py-8 space-y-8">
         <section class="flex flex-col gap-2">
             <p class="text-[#111618] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">
-                <span data-key="welcome-user">Hola, Daniel</span>
+                <span data-key="welcome-user">Hola, <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
             </p>
             <p data-key="welcome-sub" class="text-[#617c89] dark:text-gray-400 text-base font-normal">Bienvenido a tu panel de control. Tu próxima aventura te espera.</p>
         </section>
@@ -126,6 +162,40 @@ if (!isset($_SESSION['usuario'])) {
                             <span class="mr-2 material-symbols-outlined">menu_book</span>
                             <span data-key="btn-guide">Guía de la casa</span>
                         </button>
+                    </div>
+                </div>
+
+                <!-- Sección de Apartamentos Disponibles -->
+                <div class="mt-8 border-t border-[#dbe2e6] dark:border-gray-700 pt-6">
+                    <h3 data-key="available-apartments" class="text-[#111618] dark:text-white text-xl font-bold mb-4">Apartamentos Disponibles</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <?php if ($result_apartamentos->num_rows > 0): ?>
+                            <?php while($apto = $result_apartamentos->fetch_assoc()): ?>
+                                <div class="flex flex-col rounded-xl bg-white dark:bg-[#1a2c35] shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden group hover:shadow-md transition-all">
+                                    <div class="w-full h-48 bg-center bg-no-repeat bg-cover relative" style="background-image: url('../../assets/img/apartamentos/<?php echo htmlspecialchars($apto['imagen_principal']); ?>');">
+                                        <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded shadow">
+                                            $<?php echo number_format($apto['precio'], 0, ',', '.'); ?>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col p-4 gap-3">
+                                        <h3 class="text-[#111618] dark:text-white text-lg font-bold leading-tight"><?php echo htmlspecialchars($apto['titulo']); ?></h3>
+                                        <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2"><?php echo htmlspecialchars($apto['descripcion']); ?></p>
+                                        
+                                        <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">bed</span> <?php echo $apto['habitaciones']; ?></span>
+                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">shower</span> <?php echo $apto['banos']; ?></span>
+                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">group</span> <?php echo $apto['capacidad']; ?></span>
+                                        </div>
+                                        
+                                        <a href="../reserva-apartamento/apartamento.php?id=<?php echo $apto['id']; ?>" data-key="view-details" class="w-full mt-2 py-2 bg-primary text-white font-bold rounded-lg hover:bg-sky-600 transition-colors text-center">
+                                            Ver Detalles
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <p data-key="no-apartments" class="col-span-2 text-center text-gray-500">No hay apartamentos disponibles en este momento.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -212,10 +282,42 @@ if (!isset($_SESSION['usuario'])) {
                 <div class="bg-white dark:bg-[#1a2c35] rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-0 overflow-hidden">
                     <div class="p-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
                         <h3 data-key="pqr-title" class="text-[#111618] dark:text-white font-bold text-base">Mis Solicitudes (PQR)</h3>
-                        <span data-key="pqr-active" class="bg-primary/10 text-primary text-xs font-bold px-2 py-1 rounded">1 Activa</span>
+                        <?php if($num_pqr_activas > 0): ?>
+                            <span class="bg-primary/10 text-primary text-xs font-bold px-2 py-1 rounded"><?php echo $num_pqr_activas; ?> Activa<?php echo $num_pqr_activas > 1 ? 's' : ''; ?></span>
+                        <?php endif; ?>
                     </div>
-                    <div class="p-4 bg-gray-50 dark:bg-gray-800/30">
-                        <button class="w-full flex items-center justify-center gap-2 rounded-lg h-10 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-[#111618] dark:text-white text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                    
+                    <div class="max-h-[300px] overflow-y-auto">
+                        <?php if (!empty($pqr_list)): ?>
+                            <div class="divide-y divide-gray-100 dark:divide-gray-700">
+                                <?php foreach($pqr_list as $pqr): 
+                                    $estadoClass = '';
+                                    if($pqr['estado'] == 'Pendiente') $estadoClass = 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400';
+                                    elseif($pqr['estado'] == 'En Progreso') $estadoClass = 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400';
+                                    else $estadoClass = 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400';
+                                ?>
+                                <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer" onclick="verDetallePQR(<?php echo $pqr['id']; ?>)">
+                                    <div class="flex justify-between items-start mb-1">
+                                        <span class="text-xs font-bold text-gray-500">#<?php echo $pqr['id']; ?></span>
+                                        <span class="<?php echo $estadoClass; ?> text-[10px] font-bold px-2 py-0.5 rounded-full uppercase"><?php echo $pqr['estado']; ?></span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-[#111618] dark:text-white mb-1 line-clamp-1"><?php echo htmlspecialchars($pqr['asunto']); ?></h4>
+                                    <p class="text-xs text-gray-500 line-clamp-2"><?php echo htmlspecialchars($pqr['mensaje']); ?></p>
+                                    <div class="mt-2 text-[10px] text-gray-400 text-right">
+                                        <?php echo date('d M Y', strtotime($pqr['fecha_creacion'])); ?>
+                                    </div>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php else: ?>
+                            <div class="p-6 text-center text-gray-500 text-sm">
+                                No tienes solicitudes registradas.
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-100 dark:border-gray-700">
+                        <button onclick="openPQRModal()" class="w-full flex items-center justify-center gap-2 rounded-lg h-10 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-[#111618] dark:text-white text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
                             <span class="material-symbols-outlined text-lg">add_circle</span>
                             <span data-key="btn-new-pqr">Nueva Solicitud</span>
                         </button>
@@ -225,7 +327,231 @@ if (!isset($_SESSION['usuario'])) {
         </div>
     </main>
 
+        <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="view-pqr-modal">
+            <div class="bg-white dark:bg-[#1a2c35] w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+                <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center shrink-0">
+                    <h3 class="text-xl font-bold text-[#111618] dark:text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">chat</span>
+                        Detalle de Solicitud
+                    </h3>
+                    <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closeViewPQRModal()">
+                        <span class="material-symbols-outlined">close</span>
+                    </a>
+                </div>
+                
+                <div class="flex-1 overflow-y-auto p-6 space-y-6" id="pqr-detail-content">
+                    <!-- Contenido dinámico cargado por JS -->
+                    <div class="flex justify-center p-10">
+                        <span class="material-symbols-outlined animate-spin text-primary text-4xl">progress_activity</span>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end shrink-0">
+                    <button class="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-[#111618] dark:text-white text-sm font-bold rounded-lg transition-colors" onclick="closeViewPQRModal()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="new-pqr-modal">
+            <div class="bg-white dark:bg-[#1a2c35] w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+                <form action="guardar_pqr_be.php" method="POST">
+                    <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                        <h3 class="text-xl font-bold text-[#111618] dark:text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">add_circle</span>
+                            Nueva Solicitud (PQR)
+                        </h3>
+                        <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closePQRModal()">
+                            <span class="material-symbols-outlined">close</span>
+                        </a>
+                    </div>
+                    <div class="p-8 space-y-6">
+                        <div>
+                            <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Asunto</label>
+                            <input name="asunto" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-gray-400" placeholder="Ej: Problema con el aire acondicionado" type="text" required />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Mensaje</label>
+                            <textarea name="mensaje" rows="4" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-gray-400" placeholder="Describe tu solicitud detalladamente..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3">
+                        <a class="px-6 py-2.5 text-sm font-bold text-gray-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closePQRModal()">Cancelar</a>
+                        <button type="submit" class="px-6 py-2.5 bg-primary hover:bg-sky-600 text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all">Enviar Solicitud</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="hidden absolute top-20 right-4 md:right-10 z-[100] w-full max-w-md bg-white dark:bg-[#1a2c35] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 animate-in fade-in zoom-in duration-200 origin-top-right" id="config-modal">
+            <div class="max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <form action="actualizar_perfil_be.php" method="POST" enctype="multipart/form-data">
+                    <div class="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-[#1a2c35] z-10">
+                        <h3 class="text-lg font-bold text-[#111618] dark:text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">settings</span>
+                            Configuración
+                        </h3>
+                        <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closeConfigModal()">
+                            <span class="material-symbols-outlined">close</span>
+                        </a>
+                    </div>
+                    <div class="p-6 space-y-5">
+                        <div class="flex flex-col items-center gap-3">
+                             <div class="w-20 h-20 rounded-full bg-cover bg-center border-4 border-gray-100 dark:border-gray-700 relative overflow-hidden group shadow-sm">
+                                <img id="preview-image" src="<?php echo !empty($_SESSION['imagen']) ? '../../' . $_SESSION['imagen'] : 'https://avatar.iran.liara.run/public/30'; ?>" class="w-full h-full object-cover">
+                                <label for="imagen-upload" class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                                    <span class="material-symbols-outlined text-white text-xl">edit</span>
+                                </label>
+                             </div>
+                             <input type="file" id="imagen-upload" name="imagen" class="hidden" accept="image/*" onchange="previewImage(this)">
+                             <label for="imagen-upload" class="text-xs font-bold text-primary cursor-pointer hover:underline">Cambiar foto</label>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Nombre</label>
+                                <input name="nombre" value="<?php echo $_SESSION['nombre']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="text" required />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Apellido</label>
+                                <input name="apellido" value="<?php echo $_SESSION['apellido']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="text" required />
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Usuario</label>
+                            <input name="usuario" value="<?php echo $_SESSION['usuario']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="text" required />
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Correo (Gmail)</label>
+                            <input name="email" value="<?php echo $_SESSION['email']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="email" required />
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Nueva Contraseña</label>
+                            <input name="password" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="password" placeholder="••••••••" />
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-2 sticky bottom-0 z-10">
+                        <a class="px-4 py-2 text-xs font-bold text-gray-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closeConfigModal()">Cancelar</a>
+                        <button type="submit" class="px-4 py-2 bg-primary hover:bg-sky-600 text-white text-xs font-bold rounded-lg shadow-md transition-all">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     <script>
+        function openPQRModal() {
+            const modal = document.getElementById('new-pqr-modal');
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+        }
+
+        function closePQRModal() {
+            const modal = document.getElementById('new-pqr-modal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+
+        function closeViewPQRModal() {
+            const modal = document.getElementById('view-pqr-modal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+
+        function verDetallePQR(id) {
+            const modal = document.getElementById('view-pqr-modal');
+            const content = document.getElementById('pqr-detail-content');
+            
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+            
+            // Mostrar loader
+            content.innerHTML = `
+                <div class="flex justify-center p-10">
+                    <span class="material-symbols-outlined animate-spin text-primary text-4xl">progress_activity</span>
+                </div>
+            `;
+
+            // Fetch data
+            fetch(`obtener_detalle_pqr.php?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) {
+                        content.innerHTML = `<p class="text-red-500 text-center">${data.error}</p>`;
+                        return;
+                    }
+
+                    const pqr = data.pqr;
+                    const respuestas = data.respuestas;
+
+                    let estadoColor = 'text-red-600 bg-red-100 dark:bg-red-900/30 dark:text-red-400';
+                    if (pqr.estado === 'En Progreso') estadoColor = 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-400';
+                    if (pqr.estado === 'Resuelto') estadoColor = 'text-green-600 bg-green-100 dark:bg-green-900/30 dark:text-green-400';
+
+                    let html = `
+                        <div class="flex flex-col gap-4">
+                            <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Tu Solicitud #${pqr.id}</span>
+                                    <span class="${estadoColor} text-xs px-2 py-0.5 rounded-full font-bold uppercase">${pqr.estado}</span>
+                                </div>
+                                <h4 class="text-lg font-bold text-[#111618] dark:text-white mb-2">${pqr.asunto}</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">${pqr.mensaje}</p>
+                                <p class="text-xs text-gray-400 mt-2 text-right">${new Date(pqr.fecha_creacion).toLocaleString()}</p>
+                            </div>
+                    `;
+
+                    if (respuestas.length > 0) {
+                        html += `<div class="relative pl-4 border-l-2 border-gray-200 dark:border-gray-700 space-y-6 mt-4">`;
+                        
+                        respuestas.forEach(res => {
+                            const adminImg = res.imagen ? '../../' + res.imagen : `https://ui-avatars.com/api/?name=${encodeURIComponent(res.nombre + ' ' + res.apellido)}&background=random`;
+                            
+                            html += `
+                                <div class="relative">
+                                    <div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-primary border-2 border-white dark:border-[#1a2c35]"></div>
+                                    <div class="flex gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-cover bg-center shrink-0 border border-gray-200 dark:border-gray-600" style="background-image: url('${adminImg}');"></div>
+                                        <div class="flex-1">
+                                            <div class="flex items-baseline justify-between mb-1">
+                                                <span class="text-sm font-bold text-[#111618] dark:text-white">${res.nombre} ${res.apellido} <span class="text-xs font-normal text-gray-500">(Admin)</span></span>
+                                                <span class="text-xs text-gray-400">${new Date(res.fecha_respuesta).toLocaleString()}</span>
+                                            </div>
+                                            <div class="bg-white dark:bg-gray-700 p-3 rounded-lg rounded-tl-none border border-gray-100 dark:border-gray-600 shadow-sm">
+                                                <p class="text-sm text-gray-700 dark:text-gray-200">${res.mensaje}</p>
+                                                ${res.archivo ? `
+                                                    <a href="../../${res.archivo}" target="_blank" class="flex items-center gap-2 mt-3 p-2 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors group">
+                                                        <span class="material-symbols-outlined text-red-500 group-hover:scale-110 transition-transform">description</span>
+                                                        <span class="text-xs font-bold text-gray-600 dark:text-gray-300">Ver archivo adjunto</span>
+                                                    </a>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+
+                        html += `</div>`;
+                    } else {
+                        html += `
+                            <div class="flex flex-col items-center justify-center p-8 text-center text-gray-400 border-t border-gray-100 dark:border-gray-700 mt-2">
+                                <span class="material-symbols-outlined text-4xl mb-2 opacity-50">schedule</span>
+                                <p class="text-sm">Aún no hay respuestas del administrador.</p>
+                            </div>
+                        `;
+                    }
+
+                    html += `</div>`;
+                    content.innerHTML = html;
+                })
+                .catch(err => {
+                    content.innerHTML = `<p class="text-red-500 text-center">Error al cargar la información.</p>`;
+                    console.error(err);
+                });
+        }
+
         const translations = {
             es: {
                 "nav-reservations": "Mis Reservas",
@@ -275,7 +601,10 @@ if (!isset($_SESSION['usuario'])) {
                 "service-parking": "Parking Lot",
                 "pqr-title": "My Requests (PQR)",
                 "pqr-active": "1 Active",
-                "btn-new-pqr": "New Request"
+                "btn-new-pqr": "New Request",
+                "available-apartments": "Available Apartments",
+                "no-apartments": "No apartments available at the moment.",
+                "view-details": "View Details"
             }
         };
 
@@ -305,6 +634,28 @@ if (!isset($_SESSION['usuario'])) {
                 btnEs.classList.remove('bg-primary', 'text-white');
                 btnEs.classList.add('text-gray-500');
                 document.documentElement.lang = "en";
+            }
+        }
+
+        function openConfigModal() {
+            const modal = document.getElementById('config-modal');
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+        }
+
+        function closeConfigModal() {
+            const modal = document.getElementById('config-modal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+        
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview-image').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
             }
         }
     </script>

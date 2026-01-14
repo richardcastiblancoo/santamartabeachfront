@@ -24,7 +24,25 @@ if (isset($_GET['id'])) {
         }
     }
 
-    // Eliminar el registro de la base de datos
+    // Eliminar archivos de la galería
+    $sql_galeria = "SELECT tipo, ruta FROM galeria_apartamentos WHERE apartamento_id = $id";
+    $result_galeria = $conn->query($sql_galeria);
+    if ($result_galeria && $result_galeria->num_rows > 0) {
+        while($row_gal = $result_galeria->fetch_assoc()) {
+            $ruta_archivo = '';
+            if ($row_gal['tipo'] == 'imagen') {
+                $ruta_archivo = '../../assets/img/apartamentos/' . $row_gal['ruta'];
+            } else if ($row_gal['tipo'] == 'video') {
+                $ruta_archivo = '../../assets/video/apartamentos/' . $row_gal['ruta'];
+            }
+
+            if (!empty($ruta_archivo) && file_exists($ruta_archivo)) {
+                unlink($ruta_archivo);
+            }
+        }
+    }
+
+    // Eliminar el registro de la base de datos (Cascade borrará las filas de galería)
     $sql = "DELETE FROM apartamentos WHERE id = $id";
 
     if ($conn->query($sql) === TRUE) {

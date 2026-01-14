@@ -29,6 +29,29 @@ CREATE TABLE IF NOT EXISTS apartamentos (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Crear la tabla de PQR (Peticiones, Quejas y Reclamos)
+CREATE TABLE IF NOT EXISTS pqr (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT(6) UNSIGNED,
+    asunto VARCHAR(100) NOT NULL,
+    mensaje TEXT NOT NULL,
+    estado VARCHAR(20) DEFAULT 'Pendiente', -- 'Pendiente', 'En Progreso', 'Resuelto'
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
+-- Crear la tabla de Respuestas PQR
+CREATE TABLE IF NOT EXISTS respuestas_pqr (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    pqr_id INT(6) UNSIGNED,
+    admin_id INT(6) UNSIGNED, -- ID del administrador que responde
+    mensaje TEXT NOT NULL,
+    archivo VARCHAR(255) DEFAULT NULL, -- Ruta del archivo adjunto (imagen o PDF)
+    fecha_respuesta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (pqr_id) REFERENCES pqr(id) ON DELETE CASCADE,
+    FOREIGN KEY (admin_id) REFERENCES usuarios(id) ON DELETE SET NULL
+);
+
 -- NOTA: El usuario administrador por defecto se crea automáticamente 
 -- desde el archivo php/conexion_be.php con la contraseña encriptada correctamente.
 -- Usuario (Login): admin

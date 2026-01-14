@@ -17,66 +17,115 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $habitaciones = $_POST['habitaciones'];
     $banos = $_POST['banos'];
     $capacidad = $_POST['capacidad'];
-    $video = isset($_POST['video']) ? $_POST['video'] : '';
+    // $video = isset($_POST['video']) ? $_POST['video'] : ''; // Ya no usamos URL de video
 
     $nombre_imagen = null;
-    $ruta_destino = null;
 
-    // Procesamiento de la imagen
+    // Procesamiento de la imagen principal
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
         $imagen = $_FILES['imagen'];
-        $nombre_temp = time() . '_' . $imagen['name'];
+        $nombre_temp = time() . '_main_' . $imagen['name'];
         $ruta_temp = '../../assets/img/apartamentos/' . $nombre_temp;
         $tipo_imagen = strtolower(pathinfo($ruta_temp, PATHINFO_EXTENSION));
 
-        // Validar extensiones permitidas
         $extensiones_permitidas = array("jpg", "jpeg", "png", "gif", "webp");
         if (!in_array($tipo_imagen, $extensiones_permitidas)) {
-            echo '<script>alert("Solo se permiten archivos JPG, JPEG, PNG, GIF y WEBP."); window.location = "apartamentos.php";</script>';
+            echo '<script>alert("Solo se permiten archivos JPG, JPEG, PNG, GIF y WEBP para la imagen principal."); window.location = "apartamentos.php";</script>';
             exit;
         }
 
         if (move_uploaded_file($imagen['tmp_name'], $ruta_temp)) {
             $nombre_imagen = $nombre_temp;
         } else {
-            echo '<script>alert("Error al subir la imagen."); window.location = "apartamentos.php";</script>';
+            echo '<script>alert("Error al subir la imagen principal."); window.location = "apartamentos.php";</script>';
             exit;
         }
     }
 
+    $apartamento_id = $id;
+
     if ($id) {
         // UPDATE
         if ($nombre_imagen) {
-            // Actualizar con nueva imagen
-            $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, video=?, imagen_principal=? WHERE id=?");
-            $stmt->bind_param("ssdsiiissi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $video, $nombre_imagen, $id);
+            $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, imagen_principal=? WHERE id=?");
+            $stmt->bind_param("ssdsiiisi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $nombre_imagen, $id);
         } else {
-            // Actualizar sin cambiar imagen
-            $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, video=? WHERE id=?");
-            $stmt->bind_param("ssdsiiisi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $video, $id);
+            $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=? WHERE id=?");
+            $stmt->bind_param("ssdsiiis", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $id);
         }
         $mensaje_exito = "Apartamento actualizado exitosamente.";
         $mensaje_error = "Error al actualizar el apartamento.";
-
     } else {
         // INSERT
         if (!$nombre_imagen) {
-            echo '<script>alert("Por favor selecciona una imagen para el nuevo apartamento."); window.location = "apartamentos.php";</script>';
+            echo '<script>alert("Por favor selecciona una imagen principal para el nuevo apartamento."); window.location = "apartamentos.php";</script>';
             exit;
         }
-        $stmt = $conn->prepare("INSERT INTO apartamentos (titulo, descripcion, precio, ubicacion, habitaciones, banos, capacidad, imagen_principal, video) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssdsiiiss", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $nombre_imagen, $video);
+        $stmt = $conn->prepare("INSERT INTO apartamentos (titulo, descripcion, precio, ubicacion, habitaciones, banos, capacidad, imagen_principal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssdsiiis", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $nombre_imagen);
         
         $mensaje_exito = "Apartamento publicado exitosamente.";
         $mensaje_error = "Error al guardar en la base de datos.";
     }
 
     if ($stmt->execute()) {
+        if (!$id) {
+            $apartamento_id = $stmt->insert_id;
+        }
+        $stmt->close();
+
+        // Procesar Galería de Imágenes
+        if (isset($_FILES['imagenes_galeria'])) {
+            $total_imagenes = count($_FILES['imagenes_galeria']['name']);
+            for ($i = 0; $i < $total_imagenes; $i++) {
+                if ($_FILES['imagenes_galeria']['error'][$i] == 0) {
+                    $tmp_name = $_FILES['imagenes_galeria']['tmp_name'][$i];
+                    $name = time() . '_gal_' . $i . '_' . $_FILES['imagenes_galeria']['name'][$i];
+                    $ruta_destino = '../../assets/img/apartamentos/' . $name;
+                    $tipo = strtolower(pathinfo($ruta_destino, PATHINFO_EXTENSION));
+                    
+                    if (in_array($tipo, ["jpg", "jpeg", "png", "gif", "webp"])) {
+                        if (move_uploaded_file($tmp_name, $ruta_destino)) {
+                            $sql_gal = "INSERT INTO galeria_apartamentos (apartamento_id, tipo, ruta) VALUES (?, 'imagen', ?)";
+                            $stmt_gal = $conn->prepare($sql_gal);
+                            $stmt_gal->bind_param("is", $apartamento_id, $name);
+                            $stmt_gal->execute();
+                            $stmt_gal->close();
+                        }
+                    }
+                }
+            }
+        }
+
+        // Procesar Galería de Videos
+        if (isset($_FILES['videos_galeria'])) {
+            $total_videos = count($_FILES['videos_galeria']['name']);
+            for ($i = 0; $i < $total_videos; $i++) {
+                if ($_FILES['videos_galeria']['error'][$i] == 0) {
+                    $tmp_name = $_FILES['videos_galeria']['tmp_name'][$i];
+                    $name = time() . '_vid_' . $i . '_' . $_FILES['videos_galeria']['name'][$i];
+                    $ruta_destino = '../../assets/video/apartamentos/' . $name;
+                    $tipo = strtolower(pathinfo($ruta_destino, PATHINFO_EXTENSION));
+                    
+                    if (in_array($tipo, ["mp4", "webm", "ogg"])) {
+                        if (move_uploaded_file($tmp_name, $ruta_destino)) {
+                            $sql_gal = "INSERT INTO galeria_apartamentos (apartamento_id, tipo, ruta) VALUES (?, 'video', ?)";
+                            $stmt_gal = $conn->prepare($sql_gal);
+                            $stmt_gal->bind_param("is", $apartamento_id, $name);
+                            $stmt_gal->execute();
+                            $stmt_gal->close();
+                        }
+                    }
+                }
+            }
+        }
+
         echo '<script>alert("' . $mensaje_exito . '"); window.location = "apartamentos.php";</script>';
+
     } else {
         echo '<script>alert("' . $mensaje_error . '"); window.location = "apartamentos.php";</script>';
+        $stmt->close();
     }
-    $stmt->close();
 
 } else {
     header("Location: apartamentos.php");

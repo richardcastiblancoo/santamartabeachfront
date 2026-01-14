@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
+    echo '<script>alert("Acceso denegado. Por favor, inicia sesión como administrador."); window.location = "../../auth/login.php";</script>';
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html class="light" lang="es">
 
@@ -118,10 +126,10 @@
             </div>
             <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800">
                 <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
-                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAOfx1jkgxwm9zlbZR0lOOKNhursPzJEX_HrEdIhkTEAmjxdc8YohVFqVhIrGODj9bhufn3wlx1TXrYwuqV35s_rxnnDGvEOZV7f8APW_tjqYTFunDTA7i61UgYWImcEh6m02qTbC1saZBlLUZ2wH2g4rt5nbidTdo36LEtRAI0YaTbfoHsaMJZuJui-uLAPbzK2uYCsjY8PmjBc757NdZ38WBJRDSJ8ffLT8urkrI3oAOo8ep6E1v19WCUenhDDx-4AtHwvTmgnSA");'></div>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM'; ?>");'></div>
                     <div class="flex flex-col overflow-hidden">
-                        <span class="text-sm font-bold truncate dark:text-white">Carlos Admin</span>
-                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate">admin@santamarta.com</span>
+                        <span class="text-sm font-bold truncate dark:text-white"><?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
+                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo $_SESSION['email']; ?></span>
                     </div>
                 </div>
             </div>

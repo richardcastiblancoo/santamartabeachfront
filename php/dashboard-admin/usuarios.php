@@ -1,3 +1,51 @@
+<?php
+session_start();
+include '../../auth/conexion_be.php';
+
+// Configuración de paginación y filtros
+$limit = 11;
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+$role_filter = isset($_GET['role']) ? $_GET['role'] : 'all';
+$search_query = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
+
+// Construir la consulta base
+$where_clause = "WHERE 1=1";
+
+if ($role_filter === 'guest') {
+    $where_clause .= " AND (rol = 'Huésped' OR rol = 'guest')";
+} elseif ($role_filter === 'admin') {
+    $where_clause .= " AND (rol = 'Admin' OR rol = 'admin')";
+}
+
+if (!empty($search_query)) {
+    $where_clause .= " AND (nombre LIKE '%$search_query%' OR apellido LIKE '%$search_query%' OR usuario LIKE '%$search_query%' OR email LIKE '%$search_query%')";
+}
+
+// Obtener total de registros para paginación
+$count_sql = "SELECT COUNT(*) as total FROM usuarios $where_clause";
+$count_result = mysqli_query($conn, $count_sql);
+$total_rows = mysqli_fetch_assoc($count_result)['total'];
+$total_pages = ceil($total_rows / $limit);
+
+// Obtener usuarios con paginación
+$sql = "SELECT * FROM usuarios $where_clause ORDER BY reg_date DESC LIMIT $limit OFFSET $offset";
+$result = mysqli_query($conn, $sql);
+
+// Contadores globales (para las pestañas)
+$total_users_sql = "SELECT COUNT(*) as count FROM usuarios";
+$total_users_res = mysqli_query($conn, $total_users_sql);
+$total_users = mysqli_fetch_assoc($total_users_res)['count'];
+
+$total_guests_sql = "SELECT COUNT(*) as count FROM usuarios WHERE rol='Huésped' OR rol='guest'";
+$total_guests_res = mysqli_query($conn, $total_guests_sql);
+$total_guests = mysqli_fetch_assoc($total_guests_res)['count'];
+
+$total_admins_sql = "SELECT COUNT(*) as count FROM usuarios WHERE rol='Admin' OR rol='admin'";
+$total_admins_res = mysqli_query($conn, $total_admins_sql);
+$total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
+?>
 <!DOCTYPE html>
 <html class="light" lang="es">
 
@@ -116,10 +164,16 @@
             </div>
             <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800">
                 <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
-                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM");'></div>
+                    <?php
+                    // Obtener datos del usuario actual de la sesión
+                    $current_user_name = isset($_SESSION['nombre']) ? $_SESSION['nombre'] . ' ' . $_SESSION['apellido'] : 'Usuario';
+                    $current_user_email = isset($_SESSION['email']) ? $_SESSION['email'] : 'correo@ejemplo.com';
+                    $current_user_img = isset($_SESSION['imagen']) && !empty($_SESSION['imagen']) ? '../../' . $_SESSION['imagen'] : 'https://ui-avatars.com/api/?name=' . urlencode($current_user_name) . '&background=random';
+                    ?>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo $current_user_img; ?>");'></div>
                     <div class="flex flex-col overflow-hidden">
-                        <span class="text-sm font-bold truncate dark:text-white">Carlos Admin</span>
-                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate">admin@santamarta.com</span>
+                        <span class="text-sm font-bold truncate dark:text-white"><?php echo htmlspecialchars($current_user_name); ?></span>
+                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo htmlspecialchars($current_user_email); ?></span>
                     </div>
                 </div>
             </div>
@@ -134,8 +188,11 @@
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
                     <div class="hidden md:flex max-w-md w-full relative">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">search</span>
-                        <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white placeholder:text-text-secondary" placeholder="Buscar por nombre, correo o rol..." type="text" />
+                        <form action="" method="GET" class="w-full relative">
+                            <input type="hidden" name="role" value="<?php echo htmlspecialchars($role_filter); ?>">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">search</span>
+                            <input name="search" value="<?php echo htmlspecialchars($search_query); ?>" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white placeholder:text-text-secondary" placeholder="Buscar por nombre, correo o rol..." type="text" />
+                        </form>
                     </div>
                     <div class="flex items-center gap-2">
                         <button class="relative size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
@@ -161,9 +218,9 @@
                 <section class="space-y-4">
                     <div class="flex flex-col sm:flex-row justify-between items-end sm:items-center border-b border-[#f0f3f4] dark:border-gray-800">
                         <nav class="flex gap-8 overflow-x-auto no-scrollbar">
-                            <button class="pb-4 text-sm font-bold text-primary border-b-2 border-primary whitespace-nowrap">Todos <span class="ml-1 px-2 py-0.5 bg-primary/10 rounded-full text-[10px]">92</span></button>
-                            <button class="pb-4 text-sm font-medium text-text-secondary hover:text-text-main dark:hover:text-white whitespace-nowrap transition-colors">Huéspedes <span class="ml-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px]">86</span></button>
-                            <button class="pb-4 text-sm font-medium text-text-secondary hover:text-text-main dark:hover:text-white whitespace-nowrap transition-colors">Administradores <span class="ml-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px]">6</span></button>
+                            <a href="?role=all" class="pb-4 text-sm font-bold <?php echo $role_filter == 'all' ? 'text-primary border-b-2 border-primary' : 'text-text-secondary hover:text-text-main dark:hover:text-white'; ?> whitespace-nowrap transition-colors">Todos <span class="ml-1 px-2 py-0.5 bg-primary/10 rounded-full text-[10px]"><?php echo $total_users; ?></span></a>
+                            <a href="?role=guest" class="pb-4 text-sm font-medium <?php echo $role_filter == 'guest' ? 'text-primary border-b-2 border-primary' : 'text-text-secondary hover:text-text-main dark:hover:text-white'; ?> whitespace-nowrap transition-colors">Huéspedes <span class="ml-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px]"><?php echo $total_guests; ?></span></a>
+                            <a href="?role=admin" class="pb-4 text-sm font-medium <?php echo $role_filter == 'admin' ? 'text-primary border-b-2 border-primary' : 'text-text-secondary hover:text-text-main dark:hover:text-white'; ?> whitespace-nowrap transition-colors">Administradores <span class="ml-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px]"><?php echo $total_admins; ?></span></a>
                         </nav>
                         <div class="pb-3 flex gap-2">
                             <button class="p-2 text-text-secondary hover:text-primary transition-colors bg-white dark:bg-card-dark border border-[#f0f3f4] dark:border-gray-800 rounded-lg shadow-sm">
@@ -187,101 +244,78 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-[#f0f3f4] dark:divide-gray-800 text-sm">
-                                    <tr class="group hover:bg-background-light dark:hover:bg-gray-800 transition-colors">
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div class="size-9 rounded-full bg-cover bg-center shrink-0 border border-gray-100 dark:border-gray-700" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBuGo_s_B3c96-GNEevJ0wwb26ABomNHRlHb_7qNVixCpCkcTAQdWrc6UxekK6s0oF4ENkAEkcGVvn3ga6cGa5fcMUrlylSYonUcNQRZIzzJg6KKIVIYk1xlz_UkzMhIlmJvH5blRsSRy82ab4U5Qog1Vz7ysbOItgghn0joazIcv-XFmSJrF9-USDCCCv8vOJsCwdq1Ps1Hz4U9lnYW9zI4_TJ8H2h-06oqOpi10QndSJuhFeBVa4Jj-kawNNggHFQLQHRDcQECZ0");'></div>
-                                                <span class="font-bold text-text-main dark:text-white">Laura Gómez</span>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-text-secondary dark:text-gray-300">laura.admin@santamarta.com</td>
-                                        <td class="px-6 py-4 text-center">
-                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 uppercase">Administrador</span>
-                                        </td>
-                                        <td class="px-6 py-4 text-text-secondary dark:text-gray-400">12 Ene 2024</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-full text-xs font-medium text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400">
-                                                <span class="size-1.5 rounded-full bg-green-600"></span>
-                                                Activo
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 text-right">
-                                            <div class="flex justify-end gap-1">
-                                                <button class="p-2 hover:bg-primary/10 text-text-secondary hover:text-primary rounded-lg transition-colors" title="Editar">
-                                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                                </button>
-                                                <button class="p-2 hover:bg-red-50 text-text-secondary hover:text-red-500 rounded-lg transition-colors" title="Dar de baja">
-                                                    <span class="material-symbols-outlined text-lg">person_remove</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="group hover:bg-background-light dark:hover:bg-gray-800 transition-colors">
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div class="size-9 rounded-full bg-cover bg-center shrink-0 border border-gray-100 dark:border-gray-700" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3jXy2e9ABdjf6vfsQA2OpYwQ7m6k4I4J0SkEl1PbnAMSbikKGICJGz7Lp3LwuvyW9Eo1U0y9dEPZcYnpjhVRG_7X62_ikh5LI8Ck5n009mufPtMJXDhVvzqn9p42Cw07OIS3xAVjSOBkcbzqopBLmbam1pDx5UWLWAsecFWnIatsTt722Ey3C0T0VcxhgdoPLb3CDogSWDQyTL43dgRoeKafZeLmvC383mMzDs8Nq94m1qvxWYITEfsfqXxMT247MkNGjNYGjnQc");'></div>
-                                                <span class="font-bold text-text-main dark:text-white">Pedro Alvarez</span>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-text-secondary dark:text-gray-300">pedro.alvarez@gmail.com</td>
-                                        <td class="px-6 py-4 text-center">
-                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300 uppercase">Huésped</span>
-                                        </td>
-                                        <td class="px-6 py-4 text-text-secondary dark:text-gray-400">15 Feb 2024</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-full text-xs font-medium text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400">
-                                                <span class="size-1.5 rounded-full bg-green-600"></span>
-                                                Activo
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 text-right">
-                                            <div class="flex justify-end gap-1">
-                                                <button class="p-2 hover:bg-primary/10 text-text-secondary hover:text-primary rounded-lg transition-colors" title="Editar">
-                                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                                </button>
-                                                <button class="p-2 hover:bg-red-50 text-text-secondary hover:text-red-500 rounded-lg transition-colors" title="Dar de baja">
-                                                    <span class="material-symbols-outlined text-lg">person_remove</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="group hover:bg-background-light dark:hover:bg-gray-800 transition-colors">
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div class="size-9 rounded-full bg-cover bg-center shrink-0 border border-gray-100 dark:border-gray-700 grayscale" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCkt-6r3iuswTFaKexpdZFqCCBrXa5Z2rQeVfODjqUm7P9qlMVu2fw2kL0IqtQi7WNI7GMZJHr7q8KCdJOxHVOK09R2anAgSSu3FcLTE_FHeaCmkaSzKJ7zjWehMtTkLZoLEC4iWD95FCTWF7b70ae1-UZDb4FczwUTdMVLDCi94shtUbbfigVvVTRTn-KSjcY2YDMdX4N3Z9PpnBq0BYGxqR2nJANxxTXqHmbVyO_sTIxAV4p9Y5NJl3rz9BEFHySButmaVDpHFZQ");'></div>
-                                                <span class="font-bold text-text-secondary dark:text-gray-400">Julián Torres</span>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-text-secondary dark:text-gray-300">julian.t@gmail.com</td>
-                                        <td class="px-6 py-4 text-center">
-                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300 uppercase">Huésped</span>
-                                        </td>
-                                        <td class="px-6 py-4 text-text-secondary dark:text-gray-400">02 Dic 2023</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-full text-xs font-medium text-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-400">
-                                                <span class="size-1.5 rounded-full bg-gray-400"></span>
-                                                Inactivo
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 text-right">
-                                            <div class="flex justify-end gap-1">
-                                                <button class="p-2 hover:bg-primary/10 text-text-secondary hover:text-primary rounded-lg transition-colors" title="Editar">
-                                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                                </button>
-                                                <button class="p-2 hover:bg-green-50 text-text-secondary hover:text-green-600 rounded-lg transition-colors" title="Activar">
-                                                    <span class="material-symbols-outlined text-lg">person_check</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <?php
+                                    if (mysqli_num_rows($result) > 0) {
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            // Manejo de la imagen
+                                            $imagen = !empty($row['imagen']) ? '../../' . $row['imagen'] : 'https://ui-avatars.com/api/?name=' . urlencode($row['nombre'] . ' ' . $row['apellido']) . '&background=random';
+
+                                            // Estilos según rol
+                                            $rol_class = ($row['rol'] == 'Admin' || $row['rol'] == 'admin') ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' : 'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300';
+
+                                            echo '
+                                            <tr class="group hover:bg-background-light dark:hover:bg-gray-800 transition-colors">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="size-11 rounded-full bg-cover bg-center shrink-0 border border-gray-100 dark:border-gray-700 shadow-sm" style="background-image: url(\'' . $imagen . '\');"></div>
+                                                        <span class="font-bold text-text-main dark:text-white">' . htmlspecialchars($row['nombre'] . ' ' . $row['apellido']) . '</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-text-secondary dark:text-gray-300">' . htmlspecialchars($row['email']) . '</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold ' . $rol_class . ' uppercase">' . htmlspecialchars($row['rol']) . '</span>
+                                                </td>
+                                                <td class="px-6 py-4 text-text-secondary dark:text-gray-400">' . date('d M Y', strtotime($row['reg_date'])) . '</td>
+                                                <td class="px-6 py-4">
+                                                    <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-full text-xs font-medium text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400">
+                                                        <span class="size-1.5 rounded-full bg-green-600"></span>
+                                                        Activo
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 text-right">
+                                                    <div class="flex justify-end gap-1">
+                                                        <button class="p-2 hover:bg-primary/10 text-text-secondary hover:text-primary rounded-lg transition-colors" title="Ver perfil" 
+                                                            onclick="openPreviewModal(' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . ')">
+                                                            <span class="material-symbols-outlined text-lg">visibility</span>
+                                                        </button>
+                                                        <button class="p-2 hover:bg-primary/10 text-text-secondary hover:text-primary rounded-lg transition-colors" title="Editar"
+                                                            onclick="openEditModal(' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . ')">
+                                                            <span class="material-symbols-outlined text-lg">edit</span>
+                                                        </button>
+                                                        <button class="p-2 hover:bg-red-50 text-text-secondary hover:text-red-500 rounded-lg transition-colors" title="Dar de baja" 
+                                                            onclick="openDeleteModal(' . $row['id'] . ')">
+                                                            <span class="material-symbols-outlined text-lg">person_remove</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            ';
+                                        }
+                                    } else {
+                                        echo '<tr><td colspan="6" class="px-6 py-4 text-center text-text-secondary">No hay usuarios registrados.</td></tr>';
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
                         <div class="px-6 py-4 border-t border-[#f0f3f4] dark:border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-                            <p class="text-xs text-text-secondary font-medium">Mostrando <span class="font-bold text-text-main dark:text-white">3</span> de <span class="font-bold text-text-main dark:text-white">92</span> usuarios</p>
+                            <p class="text-xs text-text-secondary font-medium">
+                                Mostrando <span class="font-bold text-text-main dark:text-white"><?php echo min($limit, $total_rows) > 0 ? ($offset + 1) : 0; ?></span>
+                                a <span class="font-bold text-text-main dark:text-white"><?php echo min($offset + $limit, $total_rows); ?></span>
+                                de <span class="font-bold text-text-main dark:text-white"><?php echo $total_rows; ?></span> usuarios
+                            </p>
                             <div class="flex gap-2">
-                                <button class="px-4 py-1.5 text-xs font-semibold border border-[#f0f3f4] dark:border-gray-700 rounded-lg hover:bg-background-light dark:hover:bg-gray-800 transition-colors disabled:opacity-50" disabled="">Anterior</button>
-                                <button class="px-4 py-1.5 text-xs font-semibold border border-[#f0f3f4] dark:border-gray-700 rounded-lg hover:bg-background-light dark:hover:bg-gray-800 transition-colors">Siguiente</button>
+                                <?php if ($page > 1): ?>
+                                    <a href="?page=<?php echo $page - 1; ?>&role=<?php echo $role_filter; ?>&search=<?php echo urlencode($search_query); ?>" class="px-4 py-1.5 text-xs font-semibold border border-[#f0f3f4] dark:border-gray-700 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 transition-colors">Anterior</a>
+                                <?php else: ?>
+                                    <button class="px-4 py-1.5 text-xs font-semibold border border-[#f0f3f4] dark:border-gray-700 rounded-lg text-text-secondary opacity-50 cursor-not-allowed" disabled>Anterior</button>
+                                <?php endif; ?>
+
+                                <?php if ($page < $total_pages): ?>
+                                    <a href="?page=<?php echo $page + 1; ?>&role=<?php echo $role_filter; ?>&search=<?php echo urlencode($search_query); ?>" class="px-4 py-1.5 text-xs font-semibold border border-[#f0f3f4] dark:border-gray-700 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 transition-colors">Siguiente</a>
+                                <?php else: ?>
+                                    <button class="px-4 py-1.5 text-xs font-semibold border border-[#f0f3f4] dark:border-gray-700 rounded-lg text-text-secondary opacity-50 cursor-not-allowed" disabled>Siguiente</button>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -289,52 +323,311 @@
             </main>
         </div>
         <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="add-user-modal">
-            <div class="bg-card-light dark:bg-card-dark w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div class="bg-card-light dark:bg-card-dark w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
+                <form action="guardar_usuario_be.php" method="POST" enctype="multipart/form-data">
+                    <div class="p-6 border-b border-[#f0f3f4] dark:border-gray-800 flex justify-between items-center sticky top-0 bg-card-light dark:bg-card-dark z-10">
+                        <h3 class="text-xl font-bold text-text-main dark:text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">person_add</span>
+                            Nuevo Usuario
+                        </h3>
+                        <a class="text-text-secondary hover:text-primary transition-colors" href="#">
+                            <span class="material-symbols-outlined">close</span>
+                        </a>
+                    </div>
+                    <div class="p-8 space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Nombre</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">person</span>
+                                    <input name="nombre" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="Nombre" type="text" required />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Apellido</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">person</span>
+                                    <input name="apellido" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="Apellido" type="text" required />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Usuario</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">account_circle</span>
+                                    <input name="usuario" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="Usuario" type="text" required />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Correo Electrónico</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">mail</span>
+                                    <input name="email" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="juan@ejemplo.com" type="email" required />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Contraseña</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">lock</span>
+                                    <input name="password" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="******" type="password" required />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Asignar Rol</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">badge</span>
+                                    <select name="rol" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white appearance-none cursor-pointer">
+                                        <option value="Admin">Administrador</option>
+                                    </select>
+                                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">expand_more</span>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Imagen de Perfil</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">image</span>
+                                    <input name="imagen" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" type="file" accept="image/*" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-background-light dark:bg-gray-800/50 border-t border-[#f0f3f4] dark:border-gray-800 flex justify-end gap-3 sticky bottom-0 z-10">
+                        <a class="px-6 py-2.5 text-sm font-bold text-text-secondary hover:text-text-main transition-colors" href="#">Cancelar</a>
+                        <button type="submit" class="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all">Guardar Usuario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="edit-user-modal">
+            <div class="bg-card-light dark:bg-card-dark w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
+                <form action="editar_usuario_be.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="id" id="edit-id">
+                    <div class="p-6 border-b border-[#f0f3f4] dark:border-gray-800 flex justify-between items-center sticky top-0 bg-card-light dark:bg-card-dark z-10">
+                        <h3 class="text-xl font-bold text-text-main dark:text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">edit</span>
+                            Editar Usuario
+                        </h3>
+                        <a class="text-text-secondary hover:text-primary transition-colors cursor-pointer" onclick="closeEditModal()">
+                            <span class="material-symbols-outlined">close</span>
+                        </a>
+                    </div>
+                    <div class="p-8 space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Nombre</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">person</span>
+                                    <input name="nombre" id="edit-nombre" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="Nombre" type="text" required />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Apellido</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">person</span>
+                                    <input name="apellido" id="edit-apellido" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="Apellido" type="text" required />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Usuario</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">account_circle</span>
+                                    <input name="usuario" id="edit-usuario" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="Usuario" type="text" required />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Correo Electrónico</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">mail</span>
+                                    <input name="email" id="edit-email" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="juan@ejemplo.com" type="email" required />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Nueva Contraseña (Opcional)</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">lock</span>
+                                    <input name="password" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="******" type="password" />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Asignar Rol</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">badge</span>
+                                    <select name="rol" id="edit-rol" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white appearance-none cursor-pointer">
+                                        <option value="Admin">Administrador</option>
+                                    </select>
+                                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">expand_more</span>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Cambiar Imagen</label>
+                                <div class="flex items-center gap-4">
+                                    <div id="edit-image-preview" class="size-12 rounded-full bg-cover bg-center border border-gray-200 dark:border-gray-700 shrink-0"></div>
+                                    <div class="relative flex-1">
+                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">image</span>
+                                        <input name="imagen" class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" type="file" accept="image/*" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-background-light dark:bg-gray-800/50 border-t border-[#f0f3f4] dark:border-gray-800 flex justify-end gap-3 sticky bottom-0 z-10">
+                        <a class="px-6 py-2.5 text-sm font-bold text-text-secondary hover:text-text-main transition-colors cursor-pointer" onclick="closeEditModal()">Cancelar</a>
+                        <button type="submit" class="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all">Actualizar Usuario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="preview-user-modal">
+            <div class="bg-card-light dark:bg-card-dark w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
                 <div class="p-6 border-b border-[#f0f3f4] dark:border-gray-800 flex justify-between items-center">
                     <h3 class="text-xl font-bold text-text-main dark:text-white flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary">person_add</span>
-                        Nuevo Administrador
+                        <span class="material-symbols-outlined text-primary">visibility</span>
+                        Detalles del Usuario
                     </h3>
-                    <a class="text-text-secondary hover:text-primary transition-colors" href="#">
+                    <a class="text-text-secondary hover:text-primary transition-colors cursor-pointer" onclick="closePreviewModal()">
                         <span class="material-symbols-outlined">close</span>
                     </a>
                 </div>
-                <div class="p-8 space-y-6">
-                    <div class="grid grid-cols-1 gap-6">
-                        <div>
-                            <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Nombre Completo</label>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">person</span>
-                                <input class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="Ej: Juan Sebastian Pérez" type="text" />
+                <div class="p-8 flex flex-col items-center">
+                    <div id="preview-image" class="size-24 rounded-full bg-cover bg-center border-4 border-white shadow-lg mb-4"></div>
+                    <h2 id="preview-name" class="text-2xl font-bold text-text-main dark:text-white mb-1"></h2>
+                    <span id="preview-role" class="px-3 py-1 rounded-full text-xs font-bold uppercase mb-6"></span>
+
+                    <div class="w-full space-y-4">
+                        <div class="flex items-center gap-4 p-3 bg-background-light dark:bg-gray-800 rounded-lg">
+                            <div class="bg-primary/10 p-2 rounded-lg text-primary">
+                                <span class="material-symbols-outlined">mail</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-secondary">Correo Electrónico</p>
+                                <p id="preview-email" class="text-sm font-medium text-text-main dark:text-white"></p>
                             </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Correo Electrónico</label>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">mail</span>
-                                <input class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white transition-shadow" placeholder="juan@ejemplo.com" type="email" />
+                        <div class="flex items-center gap-4 p-3 bg-background-light dark:bg-gray-800 rounded-lg">
+                            <div class="bg-primary/10 p-2 rounded-lg text-primary">
+                                <span class="material-symbols-outlined">account_circle</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-text-secondary">Usuario</p>
+                                <p id="preview-username" class="text-sm font-medium text-text-main dark:text-white"></p>
                             </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-bold text-text-main dark:text-white mb-2">Asignar Rol</label>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">badge</span>
-                                <select class="w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm text-text-main dark:text-white appearance-none cursor-pointer">
-                                    <option value="guest">Huésped</option>
-                                    <option value="admin">Administrador</option>
-                                </select>
-                                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">expand_more</span>
+                        <div class="flex items-center gap-4 p-3 bg-background-light dark:bg-gray-800 rounded-lg">
+                            <div class="bg-primary/10 p-2 rounded-lg text-primary">
+                                <span class="material-symbols-outlined">calendar_today</span>
                             </div>
-                            <p class="text-[11px] text-text-secondary mt-2">Los administradores tienen acceso total al panel de control.</p>
+                            <div>
+                                <p class="text-xs text-text-secondary">Fecha de Registro</p>
+                                <p id="preview-date" class="text-sm font-medium text-text-main dark:text-white"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-background-light dark:bg-gray-800/50 border-t border-[#f0f3f4] dark:border-gray-800 flex justify-end gap-3">
-                    <a class="px-6 py-2.5 text-sm font-bold text-text-secondary hover:text-text-main transition-colors" href="#">Cancelar</a>
-                    <button class="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all">Crear Administrador</button>
+                <div class="p-6 bg-background-light dark:bg-gray-800/50 border-t border-[#f0f3f4] dark:border-gray-800 flex justify-center">
+                    <button class="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-bold rounded-lg transition-all" onclick="closePreviewModal()">Cerrar</button>
                 </div>
             </div>
         </div>
+
+        <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="delete-user-modal">
+            <div class="bg-card-light dark:bg-card-dark w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+                <div class="p-6 text-center space-y-4">
+                    <div class="size-14 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto">
+                        <span class="material-symbols-outlined text-3xl">warning</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-text-main dark:text-white mb-2">¿Eliminar Usuario?</h3>
+                        <p class="text-text-secondary text-sm">Esta acción no se puede deshacer. El usuario y todos sus datos serán eliminados permanentemente.</p>
+                    </div>
+                </div>
+                <div class="p-6 bg-background-light dark:bg-gray-800/50 border-t border-[#f0f3f4] dark:border-gray-800 flex justify-center gap-3">
+                    <button class="px-6 py-2.5 text-sm font-bold text-text-secondary hover:text-text-main transition-colors" onclick="closeDeleteModal()">Cancelar</button>
+                    <a id="confirm-delete-btn" href="#" class="px-6 py-2.5 bg-red-500 hover:bg-red-600 text-white text-sm font-bold rounded-lg shadow-lg shadow-red-500/30 transition-all">Eliminar</a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function openDeleteModal(id) {
+                const modal = document.getElementById('delete-user-modal');
+                const confirmBtn = document.getElementById('confirm-delete-btn');
+                confirmBtn.href = `eliminar_usuario_be.php?id=${id}`;
+                modal.classList.remove('hidden');
+                modal.style.display = 'flex';
+            }
+
+            function closeDeleteModal() {
+                const modal = document.getElementById('delete-user-modal');
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+            }
+
+            function openEditModal(data) {
+                document.getElementById('edit-id').value = data.id;
+                document.getElementById('edit-nombre').value = data.nombre;
+                document.getElementById('edit-apellido').value = data.apellido;
+                document.getElementById('edit-usuario').value = data.usuario;
+                document.getElementById('edit-email').value = data.email;
+
+                // Seleccionar el rol correcto
+                const rolSelect = document.getElementById('edit-rol');
+                const rol = data.rol.charAt(0).toUpperCase() + data.rol.slice(1).toLowerCase(); // Capitalizar
+                for (let i = 0; i < rolSelect.options.length; i++) {
+                    if (rolSelect.options[i].value.toLowerCase() === data.rol.toLowerCase()) {
+                        rolSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+
+                // Previsualizar imagen actual
+                const imagenUrl = data.imagen ? '../../' + data.imagen : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.nombre + ' ' + data.apellido) + '&background=random';
+                document.getElementById('edit-image-preview').style.backgroundImage = `url('${imagenUrl}')`;
+
+                const modal = document.getElementById('edit-user-modal');
+                modal.classList.remove('hidden');
+                modal.style.display = 'flex';
+            }
+
+            function closeEditModal() {
+                const modal = document.getElementById('edit-user-modal');
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+            }
+
+            function openPreviewModal(data) {
+                document.getElementById('preview-name').textContent = data.nombre + ' ' + data.apellido;
+                document.getElementById('preview-email').textContent = data.email;
+                document.getElementById('preview-username').textContent = data.usuario;
+                document.getElementById('preview-date').textContent = new Date(data.reg_date).toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // Imagen
+                const imagenUrl = data.imagen ? '../../' + data.imagen : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.nombre + ' ' + data.apellido) + '&background=random';
+                document.getElementById('preview-image').style.backgroundImage = `url('${imagenUrl}')`;
+
+                // Rol y estilos
+                const roleBadge = document.getElementById('preview-role');
+                roleBadge.textContent = data.rol;
+                if (data.rol.toLowerCase() === 'admin') {
+                    roleBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase mb-6 bg-blue-100 text-blue-700';
+                } else {
+                    roleBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase mb-6 bg-gray-100 text-gray-700';
+                }
+
+                const modal = document.getElementById('preview-user-modal');
+                modal.classList.remove('hidden');
+                modal.style.display = 'flex';
+            }
+
+            function closePreviewModal() {
+                const modal = document.getElementById('preview-user-modal');
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+            }
+        </script>
     </div>
 
 </body>
