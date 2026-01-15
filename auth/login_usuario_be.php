@@ -22,6 +22,7 @@ if (mysqli_num_rows($validar_login) > 0) {
                 $_SESSION['email'] = $row['email'];
                 $_SESSION['imagen'] = $row['imagen'];
                 $_SESSION['rol'] = $rol;
+                $_SESSION['tema'] = isset($row['tema']) ? $row['tema'] : '#13a4ec';
                 
                 if ($rol == 'Admin') {
             header("location: ../php/dashboard-admin/dashboard.php");

@@ -109,6 +109,13 @@ try {
     // Ignorar error si la columna ya existe
 }
 
+// Intentar añadir la columna 'tema' si la tabla ya existía sin ella
+try {
+    $conn->query("ALTER TABLE usuarios ADD COLUMN tema VARCHAR(20) DEFAULT '#13a4ec' AFTER imagen");
+} catch (Exception $e) {
+    // Ignorar error si la columna ya existe
+}
+
 // Verificar si existe el usuario admin por defecto
 $usuario_admin = "admin";
 $email_admin = "admin@santamarta.com";

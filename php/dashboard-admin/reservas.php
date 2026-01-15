@@ -24,8 +24,8 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#13a4ec",
-                        "primary-hover": "#0e8ac7",
+                        "primary": "<?php echo isset($_SESSION['tema']) ? $_SESSION['tema'] : '#13a4ec'; ?>",
+                        "primary-hover": "<?php echo isset($_SESSION['tema']) ? $_SESSION['tema'] : '#0e8ac7'; ?>",
                         "background-light": "#f6f7f8",
                         "background-dark": "#101c22",
                         "card-light": "#ffffff",

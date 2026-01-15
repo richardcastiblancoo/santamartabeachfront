@@ -86,6 +86,18 @@ if (isset($_POST['update_username'])) {
     }
 }
 
+if (isset($_POST['update_theme'])) {
+    $theme_color = $_POST['theme_color'];
+    $sql_update = "UPDATE usuarios SET tema = '$theme_color' WHERE id = '$id_usuario'";
+    
+    if (mysqli_query($conn, $sql_update)) {
+        $_SESSION['tema'] = $theme_color;
+        echo '<script>alert("Tema actualizado."); window.location = "configuracion.php";</script>';
+    } else {
+        echo '<script>alert("Error al actualizar el tema."); window.location = "configuracion.php";</script>';
+    }
+}
+
 if (isset($_POST['update_password'])) {
     $current_pass = $_POST['current_password'];
     $new_pass = $_POST['new_password'];

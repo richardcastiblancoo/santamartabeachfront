@@ -23,13 +23,13 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#13a4ec",
-                        "primary-hover": "#0e8ac7",
+                        "primary": "<?php echo isset($_SESSION['tema']) ? $_SESSION['tema'] : '#13a4ec'; ?>",
+                        "primary-hover": "<?php echo isset($_SESSION['tema']) ? $_SESSION['tema'] : '#0e8ac7'; ?>", // Simple fallback, ideally calculate darken
                         "background-light": "#f6f7f8",
                         "background-dark": "#101c22",
                         "card-light": "#ffffff",
                         "card-dark": "#1a2c35",
-                        "text-main": "#111618",
+                        "text-main": "#4ab5dfff",
                         "text-secondary": "#617c89",
                     },
                     fontFamily: {
@@ -135,7 +135,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Ajustes de Cuenta</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
-                    
+
                 </div>
             </header>
             <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth bg-background-light dark:bg-background-dark">
@@ -146,12 +146,8 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                             <span class="material-symbols-outlined">person</span>
                             <span class="text-sm font-semibold">Perfil Personal</span>
                         </button>
-                        <button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary hover:bg-card-light dark:hover:bg-card-dark hover:text-text-main transition-colors group" id="btn-appearance" onclick="showTab('appearance')">
-                            <span class="material-symbols-outlined group-hover:text-primary transition-colors">palette</span>
-                            <span class="text-sm font-medium">Personalización</span>
-                        </button>
-                        <button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary hover:bg-card-light dark:hover:bg-card-dark hover:text-text-main transition-colors group" id="btn-security" onclick="showTab('security')">
-                            <span class="material-symbols-outlined group-hover:text-primary transition-colors">lock</span>
+                        <button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary hover:bg-card-light dark:hover:bg-card-dark hover:text-primary dark:hover:text-white transition-colors group" id="btn-security" onclick="showTab('security')">
+                            <span class="material-symbols-outlined group-hover:text-primary dark:group-hover:text-white transition-colors">lock</span>
                             <span class="text-sm font-medium">Seguridad</span>
                         </button>
                     </div>
@@ -300,15 +296,30 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                                     <input type="hidden" name="update_password" value="1">
                                     <div class="space-y-2">
                                         <label class="block text-sm font-medium text-text-main dark:text-white">Contraseña Actual</label>
-                                        <input name="current_password" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="••••••••" type="password" required />
+                                        <div class="relative">
+                                            <input id="current_password" name="current_password" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-4 pr-10 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="••••••••" type="password" required />
+                                            <button type="button" onclick="togglePassword('current_password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-main">
+                                                <span class="material-symbols-outlined text-lg">visibility</span>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="space-y-2">
                                         <label class="block text-sm font-medium text-text-main dark:text-white">Nueva Contraseña</label>
-                                        <input name="new_password" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Mínimo 8 caracteres" type="password" required />
+                                        <div class="relative">
+                                            <input id="new_password" name="new_password" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-4 pr-10 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Mínimo 8 caracteres" type="password" required />
+                                            <button type="button" onclick="togglePassword('new_password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-main">
+                                                <span class="material-symbols-outlined text-lg">visibility</span>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="space-y-2">
                                         <label class="block text-sm font-medium text-text-main dark:text-white">Confirmar Nueva Contraseña</label>
-                                        <input name="confirm_password" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Repite la contraseña" type="password" required />
+                                        <div class="relative">
+                                            <input id="confirm_password" name="confirm_password" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-4 pr-10 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Repite la contraseña" type="password" required />
+                                            <button type="button" onclick="togglePassword('confirm_password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-main">
+                                                <span class="material-symbols-outlined text-lg">visibility</span>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="pt-2">
                                         <button class="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg font-semibold transition-colors" type="submit">Actualizar Contraseña</button>
@@ -363,7 +374,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
             const input = document.getElementById(inputId);
             const button = input.nextElementSibling;
             const icon = button.querySelector('span');
-            
+
             if (input.type === "password") {
                 input.type = "text";
                 icon.textContent = "visibility_off";

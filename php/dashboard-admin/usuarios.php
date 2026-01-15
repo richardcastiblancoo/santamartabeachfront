@@ -47,7 +47,7 @@ $total_admins_res = mysqli_query($conn, $total_admins_sql);
 $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
 ?>
 <!DOCTYPE html>
-<html class="light" lang="es">
+<html class="dark" lang="es">
 
 <head>
     <meta charset="utf-8" />
@@ -64,8 +64,8 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#13a4ec",
-                        "primary-hover": "#0e8ac7",
+                        "primary": "<?php echo isset($_SESSION['tema']) ? $_SESSION['tema'] : '#13a4ec'; ?>",
+                        "primary-hover": "<?php echo isset($_SESSION['tema']) ? $_SESSION['tema'] : '#0e8ac7'; ?>",
                         "background-light": "#f6f7f8",
                         "background-dark": "#101c22",
                         "card-light": "#ffffff",
@@ -164,16 +164,10 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
             </div>
             <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800">
                 <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
-                    <?php
-                    // Obtener datos del usuario actual de la sesión
-                    $current_user_name = isset($_SESSION['nombre']) ? $_SESSION['nombre'] . ' ' . $_SESSION['apellido'] : 'Usuario';
-                    $current_user_email = isset($_SESSION['email']) ? $_SESSION['email'] : 'correo@ejemplo.com';
-                    $current_user_img = isset($_SESSION['imagen']) && !empty($_SESSION['imagen']) ? '../../' . $_SESSION['imagen'] : 'https://ui-avatars.com/api/?name=' . urlencode($current_user_name) . '&background=random';
-                    ?>
-                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo $current_user_img; ?>");'></div>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['nombre'] . ' ' . $_SESSION['apellido']) . '&background=random'; ?>");'></div>
                     <div class="flex flex-col overflow-hidden">
-                        <span class="text-sm font-bold truncate dark:text-white"><?php echo htmlspecialchars($current_user_name); ?></span>
-                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo htmlspecialchars($current_user_email); ?></span>
+                        <span class="text-sm font-bold truncate dark:text-white"><?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
+                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo $_SESSION['email']; ?></span>
                     </div>
                 </div>
             </div>
@@ -187,19 +181,6 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Gestión de Usuarios</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
-                    <div class="hidden md:flex max-w-md w-full relative">
-                        <form action="" method="GET" class="w-full relative">
-                            <input type="hidden" name="role" value="<?php echo htmlspecialchars($role_filter); ?>">
-                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">search</span>
-                            <input name="search" value="<?php echo htmlspecialchars($search_query); ?>" class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white placeholder:text-text-secondary" placeholder="Buscar por nombre, correo o rol..." type="text" />
-                        </form>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button class="relative size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
-                            <span class="material-symbols-outlined">notifications</span>
-                            <span class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border border-white dark:border-gray-900"></span>
-                        </button>
-                    </div>
                 </div>
             </header>
             <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 scroll-smooth">
@@ -222,8 +203,15 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                             <a href="?role=guest" class="pb-4 text-sm font-medium <?php echo $role_filter == 'guest' ? 'text-primary border-b-2 border-primary' : 'text-text-secondary hover:text-text-main dark:hover:text-white'; ?> whitespace-nowrap transition-colors">Huéspedes <span class="ml-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px]"><?php echo $total_guests; ?></span></a>
                             <a href="?role=admin" class="pb-4 text-sm font-medium <?php echo $role_filter == 'admin' ? 'text-primary border-b-2 border-primary' : 'text-text-secondary hover:text-text-main dark:hover:text-white'; ?> whitespace-nowrap transition-colors">Administradores <span class="ml-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px]"><?php echo $total_admins; ?></span></a>
                         </nav>
-                        <div class="pb-3 flex gap-2">
-                            <button class="p-2 text-text-secondary hover:text-primary transition-colors bg-white dark:bg-card-dark border border-[#f0f3f4] dark:border-gray-800 rounded-lg shadow-sm">
+                        <div class="pb-3 flex gap-2 items-center flex-1 justify-end">
+                            <div class="flex max-w-md w-full relative">
+                                <form action="" method="GET" class="w-full relative">
+                                    <input type="hidden" name="role" value="<?php echo htmlspecialchars($role_filter); ?>">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">search</span>
+                                    <input id="search_input" name="search" value="<?php echo htmlspecialchars($search_query); ?>" class="w-full bg-white dark:bg-card-dark border border-[#f0f3f4] dark:border-gray-800 rounded-lg h-10 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white placeholder:text-text-secondary" placeholder="Buscar por nombre, correo o rol..." type="text" />
+                                </form>
+                            </div>
+                            <button class="p-2 text-text-secondary hover:text-primary transition-colors bg-white dark:bg-card-dark border border-[#f0f3f4] dark:border-gray-800 rounded-lg shadow-sm h-10 w-10 flex items-center justify-center">
                                 <span class="material-symbols-outlined text-xl">filter_list</span>
                             </button>
                         </div>
@@ -235,6 +223,7 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                             <table class="w-full text-left border-collapse min-w-[800px]">
                                 <thead>
                                     <tr class="bg-background-light dark:bg-gray-800/50 text-text-secondary dark:text-gray-400 text-xs uppercase tracking-wider">
+                                        <th class="px-6 py-4 font-semibold">ID</th>
                                         <th class="px-6 py-4 font-semibold">Nombre</th>
                                         <th class="px-6 py-4 font-semibold">Correo</th>
                                         <th class="px-6 py-4 font-semibold text-center">Rol</th>
@@ -248,13 +237,14 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                                     if (mysqli_num_rows($result) > 0) {
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             // Manejo de la imagen
-                                            $imagen = !empty($row['imagen']) ? '../../' . $row['imagen'] : 'https://ui-avatars.com/api/?name=' . urlencode($row['nombre'] . ' ' . $row['apellido']) . '&background=random';
+                                            $imagen = !empty($row['imagen']) ? (strpos($row['imagen'], 'assets/') === 0 ? '../../' . $row['imagen'] : '../../assets/img/usuarios/' . $row['imagen']) : 'https://ui-avatars.com/api/?name=' . urlencode($row['nombre'] . ' ' . $row['apellido']) . '&background=random';
 
                                             // Estilos según rol
                                             $rol_class = ($row['rol'] == 'Admin' || $row['rol'] == 'admin') ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' : 'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300';
 
                                             echo '
                                             <tr class="group hover:bg-background-light dark:hover:bg-gray-800 transition-colors">
+                                                <td class="px-6 py-4 text-text-secondary dark:text-gray-400">#' . $row['id'] . '</td>
                                                 <td class="px-6 py-4">
                                                     <div class="flex items-center gap-3">
                                                         <div class="size-11 rounded-full bg-cover bg-center shrink-0 border border-gray-100 dark:border-gray-700 shadow-sm" style="background-image: url(\'' . $imagen . '\');"></div>
@@ -548,6 +538,30 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
         </div>
 
         <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('search_input');
+                if (searchInput) {
+                    searchInput.addEventListener('keyup', function() {
+                        let query = this.value;
+                        let role = "<?php echo $role_filter; ?>";
+                        
+                        let formData = new FormData();
+                        formData.append('search', query);
+                        formData.append('role', role);
+                        
+                        fetch('buscar_usuarios_be.php', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.text())
+                        .then(data => {
+                            document.querySelector('tbody').innerHTML = data;
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+                }
+            });
+
             function openDeleteModal(id) {
                 const modal = document.getElementById('delete-user-modal');
                 const confirmBtn = document.getElementById('confirm-delete-btn');
@@ -580,7 +594,10 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                 }
 
                 // Previsualizar imagen actual
-                const imagenUrl = data.imagen ? '../../' + data.imagen : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.nombre + ' ' + data.apellido) + '&background=random';
+                let imagenUrl = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.nombre + ' ' + data.apellido) + '&background=random';
+                if (data.imagen) {
+                    imagenUrl = data.imagen.startsWith('assets/') ? '../../' + data.imagen : '../../assets/img/usuarios/' + data.imagen;
+                }
                 document.getElementById('edit-image-preview').style.backgroundImage = `url('${imagenUrl}')`;
 
                 const modal = document.getElementById('edit-user-modal');
@@ -605,7 +622,10 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                 });
 
                 // Imagen
-                const imagenUrl = data.imagen ? '../../' + data.imagen : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.nombre + ' ' + data.apellido) + '&background=random';
+                let imagenUrl = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.nombre + ' ' + data.apellido) + '&background=random';
+                if (data.imagen) {
+                    imagenUrl = data.imagen.startsWith('assets/') ? '../../' + data.imagen : '../../assets/img/usuarios/' + data.imagen;
+                }
                 document.getElementById('preview-image').style.backgroundImage = `url('${imagenUrl}')`;
 
                 // Rol y estilos
