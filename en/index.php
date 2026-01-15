@@ -2,7 +2,7 @@
 <html class="light" lang="en">
 
 <head>
-    
+
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta name="description" content="Live the beachfront experience. The best apartments at Santamartabeachfront await you. Wake up to the sound of the waves.">
@@ -373,63 +373,96 @@
     <!-- apartamento -->
     <section class="py-20 bg-[#101c22]" id="apartments">
         <div class="px-6 md:px-20 mb-10 text-center">
-            <h2 class="text-3xl font-bold text-white mb-2">Featured Apartment</h2>
-            <p class="text-gray-400 text-sm">Our best property for an unforgettable stay</p>
+            <h2 class="text-3xl font-bold text-white mb-2">Featured Apartments</h2>
+            <p class="text-gray-400 text-sm">Our best properties for an unforgettable stay</p>
         </div>
 
-        <div class="flex justify-center px-6 md:px-20">
-            <article class="max-w-[360px] w-full bg-[#1e2930]/40 backdrop-blur-md rounded-3xl overflow-hidden shadow-2xl group border border-white/10 transition-all duration-300 hover:border-blue-500/30">
+        <div class="flex flex-wrap justify-center gap-6 px-6 md:px-20">
+            <?php
+            // Adjust connection path depending on where it is included
+            $ruta_conexion = 'auth/conexion_be.php';
+            if (!file_exists($ruta_conexion)) {
+                $ruta_conexion = '../auth/conexion_be.php';
+                if (!file_exists($ruta_conexion)) {
+                    $ruta_conexion = '../../auth/conexion_be.php';
+                }
+            }
 
-                <div class="relative h-60 overflow-hidden">
-                    <div class="absolute top-3 right-3 z-10 bg-[#101c22]/80 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold text-white flex items-center gap-1 border border-white/5">
-                        <span class="material-symbols-outlined text-yellow-500 text-xs" style="font-variation-settings: 'FILL' 1;">star</span> 5.0
-                    </div>
+            include_once $ruta_conexion;
 
-                    <div class="h-full w-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
-                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDhr-fja2E9oqdW3FeI503YhZXCPEnOJ34yXhATmDRax6RvUtXR9_eoJUbYx6EnOIEBRlfT-n5Lm7cAmW4TdhEEg2CZTdot2tDAeJVpKdZFVPa2mr_j_H0Rr1Ch8-atttcHQXDqxmq88aXJm6kKarN2geXSWHwJTwm9KKqowzPZTLx_CDcwuyj5QbBGTsy5nFJtSVhcea4WvOFsS-dRRyjJDI8m1dEnYEeSgIcv6YlxLk2VrCukZJSRiVae4DykJUmwqInWo07FO3U');">
-                    </div>
+            $sql = "SELECT a.*, COALESCE(AVG(r.calificacion), 0) as promedio_calificacion 
+                FROM apartamentos a 
+                LEFT JOIN resenas r ON a.id = r.apartamento_id 
+                GROUP BY a.id 
+                ORDER BY a.fecha_creacion DESC LIMIT 6";
+            $result = $conn->query($sql);
 
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#101c22]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
-                        <button class="w-full bg-blue-600 text-white font-bold py-2 rounded-xl text-xs uppercase tracking-wider shadow-lg">
-                            Book Now
-                        </button>
-                    </div>
-                </div>
+            if ($result && $result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+            ?>
+                    <article class="max-w-[360px] w-full bg-[#1e2930]/40 backdrop-blur-md rounded-3xl overflow-hidden shadow-2xl group border border-white/10 transition-all duration-300 hover:border-blue-500/30">
 
-                <div class="p-6">
-                    <div class="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-1">Reserva del Mar</div>
-                    <h3 class="text-xl font-bold text-white mb-2">Luxury Family Suite</h3>
-                    <p class="text-gray-400 text-xs mb-6 leading-relaxed line-clamp-2">
-                        Luxury in every detail. Gourmet kitchen, private terrace with ocean views, and premium finishes.
-                    </p>
+                        <div class="relative h-60 overflow-hidden">
+                            <div class="absolute top-3 right-3 z-10 bg-[#101c22]/80 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold text-white flex items-center gap-1 border border-white/5">
+                                <span class="material-symbols-outlined text-yellow-500 text-xs" style="font-variation-settings: 'FILL' 1;">star</span> <?php echo number_format($row['promedio_calificacion'], 1); ?>
+                            </div>
 
-                    <div class="grid grid-cols-3 gap-2 text-[10px] text-gray-400 mb-6">
-                        <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
-                            <span class="material-symbols-outlined text-blue-400 text-lg">bed</span>
-                            <span>2 Bed</span>
+                            <?php
+                            // Use absolute path from server root to avoid issues with includes
+                            $ruta_web_img = '/assets/img/apartamentos/' . $row['imagen_principal'];
+                            ?>
+
+                            <div class="h-full w-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+                                style="background-image: url('<?php echo $ruta_web_img; ?>');">
+                            </div>
+
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#101c22]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
+                                <button class="w-full bg-blue-600 text-white font-bold py-2 rounded-xl text-xs uppercase tracking-wider shadow-lg">
+                                    Book Now
+                                </button>
+                            </div>
                         </div>
-                        <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
-                            <span class="material-symbols-outlined text-blue-400 text-lg">shower</span>
-                            <span>2 Bath</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
-                            <span class="material-symbols-outlined text-blue-400 text-lg">groups</span>
-                            <span>Sleeps 5</span>
-                        </div>
-                    </div>
 
-                    <div class="flex items-center justify-between pt-5 border-t border-white/5">
-                        <div>
-                            <span class="text-xl font-black text-white">$210</span>
-                            <span class="text-gray-500 text-[10px]">/night</span>
+                        <div class="p-6">
+                            <div class="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-1"><?php echo $row['ubicacion']; ?></div>
+                            <h3 class="text-xl font-bold text-white mb-2"><?php echo $row['titulo']; ?></h3>
+                            <p class="text-gray-400 text-xs mb-6 leading-relaxed line-clamp-2">
+                                <?php echo $row['descripcion']; ?>
+                            </p>
+
+                            <div class="grid grid-cols-3 gap-2 text-[10px] text-gray-400 mb-6">
+                                <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
+                                    <span class="material-symbols-outlined text-blue-400 text-lg">bed</span>
+                                    <span><?php echo $row['habitaciones']; ?> Bed</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
+                                    <span class="material-symbols-outlined text-blue-400 text-lg">shower</span>
+                                    <span><?php echo $row['banos']; ?> Bath</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
+                                    <span class="material-symbols-outlined text-blue-400 text-lg">groups</span>
+                                    <span><?php echo $row['capacidad']; ?> Guests</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-5 border-t border-white/5">
+                                <div>
+                                    <span class="text-xl font-black text-white">$<?php echo number_format($row['precio'], 0, ',', '.'); ?></span>
+                                    <span class="text-gray-500 text-[10px]">/night</span>
+                                </div>
+                                <a href="/php/reserva-apartamento/apartamento.php?id=<?php echo $row['id']; ?>"
+                                    class="bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white px-4 py-2 rounded-lg font-bold text-[11px] transition-all">
+                                    View Details
+                                </a>
+                            </div>
                         </div>
-                        <a href="/php/reserva-apartamento/apartamento.php"
-                            class="bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white px-4 py-2 rounded-lg font-bold text-[11px] transition-all">
-                            View Details
-                        </a>
-                    </div>
-                </div>
-            </article>
+                    </article>
+            <?php
+                }
+            } else {
+                echo '<p class="text-gray-400 w-full text-center">No apartments available at the moment.</p>';
+            }
+            ?>
         </div>
     </section>
 

@@ -40,6 +40,8 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -160,6 +162,10 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Gestión de PQR</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
+                    <button id="start-tour-btn" class="flex items-center justify-center gap-2 bg-white dark:bg-gray-800 border border-[#f0f3f4] dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white px-3 py-1.5 rounded-lg font-semibold transition-all shadow-sm text-sm">
+                        <span class="material-symbols-outlined text-lg">help</span>
+                        <span class="hidden sm:inline">Ayuda</span>
+                    </button>
                     <div class="flex items-center gap-2 relative">
                         <button id="notification-btn" class="relative size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors" onclick="toggleNotifications()">
                             <span class="material-symbols-outlined">notifications</span>
@@ -645,6 +651,31 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
                     respuestasList.innerHTML = '<p class="text-center text-xs text-red-500 py-4">Error al cargar la conversación.</p>';
                 });
         }
+
+        // Driver.js Tour
+        document.addEventListener('DOMContentLoaded', function() {
+            const driver = window.driver.js.driver;
+
+            const driverObj = driver({
+                showProgress: true,
+                nextBtnText: 'Siguiente',
+                prevBtnText: 'Anterior',
+                doneBtnText: 'Finalizar',
+                steps: [
+                    { element: 'header h2', popover: { title: 'Gestión de PQR', description: 'Bienvenido al panel de control de Peticiones, Quejas y Reclamos. Aquí podrás gestionar toda la comunicación con los usuarios.' } },
+                    { element: '#notification-btn', popover: { title: 'Notificaciones', description: 'Recibe alertas en tiempo real cuando lleguen nuevas solicitudes.' } },
+                    { element: 'button[onclick="location.reload()"]', popover: { title: 'Actualizar Lista', description: 'Pulsa aquí para refrescar la lista y buscar nuevas solicitudes manualmente.' } },
+                    { element: '.flex.gap-2.mb-4.overflow-x-auto', popover: { title: 'Filtros de Estado', description: 'Navega rápidamente entre solicitudes Pendientes, En Progreso o Resueltas.' } },
+                    { element: 'select', popover: { title: 'Filtro por Tipo', description: 'Filtra específicamente por Peticiones, Quejas o Reclamos según necesites.' } },
+                    { element: '.divide-y', popover: { title: 'Bandeja de Entrada', description: 'Aquí encontrarás todas las solicitudes. Haz clic en cualquier tarjeta para ver el detalle completo.' } },
+                    { element: '.lg\\:w-2\\/5 + div', popover: { title: 'Panel de Respuesta', description: 'En esta área verás el historial de la conversación y podrás responder al usuario, adjuntar archivos y cambiar el estado de la solicitud.' } }
+                ]
+            });
+
+            document.getElementById('start-tour-btn').addEventListener('click', () => {
+                driverObj.drive();
+            });
+        });
     </script>
 </body>
 

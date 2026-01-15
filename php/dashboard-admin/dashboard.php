@@ -10,6 +10,8 @@ include '../../auth/conexion_be.php';
 // Consultas para las tarjetas y secciones
 $total_reservas = $conn->query("SELECT COUNT(*) as count FROM reservas")->fetch_assoc()['count'];
 $total_pqr = $conn->query("SELECT COUNT(*) as count FROM pqr")->fetch_assoc()['count'];
+$pqr_pendientes = $conn->query("SELECT COUNT(*) as count FROM pqr WHERE estado = 'Pendiente'")->fetch_assoc()['count'];
+$total_usuarios = $conn->query("SELECT COUNT(*) as count FROM usuarios WHERE rol != 'Admin'")->fetch_assoc()['count'];
 // $total_apartamentos = $conn->query("SELECT COUNT(*) as count FROM apartamentos")->fetch_assoc()['count']; // Si se necesitara el total
 
 // Obtener apartamentos
@@ -19,7 +21,7 @@ $apartamentos_res = $conn->query("SELECT * FROM apartamentos LIMIT 6");
 $reservas_res = $conn->query("SELECT r.*, u.nombre, u.apellido, u.email, a.titulo, a.imagen_principal FROM reservas r JOIN usuarios u ON r.usuario_id = u.id JOIN apartamentos a ON r.apartamento_id = a.id ORDER BY r.fecha_creacion DESC LIMIT 10");
 
 // Obtener PQR recientes
-$pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen FROM pqr p JOIN usuarios u ON p.usuario_id = u.id ORDER BY p.fecha_creacion DESC LIMIT 5");
+$pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_imagen FROM pqr p JOIN usuarios u ON p.usuario_id = u.id ORDER BY p.fecha_creacion DESC LIMIT 5");
 
 ?>
 <!DOCTYPE html>
@@ -33,6 +35,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen FROM pqr p J
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -160,11 +163,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen FROM pqr p J
                 <div class="flex items-center gap-4 flex-1 justify-end">
 
                     <div class="flex items-center gap-2">
-                        <button class="relative size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
-                            <span class="material-symbols-outlined">notifications</span>
-                            <span class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border border-white dark:border-gray-900"></span>
-                        </button>
-                        <button class="size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
+                        <button id="start-tour" class="size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
                             <span class="material-symbols-outlined">help</span>
                         </button>
                     </div>
@@ -190,10 +189,6 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen FROM pqr p J
                                     <span class="text-3xl font-bold text-text-main dark:text-white"><?php echo $total_reservas; ?></span>
                                 </div>
                             </div>
-                            <a class="mt-4 text-xs font-bold text-primary hover:underline flex items-center gap-1 group/link" href="#bookings-section">
-                                Gestionar reservas
-                                <span class="material-symbols-outlined text-xs group-hover/link:translate-x-0.5 transition-transform">arrow_forward</span>
-                            </a>
                         </div>
                         <div class="bg-card-light dark:bg-card-dark p-5 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm flex flex-col justify-between card-hover-effect group">
                             <div class="flex justify-between items-start mb-4">
@@ -208,10 +203,19 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen FROM pqr p J
                                     <span class="text-3xl font-bold text-text-main dark:text-white"><?php echo $total_pqr; ?></span>
                                 </div>
                             </div>
-                            <a class="mt-4 text-xs font-bold text-primary hover:underline flex items-center gap-1 group/link" href="#pqr-section">
-                                Atender solicitudes
-                                <span class="material-symbols-outlined text-xs group-hover/link:translate-x-0.5 transition-transform">arrow_forward</span>
-                            </a>
+                        </div>
+                        <div class="bg-card-light dark:bg-card-dark p-5 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm flex flex-col justify-between card-hover-effect group">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="size-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-blue-600 text-xl">group</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-text-secondary dark:text-gray-400 text-sm font-medium">Huéspedes Registrados</h3>
+                                <div class="flex items-baseline gap-2 mt-1">
+                                    <span class="text-3xl font-bold text-text-main dark:text-white"><?php echo $total_usuarios; ?></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -221,17 +225,12 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen FROM pqr p J
                             <span class="material-symbols-outlined text-primary">apartment</span>
                             Gestión de Apartamentos
                         </h2>
-                        <div class="flex gap-2">
-                            <button class="px-4 py-2 text-xs font-medium text-text-secondary bg-white border border-[#f0f3f4] hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 rounded-lg transition-colors">Filtros</button>
-                            <button class="px-4 py-2 text-xs font-medium text-white bg-primary hover:bg-primary-hover rounded-lg transition-colors flex items-center gap-2 shadow-lg shadow-primary/20">
-                                <span class="material-symbols-outlined text-sm">add</span> Nuevo Apartamento
-                            </button>
-                        </div>
+
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         <?php while ($apt = $apartamentos_res->fetch_assoc()): ?>
                         <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm flex items-center gap-4 hover:border-primary/30 transition-colors">
-                            <div class="w-20 h-20 rounded-lg bg-cover bg-center shrink-0" style='background-image: url("<?php echo !empty($apt['imagen_principal']) ? $apt['imagen_principal'] : 'https://placehold.co/400'; ?>");'></div>
+                            <div class="w-20 h-20 rounded-lg bg-cover bg-center shrink-0" style='background-image: url("<?php echo !empty($apt['imagen_principal']) ? '../../assets/img/apartamentos/' . $apt['imagen_principal'] : 'https://placehold.co/400'; ?>");'></div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex justify-between items-start">
                                     <div class="truncate">
@@ -241,8 +240,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen FROM pqr p J
                                     <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Activo</span>
                                 </div>
                                 <div class="mt-2 flex gap-3">
-                                    <button class="text-[11px] font-medium text-text-secondary hover:text-primary flex items-center gap-1"><span class="material-symbols-outlined text-xs">edit</span> Editar</button>
-                                    <button class="text-[11px] font-medium text-text-secondary hover:text-primary flex items-center gap-1"><span class="material-symbols-outlined text-xs">visibility</span> Ver</button>
+                                    <button onclick="openViewModal(<?php echo $apt['id']; ?>)" class="text-[11px] font-medium text-text-secondary hover:text-primary flex items-center gap-1"><span class="material-symbols-outlined text-xs">visibility</span> Ver</button>
                                 </div>
                             </div>
                         </div>
@@ -282,7 +280,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen FROM pqr p J
                                     <tr class="group hover:bg-background-light dark:hover:bg-gray-800 transition-colors">
                                         <td class="px-6 py-3">
                                             <div class="flex items-center gap-2">
-                                                <div class="w-8 h-8 rounded bg-cover bg-center shrink-0" style='background-image: url("<?php echo !empty($reserva['imagen_principal']) ? $reserva['imagen_principal'] : 'https://placehold.co/100'; ?>");'></div>
+                                                <div class="w-8 h-8 rounded bg-cover bg-center shrink-0" style='background-image: url("<?php echo !empty($reserva['imagen_principal']) ? '../../assets/img/apartamentos/' . $reserva['imagen_principal'] : 'https://placehold.co/100'; ?>");'></div>
                                                 <span class="font-bold text-xs text-text-main dark:text-white"><?php echo $reserva['titulo']; ?></span>
                                             </div>
                                         </td>
@@ -334,22 +332,26 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen FROM pqr p J
                             <span class="material-symbols-outlined text-primary">mail</span>
                             Bandeja de PQR
                         </h2>
-                        <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3 Nuevas</span>
+                        <?php if ($pqr_pendientes > 0): ?>
+                        <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full"><?php echo $pqr_pendientes; ?> Nuevas</span>
+                        <?php endif; ?>
                     </div>
                     <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm flex flex-col divide-y divide-[#f0f3f4] dark:divide-gray-800">
                         <?php while ($pqr = $pqr_res->fetch_assoc()): ?>
+                        <?php 
+                            $userImg = !empty($pqr['usuario_imagen']) ? '../../assets/img/usuarios/' . $pqr['usuario_imagen'] : 'https://placehold.co/100';
+                        ?>
                         <div class="p-4 hover:bg-background-light dark:hover:bg-gray-800 transition-colors cursor-pointer relative group flex items-start gap-4">
-                            <div class="bg-cover bg-center rounded-full size-10 shrink-0 border border-gray-100 shadow-sm" style='background-image: url("<?php echo !empty($pqr['imagen']) ? '../../assets/img/usuarios/' . $pqr['imagen'] : 'https://placehold.co/100'; ?>");'></div>
+                            
                             <div class="flex-1 min-w-0">
                                 <div class="flex justify-between items-baseline mb-0.5">
                                     <p class="font-bold text-sm text-text-main dark:text-white"><?php echo $pqr['nombre'] . ' ' . $pqr['apellido']; ?></p>
-                                    <p class="text-[10px] text-text-secondary font-medium uppercase"><?php echo date('d M H:i', strtotime($pqr['fecha_creacion'])); ?></p>
+                                    <p class="text-[10px] text-text-secondary dark:text-gray-400 font-medium uppercase"><?php echo date('d M H:i', strtotime($pqr['fecha_creacion'])); ?></p>
                                 </div>
-                                <h5 class="text-xs font-semibold text-text-main mb-0.5"><?php echo $pqr['asunto']; ?></h5>
+                                <h5 class="text-xs font-semibold text-text-main dark:text-gray-200 mb-0.5"><?php echo $pqr['asunto']; ?></h5>
                                 <p class="text-xs text-text-secondary dark:text-gray-400 line-clamp-1"><?php echo $pqr['mensaje']; ?></p>
                                 <div class="mt-2 flex gap-2">
-                                    <button class="text-[10px] font-bold bg-primary text-white px-3 py-1 rounded hover:bg-primary-hover transition-colors">Responder</button>
-                                    <button class="text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-text-secondary px-3 py-1 rounded hover:bg-gray-200 transition-colors">Ver hilo</button>
+                                    <button onclick="openResponseModal(<?php echo $pqr['id']; ?>, '<?php echo addslashes($pqr['asunto']); ?>', '<?php echo addslashes($pqr['nombre'] . ' ' . $pqr['apellido']); ?>')" class="text-[10px] font-bold bg-primary text-white px-3 py-1 rounded hover:bg-primary-hover transition-colors">Responder</button>
                                 </div>
                             </div>
                         </div>
@@ -360,6 +362,392 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen FROM pqr p J
         </div>
     </div>
 
+    <!-- Edit Apartment Modal -->
+    <div id="editModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true" onclick="closeEditModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white dark:bg-card-dark rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <form id="editForm" action="actualizar_apartamento.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="id" id="edit_id">
+                    <div class="px-4 pt-5 pb-4 bg-white dark:bg-card-dark sm:p-6 sm:pb-4">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white mb-4">Editar Apartamento</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Título</label>
+                                <input type="text" name="titulo" id="edit_titulo" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ubicación</label>
+                                    <input type="text" name="ubicacion" id="edit_ubicacion" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Precio</label>
+                                    <input type="number" name="precio" id="edit_precio" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Habitaciones</label>
+                                    <input type="number" name="habitaciones" id="edit_habitaciones" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Baños</label>
+                                    <input type="number" name="banos" id="edit_banos" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Capacidad</label>
+                                    <input type="number" name="capacidad" id="edit_capacidad" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Descripción</label>
+                                <textarea name="descripcion" id="edit_descripcion" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700/50 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:ml-3 sm:w-auto sm:text-sm">Guardar Cambios</button>
+                        <button type="button" onclick="closeEditModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Apartment Modal -->
+    <div id="viewModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true" onclick="closeViewModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white dark:bg-card-dark rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                <div class="bg-white dark:bg-card-dark">
+                    <div class="relative h-64 w-full bg-gray-100 dark:bg-gray-800 group">
+                        <div id="view_image_container" class="h-full w-full bg-cover bg-center transition-opacity duration-300"></div>
+                        <div id="view_video_container" class="hidden h-full w-full flex items-center justify-center bg-black"></div>
+                        
+                        <!-- Navigation Arrows -->
+                        <button id="prev-slide" onclick="prevSlide()" class="absolute left-0 top-0 bottom-0 px-4 flex items-center justify-center bg-gradient-to-r from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:from-black/70">
+                            <span class="material-symbols-outlined text-white text-3xl">chevron_left</span>
+                        </button>
+                        <button id="next-slide" onclick="nextSlide()" class="absolute right-0 top-0 bottom-0 px-4 flex items-center justify-center bg-gradient-to-l from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:from-black/70">
+                            <span class="material-symbols-outlined text-white text-3xl">chevron_right</span>
+                        </button>
+                        
+                        <!-- Counter -->
+                        <div class="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[10px]">photo_library</span>
+                            <span id="slide-counter">1/1</span>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2" id="view_titulo"></h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">location_on</span>
+                            <span id="view_ubicacion"></span>
+                        </p>
+                        <div class="flex gap-4 mb-6 text-sm text-gray-600 dark:text-gray-300">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">bed</span> <span id="view_habitaciones"></span> Hab</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">bathtub</span> <span id="view_banos"></span> Baños</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">group</span> <span id="view_capacidad"></span> Personas</span>
+                        </div>
+                        <div class="prose dark:prose-invert max-w-none mb-6">
+                            <p id="view_descripcion" class="text-gray-600 dark:text-gray-300"></p>
+                        </div>
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100 dark:border-gray-700">
+                            <div class="text-2xl font-bold text-primary" id="view_precio"></div>
+                            <button type="button" onclick="closeViewModal()" class="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:w-auto sm:text-sm">
+                                Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PQR Response Modal -->
+    <div id="responseModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true" onclick="closeResponseModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white dark:bg-card-dark rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <form id="responseForm" action="responder_pqr_be.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="pqr_id" id="modal_pqr_id">
+                    <div class="px-4 pt-5 pb-4 bg-white dark:bg-card-dark sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="w-full mt-3 text-center sm:mt-0 sm:text-left">
+                                <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white" id="modal-title">Responder PQR</h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                        Respondiendo a: <span id="modal_user_name" class="font-bold"></span><br>
+                                        Asunto: <span id="modal_subject" class="font-bold"></span>
+                                    </p>
+                                    <div class="mb-4">
+                                        <label for="mensaje" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tu Respuesta</label>
+                                        <textarea id="mensaje" name="mensaje" rows="4" class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50" required></textarea>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="estado" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Actualizar Estado</label>
+                                        <select id="estado" name="estado" class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
+                                            <option value="En Progreso">En Progreso</option>
+                                            <option value="Resuelto">Resuelto</option>
+                                            <option value="Pendiente">Pendiente</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="adjunto" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Adjuntar Archivo (Opcional)</label>
+                                        <input type="file" id="adjunto" name="adjunto" class="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700/50 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:ml-3 sm:w-auto sm:text-sm">
+                            Enviar Respuesta
+                        </button>
+                        <button type="button" onclick="closeResponseModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    <script>
+        function openResponseModal(id, subject, name) {
+            document.getElementById('modal_pqr_id').value = id;
+            document.getElementById('modal_subject').textContent = subject;
+            document.getElementById('modal_user_name').textContent = name;
+            document.getElementById('responseModal').classList.remove('hidden');
+        }
+
+        function closeResponseModal() {
+            document.getElementById('responseModal').classList.add('hidden');
+            document.getElementById('responseForm').reset();
+        }
+
+        // Edit Modal Functions
+        function openEditModal(id) {
+            fetch(`get_apartamento.php?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        document.getElementById('edit_id').value = data.id;
+                        document.getElementById('edit_titulo').value = data.titulo;
+                        document.getElementById('edit_ubicacion').value = data.ubicacion;
+                        document.getElementById('edit_precio').value = data.precio;
+                        document.getElementById('edit_habitaciones').value = data.habitaciones;
+                        document.getElementById('edit_banos').value = data.banos;
+                        document.getElementById('edit_capacidad').value = data.capacidad;
+                        document.getElementById('edit_descripcion').value = data.descripcion;
+                        document.getElementById('editModal').classList.remove('hidden');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        // View Modal Functions
+        let currentGalleryIndex = 0;
+        let currentGalleryItems = [];
+
+        function openViewModal(id) {
+            // Reset state
+            currentGalleryIndex = 0;
+            currentGalleryItems = [];
+            
+            fetch(`get_apartamento.php?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        document.getElementById('view_titulo').textContent = data.titulo;
+                        document.getElementById('view_ubicacion').textContent = data.ubicacion;
+                        document.getElementById('view_precio').textContent = '$' + new Intl.NumberFormat().format(data.precio) + ' / noche';
+                        document.getElementById('view_habitaciones').textContent = data.habitaciones;
+                        document.getElementById('view_banos').textContent = data.banos;
+                        document.getElementById('view_capacidad').textContent = data.capacidad;
+                        document.getElementById('view_descripcion').textContent = data.descripcion;
+                        
+                        // Add main image first
+                        if (data.imagen_principal) {
+                            currentGalleryItems.push({
+                                type: 'imagen',
+                                fullPath: `../../assets/img/apartamentos/${data.imagen_principal}`
+                            });
+                        } else {
+                            currentGalleryItems.push({
+                                type: 'imagen',
+                                fullPath: "https://placehold.co/600x400"
+                            });
+                        }
+                        
+                        // Fetch gallery items
+                        return fetch(`obtener_galeria_be.php?id=${id}`);
+                    }
+                })
+                .then(response => {
+                    if(response) return response.json();
+                })
+                .then(galleryData => {
+                    if (galleryData && Array.isArray(galleryData)) {
+                        galleryData.forEach(item => {
+                            let path = '';
+                            if(item.tipo === 'imagen') path = `../../assets/img/apartamentos/${item.ruta}`;
+                            else if(item.tipo === 'video') path = `../../assets/video/apartamentos/${item.ruta}`;
+                            
+                            currentGalleryItems.push({
+                                type: item.tipo,
+                                fullPath: path
+                            });
+                        });
+                    }
+                    
+                    updateCarousel();
+                    document.getElementById('viewModal').classList.remove('hidden');
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function updateCarousel() {
+            if (currentGalleryItems.length === 0) return;
+            
+            const item = currentGalleryItems[currentGalleryIndex];
+            const imgContainer = document.getElementById('view_image_container');
+            const vidContainer = document.getElementById('view_video_container');
+            const counter = document.getElementById('slide-counter');
+            const prevBtn = document.getElementById('prev-slide');
+            const nextBtn = document.getElementById('next-slide');
+            
+            // Update counter
+            counter.textContent = `${currentGalleryIndex + 1}/${currentGalleryItems.length}`;
+            
+            // Toggle buttons visibility
+            if (currentGalleryItems.length > 1) {
+                prevBtn.classList.remove('hidden');
+                nextBtn.classList.remove('hidden');
+            } else {
+                prevBtn.classList.add('hidden');
+                nextBtn.classList.add('hidden');
+            }
+            
+            if (item.type === 'imagen') {
+                imgContainer.style.backgroundImage = `url('${item.fullPath}')`;
+                imgContainer.classList.remove('hidden');
+                vidContainer.classList.add('hidden');
+                vidContainer.innerHTML = ''; // Stop any playing video
+            } else {
+                imgContainer.classList.add('hidden');
+                vidContainer.classList.remove('hidden');
+                vidContainer.innerHTML = `<video src="${item.fullPath}" controls class="h-full w-full object-contain" autoplay></video>`;
+            }
+        }
+
+        function nextSlide() {
+            if (currentGalleryItems.length <= 1) return;
+            currentGalleryIndex = (currentGalleryIndex + 1) % currentGalleryItems.length;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            if (currentGalleryItems.length <= 1) return;
+            currentGalleryIndex = (currentGalleryIndex - 1 + currentGalleryItems.length) % currentGalleryItems.length;
+            updateCarousel();
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.add('hidden');
+            // Stop any video playing
+            document.getElementById('view_video_container').innerHTML = '';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const driver = window.driver.js.driver;
+
+            const driverObj = driver({
+                showProgress: true,
+                animate: true,
+                nextBtnText: 'Siguiente',
+                prevBtnText: 'Anterior',
+                doneBtnText: 'Finalizar',
+                steps: [
+                    { 
+                        element: 'body', 
+                        popover: { 
+                            title: 'Bienvenido al Panel de Administrador', 
+                            description: 'Este es un recorrido rápido para familiarizarte con las funcionalidades principales del dashboard.' 
+                        } 
+                    },
+                    { 
+                        element: 'aside', 
+                        popover: { 
+                            title: 'Menú de Navegación', 
+                            description: 'Desde aquí puedes acceder a todas las secciones del sistema: Apartamentos, Reservas, Usuarios y Configuración.' 
+                        } 
+                    },
+                    { 
+                        element: '#dashboard-section', 
+                        popover: { 
+                            title: 'Resumen Administrativo', 
+                            description: 'Visualiza rápidamente los indicadores clave como el total de reservas y PQR pendientes.' 
+                        } 
+                    },
+                    { 
+                        element: '#apartments-section', 
+                        popover: { 
+                            title: 'Gestión de Apartamentos', 
+                            description: 'Administra tus propiedades. Puedes ver el listado, filtrar, agregar nuevos apartamentos o editar los existentes.' 
+                        } 
+                    },
+                    { 
+                        element: '#bookings-section', 
+                        popover: { 
+                            title: 'Control de Reservas', 
+                            description: 'Gestiona las reservas. Revisa el estado (Confirmada, Pendiente, etc.), detalles del huésped y fechas.' 
+                        } 
+                    },
+                    { 
+                        element: '#pqr-section', 
+                        popover: { 
+                            title: 'Bandeja de PQR', 
+                            description: 'Atiende las Peticiones, Quejas y Reclamos de los usuarios. Puedes ver el detalle y responder directamente.' 
+                        } 
+                    },
+                    { 
+                        element: '#start-tour', 
+                        popover: { 
+                            title: 'Ayuda y Recorrido', 
+                            description: 'Si necesitas ver este recorrido nuevamente, puedes hacer clic en este botón de ayuda.' 
+                        } 
+                    }
+                ]
+            });
+
+            const startTourBtn = document.getElementById('start-tour');
+            if (startTourBtn) {
+                startTourBtn.addEventListener('click', function() {
+                    driverObj.drive();
+                });
+            }
+            
+            // Opcional: Iniciar automáticamente si es la primera vez (puedes usar localStorage)
+            // if (!localStorage.getItem('tour_visto')) {
+            //     driverObj.drive();
+            //     localStorage.setItem('tour_visto', 'true');
+            // }
+        });
+    </script>
 </body>
 
 </html>

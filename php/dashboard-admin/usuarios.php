@@ -57,6 +57,8 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -181,6 +183,10 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Gestión de Usuarios</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
+                    <button id="start-tour-btn" class="flex items-center justify-center gap-2 bg-white dark:bg-gray-800 border border-[#f0f3f4] dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white px-3 py-1.5 rounded-lg font-semibold transition-all shadow-sm text-sm">
+                        <span class="material-symbols-outlined text-lg">help</span>
+                        <span class="hidden sm:inline">Ayuda</span>
+                    </button>
                 </div>
             </header>
             <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 scroll-smooth">
@@ -190,7 +196,7 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                             <h1 class="text-2xl font-bold text-text-main dark:text-white">Usuarios y Roles</h1>
                             <p class="text-text-secondary text-sm mt-1">Administra el acceso y los permisos de todos los miembros de la plataforma.</p>
                         </div>
-                        <a class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-primary/30" href="#add-user-modal">
+                        <a id="add-user-btn" class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-primary/30" href="#add-user-modal">
                             <span class="material-symbols-outlined text-xl">person_add</span>
                             <span>Agregar Nuevo Administrador</span>
                         </a>
@@ -198,20 +204,20 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                 </section>
                 <section class="space-y-4">
                     <div class="flex flex-col sm:flex-row justify-between items-end sm:items-center border-b border-[#f0f3f4] dark:border-gray-800">
-                        <nav class="flex gap-8 overflow-x-auto no-scrollbar">
+                        <nav id="filter-tabs" class="flex gap-8 overflow-x-auto no-scrollbar">
                             <a href="?role=all" class="pb-4 text-sm font-bold <?php echo $role_filter == 'all' ? 'text-primary border-b-2 border-primary' : 'text-text-secondary hover:text-text-main dark:hover:text-white'; ?> whitespace-nowrap transition-colors">Todos <span class="ml-1 px-2 py-0.5 bg-primary/10 rounded-full text-[10px]"><?php echo $total_users; ?></span></a>
                             <a href="?role=guest" class="pb-4 text-sm font-medium <?php echo $role_filter == 'guest' ? 'text-primary border-b-2 border-primary' : 'text-text-secondary hover:text-text-main dark:hover:text-white'; ?> whitespace-nowrap transition-colors">Huéspedes <span class="ml-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px]"><?php echo $total_guests; ?></span></a>
                             <a href="?role=admin" class="pb-4 text-sm font-medium <?php echo $role_filter == 'admin' ? 'text-primary border-b-2 border-primary' : 'text-text-secondary hover:text-text-main dark:hover:text-white'; ?> whitespace-nowrap transition-colors">Administradores <span class="ml-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px]"><?php echo $total_admins; ?></span></a>
                         </nav>
                         <div class="pb-3 flex gap-2 items-center flex-1 justify-end">
                             <div class="flex max-w-md w-full relative">
-                                <form action="" method="GET" class="w-full relative">
+                                <form id="search-form" action="" method="GET" class="w-full relative">
                                     <input type="hidden" name="role" value="<?php echo htmlspecialchars($role_filter); ?>">
                                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-lg">search</span>
                                     <input id="search_input" name="search" value="<?php echo htmlspecialchars($search_query); ?>" class="w-full bg-white dark:bg-card-dark border border-[#f0f3f4] dark:border-gray-800 rounded-lg h-10 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white placeholder:text-text-secondary" placeholder="Buscar por nombre, correo o rol..." type="text" />
                                 </form>
                             </div>
-                            <button class="p-2 text-text-secondary hover:text-primary transition-colors bg-white dark:bg-card-dark border border-[#f0f3f4] dark:border-gray-800 rounded-lg shadow-sm h-10 w-10 flex items-center justify-center">
+                            <button id="filter-btn" class="p-2 text-text-secondary hover:text-primary transition-colors bg-white dark:bg-card-dark border border-[#f0f3f4] dark:border-gray-800 rounded-lg shadow-sm h-10 w-10 flex items-center justify-center">
                                 <span class="material-symbols-outlined text-xl">filter_list</span>
                             </button>
                         </div>
@@ -647,6 +653,30 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                 modal.classList.add('hidden');
                 modal.style.display = 'none';
             }
+
+            // Driver.js Tour
+            document.addEventListener('DOMContentLoaded', function() {
+                const driver = window.driver.js.driver;
+
+                const driverObj = driver({
+                    showProgress: true,
+                    nextBtnText: 'Siguiente',
+                    prevBtnText: 'Anterior',
+                    doneBtnText: 'Finalizar',
+                    steps: [
+                        { element: '#users-header', popover: { title: 'Gestión de Usuarios', description: 'Aquí puedes administrar todos los usuarios registrados en la plataforma.' } },
+                        { element: '#add-user-btn', popover: { title: 'Nuevo Usuario', description: 'Haz clic aquí para registrar manualmente un nuevo administrador o usuario.' } },
+                        { element: '#filter-tabs', popover: { title: 'Filtros Rápidos', description: 'Navega fácilmente entre todos los usuarios, solo huéspedes o solo administradores.' } },
+                        { element: '#search-form', popover: { title: 'Búsqueda Avanzada', description: 'Encuentra usuarios rápidamente por su nombre, correo electrónico o nombre de usuario.' } },
+                        { element: '#users-section table', popover: { title: 'Lista de Usuarios', description: 'Consulta la información detallada, roles y estado de cada usuario en esta tabla.' } },
+                        { element: '#users-section table tbody tr:first-child td:last-child', popover: { title: 'Acciones', description: 'Usa estos botones para ver detalles, editar información o eliminar un usuario.' } }
+                    ]
+                });
+
+                document.getElementById('start-tour-btn').addEventListener('click', () => {
+                    driverObj.drive();
+                });
+            });
         </script>
     </div>
 

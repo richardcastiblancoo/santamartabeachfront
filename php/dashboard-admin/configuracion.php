@@ -17,6 +17,8 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -135,7 +137,10 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Ajustes de Cuenta</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
-
+                    <button id="start-tour-btn" class="flex items-center justify-center gap-2 bg-white dark:bg-gray-800 border border-[#f0f3f4] dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white px-3 py-1.5 rounded-lg font-semibold transition-all shadow-sm text-sm">
+                        <span class="material-symbols-outlined text-lg">help</span>
+                        <span class="hidden sm:inline">Guía</span>
+                    </button>
                 </div>
             </header>
             <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth bg-background-light dark:bg-background-dark">
@@ -195,73 +200,6 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                        <div class="space-y-6 hidden" id="appearance-settings">
-                            <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm p-6">
-                                <div class="mb-6 pb-4 border-b border-[#f0f3f4] dark:border-gray-800">
-                                    <h2 class="text-xl font-bold text-text-main dark:text-white">Personalización de Tema</h2>
-                                    <p class="text-sm text-text-secondary mt-1">Ajusta los colores y el modo visual de la plataforma.</p>
-                                </div>
-                                <div class="space-y-8">
-                                    <div>
-                                        <h3 class="text-sm font-bold text-text-main dark:text-white mb-4">Modo de Interfaz</h3>
-                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                            <button class="flex flex-col gap-3 p-4 rounded-xl border-2 border-primary bg-background-light dark:bg-gray-800 transition-all">
-                                                <div class="w-full h-24 rounded-lg bg-white border border-gray-200 flex flex-col p-2 gap-1 shadow-sm">
-                                                    <div class="w-full h-2 bg-gray-100 rounded"></div>
-                                                    <div class="w-3/4 h-2 bg-gray-100 rounded"></div>
-                                                    <div class="mt-auto flex justify-between">
-                                                        <div class="size-4 rounded-full bg-primary"></div>
-                                                        <div class="w-8 h-4 bg-gray-100 rounded"></div>
-                                                    </div>
-                                                </div>
-                                                <span class="text-sm font-semibold flex items-center justify-center gap-2">
-                                                    <span class="material-symbols-outlined text-sm">light_mode</span> Modo Claro
-                                                </span>
-                                            </button>
-                                            <button class="flex flex-col gap-3 p-4 rounded-xl border-2 border-transparent bg-background-light dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 transition-all">
-                                                <div class="w-full h-24 rounded-lg bg-gray-900 border border-gray-800 flex flex-col p-2 gap-1 shadow-sm">
-                                                    <div class="w-full h-2 bg-gray-800 rounded"></div>
-                                                    <div class="w-3/4 h-2 bg-gray-800 rounded"></div>
-                                                    <div class="mt-auto flex justify-between">
-                                                        <div class="size-4 rounded-full bg-primary"></div>
-                                                        <div class="w-8 h-4 bg-gray-800 rounded"></div>
-                                                    </div>
-                                                </div>
-                                                <span class="text-sm font-medium flex items-center justify-center gap-2">
-                                                    <span class="material-symbols-outlined text-sm">dark_mode</span> Modo Oscuro
-                                                </span>
-                                            </button>
-                                            <button class="flex flex-col gap-3 p-4 rounded-xl border-2 border-transparent bg-background-light dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 transition-all">
-                                                <div class="w-full h-24 rounded-lg bg-gradient-to-br from-white to-gray-900 border border-gray-200 flex flex-col p-2 gap-1 shadow-sm overflow-hidden">
-                                                    <div class="w-full h-2 bg-gray-200/50 rounded"></div>
-                                                    <div class="w-3/4 h-2 bg-gray-200/50 rounded"></div>
-                                                </div>
-                                                <span class="text-sm font-medium flex items-center justify-center gap-2">
-                                                    <span class="material-symbols-outlined text-sm">settings_brightness</span> Sistema
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-sm font-bold text-text-main dark:text-white mb-4">Color de Marca Personalizado</h3>
-                                        <div class="flex flex-wrap gap-4">
-                                            <button class="size-10 rounded-full bg-[#13a4ec] color-swatch-active"></button>
-                                            <button class="size-10 rounded-full bg-[#34d399]"></button>
-                                            <button class="size-10 rounded-full bg-[#f87171]"></button>
-                                            <button class="size-10 rounded-full bg-[#fbbf24]"></button>
-                                            <button class="size-10 rounded-full bg-[#818cf8]"></button>
-                                            <button class="size-10 rounded-full bg-[#ec4899]"></button>
-                                            <button class="size-10 rounded-full bg-white border border-gray-300 flex items-center justify-center">
-                                                <span class="material-symbols-outlined text-sm text-text-secondary">add</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mt-8 pt-4 border-t border-[#f0f3f4] dark:border-gray-800 flex justify-end">
-                                    <button class="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg font-semibold transition-colors" type="button">Aplicar Tema</button>
-                                </div>
                             </div>
                         </div>
                         <div class="space-y-6 hidden" id="security-settings">
@@ -339,9 +277,9 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
     <script>
         function showTab(tabName) {
             // IDs of setting containers
-            const containers = ['profile-settings', 'appearance-settings', 'security-settings'];
+            const containers = ['profile-settings', 'security-settings'];
             // IDs of buttons
-            const buttons = ['btn-profile', 'btn-appearance', 'btn-security'];
+            const buttons = ['btn-profile', 'btn-security'];
             containers.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
@@ -383,6 +321,45 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                 icon.textContent = "visibility";
             }
         }
+
+        // Driver.js Tour
+        document.addEventListener('DOMContentLoaded', function() {
+            const driver = window.driver.js.driver;
+
+            const driverObj = driver({
+                showProgress: true,
+                nextBtnText: 'Siguiente',
+                prevBtnText: 'Anterior',
+                doneBtnText: 'Finalizar',
+                steps: [
+                    { element: 'header h2', popover: { title: 'Configuración del Sistema', description: 'Aquí podrás gestionar tu perfil, seguridad y preferencias visuales de la plataforma.' } },
+                    { element: 'aside', popover: { title: 'Menú Principal', description: 'Utiliza este menú para navegar entre las diferentes secciones del panel de administración.' } },
+                    { element: '#btn-profile', popover: { title: 'Perfil Personal', description: 'En esta sección puedes actualizar tu foto, nombre y correo electrónico.' } },
+                    { 
+                        element: '#profile-settings', 
+                        popover: { title: 'Editar Perfil', description: 'Utiliza este formulario para modificar tus datos personales.' },
+                        onHighlightStarted: () => showTab('profile')
+                    },
+                    { 
+                        element: '#btn-security', 
+                        popover: { title: 'Seguridad', description: 'Gestiona la seguridad de tu cuenta.' },
+                        onHighlightStarted: () => showTab('security')
+                    },
+                    { 
+                        element: '#security-settings', 
+                        popover: { title: 'Credenciales', description: 'Actualiza tu nombre de usuario y cambia tu contraseña periódicamente para mayor seguridad.' },
+                        onHighlightStarted: () => showTab('security')
+                    }
+                ]
+            });
+
+            const startBtn = document.getElementById('start-tour-btn');
+            if(startBtn) {
+                startBtn.addEventListener('click', () => {
+                    driverObj.drive();
+                });
+            }
+        });
     </script>
 
 </body>
