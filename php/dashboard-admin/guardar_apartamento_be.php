@@ -17,7 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $habitaciones = $_POST['habitaciones'];
     $banos = $_POST['banos'];
     $capacidad = $_POST['capacidad'];
-    // $video = isset($_POST['video']) ? $_POST['video'] : ''; // Ya no usamos URL de video
+    
+    // Procesar servicios (convertir array a JSON)
+    $servicios = isset($_POST['servicios']) ? json_encode($_POST['servicios'], JSON_UNESCAPED_UNICODE) : null;
 
     $nombre_imagen = null;
 
@@ -47,11 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($id) {
         // UPDATE
         if ($nombre_imagen) {
-            $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, imagen_principal=? WHERE id=?");
-            $stmt->bind_param("ssdsiiisi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $nombre_imagen, $id);
+            $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, imagen_principal=?, servicios=? WHERE id=?");
+            $stmt->bind_param("ssdsiiissi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $nombre_imagen, $servicios, $id);
         } else {
-            $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=? WHERE id=?");
-            $stmt->bind_param("ssdsiiis", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $id);
+            $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, servicios=? WHERE id=?");
+            $stmt->bind_param("ssdsiiisi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $servicios, $id);
         }
         $mensaje_exito = "Apartamento actualizado exitosamente.";
         $mensaje_error = "Error al actualizar el apartamento.";
@@ -61,8 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo '<script>alert("Por favor selecciona una imagen principal para el nuevo apartamento."); window.location = "apartamentos.php";</script>';
             exit;
         }
-        $stmt = $conn->prepare("INSERT INTO apartamentos (titulo, descripcion, precio, ubicacion, habitaciones, banos, capacidad, imagen_principal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssdsiiis", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $nombre_imagen);
+        $stmt = $conn->prepare("INSERT INTO apartamentos (titulo, descripcion, precio, ubicacion, habitaciones, banos, capacidad, imagen_principal, servicios) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssdsiiiss", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $nombre_imagen, $servicios);
         
         $mensaje_exito = "Apartamento publicado exitosamente.";
         $mensaje_error = "Error al guardar en la base de datos.";
@@ -104,7 +106,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($_FILES['videos_galeria']['error'][$i] == 0) {
                     $tmp_name = $_FILES['videos_galeria']['tmp_name'][$i];
                     $name = time() . '_vid_' . $i . '_' . $_FILES['videos_galeria']['name'][$i];
-                    $ruta_destino = '../../assets/video/apartamentos/' . $name;
+                    
+                    $dir_destino = '../../assets/video/apartamentos/';
+                    if (!file_exists($dir_destino)) {
+                        mkdir($dir_destino, 0777, true);
+                    }
+                    
+                    $ruta_destino = $dir_destino . $name;
                     $tipo = strtolower(pathinfo($ruta_destino, PATHINFO_EXTENSION));
                     
                     if (in_array($tipo, ["mp4", "webm", "ogg"])) {

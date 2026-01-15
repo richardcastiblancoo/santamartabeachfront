@@ -1,13 +1,75 @@
 <?php
 session_start();
+include '../../auth/conexion_be.php';
+
 if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
     echo '<script>alert("Acceso denegado. Por favor, inicia sesión como administrador."); window.location = "../../auth/login.php";</script>';
     exit;
 }
+
+// Obtener estadísticas
+$stats_query = "SELECT 
+    COUNT(*) as total,
+    SUM(CASE WHEN estado = 'Pendiente' THEN 1 ELSE 0 END) as pendientes,
+    SUM(CASE WHEN estado = 'Confirmada' THEN 1 ELSE 0 END) as confirmadas,
+    SUM(CASE WHEN estado = 'Cancelada' THEN 1 ELSE 0 END) as canceladas,
+    SUM(CASE WHEN estado = 'Completada' THEN 1 ELSE 0 END) as completadas
+    FROM reservas";
+$stats_result = mysqli_query($conn, $stats_query);
+$stats = mysqli_fetch_assoc($stats_result);
+
+// VERIFICAR Y AUTO-GENERAR DATOS DE PRUEBA SI LA TABLA ESTÁ VACÍA
+if ($stats['total'] == 0) {
+    $u_check = mysqli_query($conn, "SELECT id FROM usuarios LIMIT 1");
+    $a_check = mysqli_query($conn, "SELECT id, precio FROM apartamentos LIMIT 1");
+    
+    if (mysqli_num_rows($u_check) > 0 && mysqli_num_rows($a_check) > 0) {
+        $u_id = mysqli_fetch_assoc($u_check)['id'];
+        $a_row = mysqli_fetch_assoc($a_check);
+        $a_id = $a_row['id'];
+        $precio = $a_row['precio'];
+        
+        $sql_insert = "INSERT INTO reservas (usuario_id, apartamento_id, fecha_inicio, fecha_fin, total, estado) VALUES 
+        ($u_id, $a_id, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 5 DAY), " . ($precio * 5) . ", 'Confirmada'),
+        ($u_id, $a_id, DATE_ADD(CURDATE(), INTERVAL 10 DAY), DATE_ADD(CURDATE(), INTERVAL 13 DAY), " . ($precio * 3) . ", 'Pendiente')";
+        mysqli_query($conn, $sql_insert);
+        
+        // Recargar estadísticas
+        $stats_result = mysqli_query($conn, $stats_query);
+        $stats = mysqli_fetch_assoc($stats_result);
+    }
+}
+
+// Obtener término de búsqueda
+$search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
+$where_clause = "";
+if (!empty($search)) {
+    $where_clause = " WHERE (r.id LIKE '%$search%' 
+                        OR r.nombre_cliente LIKE '%$search%' 
+                        OR r.apellido_cliente LIKE '%$search%'
+                        OR u.nombre LIKE '%$search%' 
+                        OR u.apellido LIKE '%$search%' 
+                        OR u.email LIKE '%$search%')";
+}
+
+// Obtener reservas con datos relacionados
+$query = "SELECT r.*, 
+          COALESCE(r.nombre_cliente, u.nombre) as nombre_final,
+          COALESCE(r.apellido_cliente, u.apellido) as apellido_final,
+          COALESCE(r.email_cliente, u.email) as email_final,
+          r.telefono_cliente,
+          u.imagen as usuario_imagen, 
+          a.titulo as apartamento_titulo, a.descripcion as apartamento_descripcion, a.imagen_principal as apartamento_imagen 
+          FROM reservas r 
+          LEFT JOIN usuarios u ON r.usuario_id = u.id 
+          LEFT JOIN apartamentos a ON r.apartamento_id = a.id 
+          $where_clause
+          ORDER BY r.fecha_creacion DESC";
+$result = mysqli_query($conn, $query);
 ?>
 
 <!DOCTYPE html>
-<html class="light" lang="es">
+<html class="dark" lang="es">
 
 <head>
     <meta charset="utf-8" />
@@ -17,6 +79,10 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -102,7 +168,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary" href="#">
                     <span class="material-symbols-outlined fill-1">calendar_month</span>
                     <span class="text-sm font-semibold">Reservas</span>
-                    <span class="ml-auto bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">4</span>
+                    <span class="ml-auto bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full"><?php echo $stats['total']; ?></span>
                 </a>
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/usuarios.php">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
@@ -126,7 +192,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
             </div>
             <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800">
                 <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
-                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM'; ?>");'></div>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://ui-avatars.com/api/?name=' . $_SESSION['nombre'] . '+' . $_SESSION['apellido']; ?>");'></div>
                     <div class="flex flex-col overflow-hidden">
                         <span class="text-sm font-bold truncate dark:text-white"><?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
                         <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo $_SESSION['email']; ?></span>
@@ -143,10 +209,10 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                     <h2 class="text-lg font-bold text-text-main dark:text-white">Sección de Reservas</h2>
                 </div>
                 <div class="flex items-center gap-4">
-                    <div class="hidden sm:flex items-center bg-background-light dark:bg-gray-800 rounded-lg px-3 py-1.5 border border-transparent focus-within:border-primary/50 transition-all">
+                    <form method="GET" action="" class="hidden sm:flex items-center bg-background-light dark:bg-gray-800 rounded-lg px-3 py-1.5 border border-transparent focus-within:border-primary/50 transition-all">
                         <span class="material-symbols-outlined text-text-secondary text-lg">search</span>
-                        <input class="bg-transparent border-none focus:ring-0 text-sm w-48 text-text-main dark:text-white placeholder:text-text-secondary" placeholder="Buscar por ID o huésped..." type="text" />
-                    </div>
+                        <input name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" class="bg-transparent border-none focus:ring-0 text-sm w-48 text-text-main dark:text-white placeholder:text-text-secondary" placeholder="Buscar por ID o huésped..." type="text" />
+                    </form>
                     <button class="relative size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
                         <span class="material-symbols-outlined">notifications</span>
                         <span class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border border-white dark:border-gray-900"></span>
@@ -154,50 +220,69 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                 </div>
             </header>
             <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-card-light dark:bg-card-dark p-6 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
-                        <div class="flex items-center gap-4">
-                            <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg">
-                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">calendar_today</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <!-- Total -->
+                    <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
+                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">calendar_today</span>
                             </div>
                             <div>
-                                <p class="text-text-secondary dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Total Reservas</p>
-                                <h3 class="text-2xl font-bold text-text-main dark:text-white">1,284</h3>
+                                <p class="text-text-secondary dark:text-gray-400 text-[10px] font-semibold uppercase tracking-wider">Total</p>
+                                <h3 class="text-xl font-bold text-text-main dark:text-white"><?php echo $stats['total']; ?></h3>
                             </div>
-                        </div>
-                        <div class="mt-4 flex items-center gap-1 text-green-600 text-xs font-bold">
-                            <span class="material-symbols-outlined text-sm">trending_up</span>
-                            <span>+12.5% este mes</span>
                         </div>
                     </div>
-                    <div class="bg-card-light dark:bg-card-dark p-6 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
-                        <div class="flex items-center gap-4">
-                            <div class="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-lg">
-                                <span class="material-symbols-outlined text-orange-600 dark:text-orange-400">pending_actions</span>
+                    
+                    <!-- Pendientes -->
+                    <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-yellow-100 dark:bg-yellow-900/30 p-2 rounded-lg">
+                                <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400 text-xl">pending_actions</span>
                             </div>
                             <div>
-                                <p class="text-text-secondary dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Pendientes</p>
-                                <h3 class="text-2xl font-bold text-text-main dark:text-white">18</h3>
+                                <p class="text-text-secondary dark:text-gray-400 text-[10px] font-semibold uppercase tracking-wider">Pendientes</p>
+                                <h3 class="text-xl font-bold text-text-main dark:text-white"><?php echo $stats['pendientes']; ?></h3>
                             </div>
-                        </div>
-                        <div class="mt-4 flex items-center gap-1 text-orange-600 text-xs font-bold">
-                            <span class="material-symbols-outlined text-sm">schedule</span>
-                            <span>Requieren atención inmediata</span>
                         </div>
                     </div>
-                    <div class="bg-card-light dark:bg-card-dark p-6 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
-                        <div class="flex items-center gap-4">
-                            <div class="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg">
-                                <span class="material-symbols-outlined text-purple-600 dark:text-purple-400">check_circle</span>
+
+                    <!-- Confirmadas -->
+                    <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-xl">check_circle</span>
                             </div>
                             <div>
-                                <p class="text-text-secondary dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Completadas</p>
-                                <h3 class="text-2xl font-bold text-text-main dark:text-white">942</h3>
+                                <p class="text-text-secondary dark:text-gray-400 text-[10px] font-semibold uppercase tracking-wider">Confirmadas</p>
+                                <h3 class="text-xl font-bold text-text-main dark:text-white"><?php echo $stats['confirmadas']; ?></h3>
                             </div>
                         </div>
-                        <div class="mt-4 flex items-center gap-1 text-text-secondary text-xs font-bold">
-                            <span class="material-symbols-outlined text-sm">history</span>
-                            <span>Histórico acumulado</span>
+                    </div>
+
+                    <!-- Completadas -->
+                    <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-purple-100 dark:bg-purple-900/30 p-2 rounded-lg">
+                                <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-xl">task_alt</span>
+                            </div>
+                            <div>
+                                <p class="text-text-secondary dark:text-gray-400 text-[10px] font-semibold uppercase tracking-wider">Completadas</p>
+                                <h3 class="text-xl font-bold text-text-main dark:text-white"><?php echo $stats['completadas']; ?></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Canceladas -->
+                    <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-red-100 dark:bg-red-900/30 p-2 rounded-lg">
+                                <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-xl">cancel</span>
+                            </div>
+                            <div>
+                                <p class="text-text-secondary dark:text-gray-400 text-[10px] font-semibold uppercase tracking-wider">Canceladas</p>
+                                <h3 class="text-xl font-bold text-text-main dark:text-white"><?php echo $stats['canceladas']; ?></h3>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -207,25 +292,23 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                             <div class="flex flex-wrap items-center gap-3">
                                 <div class="flex items-center gap-2 bg-white dark:bg-gray-800 px-3 py-2 rounded-lg border border-[#e5e7eb] dark:border-gray-700">
                                     <span class="material-symbols-outlined text-text-secondary text-sm">calendar_month</span>
-                                    <input class="bg-transparent border-none p-0 text-sm focus:ring-0 text-text-main dark:text-white" placeholder="Check-in" type="date" />
-                                    <span class="text-text-secondary text-xs">a</span>
-                                    <input class="bg-transparent border-none p-0 text-sm focus:ring-0 text-text-main dark:text-white" placeholder="Check-out" type="date" />
+                                    <input id="date-range" class="bg-transparent border-none p-0 text-sm focus:ring-0 text-text-main dark:text-white w-48" placeholder="Seleccionar fechas" type="text" />
                                 </div>
                                 <div class="relative min-w-[160px]">
                                     <select class="w-full bg-white dark:bg-gray-800 border-[#e5e7eb] dark:border-gray-700 rounded-lg text-sm text-text-main dark:text-white focus:ring-primary focus:border-primary">
                                         <option value="">Apartamento</option>
-                                        <option value="1">Suite Panorámica 201</option>
-                                        <option value="2">Penthouse Vista Mar</option>
-                                        <option value="3">Estudio Brisa Marina</option>
+                                        <?php
+                                        // Opcional: Cargar apartamentos dinámicamente para el filtro
+                                        ?>
                                     </select>
                                 </div>
                                 <div class="relative min-w-[140px]">
                                     <select class="w-full bg-white dark:bg-gray-800 border-[#e5e7eb] dark:border-gray-700 rounded-lg text-sm text-text-main dark:text-white focus:ring-primary focus:border-primary">
                                         <option value="">Estado</option>
-                                        <option value="confirmed">Confirmada</option>
-                                        <option value="pending">Pendiente</option>
-                                        <option value="cancelled">Cancelada</option>
-                                        <option value="completed">Completada</option>
+                                        <option value="Confirmada">Confirmada</option>
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Cancelada">Cancelada</option>
+                                        <option value="Completada">Completada</option>
                                     </select>
                                 </div>
                                 <button class="bg-white dark:bg-gray-800 border border-[#e5e7eb] dark:border-gray-700 px-4 py-2 rounded-lg text-sm font-medium text-text-main dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
@@ -233,18 +316,20 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                                     Limpiar
                                 </button>
                             </div>
-                            <button class="bg-primary hover:bg-primary-hover text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2">
+                            <a href="exportar_reservas_csv.php" class="bg-primary hover:bg-primary-hover text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2">
                                 <span class="material-symbols-outlined text-lg">download</span>
                                 Exportar CSV
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse table-fixed-header">
                             <thead>
                                 <tr class="bg-background-light dark:bg-gray-800/50 text-text-secondary dark:text-gray-400 text-xs uppercase tracking-wider">
-                                    <th class="px-6 py-4 font-bold w-24">ID</th>
+                                    <th class="px-6 py-4 font-bold w-24">ID Reserva</th>
                                     <th class="px-6 py-4 font-bold">Huésped</th>
+                                    <th class="px-6 py-4 font-bold">Contacto</th>
+                                    <th class="px-6 py-4 font-bold">Ocupantes</th>
                                     <th class="px-6 py-4 font-bold">Apartamento</th>
                                     <th class="px-6 py-4 font-bold">Fechas</th>
                                     <th class="px-6 py-4 font-bold">Total</th>
@@ -253,158 +338,146 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-[#f0f3f4] dark:divide-gray-800 text-sm">
-                                <tr class="group hover:bg-background-light/50 dark:hover:bg-gray-800/50 transition-colors">
-                                    <td class="px-6 py-4 text-text-secondary font-mono">#RS-8421</td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex flex-col">
-                                            <span class="font-bold text-text-main dark:text-white">Mariana Restrepo</span>
-                                            <span class="text-xs text-text-secondary">mariana.r@example.com</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-2">
-                                            <div class="size-8 rounded bg-cover bg-center shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDJsRhoDPSUkrg1TXKAJGqmSmswPsjOFi5b7Fj0Z6cQb0bNJSOkXqCDruxUeX4eKkomczP03BjMwQrYBp7WE7jqlcRGu92uNF0xcJiqK3lWUVN4g_C_pB-KIcUkgodrVOOLBK1M8K32--h8RxvrHi6Cs4fXmemFarxo45qV8lwAhh3lziMl86NSkZpOceZYgbLz4zSbGgkyh5S2k5a1baUtW3Oj_9QIiYdoPSSCtz7Z200grK9YwVr5PW63fPBXCgltMRHJN-oBA0c");'></div>
-                                            <span class="font-medium text-text-main dark:text-white truncate max-w-[150px]">Suite Panorámica 201</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-text-main dark:text-white">
-                                        <div class="flex flex-col">
-                                            <span class="flex items-center gap-1 text-xs">15 Oct - 20 Oct</span>
-                                            <span class="text-[10px] text-text-secondary">5 noches • 2 personas</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 font-bold text-text-main dark:text-white">$1,250.00</td>
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                                            <span class="size-1.5 bg-green-500 rounded-full mr-1.5"></span>
-                                            Confirmada
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="flex justify-center items-center gap-2">
-                                            <button class="size-8 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary hover:text-primary transition-colors" title="Ver detalle">
-                                                <span class="material-symbols-outlined text-lg">visibility</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="group hover:bg-background-light/50 dark:hover:bg-gray-800/50 transition-colors">
-                                    <td class="px-6 py-4 text-text-secondary font-mono">#RS-8422</td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex flex-col">
-                                            <span class="font-bold text-text-main dark:text-white">Carlos Vives</span>
-                                            <span class="text-xs text-text-secondary">c.vives@music.com</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-2">
-                                            <div class="size-8 rounded bg-cover bg-center shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCb2X-Eex6B48RtwIM9J6ZojRw2j6gFsMWUl1F_Oj8DCgqbSdYvWPZ2MdJkSujwTYUOzzJoVaw3csjI2XVmV18Pki0wbr-CpjHp6b5DBg_u5qMdEs3DFkn0M3jj2tnSSMyKRzF5svGwD2NextX4bU9H1dYYF7YS5hOpvno4e6g0QO621qwc9fw7zwidnlIOxCPXacYmiHf-t7Fnhxu5gJ8QKKHdAORwdKRCkQIei1FaqNUeu2JaTG7LAnAWXcRRbuh609yfmF8Nri8");'></div>
-                                            <span class="font-medium text-text-main dark:text-white truncate max-w-[150px]">Penthouse Vista Mar</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-text-main dark:text-white">
-                                        <div class="flex flex-col">
-                                            <span class="flex items-center gap-1 text-xs">22 Oct - 25 Oct</span>
-                                            <span class="text-[10px] text-text-secondary">3 noches • 4 personas</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 font-bold text-text-main dark:text-white">$2,100.00</td>
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
-                                            <span class="size-1.5 bg-yellow-500 rounded-full mr-1.5"></span>
-                                            Pendiente
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="flex justify-center items-center gap-2">
-                                            <button class="size-8 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary hover:text-primary transition-colors" title="Ver detalle">
-                                                <span class="material-symbols-outlined text-lg">visibility</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="group hover:bg-background-light/50 dark:hover:bg-gray-800/50 transition-colors">
-                                    <td class="px-6 py-4 text-text-secondary font-mono">#RS-8423</td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex flex-col">
-                                            <span class="font-bold text-text-main dark:text-white">Lucía Méndez</span>
-                                            <span class="text-xs text-text-secondary">lucia.m@web.co</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-2">
-                                            <div class="size-8 rounded bg-cover bg-center shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD3RyyhDtcExthP4nweByKLcW_0fZJZv90FImn8nZf978lSX9Z83jw0UogJLa4xnQpLrEiF0w1Cd63cphjaln66maFM6vfOivzMCKe21JhgVWOn7N88gOqwQtImpv70wOiusdrBV9wlOA81-_X6hn9Dhy_TbZoWA2jV3muXXCzkUOFu_59cCX5Qj4MpPZ-ey90iGOcrAi89ormuqPaG-Bardw-4CKqdkpsJooP2izswwRacfdxnPrHzjXhUcDsbY4TEvIjWWI9tGaU");'></div>
-                                            <span class="font-medium text-text-main dark:text-white truncate max-w-[150px]">Estudio Brisa Marina</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-text-main dark:text-white">
-                                        <div class="flex flex-col">
-                                            <span class="flex items-center gap-1 text-xs">05 Nov - 10 Nov</span>
-                                            <span class="text-[10px] text-text-secondary">5 noches • 1 persona</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 font-bold text-text-main dark:text-white">$650.00</td>
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                                            <span class="size-1.5 bg-blue-500 rounded-full mr-1.5"></span>
-                                            Completada
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="flex justify-center items-center gap-2">
-                                            <button class="size-8 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary hover:text-primary transition-colors" title="Ver detalle">
-                                                <span class="material-symbols-outlined text-lg">visibility</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="group hover:bg-background-light/50 dark:hover:bg-gray-800/50 transition-colors">
-                                    <td class="px-6 py-4 text-text-secondary font-mono">#RS-8424</td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex flex-col">
-                                            <span class="font-bold text-text-main dark:text-white">Jorge Isaacs</span>
-                                            <span class="text-xs text-text-secondary">jorge.i@mail.com</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-2">
-                                            <div class="size-8 rounded bg-cover bg-center shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCJ6c7T-MKs3zCrGDGJorBmC_Zejtem0sP_yBxRYPa73SV9M1gJ9MskKO1R03jZs4YKmdlpRKJ_V-xAcnkwUKNbyEKBVavMYmLTJKPZwySEaiFfw6VdKNFR0DqIFCFSgMaFg7umzSKu-IfHyb6yO7JtT8uUoeDDmL_5dfATNrmLrFwvUZnyGowygpi_hKJ4c-97FEHHbGF4cPBumWwyB2EHApJNkaR01tSHnyvb7lh4uS8pWyqdT-YEsFv6ckhDlFpQEOftz2_Bj_w");'></div>
-                                            <span class="font-medium text-text-main dark:text-white truncate max-w-[150px]">Suite Panorámica 201</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-text-main dark:text-white">
-                                        <div class="flex flex-col">
-                                            <span class="flex items-center gap-1 text-xs">10 Dic - 15 Dic</span>
-                                            <span class="text-[10px] text-text-secondary">5 noches • 2 personas</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 font-bold text-text-main dark:text-white">$1,250.00</td>
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
-                                            <span class="size-1.5 bg-red-500 rounded-full mr-1.5"></span>
-                                            Cancelada
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="flex justify-center items-center gap-2">
-                                            <button class="size-8 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary hover:text-primary transition-colors" title="Ver detalle">
-                                                <span class="material-symbols-outlined text-lg">visibility</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <?php
+                                if (mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        // Calcular noches
+                                        $fecha_inicio = new DateTime($row['fecha_inicio']);
+                                        $fecha_fin = new DateTime($row['fecha_fin']);
+                                        $noches = $fecha_inicio->diff($fecha_fin)->days;
+
+                                        // Clases por estado
+                                        $estado_class = '';
+                                        $dot_class = '';
+                                        switch ($row['estado']) {
+                                            case 'Confirmada':
+                                                $estado_class = 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
+                                                $dot_class = 'bg-green-500';
+                                                break;
+                                            case 'Pendiente':
+                                                $estado_class = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
+                                                $dot_class = 'bg-yellow-500';
+                                                break;
+                                            case 'Completada':
+                                                $estado_class = 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
+                                                $dot_class = 'bg-blue-500';
+                                                break;
+                                            case 'Cancelada':
+                                                $estado_class = 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
+                                                $dot_class = 'bg-red-500';
+                                                break;
+                                            default:
+                                                $estado_class = 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400';
+                                                $dot_class = 'bg-gray-500';
+                                        }
+
+                                        // Imágenes
+                                        $usuario_img = !empty($row['usuario_imagen']) ? '../../assets/img/usuarios/' . $row['usuario_imagen'] : 'https://ui-avatars.com/api/?name=' . $row['nombre_final'] . '+' . $row['apellido_final'];
+                                        $apartamento_img = !empty($row['apartamento_imagen']) ? '../../assets/img/apartamentos/' . $row['apartamento_imagen'] : 'https://placehold.co/400x300?text=No+Image';
+                                        
+                                        // Datos de contacto
+                                        $email_contacto = $row['email_final'];
+                                        $telefono_contacto = !empty($row['telefono_cliente']) ? $row['telefono_cliente'] : 'No registrado';
+                                        
+                                        // Composición de ocupantes
+                                        $ocupantes = [];
+                                        if ($row['adultos'] > 0) $ocupantes[] = $row['adultos'] . ' Adul.';
+                                        if ($row['ninos'] > 0) $ocupantes[] = $row['ninos'] . ' Niñ.';
+                                        if ($row['bebes'] > 0) $ocupantes[] = $row['bebes'] . ' Beb.';
+                                        if ($row['perro_guia'] == 1) $ocupantes[] = '🦮';
+                                        $ocupantes_str = implode(', ', $ocupantes);
+                                ?>
+                                        <tr class="group hover:bg-background-light/50 dark:hover:bg-gray-800/50 transition-colors">
+                                            <td class="px-6 py-4 text-text-secondary font-mono">#RS-<?php echo $row['id']; ?></td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex flex-col">
+                                                    <span class="font-bold text-text-main dark:text-white"><?php echo htmlspecialchars($row['nombre_final'] . ' ' . $row['apellido_final']); ?></span>
+                                                    <span class="text-[10px] text-text-secondary">
+                                                        <?php echo !empty($row['usuario_id']) ? '#USR-'.$row['usuario_id'] : 'Invitado'; ?>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex flex-col text-xs text-text-secondary">
+                                                    <div class="flex items-center gap-1" title="<?php echo htmlspecialchars($email_contacto); ?>">
+                                                        <span class="material-symbols-outlined text-[14px]">mail</span>
+                                                        <span class="truncate max-w-[120px]"><?php echo htmlspecialchars($email_contacto); ?></span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1 mt-0.5">
+                                                        <span class="material-symbols-outlined text-[14px]">call</span>
+                                                        <span><?php echo htmlspecialchars($telefono_contacto); ?></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex flex-col">
+                                                    <span class="text-xs font-semibold text-text-main dark:text-white"><?php echo $ocupantes_str; ?></span>
+                                                    <?php if(!empty($row['nombres_huespedes'])): ?>
+                                                        <span class="text-[10px] text-text-secondary truncate max-w-[100px]" title="<?php echo htmlspecialchars($row['nombres_huespedes']); ?>">
+                                                            <?php echo htmlspecialchars($row['nombres_huespedes']); ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-2">
+                                                    <div class="size-8 rounded bg-cover bg-center shrink-0" style='background-image: url("<?php echo $apartamento_img; ?>");'></div>
+                                                    <span class="font-medium text-text-main dark:text-white truncate max-w-[150px]"><?php echo $row['apartamento_titulo']; ?></span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 text-text-main dark:text-white">
+                                                <div class="flex flex-col">
+                                                    <span class="flex items-center gap-1 text-xs"><?php echo $fecha_inicio->format('d M') . ' - ' . $fecha_fin->format('d M'); ?></span>
+                                                    <span class="text-[10px] text-text-secondary"><?php echo $noches; ?> noches</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 font-bold text-text-main dark:text-white">$<?php echo number_format($row['total'], 2); ?></td>
+                                            <td class="px-6 py-4">
+                                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold <?php echo $estado_class; ?>">
+                                                    <span class="size-1.5 <?php echo $dot_class; ?> rounded-full mr-1.5"></span>
+                                                    <?php echo $row['estado']; ?>
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 text-center">
+                                                <div class="flex justify-center items-center gap-2">
+                                                    <button onclick='openModal(<?php echo json_encode([
+                                                                                    "id" => $row["id"],
+                                                                                    "huesped" => $row["nombre_final"] . " " . $row["apellido_final"],
+                                                                                    "email" => $email_contacto,
+                                                                                    "telefono" => $telefono_contacto,
+                                                                                    "apartamento" => $row["apartamento_titulo"],
+                                                                                    "fecha_inicio" => $fecha_inicio->format("d M Y"),
+                                                                                    "fecha_fin" => $fecha_fin->format("d M Y"),
+                                                                                    "noches" => $noches,
+                                                                                    "ocupantes" => $ocupantes_str,
+                                                                                    "nombres_huespedes" => $row["nombres_huespedes"],
+                                                                                    "total" => number_format($row["total"], 2),
+                                                                                    "estado" => $row["estado"],
+                                                                                    "imagen_usuario" => $usuario_img,
+                                                                                    "imagen_apartamento" => $apartamento_img
+                                                                                ]); ?>)' class="size-8 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary hover:text-primary transition-colors" title="Ver detalle">
+                                                        <span class="material-symbols-outlined text-lg">visibility</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                <?php
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="9" class="px-6 py-4 text-center text-text-secondary">No se encontraron reservas.</td></tr>';
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>
                     <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800 flex items-center justify-between">
-                        <p class="text-xs text-text-secondary">Mostrando <span class="font-bold text-text-main dark:text-white">1-10</span> de <span class="font-bold text-text-main dark:text-white">1,284</span> reservas</p>
+                        <p class="text-xs text-text-secondary">Mostrando <span class="font-bold text-text-main dark:text-white"><?php echo mysqli_num_rows($result); ?></span> reservas</p>
+                        <!-- Paginación estática por ahora -->
                         <div class="flex items-center gap-2">
                             <button class="size-8 flex items-center justify-center rounded-lg border border-[#e5e7eb] dark:border-gray-700 text-text-secondary hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                                 <span class="material-symbols-outlined text-lg">chevron_left</span>
                             </button>
                             <button class="size-8 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-xs">1</button>
-                            <button class="size-8 flex items-center justify-center rounded-lg border border-[#e5e7eb] dark:border-gray-700 text-text-secondary hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-xs font-bold">2</button>
-                            <button class="size-8 flex items-center justify-center rounded-lg border border-[#e5e7eb] dark:border-gray-700 text-text-secondary hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-xs font-bold">3</button>
                             <button class="size-8 flex items-center justify-center rounded-lg border border-[#e5e7eb] dark:border-gray-700 text-text-secondary hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                                 <span class="material-symbols-outlined text-lg">chevron_right</span>
                             </button>
@@ -414,6 +487,221 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
             </main>
         </div>
     </div>
+
+    <!-- Modal de Detalle de Reserva -->
+    <div id="reservationModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Background backdrop -->
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-2xl bg-card-light dark:bg-card-dark text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-[#f0f3f4] dark:border-gray-800">
+                    
+                    <!-- Header -->
+                    <div class="bg-background-light/50 dark:bg-gray-800/50 px-4 py-3 sm:px-6 flex justify-between items-center border-b border-[#f0f3f4] dark:border-gray-800">
+                        <h3 class="text-base font-semibold leading-6 text-text-main dark:text-white" id="modal-title">Detalle de Reserva #<span id="modal-id"></span></h3>
+                        <button type="button" onclick="closeModal()" class="text-text-secondary hover:text-text-main dark:hover:text-white transition-colors">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="px-4 py-5 sm:p-6 space-y-6">
+                        <!-- Huesped Info -->
+                        <div class="flex items-center gap-4">
+                            <div id="modal-user-img" class="size-16 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-700 shadow-sm"></div>
+                            <div>
+                                <h4 class="text-lg font-bold text-text-main dark:text-white" id="modal-huesped"></h4>
+                                <div class="flex flex-col text-sm text-text-secondary">
+                                    <div class="flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[16px]">mail</span>
+                                        <span id="modal-email"></span>
+                                    </div>
+                                    <div class="flex items-center gap-1 mt-0.5">
+                                        <span class="material-symbols-outlined text-[16px]">call</span>
+                                        <span id="modal-telefono"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ocupantes Info -->
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-100 dark:border-gray-700">
+                            <h5 class="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Detalles de Ocupación</h5>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-medium text-text-main dark:text-white" id="modal-ocupantes"></span>
+                            </div>
+                            <p class="text-xs text-text-secondary italic" id="modal-nombres-huespedes"></p>
+                        </div>
+
+                        <!-- Apartamento Info -->
+                        <div class="bg-background-light dark:bg-gray-800 rounded-xl p-4">
+                            <div class="flex gap-4">
+                                <div id="modal-apt-img" class="w-24 h-24 rounded-lg bg-cover bg-center shrink-0"></div>
+                                <div class="flex flex-col justify-center">
+                                    <span class="text-xs font-semibold text-primary uppercase tracking-wider mb-1">Apartamento</span>
+                                    <h4 class="font-bold text-text-main dark:text-white leading-tight mb-2" id="modal-apartamento"></h4>
+                                    <div class="flex items-center gap-1 text-xs text-text-secondary">
+                                        <span class="material-symbols-outlined text-sm">night_shelter</span>
+                                        <span id="modal-noches"></span> noches
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fechas y Costos -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-3 rounded-lg border border-[#f0f3f4] dark:border-gray-700">
+                                <span class="text-xs text-text-secondary block mb-1">Check-in</span>
+                                <span class="text-sm font-semibold text-text-main dark:text-white" id="modal-checkin"></span>
+                            </div>
+                            <div class="p-3 rounded-lg border border-[#f0f3f4] dark:border-gray-700">
+                                <span class="text-xs text-text-secondary block mb-1">Check-out</span>
+                                <span class="text-sm font-semibold text-text-main dark:text-white" id="modal-checkout"></span>
+                            </div>
+                        </div>
+
+                            <div class="flex justify-between items-center pt-4 border-t border-[#f0f3f4] dark:border-gray-800">
+                                <div>
+                                    <span class="text-xs text-text-secondary block">Estado</span>
+                                    <select id="modal-estado-select" onchange="updateStatus(this.value)" class="bg-transparent border border-gray-300 dark:border-gray-600 rounded-md text-xs font-bold mt-1 py-1 pl-2 pr-8 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Confirmada">Confirmada</option>
+                                        <option value="Completada">Completada</option>
+                                        <option value="Cancelada">Cancelada</option>
+                                    </select>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs text-text-secondary block">Total Pagado</span>
+                                    <span class="text-2xl font-bold text-text-main dark:text-white">$<span id="modal-total"></span></span>
+                                </div>
+                            </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="bg-background-light/30 dark:bg-gray-800/30 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-2">
+                        <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-white dark:bg-gray-800 px-3 py-2 text-sm font-semibold text-text-main dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 sm:mt-0 sm:w-auto transition-colors">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar Flatpickr
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr("#date-range", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                locale: "es",
+                theme: "dark",
+                onChange: function(selectedDates, dateStr, instance) {
+                   // Aquí puedes agregar lógica para filtrar si lo deseas
+                   console.log("Fechas seleccionadas:", dateStr);
+                }
+            });
+        });
+
+        let currentReservationId = null;
+
+        function openModal(data) {
+            currentReservationId = data.id;
+            const modal = document.getElementById('reservationModal');
+            
+            // Set basic info
+            document.getElementById('modal-id').textContent = data.id;
+            document.getElementById('modal-huesped').textContent = data.huesped;
+            document.getElementById('modal-email').textContent = data.email;
+            document.getElementById('modal-telefono').textContent = data.telefono;
+            document.getElementById('modal-ocupantes').textContent = data.ocupantes;
+            document.getElementById('modal-nombres-huespedes').textContent = data.nombres_huespedes ? 'Huéspedes: ' + data.nombres_huespedes : 'Sin nombres adicionales registrados';
+            document.getElementById('modal-apartamento').textContent = data.apartamento;
+            document.getElementById('modal-checkin').textContent = data.fecha_inicio;
+            document.getElementById('modal-checkout').textContent = data.fecha_fin;
+            document.getElementById('modal-noches').textContent = data.noches;
+            document.getElementById('modal-total').textContent = data.total;
+
+            // Set images
+            document.getElementById('modal-user-img').style.backgroundImage = `url('${data.imagen_usuario}')`;
+            document.getElementById('modal-apt-img').style.backgroundImage = `url('${data.imagen_apartamento}')`;
+
+            // Set Status Select
+            const statusSelect = document.getElementById('modal-estado-select');
+            statusSelect.value = data.estado;
+            
+            // Aplicar colores iniciales al select según el estado
+            updateSelectColor(statusSelect);
+
+            // Show modal
+            modal.classList.remove('hidden');
+        }
+
+        function updateSelectColor(select) {
+            const status = select.value;
+            let colorClass = '';
+            
+            // Reset classes (manteniendo base)
+            select.className = "bg-transparent border border-gray-300 dark:border-gray-600 rounded-md text-xs font-bold mt-1 py-1 pl-2 pr-8 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white";
+
+            switch(status) {
+                case 'Confirmada':
+                    select.classList.add('text-green-700', 'dark:text-green-400', 'bg-green-50', 'dark:bg-green-900/20');
+                    break;
+                case 'Pendiente':
+                    select.classList.add('text-yellow-700', 'dark:text-yellow-400', 'bg-yellow-50', 'dark:bg-yellow-900/20');
+                    break;
+                case 'Completada':
+                    select.classList.add('text-blue-700', 'dark:text-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
+                    break;
+                case 'Cancelada':
+                    select.classList.add('text-red-700', 'dark:text-red-400', 'bg-red-50', 'dark:bg-red-900/20');
+                    break;
+            }
+        }
+
+        function updateStatus(newStatus) {
+            const select = document.getElementById('modal-estado-select');
+            updateSelectColor(select);
+
+            if(!currentReservationId) return;
+
+            // Enviar actualización al servidor via fetch
+            fetch('actualizar_estado_reserva.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `id=${currentReservationId}&estado=${newStatus}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    // Opcional: Mostrar notificación de éxito
+                    console.log('Estado actualizado correctamente');
+                    // Recargar página para reflejar cambios en la tabla principal
+                    window.location.reload();
+                } else {
+                    alert('Error al actualizar el estado: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un error al conectar con el servidor');
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('reservationModal');
+            modal.classList.add('hidden');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        });
+    </script>
 
 </body>
 
