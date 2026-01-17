@@ -20,13 +20,32 @@ $result_pqr = $conn->query($sql_pqr);
 $pqr_list = [];
 $num_pqr_activas = 0;
 if ($result_pqr && $result_pqr->num_rows > 0) {
-    while($row = $result_pqr->fetch_assoc()) {
+    while ($row = $result_pqr->fetch_assoc()) {
         $pqr_list[] = $row;
-        if($row['estado'] != 'Resuelto') {
+        if ($row['estado'] != 'Resuelto') {
             $num_pqr_activas++;
         }
     }
 }
+
+// Obtener próximas reservas
+$fecha_actual = date('Y-m-d');
+$sql_reservas = "SELECT r.*, a.titulo, a.ubicacion, a.imagen_principal 
+                 FROM reservas r 
+                 JOIN apartamentos a ON r.apartamento_id = a.id 
+                 WHERE r.usuario_id = '$usuario_id' 
+                 AND r.fecha_inicio >= '$fecha_actual' 
+                 ORDER BY r.fecha_inicio ASC";
+$result_reservas = $conn->query($sql_reservas);
+
+// Obtener reservas pasadas
+$sql_reservas_pasadas = "SELECT r.*, a.titulo, a.ubicacion, a.imagen_principal 
+                 FROM reservas r 
+                 JOIN apartamentos a ON r.apartamento_id = a.id 
+                 WHERE r.usuario_id = '$usuario_id' 
+                 AND r.fecha_fin < '$fecha_actual' 
+                 ORDER BY r.fecha_inicio DESC";
+$result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
 ?>
 <html class="dark" lang="es">
 
@@ -61,20 +80,32 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
         }
     </script>
     <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
         }
+
         .custom-scrollbar::-webkit-scrollbar-track {
             background: transparent;
         }
+
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background-color: #cbd5e1;
             border-radius: 20px;
         }
+
         .dark .custom-scrollbar::-webkit-scrollbar-thumb {
             background-color: #475569;
         }
-        
+
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
@@ -114,16 +145,12 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                 <button onclick="changeLanguage('en')" id="btn-en" class="px-3 py-1 text-xs font-bold rounded-md transition-all text-gray-500 hover:text-primary">EN</button>
             </div>
 
-            <nav class="hidden md:flex items-center gap-6">
-                <a data-key="nav-reservations" class="text-[#111618] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Mis Reservas</a>
-                <a data-key="nav-favorites" class="text-[#111618] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Favoritos</a>
-            </nav>
             <div class="flex items-center gap-3 relative">
                 <button id="notification-btn" class="flex items-center justify-center rounded-full size-10 hover:bg-gray-100 dark:hover:bg-gray-800 text-[#111618] dark:text-white transition-colors relative" onclick="toggleNotifications()">
                     <span class="material-symbols-outlined">notifications</span>
                     <span id="notification-badge" class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-[#1a2c35] hidden"></span>
                 </button>
-                
+
                 <!-- Dropdown de Notificaciones -->
                 <div id="notification-dropdown" class="absolute top-12 right-0 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 hidden z-50 overflow-hidden">
                     <div class="p-3 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
@@ -174,140 +201,234 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                             <span class="mr-2 material-symbols-outlined">menu_book</span>
                             <span data-key="btn-guide">Guía de la casa</span>
                         </button>
-                    </div>
-                </div>
-
-                <!-- Sección de Apartamentos Disponibles -->
-                <div class="mt-8 border-t border-[#dbe2e6] dark:border-gray-700 pt-6">
-                    <h3 data-key="available-apartments" class="text-[#111618] dark:text-white text-xl font-bold mb-4">Apartamentos Disponibles</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <?php if ($result_apartamentos->num_rows > 0): ?>
-                            <?php while($apto = $result_apartamentos->fetch_assoc()): ?>
-                                <div class="flex flex-col rounded-xl bg-white dark:bg-[#1a2c35] shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden group hover:shadow-md transition-all">
-                                    <div class="w-full h-48 bg-center bg-no-repeat bg-cover relative" style="background-image: url('../../assets/img/apartamentos/<?php echo htmlspecialchars($apto['imagen_principal']); ?>');">
-                                        <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded shadow">
-                                            $<?php echo number_format($apto['precio'], 0, ',', '.'); ?>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-col p-4 gap-3">
-                                        <h3 class="text-[#111618] dark:text-white text-lg font-bold leading-tight"><?php echo htmlspecialchars($apto['titulo']); ?></h3>
-                                        <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2"><?php echo htmlspecialchars($apto['descripcion']); ?></p>
-                                        
-                                        <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
-                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">bed</span> <?php echo $apto['habitaciones']; ?></span>
-                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">shower</span> <?php echo $apto['banos']; ?></span>
-                                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">group</span> <?php echo $apto['capacidad']; ?></span>
-                                        </div>
-                                        
-                                        <a href="../reserva-apartamento/apartamento.php?id=<?php echo $apto['id']; ?>" data-key="view-details" class="w-full mt-2 py-2 bg-primary text-white font-bold rounded-lg hover:bg-sky-600 transition-colors text-center">
-                                            Ver Detalles
-                                        </a>
-                                    </div>
-                                </div>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <p data-key="no-apartments" class="col-span-2 text-center text-gray-500">No hay apartamentos disponibles en este momento.</p>
-                        <?php endif; ?>
+                        <button onclick="switchTab('apartments')" class="flex items-center justify-center rounded-lg h-12 px-6 bg-white text-[#111618] text-base font-bold transition-all shadow-md hover:shadow-lg">
+                            <span class="mr-2 material-symbols-outlined text-primary">add_circle</span>
+                            Hacer una reserva
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+
             <div class="lg:col-span-2 flex flex-col gap-6">
                 <div class="border-b border-[#dbe2e6] dark:border-gray-700">
-                    <div class="flex gap-8">
-                        <a class="group flex items-center gap-2 border-b-[3px] border-b-primary pb-3 pt-2 cursor-pointer" href="#">
+                    <div class="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar">
+                        <a onclick="switchTab('upcoming')" id="tab-upcoming" class="group flex items-center gap-2 border-b-[3px] border-b-primary pb-3 pt-2 cursor-pointer shrink-0" href="javascript:void(0)">
                             <span class="material-symbols-outlined text-primary text-[20px]">calendar_month</span>
                             <p data-key="tab-upcoming" class="text-[#111618] dark:text-white text-sm font-bold tracking-[0.015em]">Próximas reservas</p>
                         </a>
-                        <a class="group flex items-center gap-2 border-b-[3px] border-b-transparent hover:border-b-gray-300 pb-3 pt-2 cursor-pointer transition-colors" href="#">
+                        <a onclick="switchTab('past')" id="tab-past" class="group flex items-center gap-2 border-b-[3px] border-b-transparent hover:border-b-gray-300 pb-3 pt-2 cursor-pointer transition-colors shrink-0" href="javascript:void(0)">
                             <span class="material-symbols-outlined text-[#617c89] group-hover:text-gray-600 dark:text-gray-500 text-[20px]">history</span>
                             <p data-key="tab-past" class="text-[#617c89] group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-gray-300 text-sm font-bold tracking-[0.015em]">Estancias pasadas</p>
+                        </a>
+                        <a onclick="switchTab('apartments')" id="tab-apartments" class="group flex items-center gap-2 border-b-[3px] border-b-transparent hover:border-b-gray-300 pb-3 pt-2 cursor-pointer transition-colors shrink-0" href="javascript:void(0)">
+                            <span class="material-symbols-outlined text-[#617c89] group-hover:text-gray-600 dark:text-gray-500 text-[20px]">apartment</span>
+                            <p data-key="tab-apartments" class="text-[#617c89] group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-gray-300 text-sm font-bold tracking-[0.015em]">Apartamentos</p>
                         </a>
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-4">
-                    <div class="flex flex-col md:flex-row items-stretch rounded-xl bg-white dark:bg-[#1a2c35] shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden group hover:shadow-md transition-all">
-                        <div class="w-full md:w-64 md:min-w-64 h-48 md:h-auto bg-center bg-no-repeat bg-cover relative" style='background-image: url("https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=2070&auto=format&fit=crop");'>
-                            <div data-key="status-confirmed" class="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded shadow">Confirmada</div>
-                        </div>
-                        <div class="flex flex-1 flex-col justify-between p-5 gap-3">
-                            <div>
-                                <div class="flex justify-between items-start">
-                                    <h3 data-key="card1-title" class="text-[#111618] dark:text-white text-lg font-bold leading-tight">Apartamento de Lujo en Pozos Colorados</h3>
-                                    <button class="text-gray-400 hover:text-primary transition-colors">
-                                        <span class="material-symbols-outlined">favorite</span>
-                                    </button>
-                                </div>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-sm">location_on</span>
-                                    Pozos Colorados, Santa Marta
-                                </p>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <div class="flex items-center gap-3 text-sm text-[#617c89] dark:text-gray-300 bg-gray-50 dark:bg-gray-800 p-2 rounded-lg border border-gray-100 dark:border-gray-700">
-                                    <span class="material-symbols-outlined text-primary">date_range</span>
-                                    <span>15 Oct - 20 Oct, 2024</span>
-                                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                    <span data-key="card1-guests">2 Huéspedes</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-end gap-3 pt-2 border-t border-gray-100 dark:border-gray-700 mt-1">
-                                <button class="flex items-center gap-1 text-primary hover:text-sky-600 text-sm font-bold px-3 py-2 rounded transition-colors">
-                                    <span class="material-symbols-outlined text-[18px]">edit_note</span>
-                                    <span data-key="btn-review">Escribir reseña</span>
-                                </button>
-                                <button data-key="btn-manage" class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-medium shadow-sm hover:bg-sky-500 transition-colors">
-                                    Gestionar reserva
-                                </button>
-                            </div>
-                        </div>
+                <div id="upcoming-bookings" class="flex flex-col gap-4">
+                    <div class="flex items-center justify-end">
+                        <button onclick="switchTab('apartments')" class="flex items-center gap-2 text-primary hover:text-sky-600 text-sm font-bold px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-sky-900/10 transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                            Nueva reserva
+                        </button>
                     </div>
+                    <?php if ($result_reservas && $result_reservas->num_rows > 0): ?>
+                        <?php while ($reserva = $result_reservas->fetch_assoc()):
+                            $estadoColor = 'bg-yellow-500';
+                            $estadoTexto = 'Pendiente';
+
+                            if ($reserva['estado'] == 'Confirmada') {
+                                $estadoColor = 'bg-green-500';
+                                $estadoTexto = 'Confirmada';
+                            } elseif ($reserva['estado'] == 'Cancelada') {
+                                $estadoColor = 'bg-red-500';
+                                $estadoTexto = 'Cancelada';
+                            } else {
+                                $estadoTexto = $reserva['estado'];
+                            }
+
+                            $fecha_inicio = date('d M', strtotime($reserva['fecha_inicio']));
+                            $fecha_fin = date('d M, Y', strtotime($reserva['fecha_fin']));
+                            $huespedes = $reserva['adultos'] + $reserva['ninos'];
+                        ?>
+                            <div class="flex flex-col md:flex-row items-stretch rounded-xl bg-white dark:bg-[#1a2c35] shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden group hover:shadow-md transition-all">
+                                <div class="w-full md:w-64 md:min-w-64 h-48 md:h-auto bg-center bg-no-repeat bg-cover relative" style='background-image: url("../../assets/img/apartamentos/<?php echo htmlspecialchars($reserva['imagen_principal']); ?>");'>
+                                    <div class="absolute top-2 left-2 <?php echo $estadoColor; ?> text-white text-xs font-bold px-2 py-1 rounded shadow"><?php echo $estadoTexto; ?></div>
+                                </div>
+                                <div class="flex flex-1 flex-col justify-between p-5 gap-3">
+                                    <div>
+                                        <div class="flex justify-between items-start">
+                                            <h3 class="text-[#111618] dark:text-white text-lg font-bold leading-tight"><?php echo htmlspecialchars($reserva['titulo']); ?></h3>
+                                            <button class="text-gray-400 hover:text-primary transition-colors">
+                                                <span class="material-symbols-outlined">favorite</span>
+                                            </button>
+                                        </div>
+                                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">location_on</span>
+                                            <?php echo htmlspecialchars($reserva['ubicacion']); ?>
+                                        </p>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <div class="flex items-center gap-3 text-sm text-[#617c89] dark:text-gray-300 bg-gray-50 dark:bg-gray-800 p-2 rounded-lg border border-gray-100 dark:border-gray-700">
+                                            <span class="material-symbols-outlined text-primary">date_range</span>
+                                            <span><?php echo $fecha_inicio; ?> - <?php echo $fecha_fin; ?></span>
+                                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                            <span><?php echo $huespedes; ?> Huéspedes</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-end gap-3 pt-2 border-t border-gray-100 dark:border-gray-700 mt-1">
+                                        <button onclick="openApartmentModal(<?php echo $reserva['apartamento_id']; ?>, '<?php echo htmlspecialchars($reserva['titulo'], ENT_QUOTES); ?>')" class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-medium shadow-sm hover:bg-sky-500 transition-colors">
+                                            Ver y reservar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <div class="flex flex-col items-center justify-center p-8 bg-white dark:bg-[#1a2c35] rounded-xl border border-gray-100 dark:border-gray-800 text-center">
+                            <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-full mb-4">
+                                <span class="material-symbols-outlined text-4xl text-gray-400">event_busy</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#111618] dark:text-white mb-2">No tienes próximas reservas</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 max-w-xs mx-auto">Explora nuestros apartamentos y planifica tu próxima escapada a Santa Marta.</p>
+                            <button onclick="switchTab('apartments')" class="bg-primary text-white px-6 py-2.5 rounded-lg font-bold hover:bg-sky-600 transition-colors">
+                                Ver apartamentos
+                            </button>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div id="past-bookings" class="flex flex-col gap-4 hidden">
+                    <?php if ($result_reservas_pasadas && $result_reservas_pasadas->num_rows > 0): ?>
+                        <?php while ($reserva = $result_reservas_pasadas->fetch_assoc()):
+                            $fecha_inicio = date('d M', strtotime($reserva['fecha_inicio']));
+                            $fecha_fin = date('d M, Y', strtotime($reserva['fecha_fin']));
+                            $huespedes = $reserva['adultos'] + $reserva['ninos'];
+                        ?>
+                            <div class="flex flex-col md:flex-row items-stretch rounded-xl bg-white dark:bg-[#1a2c35] shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden group hover:shadow-md transition-all">
+                                <div class="w-full md:w-64 md:min-w-64 h-48 md:h-auto bg-center bg-no-repeat bg-cover relative grayscale" style='background-image: url("../../assets/img/apartamentos/<?php echo htmlspecialchars($reserva['imagen_principal']); ?>");'>
+                                    <div class="absolute top-2 left-2 bg-gray-500 text-white text-xs font-bold px-2 py-1 rounded shadow">Completada</div>
+                                </div>
+                                <div class="flex flex-1 flex-col justify-between p-5 gap-3">
+                                    <div>
+                                        <div class="flex justify-between items-start">
+                                            <h3 class="text-[#111618] dark:text-white text-lg font-bold leading-tight"><?php echo htmlspecialchars($reserva['titulo']); ?></h3>
+                                        </div>
+                                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">location_on</span>
+                                            <?php echo htmlspecialchars($reserva['ubicacion']); ?>
+                                        </p>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <div class="flex items-center gap-3 text-sm text-[#617c89] dark:text-gray-300 bg-gray-50 dark:bg-gray-800 p-2 rounded-lg border border-gray-100 dark:border-gray-700">
+                                            <span class="material-symbols-outlined text-primary">date_range</span>
+                                            <span><?php echo $fecha_inicio; ?> - <?php echo $fecha_fin; ?></span>
+                                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                            <span><?php echo $huespedes; ?> Huéspedes</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-end gap-3 pt-2 border-t border-gray-100 dark:border-gray-700 mt-1">
+                                        <button onclick="openReviewModal(<?php echo $reserva['apartamento_id']; ?>, '<?php echo htmlspecialchars($reserva['titulo'], ENT_QUOTES); ?>')" class="flex items-center gap-1 text-primary hover:text-sky-600 text-sm font-bold px-3 py-2 rounded transition-colors">
+                                            <span class="material-symbols-outlined text-[18px]">edit_note</span>
+                                            <span>Escribir reseña</span>
+                                        </button>
+                                        <button onclick="openApartmentModal(<?php echo $reserva['apartamento_id']; ?>, '<?php echo htmlspecialchars($reserva['titulo'], ENT_QUOTES); ?>')" class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-medium shadow-sm hover:bg-sky-500 transition-colors">
+                                            Reservar de nuevo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <div class="flex flex-col items-center justify-center p-8 bg-white dark:bg-[#1a2c35] rounded-xl border border-gray-100 dark:border-gray-800 text-center">
+                            <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-full mb-4">
+                                <span class="material-symbols-outlined text-4xl text-gray-400">history_toggle_off</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#111618] dark:text-white mb-2">No tienes estancias pasadas</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 max-w-xs mx-auto">Tus viajes completados aparecerán aquí para que puedas recordarlos.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div id="apartments-content" class="flex flex-col gap-4 hidden">
+                    <div class="flex items-center justify-between">
+                        <h3 data-key="available-apartments" class="text-[#111618] dark:text-white text-lg font-bold">Apartamentos disponibles</h3>
+                        <button onclick="switchTab('upcoming')" class="text-primary hover:text-sky-600 text-sm font-bold">Volver</button>
+                    </div>
+
+                    <?php if ($result_apartamentos && $result_apartamentos->num_rows > 0): ?>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="apartamentos-list">
+                            <?php while ($apt = $result_apartamentos->fetch_assoc()):
+                                $apt_id = (int)($apt['id'] ?? 0);
+                                $apt_titulo = htmlspecialchars($apt['titulo'] ?? 'Apartamento');
+                                $apt_titulo_js = htmlspecialchars($apt['titulo'] ?? 'Apartamento', ENT_QUOTES);
+                                $apt_ubicacion = htmlspecialchars($apt['ubicacion'] ?? '');
+                                $apt_precio = isset($apt['precio']) ? (float)$apt['precio'] : 0;
+                                $apt_imagen = htmlspecialchars($apt['imagen_principal'] ?? '');
+                            ?>
+                                <div class="flex flex-col rounded-xl bg-white dark:bg-[#1a2c35] shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-md transition-all">
+                                    <div class="w-full h-44 bg-center bg-no-repeat bg-cover" style='background-image: url("../../assets/img/apartamentos/<?php echo $apt_imagen; ?>");'></div>
+                                    <div class="p-5 flex flex-col gap-3">
+                                        <div>
+                                            <h4 class="text-[#111618] dark:text-white font-bold text-base leading-tight line-clamp-2"><?php echo $apt_titulo; ?></h4>
+                                            <?php if (!empty($apt_ubicacion)): ?>
+                                                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center gap-1">
+                                                    <span class="material-symbols-outlined text-sm">location_on</span>
+                                                    <?php echo $apt_ubicacion; ?>
+                                                </p>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <div class="flex items-center justify-between">
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">
+                                                <span class="font-bold text-[#111618] dark:text-white">$<?php echo number_format($apt_precio, 0, ',', '.'); ?></span>
+                                                <span class=""> / noche</span>
+                                            </div>
+                                            <button onclick="openApartmentModal(<?php echo $apt_id; ?>, '<?php echo $apt_titulo_js; ?>')" class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-medium shadow-sm hover:bg-sky-500 transition-colors">
+                                                Ver y reservar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endwhile; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="flex flex-col items-center justify-center p-8 bg-white dark:bg-[#1a2c35] rounded-xl border border-gray-100 dark:border-gray-800 text-center">
+                            <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-full mb-4">
+                                <span class="material-symbols-outlined text-4xl text-gray-400">apartment</span>
+                            </div>
+                            <h3 data-key="no-apartments" class="text-lg font-bold text-[#111618] dark:text-white mb-2">No hay apartamentos disponibles</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm mb-0 max-w-xs mx-auto">Vuelve a intentarlo más tarde.</p>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 
-            <div class="flex flex-col gap-8">
-                <div class="bg-white dark:bg-[#1a2c35] rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-5">
-                    <h3 data-key="side-services" class="text-[#111618] dark:text-white font-bold text-base mb-4">Servicios del Apartamento</h3>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-[#f0f3f4] dark:bg-gray-800 border border-transparent hover:border-primary/20 transition-all group">
-                            <span class="material-symbols-outlined text-3xl mb-2 text-primary">wifi</span>
-                            <span class="text-xs font-bold text-gray-700 dark:text-gray-300 text-center">WiFi</span>
-                        </div>
-                        <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-[#f0f3f4] dark:bg-gray-800 border border-transparent hover:border-primary/20 transition-all group">
-                            <span class="material-symbols-outlined text-3xl mb-2 text-primary">ac_unit</span>
-                            <span data-key="service-ac" class="text-xs font-bold text-gray-700 dark:text-gray-300 text-center">Aire Acondicionado</span>
-                        </div>
-                        <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-[#f0f3f4] dark:bg-gray-800 border border-transparent hover:border-primary/20 transition-all group">
-                            <span class="material-symbols-outlined text-3xl mb-2 text-primary">pool</span>
-                            <span data-key="service-pool" class="text-xs font-bold text-gray-700 dark:text-gray-300 text-center">Piscina</span>
-                        </div>
-                        <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-[#f0f3f4] dark:bg-gray-800 border border-transparent hover:border-primary/20 transition-all group">
-                            <span class="material-symbols-outlined text-3xl mb-2 text-primary">local_parking</span>
-                            <span data-key="service-parking" class="text-xs font-bold text-gray-700 dark:text-gray-300 text-center">Estacionamiento</span>
-                        </div>
-                    </div>
+
+            <div class="bg-white dark:bg-[#1a2c35] rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-0 overflow-hidden">
+                <div class="p-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                    <h3 data-key="pqr-title" class="text-[#111618] dark:text-white font-bold text-base">Mis Solicitudes (PQR)</h3>
+                    <?php if ($num_pqr_activas > 0): ?>
+                        <span class="bg-primary/10 text-primary text-xs font-bold px-2 py-1 rounded"><?php echo $num_pqr_activas; ?> Activa<?php echo $num_pqr_activas > 1 ? 's' : ''; ?></span>
+                    <?php endif; ?>
                 </div>
 
-                <div class="bg-white dark:bg-[#1a2c35] rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-0 overflow-hidden">
-                    <div class="p-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
-                        <h3 data-key="pqr-title" class="text-[#111618] dark:text-white font-bold text-base">Mis Solicitudes (PQR)</h3>
-                        <?php if($num_pqr_activas > 0): ?>
-                            <span class="bg-primary/10 text-primary text-xs font-bold px-2 py-1 rounded"><?php echo $num_pqr_activas; ?> Activa<?php echo $num_pqr_activas > 1 ? 's' : ''; ?></span>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <div class="max-h-[300px] overflow-y-auto">
-                        <?php if (!empty($pqr_list)): ?>
-                            <div class="divide-y divide-gray-100 dark:divide-gray-700">
-                                <?php foreach($pqr_list as $pqr): 
-                                    $estadoClass = '';
-                                    if($pqr['estado'] == 'Pendiente') $estadoClass = 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400';
-                                    elseif($pqr['estado'] == 'En Progreso') $estadoClass = 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400';
-                                    else $estadoClass = 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400';
-                                ?>
+                <div class="max-h-[300px] overflow-y-auto">
+                    <?php if (!empty($pqr_list)): ?>
+                        <div class="divide-y divide-gray-100 dark:divide-gray-700">
+                            <?php foreach ($pqr_list as $pqr):
+                                $estadoClass = '';
+                                if ($pqr['estado'] == 'Pendiente') $estadoClass = 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400';
+                                elseif ($pqr['estado'] == 'En Progreso') $estadoClass = 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400';
+                                else $estadoClass = 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400';
+                            ?>
                                 <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer" onclick="verDetallePQR(<?php echo $pqr['id']; ?>)">
                                     <div class="flex justify-between items-start mb-1">
                                         <div class="flex items-center gap-2">
@@ -322,148 +443,336 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                                         <?php echo date('d M Y', strtotime($pqr['fecha_creacion'])); ?>
                                     </div>
                                 </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php else: ?>
-                            <div class="p-6 text-center text-gray-500 text-sm">
-                                No tienes solicitudes registradas.
-                            </div>
-                        <?php endif; ?>
-                    </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="p-6 text-center text-gray-500 text-sm">
+                            No tienes solicitudes registradas.
+                        </div>
+                    <?php endif; ?>
+                </div>
 
-                    <div class="p-4 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-100 dark:border-gray-700">
-                        <button onclick="openPQRModal()" class="w-full flex items-center justify-center gap-2 rounded-lg h-10 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-[#111618] dark:text-white text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                            <span class="material-symbols-outlined text-lg">add_circle</span>
-                            <span data-key="btn-new-pqr">Nueva Solicitud</span>
-                        </button>
-                    </div>
+                <div class="p-4 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-100 dark:border-gray-700">
+                    <button onclick="openPQRModal()" class="w-full flex items-center justify-center gap-2 rounded-lg h-10 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-[#111618] dark:text-white text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                        <span class="material-symbols-outlined text-lg">add_circle</span>
+                        <span data-key="btn-new-pqr">Nueva Solicitud</span>
+                    </button>
                 </div>
             </div>
         </div>
+        </div>
+
+
     </main>
 
-        <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="view-pqr-modal">
-            <div class="bg-white dark:bg-[#1a2c35] w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-                <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center shrink-0">
+    <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="view-pqr-modal">
+        <div class="bg-white dark:bg-[#1a2c35] w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center shrink-0">
+                <h3 class="text-xl font-bold text-[#111618] dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">chat</span>
+                    Detalle de Solicitud
+                </h3>
+                <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closeViewPQRModal()">
+                    <span class="material-symbols-outlined">close</span>
+                </a>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 space-y-6" id="pqr-detail-content">
+                <!-- Contenido dinámico cargado por JS -->
+                <div class="flex justify-center p-10">
+                    <span class="material-symbols-outlined animate-spin text-primary text-4xl">progress_activity</span>
+                </div>
+            </div>
+
+            <div class="p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end shrink-0">
+                <button class="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-[#111618] dark:text-white text-sm font-bold rounded-lg transition-colors" onclick="closeViewPQRModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="new-pqr-modal">
+        <div class="bg-white dark:bg-[#1a2c35] w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <form action="guardar_pqr_be.php" method="POST">
+                <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
                     <h3 class="text-xl font-bold text-[#111618] dark:text-white flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary">chat</span>
-                        Detalle de Solicitud
+                        <span class="material-symbols-outlined text-primary">add_circle</span>
+                        Nueva Solicitud (PQR)
                     </h3>
-                    <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closeViewPQRModal()">
+                    <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closePQRModal()">
                         <span class="material-symbols-outlined">close</span>
                     </a>
                 </div>
-                
-                <div class="flex-1 overflow-y-auto p-6 space-y-6" id="pqr-detail-content">
-                    <!-- Contenido dinámico cargado por JS -->
-                    <div class="flex justify-center p-10">
-                        <span class="material-symbols-outlined animate-spin text-primary text-4xl">progress_activity</span>
+                <div class="p-8 space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Tipo de Solicitud</label>
+                        <select name="tipo" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" required>
+                            <option value="Petición">Petición</option>
+                            <option value="Queja">Queja</option>
+                            <option value="Reclamo">Reclamo</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Asunto</label>
+                        <input name="asunto" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-gray-400" placeholder="Ej: Problema con el aire acondicionado" type="text" required />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Mensaje</label>
+                        <textarea name="mensaje" rows="4" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-gray-400" placeholder="Describe tu solicitud detalladamente..." required></textarea>
                     </div>
                 </div>
-
-                <div class="p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end shrink-0">
-                    <button class="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-[#111618] dark:text-white text-sm font-bold rounded-lg transition-colors" onclick="closeViewPQRModal()">Cerrar</button>
+                <div class="p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3">
+                    <a class="px-6 py-2.5 text-sm font-bold text-gray-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closePQRModal()">Cancelar</a>
+                    <button type="submit" class="px-6 py-2.5 bg-primary hover:bg-sky-600 text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all">Enviar Solicitud</button>
                 </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="hidden absolute top-20 right-4 md:right-10 z-[100] w-full max-w-md bg-white dark:bg-[#1a2c35] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 animate-in fade-in zoom-in duration-200 origin-top-right" id="config-modal">
+        <div class="max-h-[80vh] overflow-y-auto custom-scrollbar">
+            <form action="actualizar_perfil_be.php" method="POST" enctype="multipart/form-data">
+                <div class="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-[#1a2c35] z-10">
+                    <h3 class="text-lg font-bold text-[#111618] dark:text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">settings</span>
+                        Configuración
+                    </h3>
+                    <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closeConfigModal()">
+                        <span class="material-symbols-outlined">close</span>
+                    </a>
+                </div>
+                <div class="p-6 space-y-5">
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="w-20 h-20 rounded-full bg-cover bg-center border-4 border-gray-100 dark:border-gray-700 relative overflow-hidden group shadow-sm">
+                            <img id="preview-image" src="<?php echo !empty($_SESSION['imagen']) ? '../../' . $_SESSION['imagen'] : 'https://avatar.iran.liara.run/public/30'; ?>" class="w-full h-full object-cover">
+                            <label for="imagen-upload" class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                                <span class="material-symbols-outlined text-white text-xl">edit</span>
+                            </label>
+                        </div>
+                        <input type="file" id="imagen-upload" name="imagen" class="hidden" accept="image/*" onchange="previewImage(this)">
+                        <label for="imagen-upload" class="text-xs font-bold text-primary cursor-pointer hover:underline">Cambiar foto</label>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Nombre</label>
+                            <input name="nombre" value="<?php echo $_SESSION['nombre']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="text" required />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Apellido</label>
+                            <input name="apellido" value="<?php echo $_SESSION['apellido']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="text" required />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Usuario</label>
+                        <input name="usuario" value="<?php echo $_SESSION['usuario']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="text" required />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Correo (Gmail)</label>
+                        <input name="email" value="<?php echo $_SESSION['email']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="email" required />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Nueva Contraseña</label>
+                        <input name="password" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="password" placeholder="••••••••" />
+                    </div>
+                </div>
+                <div class="p-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-2 sticky bottom-0 z-10">
+                    <a class="px-4 py-2 text-xs font-bold text-gray-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closeConfigModal()">Cancelar</a>
+                    <button type="submit" class="px-4 py-2 bg-primary hover:bg-sky-600 text-white text-xs font-bold rounded-lg shadow-md transition-all">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="review-modal">
+        <div class="bg-white dark:bg-[#1a2c35] w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <form id="review-form" onsubmit="submitReview(event)">
+                <input type="hidden" name="apartamento_id" id="review-apartamento-id">
+                <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-[#111618] dark:text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">rate_review</span>
+                        Escribir Reseña
+                    </h3>
+                    <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closeReviewModal()">
+                        <span class="material-symbols-outlined">close</span>
+                    </a>
+                </div>
+                <div class="p-8 space-y-6">
+                    <div class="text-center">
+                        <h4 id="review-apartamento-titulo" class="font-bold text-lg text-[#111618] dark:text-white mb-2"></h4>
+                        <p class="text-sm text-gray-500">¿Cómo estuvo tu estancia?</p>
+                    </div>
+
+                    <div class="flex justify-center gap-2" id="star-rating">
+                        <input type="hidden" name="calificacion" id="review-calificacion" required>
+                        <button type="button" class="material-symbols-outlined text-4xl text-gray-300 hover:text-yellow-400 transition-colors" onclick="setRating(1)">star</button>
+                        <button type="button" class="material-symbols-outlined text-4xl text-gray-300 hover:text-yellow-400 transition-colors" onclick="setRating(2)">star</button>
+                        <button type="button" class="material-symbols-outlined text-4xl text-gray-300 hover:text-yellow-400 transition-colors" onclick="setRating(3)">star</button>
+                        <button type="button" class="material-symbols-outlined text-4xl text-gray-300 hover:text-yellow-400 transition-colors" onclick="setRating(4)">star</button>
+                        <button type="button" class="material-symbols-outlined text-4xl text-gray-300 hover:text-yellow-400 transition-colors" onclick="setRating(5)">star</button>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Comentario</label>
+                        <textarea name="comentario" id="review-comentario" rows="4" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-gray-400" placeholder="Comparte tu experiencia con otros huéspedes..." required></textarea>
+                    </div>
+                </div>
+                <div class="p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3">
+                    <a class="px-6 py-2.5 text-sm font-bold text-gray-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closeReviewModal()">Cancelar</a>
+                    <button type="submit" class="px-6 py-2.5 bg-primary hover:bg-sky-600 text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all">Enviar Reseña</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="hidden fixed inset-0 z-50 bg-black/60 items-center justify-center p-4 backdrop-blur-sm" id="apartment-modal">
+        <div class="bg-white dark:bg-[#1a2c35] w-full max-w-6xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center shrink-0">
+                <h3 id="apartment-modal-title" class="text-lg font-bold text-[#111618] dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">apartment</span>
+                    <span id="apartment-modal-title-text">Apartamento</span>
+                </h3>
+                <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closeApartmentModal()">
+                    <span class="material-symbols-outlined">close</span>
+                </a>
+            </div>
+            <div class="flex-1 bg-background-light dark:bg-background-dark">
+                <iframe id="apartment-modal-iframe" title="Detalle de apartamento" class="w-full h-[80vh] bg-white dark:bg-background-dark" src="about:blank"></iframe>
             </div>
         </div>
-
-        <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="new-pqr-modal">
-            <div class="bg-white dark:bg-[#1a2c35] w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-                <form action="guardar_pqr_be.php" method="POST">
-                    <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
-                        <h3 class="text-xl font-bold text-[#111618] dark:text-white flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">add_circle</span>
-                            Nueva Solicitud (PQR)
-                        </h3>
-                        <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closePQRModal()">
-                            <span class="material-symbols-outlined">close</span>
-                        </a>
-                    </div>
-                    <div class="p-8 space-y-6">
-                        <div>
-                            <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Tipo de Solicitud</label>
-                            <select name="tipo" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" required>
-                                <option value="Petición">Petición</option>
-                                <option value="Queja">Queja</option>
-                                <option value="Reclamo">Reclamo</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Asunto</label>
-                            <input name="asunto" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-gray-400" placeholder="Ej: Problema con el aire acondicionado" type="text" required />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Mensaje</label>
-                            <textarea name="mensaje" rows="4" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-gray-400" placeholder="Describe tu solicitud detalladamente..." required></textarea>
-                        </div>
-                    </div>
-                    <div class="p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3">
-                        <a class="px-6 py-2.5 text-sm font-bold text-gray-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closePQRModal()">Cancelar</a>
-                        <button type="submit" class="px-6 py-2.5 bg-primary hover:bg-sky-600 text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all">Enviar Solicitud</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="hidden absolute top-20 right-4 md:right-10 z-[100] w-full max-w-md bg-white dark:bg-[#1a2c35] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 animate-in fade-in zoom-in duration-200 origin-top-right" id="config-modal">
-            <div class="max-h-[80vh] overflow-y-auto custom-scrollbar">
-                <form action="actualizar_perfil_be.php" method="POST" enctype="multipart/form-data">
-                    <div class="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-[#1a2c35] z-10">
-                        <h3 class="text-lg font-bold text-[#111618] dark:text-white flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">settings</span>
-                            Configuración
-                        </h3>
-                        <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closeConfigModal()">
-                            <span class="material-symbols-outlined">close</span>
-                        </a>
-                    </div>
-                    <div class="p-6 space-y-5">
-                        <div class="flex flex-col items-center gap-3">
-                             <div class="w-20 h-20 rounded-full bg-cover bg-center border-4 border-gray-100 dark:border-gray-700 relative overflow-hidden group shadow-sm">
-                                <img id="preview-image" src="<?php echo !empty($_SESSION['imagen']) ? '../../' . $_SESSION['imagen'] : 'https://avatar.iran.liara.run/public/30'; ?>" class="w-full h-full object-cover">
-                                <label for="imagen-upload" class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                                    <span class="material-symbols-outlined text-white text-xl">edit</span>
-                                </label>
-                             </div>
-                             <input type="file" id="imagen-upload" name="imagen" class="hidden" accept="image/*" onchange="previewImage(this)">
-                             <label for="imagen-upload" class="text-xs font-bold text-primary cursor-pointer hover:underline">Cambiar foto</label>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Nombre</label>
-                                <input name="nombre" value="<?php echo $_SESSION['nombre']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="text" required />
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Apellido</label>
-                                <input name="apellido" value="<?php echo $_SESSION['apellido']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="text" required />
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Usuario</label>
-                            <input name="usuario" value="<?php echo $_SESSION['usuario']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="text" required />
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Correo (Gmail)</label>
-                            <input name="email" value="<?php echo $_SESSION['email']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="email" required />
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Nueva Contraseña</label>
-                            <input name="password" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="password" placeholder="••••••••" />
-                        </div>
-                    </div>
-                    <div class="p-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-2 sticky bottom-0 z-10">
-                        <a class="px-4 py-2 text-xs font-bold text-gray-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closeConfigModal()">Cancelar</a>
-                        <button type="submit" class="px-4 py-2 bg-primary hover:bg-sky-600 text-white text-xs font-bold rounded-lg shadow-md transition-all">Guardar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    </div>
 
     <script>
+        window.addEventListener('message', (event) => {
+            if (!event || !event.data) return;
+            if (event.origin !== window.location.origin) return;
+            if (event.data.type === 'reservation_completed') {
+                closeApartmentModal();
+                switchTab('upcoming');
+                window.location.reload();
+            }
+        });
+
+        function switchTab(tab) {
+            const upcomingContent = document.getElementById('upcoming-bookings');
+            const pastContent = document.getElementById('past-bookings');
+            const apartmentsContent = document.getElementById('apartments-content');
+
+            const upcomingTab = document.getElementById('tab-upcoming');
+            const pastTab = document.getElementById('tab-past');
+            const apartmentsTab = document.getElementById('tab-apartments');
+
+            const contents = {
+                upcoming: upcomingContent,
+                past: pastContent,
+                apartments: apartmentsContent
+            };
+
+            const tabs = {
+                upcoming: upcomingTab,
+                past: pastTab,
+                apartments: apartmentsTab
+            };
+
+            Object.values(contents).forEach(el => el.classList.add('hidden'));
+            Object.values(tabs).forEach(el => {
+                el.classList.remove('border-b-primary');
+                el.classList.add('border-b-transparent', 'hover:border-b-gray-300');
+            });
+
+            if (contents[tab]) {
+                contents[tab].classList.remove('hidden');
+            }
+            if (tabs[tab]) {
+                tabs[tab].classList.add('border-b-primary');
+                tabs[tab].classList.remove('border-b-transparent', 'hover:border-b-gray-300');
+            }
+        }
+
+        function openApartmentModal(apartmentId, title) {
+            const modal = document.getElementById('apartment-modal');
+            const iframe = document.getElementById('apartment-modal-iframe');
+            const modalTitleText = document.getElementById('apartment-modal-title-text');
+
+            modalTitleText.textContent = title ? title : 'Apartamento';
+            iframe.src = `../reserva-apartamento/apartamento.php?id=${apartmentId}&embed=1`;
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+        }
+
+        function closeApartmentModal() {
+            const modal = document.getElementById('apartment-modal');
+            const iframe = document.getElementById('apartment-modal-iframe');
+            iframe.src = 'about:blank';
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+
+        function openReviewModal(apartamentoId, titulo) {
+            document.getElementById('review-apartamento-id').value = apartamentoId;
+            document.getElementById('review-apartamento-titulo').innerText = titulo;
+            setRating(0); // Reset rating
+            document.getElementById('review-comentario').value = '';
+
+            const modal = document.getElementById('review-modal');
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+        }
+
+        function closeReviewModal() {
+            const modal = document.getElementById('review-modal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+
+        function setRating(rating) {
+            document.getElementById('review-calificacion').value = rating;
+            const stars = document.getElementById('star-rating').children;
+
+            for (let i = 1; i < stars.length; i++) { // Skip hidden input
+                if (i <= rating) {
+                    stars[i].classList.add('text-yellow-400');
+                    stars[i].classList.remove('text-gray-300');
+                    stars[i].innerText = 'star'; // filled
+                } else {
+                    stars[i].classList.remove('text-yellow-400');
+                    stars[i].classList.add('text-gray-300');
+                    stars[i].innerText = 'star'; // outline handled by font but here we just color change
+                }
+            }
+        }
+
+        function submitReview(e) {
+            e.preventDefault();
+            const form = document.getElementById('review-form');
+            const formData = new FormData(form);
+
+            if (!formData.get('calificacion') || formData.get('calificacion') == 0) {
+                alert('Por favor selecciona una calificación');
+                return;
+            }
+
+            fetch('guardar_resena_be.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('¡Gracias por tu reseña!');
+                        closeReviewModal();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al enviar la reseña');
+                });
+        }
+
         function openPQRModal() {
             const modal = document.getElementById('new-pqr-modal');
             modal.classList.remove('hidden');
@@ -485,10 +794,10 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
         function verDetallePQR(id) {
             const modal = document.getElementById('view-pqr-modal');
             const content = document.getElementById('pqr-detail-content');
-            
+
             modal.classList.remove('hidden');
             modal.style.display = 'flex';
-            
+
             // Mostrar loader
             content.innerHTML = `
                 <div class="flex justify-center p-10">
@@ -500,7 +809,7 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
             fetch(`obtener_detalle_pqr.php?id=${id}`)
                 .then(response => response.json())
                 .then(data => {
-                    if(data.error) {
+                    if (data.error) {
                         content.innerHTML = `<p class="text-red-500 text-center">${data.error}</p>`;
                         return;
                     }
@@ -530,13 +839,13 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
 
                     if (respuestas.length > 0) {
                         html += `<div class="relative pl-4 border-l-2 border-gray-200 dark:border-gray-700 space-y-6 mt-4">`;
-                        
+
                         respuestas.forEach(res => {
                             let adminImg = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(res.nombre + ' ' + res.apellido) + '&background=13a4ec&color=fff';
                             if (res.imagen && res.imagen.trim() !== '') {
                                 adminImg = res.imagen.startsWith('assets/') ? '../../' + res.imagen : '../../assets/img/usuarios/' + res.imagen;
                             }
-                            
+
                             html += `
                                 <div class="relative">
                                     <div class="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-primary border-2 border-white dark:border-[#1a2c35]"></div>
@@ -583,8 +892,6 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
 
         const translations = {
             es: {
-                "nav-reservations": "Mis Reservas",
-                "nav-favorites": "Favoritos",
                 "welcome-user": "Hola, Daniel",
                 "welcome-sub": "Bienvenido a tu panel de control. Tu próxima aventura te espera.",
                 "checkin-days": "Check-in: 3 Días",
@@ -594,6 +901,7 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                 "btn-guide": "Guía de la casa",
                 "tab-upcoming": "Próximas reservas",
                 "tab-past": "Estancias pasadas",
+                "tab-apartments": "Apartamentos",
                 "status-confirmed": "Confirmada",
                 "card1-title": "Apartamento de Lujo en Pozos Colorados",
                 "card1-guests": "2 Huéspedes",
@@ -605,11 +913,11 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                 "service-parking": "Estacionamiento",
                 "pqr-title": "Mis Solicitudes (PQR)",
                 "pqr-active": "1 Activa",
-                "btn-new-pqr": "Nueva Solicitud"
+                "btn-new-pqr": "Nueva Solicitud",
+                "available-apartments": "Apartamentos disponibles",
+                "no-apartments": "No hay apartamentos disponibles"
             },
             en: {
-                "nav-reservations": "My Bookings",
-                "nav-favorites": "Favorites",
                 "welcome-user": "Hello, Daniel",
                 "welcome-sub": "Welcome to your dashboard. Your next adventure awaits.",
                 "checkin-days": "Check-in: 3 Days",
@@ -619,6 +927,7 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                 "btn-guide": "House Guide",
                 "tab-upcoming": "Upcoming Bookings",
                 "tab-past": "Past Stays",
+                "tab-apartments": "Apartments",
                 "status-confirmed": "Confirmed",
                 "card1-title": "Luxury Apartment in Pozos Colorados",
                 "card1-guests": "2 Guests",
@@ -636,6 +945,18 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                 "view-details": "View Details"
             }
         };
+
+        window.addEventListener('message', (event) => {
+            if (!event || !event.data) return;
+            if (event.data.type === 'reservation_completed') {
+                closeApartmentModal();
+                switchTab('upcoming');
+                window.location.reload();
+            }
+            if (event.data.type === 'close_apartment_modal') {
+                closeApartmentModal();
+            }
+        });
 
         function changeLanguage(lang) {
             // Cambiar textos
@@ -677,7 +998,7 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
             modal.classList.add('hidden');
             modal.style.display = 'none';
         }
-        
+
         function previewImage(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -705,14 +1026,14 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                     if (data.success) {
                         const badge = document.getElementById('notification-badge');
                         const list = document.getElementById('notification-list');
-                        
+
                         // Actualizar badge
                         if (data.count > 0) {
                             badge.classList.remove('hidden');
                         } else {
                             badge.classList.add('hidden');
                         }
-                        
+
                         // Alerta y Notificación del sistema
                         // Nota: Para mejorar la experiencia, en un sistema real deberíamos rastrear IDs de notificaciones ya vistas
                         // Aquí usamos un contador simple que funciona si llegan nuevas y el total aumenta
@@ -751,9 +1072,12 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
                                 if (notif.imagen && notif.imagen.trim() !== '') {
                                     adminImg = notif.imagen.startsWith('assets/') ? '../../' + notif.imagen : '../../assets/img/usuarios/' + notif.imagen;
                                 }
-                                
-                                const time = new Date(notif.fecha_respuesta).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'});
-                                
+
+                                const time = new Date(notif.fecha_respuesta).toLocaleTimeString('es-ES', {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+
                                 html += `
                                     <div class="p-3 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer transition-colors" onclick="abrirNotificacionHuesped(${index})">
                                         <div class="flex gap-3">
@@ -791,7 +1115,7 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
             const dropdown = document.getElementById('notification-dropdown');
             dropdown.classList.toggle('hidden');
         }
-        
+
         function markAllRead() {
             document.getElementById('notification-badge').classList.add('hidden');
         }

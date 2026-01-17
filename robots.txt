@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /php/    # Lógica interna del servidor
+Disallow: /auth/   # Autenticación y conexión a BD
+Disallow: /include/ # Fragmentos de código (headers, footers)
+Disallow: /assets/archivos/ # Archivos privados de usuarios (PQR, etc.)
+
+Sitemap: https://santamartabeachfront.com/sitemap.xml

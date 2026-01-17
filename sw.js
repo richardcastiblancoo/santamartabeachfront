@@ -2,9 +2,9 @@ const CACHE_NAME = 'v1_cache_miapp';
 const urlsToCache = [
   '/',
   '/index.php',
-  '/css/estilos.css',
-  '/js/script.js',
-  '/icon-192x192.png'
+  '/css/style.css',
+  '/js/main.js',
+  '/'
 ];
 
 

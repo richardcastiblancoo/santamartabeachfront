@@ -98,15 +98,24 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
 
 <body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
     <div class="flex h-screen w-full">
-        <aside class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full hidden md:flex shrink-0 z-20">
-            <div class="p-6 flex items-center gap-3">
-                <div class="bg-primary/10 p-2 rounded-lg">
-                    <span class="material-symbols-outlined text-primary">beach_access</span>
+        <!-- Overlay para móvil -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden transition-opacity opacity-0"></div>
+
+        <aside id="sidebar" class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-50 shrink-0">
+            <div class="p-6 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="bg-primary/10 p-2 rounded-lg">
+                        <span class="material-symbols-outlined text-primary">beach_access</span>
+                    </div>
+                    <div>
+                        <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamarta</h1>
+                        <p class="text-xs text-text-secondary dark:text-gray-400 mt-1">Beachfront Admin</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamarta</h1>
-                    <p class="text-xs text-text-secondary dark:text-gray-400 mt-1">Beachfront Admin</p>
-                </div>
+                <!-- Botón cerrar menú en móvil -->
+                <button onclick="toggleSidebar()" class="md:hidden text-text-secondary hover:text-red-500">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
             <div class="flex-1 overflow-y-auto px-4 py-2 space-y-1">
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary" href="/php/dashboard-admin/dashboard.php">
@@ -120,7 +129,6 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/reservas.php">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">calendar_month</span>
                     <span class="text-sm font-medium">Reservas</span>
-                    <span class="ml-auto bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">4</span>
                 </a>
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/usuarios.php">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
@@ -155,7 +163,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
         <div class="flex flex-col flex-1 min-w-0">
             <header class="h-16 bg-card-light dark:bg-card-dark border-b border-[#f0f3f4] dark:border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10">
                 <div class="flex items-center gap-4">
-                    <button class="md:hidden text-text-secondary hover:text-primary">
+                    <button id="mobile-menu-btn" onclick="toggleSidebar()" class="md:hidden text-text-secondary hover:text-primary">
                         <span class="material-symbols-outlined">menu</span>
                     </button>
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Panel de Control</h2>
@@ -670,6 +678,28 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
             document.getElementById('viewModal').classList.add('hidden');
             // Stop any video playing
             document.getElementById('view_video_container').innerHTML = '';
+        }
+
+        // Sidebar Toggle Function
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                // Open sidebar
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                }, 10);
+            } else {
+                // Close sidebar
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {

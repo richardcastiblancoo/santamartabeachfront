@@ -1,3 +1,6 @@
+<?php
+$isEmbed = isset($_GET['embed']) && $_GET['embed'] === '1';
+?>
 <!DOCTYPE html>
 <html class="dark" lang="es">
 
@@ -49,10 +52,30 @@
             <p class="font-mono font-bold text-xl tracking-wider">#<?php echo isset($_GET['id']) ? str_pad($_GET['id'], 6, '0', STR_PAD_LEFT) : 'PENDIENTE'; ?></p>
         </div>
 
-        <a href="/" class="block w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
-            Volver al Inicio
-        </a>
+        <?php if ($isEmbed): ?>
+            <button onclick="notifyParentAndClose()" class="block w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+                Volver al Panel
+            </button>
+        <?php else: ?>
+            <a href="/" class="block w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+                Volver al Inicio
+            </a>
+        <?php endif; ?>
     </div>
+
+    <?php if ($isEmbed): ?>
+        <script>
+            function notifyParentAndClose() {
+                if (window.parent) {
+                    window.parent.postMessage({ type: 'reservation_completed' }, window.location.origin);
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                notifyParentAndClose();
+            });
+        </script>
+    <?php endif; ?>
 
 </body>
 </html>

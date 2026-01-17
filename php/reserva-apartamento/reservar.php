@@ -1,5 +1,8 @@
 <?php
+session_start();
 include '../../auth/conexion_be.php';
+
+$isEmbed = isset($_GET['embed']) && $_GET['embed'] === '1';
 
 // Obtener datos de la reserva desde la URL
 $id_apartamento = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -85,18 +88,32 @@ $total = $subtotal + $cleaningFee + $serviceFee;
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-[#111618] dark:text-white transition-colors duration-300">
-    <header class="sticky top-0 z-50 w-full bg-white dark:bg-background-dark border-b border-solid border-[#f0f3f4] dark:border-slate-800 px-4 md:px-10 lg:px-40 py-3">
-        <div class="flex items-center justify-between max-w-[1280px] mx-auto">
-            <div class="flex items-center gap-2 text-[#111618] dark:text-white cursor-pointer" onclick="window.history.back()">
-                <div class="size-6 text-primary">
-                    <span class="material-symbols-outlined">arrow_back_ios</span>
+    <?php if (!$isEmbed): ?>
+        <header class="sticky top-0 z-50 w-full bg-white dark:bg-background-dark border-b border-solid border-[#f0f3f4] dark:border-slate-800 px-4 md:px-10 lg:px-40 py-3">
+            <div class="flex items-center justify-between max-w-[1280px] mx-auto">
+                <div class="flex items-center gap-2 text-[#111618] dark:text-white cursor-pointer" onclick="window.history.back()">
+                    <div class="size-6 text-primary">
+                        <span class="material-symbols-outlined">arrow_back_ios</span>
+                    </div>
+                    <h2 class="text-xl font-extrabold leading-tight tracking-tight">Solicitar Reserva</h2>
                 </div>
-                <h2 class="text-xl font-extrabold leading-tight tracking-tight">Solicitar Reserva</h2>
             </div>
-        </div>
-    </header>
+        </header>
+    <?php endif; ?>
 
     <main class="max-w-[1280px] mx-auto px-4 md:px-10 lg:px-40 py-10">
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'fechas'): ?>
+            <div class="mb-6 rounded-xl border border-red-200 dark:border-red-900/40 bg-red-50 dark:bg-red-900/20 p-4">
+                <div class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-red-600 dark:text-red-400">error</span>
+                    <div>
+                        <p class="font-bold text-red-800 dark:text-red-200">Esas fechas ya no están disponibles.</p>
+                        <p class="text-sm text-red-700 dark:text-red-300">Vuelve al apartamento y selecciona otras fechas.</p>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <!-- Formulario de Datos -->
             <div>
@@ -111,6 +128,9 @@ $total = $subtotal + $cleaningFee + $serviceFee;
                     <input type="hidden" name="infants" value="<?php echo $infants; ?>">
                     <input type="hidden" name="guideDog" value="<?php echo $guideDog ? '1' : '0'; ?>">
                     <input type="hidden" name="total_price" value="<?php echo $total; ?>">
+                    <?php if ($isEmbed): ?>
+                        <input type="hidden" name="embed" value="1">
+                    <?php endif; ?>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="col-span-1">

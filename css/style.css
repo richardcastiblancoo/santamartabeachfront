@@ -51,3 +51,61 @@
   transition: all 0.2s ease;
 }
 /* ---------------------------------- */
+
+/* Animación optimizada testimonio */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50% - 12px));
+  } /* Mueve exactamente la mitad del contenido */
+}
+
+.animate-infinite-scroll {
+  display: flex;
+  width: max-content;
+  animation: scroll 30s linear infinite; /* Ajusta los segundos para más o menos velocidad */
+}
+
+.animate-infinite-scroll:hover {
+  animation-play-state: paused; /* Se detiene al pasar el mouse para facilitar la lectura */
+}
+
+.mask-fade-edges {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+/* ---------------------------------- */
+
+/* Animación de mapa */
+#map-ubicacion {
+  background: #0b141a;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #101c22 !important;
+  color: white !important;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.leaflet-popup-tip {
+  background: #101c22 !important;
+}
+
+.shrink-0 {
+  flex-shrink: 0;
+}
