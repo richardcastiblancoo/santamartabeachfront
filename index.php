@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta name="description" content="Disfruta de un apartamento de lujo frente al mar en Santa Marta para toda tu familia, nuestro condominio con vista a la playa combinan diseño y comodidad, con espacios amplios, servicio personalizado y todas las amenidades de un hotel Reserva del Mar Santa Marta">
+    <meta name="keywords" content="Reserva del Mar Santa Marta, apartamentos frente al mar, Santa Marta, Reserva del Mar, apartamentos de lujo, condominio con vista a la playa, espacios amplios, servicio personalizado, amenidades de hotel">
     <title>Santamartabeachfront - reservas del mar</title>
     <link rel="shortcut icon" href="/public/img/logo-portada.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com" rel="preconnect" />
