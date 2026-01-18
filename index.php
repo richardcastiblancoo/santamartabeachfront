@@ -335,86 +335,13 @@
                 </div>
             </div>
         </section>
-        <section class="py-20 px-6 md:px-20 bg-white dark:bg-[#101c22]">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-16">
-                    <span class="text-primary font-bold uppercase tracking-wider text-sm">Testimonios</span>
-                    <h2 class="text-3xl md:text-4xl font-bold text-[#111618] dark:text-white mt-2 mb-4">Reseñas Destacadas</h2>
-                    <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">Experiencias reales de personas que han disfrutado de unas vacaciones inolvidables con nosotros.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-background-light dark:bg-[#1e2930] p-8 rounded-2xl relative border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-300">
-                        <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-4" style="font-variation-settings: 'FILL' 1;">format_quote</span>
-                        <div class="flex items-center gap-1 mb-4">
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed relative z-10">
-                            "¡Simplemente espectacular! La vista desde el balcón es inigualable y el apartamento estaba impecable. Definitivamente volveremos el próximo año."
-                        </p>
-                        <div class="flex items-center gap-4">
-                            <div class="size-12 rounded-full bg-gray-300 overflow-hidden">
-                                <img alt="Foto de perfil usuario" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnX6ygSDb930yDP1K7KdVCihWUaYhnvUhYRvaACepRJEYQk5ftenPc9j9YXbwj2zL3OzIldl5pkSlWOeMS8B3RQpWQUqNwYT48m5CypnmYGB8HEh8_8Xeofj3yDKAlxYDfab-e8h7sb9TAlnrrorOu7cGZyvbGV4UakhE9mUaktiT1XuYBAuCSWMj-rCwgI5Zf7-k9IG7nAqDA3kCfdfJtySHhGzHSYGZMiu_nU8YURqt4iS9PcpxfRoANPR__2hIIU8VTXBeQwe8" />
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-[#111618] dark:text-white">Carolina Méndez</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Bogotá, Colombia</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-background-light dark:bg-[#1e2930] p-8 rounded-2xl relative border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-300">
-                        <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-4" style="font-variation-settings: 'FILL' 1;">format_quote</span>
-                        <div class="flex items-center gap-1 mb-4">
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'wght' 400;">star_half</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed relative z-10">
-                            "La ubicación es perfecta, cerca de restaurantes y supermercados. La piscina del edificio es increíble para relajarse después de la playa."
-                        </p>
-                        <div class="flex items-center gap-4">
-                            <div class="size-12 rounded-full bg-gray-300 overflow-hidden">
-                                <img alt="Foto de perfil usuario" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI5wBUYd3ZoplAFKAZsnZzl9A4yjX53yVmp67V30taKJf7yxiAi8o9UxlO4Bp8RcX9JptlHjCTTq8EZIAJbsT5AcQNOaKtWMwpUQuI_NUbImnSjz726-XLyydAyCZ5qHvXg_DXzh89_WDs315cEAFZa410_9JbWH3QL9rQvNsKYU1RAdHIl5QOAvON0zcDZaTnGW9gyOvhx-WqLjrqIdCDYUyVBUJmiMmTNjgDdjJ6T2irxncca8INGsaX9l1QXGUFLyAT-gOkU34" />
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-[#111618] dark:text-white">David Johnson</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Miami, USA</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-background-light dark:bg-[#1e2930] p-8 rounded-2xl relative border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-300">
-                        <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-4" style="font-variation-settings: 'FILL' 1;">format_quote</span>
-                        <div class="flex items-center gap-1 mb-4">
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="material-symbols-outlined text-yellow-500 text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed relative z-10">
-                            "Atención de primera clase desde el momento de la reserva. El apartamento superó nuestras expectativas, muy moderno y cómodo."
-                        </p>
-                        <div class="flex items-center gap-4">
-                            <div class="size-12 rounded-full bg-gray-300 overflow-hidden">
-                                <img alt="Foto de perfil usuario" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIVOf4FxfS4L2VMX-MzvCAweEr1dlJGrW4FlVxeHThaYfYgpJenfN3sV0Y8zaiGh5T95YnWKaKAE7tPEkz23_h09Ka4rHPwfyQZN5ikR683fzv-Xu4MyREtZgKCvL7r_rjYrRysWZPPU2GgFWNTT7fv6aBd5GZ9Wz99LuaIOYWU30jT7nVTJqYrhQGEcHmc0bexmwdY8tKcqWUf1629_amnupnSWTM8y7D5L3BsWowHY2P78mGSPuLSOajNmU_Dj-NzASh5NQPVbc" />
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-[#111618] dark:text-white">Sofía Ramírez</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Medellín, Colombia</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
 
+        <!-- reseñas -->
+        <?php include 'include/testimonios.php'; ?>
 
+
+        <!-- Ubicación -->
         <section class="grid grid-cols-1 lg:grid-cols-2 min-h-[650px] bg-[#101c22] overflow-hidden" id="ubicacion">
 
             <article class="p-10 lg:p-20 flex flex-col justify-center order-2 lg:order-1">
@@ -479,97 +406,13 @@
             </aside>
         </section>
 
-        <script>
-            (function() {
-                // Coordenadas exactas para Reserva del Mar
-                const coordsFinal = [11.1911119, -74.2311344];
-                const coordsColombia = [4.5709, -74.2973];
-                const coordsEspacio = [20, 0];
 
-                const map = L.map('map-ubicacion', {
-                    zoomControl: false,
-                    attributionControl: false,
-                    scrollWheelZoom: false
-                }).setView(coordsEspacio, 2);
-
-                // Capa Satélite Google
-                L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
-                    maxZoom: 20,
-                    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-                }).addTo(map);
-
-                function fixMap() {
-                    setTimeout(() => {
-                        map.invalidateSize();
-                    }, 600);
-                }
-
-                async function animarMapa() {
-                    const status = document.getElementById('map-status');
-                    const markerLayer = L.layerGroup().addTo(map);
-
-                    while (true) {
-                        if (!document.getElementById('map-ubicacion')) break;
-
-                        status.innerText = "Planeta Tierra";
-                        map.setView(coordsEspacio, 2);
-                        markerLayer.clearLayers();
-                        await new Promise(r => setTimeout(r, 2500));
-
-                        status.innerText = "Colombia";
-                        map.flyTo(coordsColombia, 6, {
-                            duration: 3
-                        });
-                        await new Promise(r => setTimeout(r, 4000));
-
-                        status.innerText = "Llegando a reservas del mar santa marta";
-                        map.flyTo(coordsFinal, 18, {
-                            duration: 4
-                        });
-                        await new Promise(r => setTimeout(r, 5000));
-
-                        L.marker(coordsFinal).addTo(markerLayer)
-                            .bindPopup('<div class="text-center p-1"><b class="text-blue-500">Reserva del Mar</b><br><span class="text-xs">Torre 4 - A 1 min del mar</span></div>')
-                            .openPopup();
-
-                        status.innerText = "Destino Alcanzado";
-                        await new Promise(r => setTimeout(r, 8000));
-                    }
-                }
-
-                window.addEventListener('load', fixMap);
-                fixMap();
-                animarMapa();
-            })();
-        </script>
-
-        <style>
-            #map-ubicacion {
-                background: #0b141a;
-            }
-
-            .leaflet-popup-content-wrapper {
-                background: #101c22 !important;
-                color: white !important;
-                border-radius: 12px;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            }
-
-            .leaflet-popup-tip {
-                background: #101c22 !important;
-            }
-
-            .shrink-0 {
-                flex-shrink: 0;
-            }
-        </style>
+        <?php include 'include/footer.php'; ?>
 
 
-
-            <?php include 'include/footer.php'; ?>
-
-        
     </div>
+
+    <script src="/js/main.js"></script>
 
 </body>
 
