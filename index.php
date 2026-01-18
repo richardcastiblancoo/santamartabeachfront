@@ -9,6 +9,9 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -409,51 +412,160 @@
                 </div>
             </div>
         </section>
-        <section class="grid grid-cols-1 lg:grid-cols-2 min-h-[500px]" id="ubicacion">
-            <div class="bg-white dark:bg-[#101c22] p-10 lg:p-20 flex flex-col justify-center">
-                <div class="flex items-center gap-2 text-primary font-bold mb-4">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
-                    <span>UBICACIÓN ESTRATÉGICA</span>
-                </div>
-                <h2 class="text-4xl font-bold mb-6 text-[#111618] dark:text-white">Cerca de todo lo que importa</h2>
-                <p class="text-gray-500 dark:text-gray-400 mb-8 text-lg">
-                    Estamos ubicados en el corazón de la zona turística, a pocos minutos del Aeropuerto y con acceso directo a las principales playas y restaurantes.
+
+
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 min-h-[650px] bg-[#101c22] overflow-hidden" id="ubicacion">
+
+            <article class="p-10 lg:p-20 flex flex-col justify-center order-2 lg:order-1">
+                <header>
+                    <div class="flex items-center gap-2 text-blue-500 font-bold mb-6">
+                        <span class="material-symbols-outlined text-3xl">location_on</span>
+                        <span class="uppercase tracking-[0.3em] text-sm">Ubicación Privilegiada</span>
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-8 text-white leading-tight">
+                        Playa Salguero: <br><span class="text-blue-500">El corazón de Santa Marta</span>
+                    </h2>
+                </header>
+
+                <p class="text-gray-400 mb-10 text-xl leading-relaxed max-w-xl">
+                    Descubre la tranquilidad de <strong>Reserva del Mar</strong>, ubicado en la zona más exclusiva y con acceso directo al mar.
                 </p>
-                <ul class="space-y-4 mb-8">
-                    <li class="flex items-center gap-3">
-                        <div class="size-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400">
-                            <span class="material-symbols-outlined text-sm">flight</span>
+
+                <address class="not-italic mb-10 space-y-3 border-l-4 border-blue-600 pl-6 py-2 bg-blue-900/10 rounded-r-xl max-w-md">
+                    <p class="text-2xl font-black text-white">Reserva del Mar - Torre 4</p>
+                    <p class="text-lg text-slate-300">Apartamento 1730</p>
+                    <p class="text-sm text-slate-500 uppercase tracking-[0.2em]">Santa Marta, Colombia</p>
+                </address>
+
+                <ul class="space-y-6 mb-12" role="list">
+                    <li class="flex items-center gap-4 group">
+                        <div class="size-11 shrink-0 rounded-full bg-cyan-900/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-xl">beach_access</span>
                         </div>
-                        <span class="dark:text-gray-300">15 min del Aeropuerto Internacional</span>
+                        <span class="text-gray-300 font-medium text-lg">A solo 1 minuto de la playa</span>
                     </li>
-                    <li class="flex items-center gap-3">
-                        <div class="size-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                            <span class="material-symbols-outlined text-sm">restaurant</span>
+                    <li class="flex items-center gap-4 group">
+                        <div class="size-11 shrink-0 rounded-full bg-green-900/30 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-xl">flight</span>
                         </div>
-                        <span class="dark:text-gray-300">5 min de Zona Gastronómica</span>
+                        <span class="text-gray-300 font-medium text-lg">15 min del Aeropuerto Internacional</span>
                     </li>
-                    <li class="flex items-center gap-3">
-                        <div class="size-8 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400">
-                            <span class="material-symbols-outlined text-sm">forest</span>
+                    <li class="flex items-center gap-4 group">
+                        <div class="size-11 shrink-0 rounded-full bg-blue-900/30 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-xl">restaurant</span>
                         </div>
-                        <span class="dark:text-gray-300">20 min del Parque Tayrona</span>
+                        <span class="text-gray-300 font-medium text-lg">5 min de la Zona Gastronómica</span>
                     </li>
                 </ul>
-                <button class="self-start text-primary font-bold underline decoration-2 underline-offset-4 hover:text-primary/80">
+
+                <a href="https://www.google.com/maps/search/?api=1&query=Reserva+del+Mar+Torre+4+Santa+Marta" target="_blank" class="self-start px-10 py-4 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/20 active:scale-95">
                     Abrir en Google Maps
-                </button>
-            </div>
-            <div class="relative h-[400px] lg:h-auto w-full bg-gray-200">
-                <div class="w-full h-full bg-cover bg-center grayscale hover:grayscale-0 transition-all duration-500" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCIYZaqX3SugCDpS7l5OcQt3kLA8qqIsHw6iRh6XF3Pr6xnU2xaMAuioSSwDCx9fWO_a3G0FA_AZuYNOLcFW0TWiyInCOWeOdH1XMaWZsQAzonXmd4_PgKPY9-Yppyei8aFRo8qsNR-oWIFB_FjYbOLjEaG8pAp5LbG5Lzxz4R2aZuhpyCVSK7h9G2vcWtWts8A4cCa_c4_Rq__lg52WI5JeRp17SjquBBHVmiaiuqSjdrm8zg93DuUhpTsGB3Ma9j2UMuWTvXgLKE');">
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                        <div class="bg-white px-3 py-1 rounded-lg shadow-md mb-2 text-xs font-bold text-gray-800 animate-bounce">
-                            Santamartabeachfront
-                        </div>
-                        <span class="material-symbols-outlined text-primary text-5xl drop-shadow-lg" style="font-variation-settings: 'FILL' 1;">location_on</span>
+                </a>
+            </article>
+
+            <aside class="relative w-full min-h-[500px] lg:min-h-full order-1 lg:order-2">
+                <div id="map-ubicacion" class="absolute inset-0 w-full h-full"></div>
+
+                <div class="absolute top-6 left-6 z-[1000] bg-[#101c22]/90 px-5 py-3 rounded-2xl border border-white/10 backdrop-blur-md shadow-2xl">
+                    <div class="flex items-center gap-3">
+                        <span class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-600"></span>
+                        </span>
+                        <p id="map-status" class="text-[10px] font-black text-white uppercase tracking-[0.2em] whitespace-nowrap">Localizando...</p>
                     </div>
                 </div>
-            </div>
+            </aside>
         </section>
+
+        <script>
+            (function() {
+                // Coordenadas exactas para Reserva del Mar
+                const coordsFinal = [11.1911119, -74.2311344];
+                const coordsColombia = [4.5709, -74.2973];
+                const coordsEspacio = [20, 0];
+
+                const map = L.map('map-ubicacion', {
+                    zoomControl: false,
+                    attributionControl: false,
+                    scrollWheelZoom: false
+                }).setView(coordsEspacio, 2);
+
+                // Capa Satélite Google
+                L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+                    maxZoom: 20,
+                    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+                }).addTo(map);
+
+                function fixMap() {
+                    setTimeout(() => {
+                        map.invalidateSize();
+                    }, 600);
+                }
+
+                async function animarMapa() {
+                    const status = document.getElementById('map-status');
+                    const markerLayer = L.layerGroup().addTo(map);
+
+                    while (true) {
+                        if (!document.getElementById('map-ubicacion')) break;
+
+                        status.innerText = "Planeta Tierra";
+                        map.setView(coordsEspacio, 2);
+                        markerLayer.clearLayers();
+                        await new Promise(r => setTimeout(r, 2500));
+
+                        status.innerText = "Colombia";
+                        map.flyTo(coordsColombia, 6, {
+                            duration: 3
+                        });
+                        await new Promise(r => setTimeout(r, 4000));
+
+                        status.innerText = "Llegando a reservas del mar santa marta";
+                        map.flyTo(coordsFinal, 18, {
+                            duration: 4
+                        });
+                        await new Promise(r => setTimeout(r, 5000));
+
+                        L.marker(coordsFinal).addTo(markerLayer)
+                            .bindPopup('<div class="text-center p-1"><b class="text-blue-500">Reserva del Mar</b><br><span class="text-xs">Torre 4 - A 1 min del mar</span></div>')
+                            .openPopup();
+
+                        status.innerText = "Destino Alcanzado";
+                        await new Promise(r => setTimeout(r, 8000));
+                    }
+                }
+
+                window.addEventListener('load', fixMap);
+                fixMap();
+                animarMapa();
+            })();
+        </script>
+
+        <style>
+            #map-ubicacion {
+                background: #0b141a;
+            }
+
+            .leaflet-popup-content-wrapper {
+                background: #101c22 !important;
+                color: white !important;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .leaflet-popup-tip {
+                background: #101c22 !important;
+            }
+
+            .shrink-0 {
+                flex-shrink: 0;
+            }
+        </style>
+
+
+
         <footer class="bg-[#101c22] text-white pt-20 pb-10" id="contacto">
             <div class="max-w-7xl mx-auto px-6 md:px-10">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center pb-16 border-b border-gray-800 gap-8">
