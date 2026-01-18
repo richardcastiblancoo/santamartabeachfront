@@ -84,20 +84,20 @@ reservar apartamento Santa Marta
     <meta property="og:url" content="https://www.santamartabeachfront.com">
     <meta property="og:title" content="Santamartabeachfront">
     <meta property="og:description" content="Vive la experiencia rente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
-    <meta property="og:image" content="https://www.tusitio.com/imagen-de-portada.jpg">
+    <meta property="og:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
     <!-- opengraph twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://www.tusitio.com/">
-    <meta name="twitter:title" content="Título de tu Página">
-    <meta name="twitter:description" content="Descripción para Twitter.">
-    <meta name="twitter:image" content="https://www.tusitio.com/imagen-de-portada.jpg">
-    <meta name="theme-color" content="#000000">
+    <meta name="twitter:url" content="https://www.santamartabeachfront.com/">
+    <meta name="twitter:title" content="santamartabeachfront - Alquiler de Apartamentos">
+    <meta name="twitter:description" content="Vive la experiencia frente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
+    <meta name="twitter:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
+    <meta name="theme-color" content="#63b5f8ff">
     <!-- titulo -->
     <title>santamartabeachfront - Alquiler de Apartamentos</title>
     <!-- links css y logo -->
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="canonical" href="https://www.santamartabeachfront.com">
+    <link rel="canonical" href="https://santamartabeachfront.com">
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link rel="stylesheet" href="/css/style.css">
