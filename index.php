@@ -4,12 +4,14 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Santamartabeachfront - Alquiler de Apartamentos Frente al Mar</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>Santamartabeachfront - reservas del mar</title>
+    <link rel="shortcut icon" href="/public/img/logo-portada.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -61,280 +63,16 @@
 
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
     <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-        <header class="absolute top-0 left-0 w-full z-50 flex items-center justify-between whitespace-nowrap px-6 py-6 md:px-10 transition-all duration-300">
-            <div class="flex items-center gap-4 text-white">
-                <div class="size-8 text-primary">
-                    <span class="material-symbols-outlined text-3xl font-variation-fill">apartment</span>
-                </div>
-                <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em] whitespace-nowrap">Santamartabeachfront</h2>
-            </div>
-            <div class="hidden md:flex flex-1 justify-end gap-8">
-                <div class="flex items-center gap-9">
-                    <a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors drop-shadow-sm" href="#apartamentos">Apartamentos</a>
-                    <a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors drop-shadow-sm" href="#ubicacion">Ubicación</a>
-                    <a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors drop-shadow-sm" href="#nosotros">Nosotros</a>
-                    <a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors drop-shadow-sm" href="#contacto">Contacto</a>
-                </div>
-                <div class="flex items-center gap-6 border-l border-white/30 pl-6">
-                    <div class="relative lang-dropdown">
-                        <button class="flex items-center gap-2 text-white text-sm font-medium py-2 px-3 rounded-lg hover:bg-white/10 transition-colors">
-                            <img alt="Español" class="size-5 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAitXXKe6t7Pm8JEXUTAAgSTU2PMm9xHuU4CQT_G_mNPbCi1kvkZr6GpVA5nv-qlon7RigKBGCd1CpHe0Eu98g1bqq85Tca4EbIojeaav7Ufe7vfDsqx8Y3wdJlsaZWZhAl1it3kkNZKBzGCZ-zoxOgYlnBiEwyt-wLkkpx0uTn76pL2ZppQgKZWquPEvCX5VY6up4eKem35aa2axafEF8WfPKkN-7aifxFMvUHjHUhgFtQHPPu29rNL07XVHDQjyXjsfLTqY-iEIc" />
-                            <span>ES</span>
-                            <span class="material-symbols-outlined text-sm">expand_more</span>
-                        </button>
-                        <div class="lang-menu absolute top-full right-0 mt-2 w-40 bg-white dark:bg-[#1e2930] rounded-xl shadow-2xl border border-gray-100 dark:border-gray-700 py-2 z-[60]">
-                            <a class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors" href="#">
-                                <img alt="Español" class="size-5 rounded-full object-cover shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAitXXKe6t7Pm8JEXUTAAgSTU2PMm9xHuU4CQT_G_mNPbCi1kvkZr6GpVA5nv-qlon7RigKBGCd1CpHe0Eu98g1bqq85Tca4EbIojeaav7Ufe7vfDsqx8Y3wdJlsaZWZhAl1it3kkNZKBzGCZ-zoxOgYlnBiEwyt-wLkkpx0uTn76pL2ZppQgKZWquPEvCX5VY6up4eKem35aa2axafEF8WfPKkN-7aifxFMvUHjHUhgFtQHPPu29rNL07XVHDQjyXjsfLTqY-iEIc" />
-                                <span class="text-sm font-medium text-gray-700 dark:text-gray-200">Español</span>
-                            </a>
-                            <a class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors" href="#">
-                                <img alt="English" class="size-5 rounded-full object-cover shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCst0Z7IrPskw7qs-bKK41stk9g7lPMS2CC1HQb9vVHxo3Zho9JInRxZqAEuDWl5ia8T7ej2JYvZm_Z-okQEK4uoClhQkjbhejSln2G08D9It80N_mbCh6kXSwGnk99jEwK-IaX9uAExO3YUGs58NUuxiUK2NGeF8sQNDYYwEEEXO95-CCH24bp8TdB9as2XYkIE1Z0XvVVJCdTsBmnWmfttrwaJaHIt03i_dN0IgYzUJOfHmEDPV7yiL1zQksCA1pZnYdhuhfLznI" />
-                                <span class="text-sm font-medium text-gray-700 dark:text-gray-200">English</span>
-                            </a>
-                        </div>
-                    </div>
-                    <button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors shadow-lg shadow-primary/30 border border-transparent">
-                        <span class="truncate">Iniciar Sesión</span>
-                    </button>
-                </div>
-            </div>
-            <button class="md:hidden text-white">
-                <span class="material-symbols-outlined">menu</span>
-            </button>
-        </header>
-        <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-gray-900">
-            <div class="absolute inset-0 z-0">
-                <img alt="Santa Marta beach view" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBptge_9LlH-1lRNvm2cBtLsIvPMw8E7sKdb75a6I4lEfS6tsHD4SNLkSt9nREwwUSB7jPxwwufaFyAdsvzR6gPMr6RHxXGX1xODD-ubjRq-PSMZiRlHM5OSv9J0jHpHSRpw-O9mWdA7Glmy_Mxw5n8lP8UXUo2l8RlCJ0uGiJ7-avidnhFvZDpd-T0-aaWEjBdcM3a7Oh4s-1alK31fjFohpbjKRPpfrOo1G0YQqp8klCowN0PvMJvxMBQ2zfHanxYXheyFpPaSY" />
-                <div class="absolute inset-0 bg-black/40"></div>
-            </div>
-            <div class="relative z-10 flex flex-col items-center gap-8 text-center px-4 max-w-5xl mx-auto pt-20">
-                <h1 class="text-white text-5xl md:text-7xl lg:text-8xl font-black leading-tight tracking-tight drop-shadow-2xl">
-                    Vive la experiencia <br /> <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-cyan-300">frente al mar</span>
-                </h1>
-                <p class="text-white/95 text-lg md:text-2xl font-medium max-w-3xl drop-shadow-lg leading-relaxed">
-                    Los mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-5 w-full justify-center pt-6">
-                    <a class="flex items-center justify-center h-14 min-w-[180px] bg-primary hover:bg-primary/90 text-white font-bold text-lg rounded-xl px-8 shadow-xl shadow-primary/30 transition-all transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/40" href="#apartamentos">
-                        Visualizar
-                    </a>
-                    <a class="flex items-center justify-center h-14 min-w-[180px] bg-white/10 border border-white/80 hover:bg-white hover:text-primary text-white font-bold text-lg rounded-xl px-8 backdrop-blur-md transition-all transform hover:-translate-y-1 shadow-lg" href="#contacto">
-                        Contactar
-                    </a>
-                </div>
-            </div>
-        </section>
-        <section class="py-20 px-6 md:px-20 bg-background-light dark:bg-background-dark" id="nosotros">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-[#111618] dark:text-white mb-4">¿Por qué elegirnos?</h2>
-                    <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">Disfruta de la mejor ubicación, comodidades de lujo y un servicio personalizado.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white dark:bg-[#1e2930] p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
-                        <div class="size-14 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6">
-                            <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1, 'wght' 400;">beach_access</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 dark:text-white">Acceso a la Playa</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                            Sal de tu apartamento y pisa la arena dorada. Ubicación privilegiada frente al mar caribe.
-                        </p>
-                    </div>
-                    <div class="bg-white dark:bg-[#1e2930] p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
-                        <div class="size-14 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6">
-                            <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1, 'wght' 400;">pool</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 dark:text-white">Piscina Infinita</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                            Relájate en nuestras piscinas con vista panorámica al océano y zona de solarium.
-                        </p>
-                    </div>
-                    <div class="bg-white dark:bg-[#1e2930] p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
-                        <div class="size-14 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6">
-                            <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1, 'wght' 400;">verified_user</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 dark:text-white">Seguridad 24/7</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                            Tu tranquilidad es nuestra prioridad. Edificios monitoreados y recepción 24 horas.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="py-16 px-6 md:px-20 bg-white dark:bg-[#101c22]" id="disponibilidad">
-            <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
-                <div class="flex-1 space-y-6">
-                    <span class="text-primary font-bold uppercase tracking-wider text-sm">Planifica tu viaje</span>
-                    <h2 class="text-3xl md:text-5xl font-bold text-[#111618] dark:text-white leading-tight">
-                        Consulta disponibilidad en tiempo real
-                    </h2>
-                    <p class="text-gray-500 dark:text-gray-400 text-lg">
-                        Nuestros apartamentos son muy solicitados. Revisa el calendario para asegurar tus fechas ideales para unas vacaciones inolvidables.
-                    </p>
-                    <div class="flex flex-col gap-4 pt-4">
-                        <div class="flex items-center gap-3">
-                            <div class="size-3 rounded-full bg-primary"></div>
-                            <span class="text-sm font-medium dark:text-gray-300">Fechas Disponibles</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="size-3 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-                            <span class="text-sm font-medium dark:text-gray-300">No Disponible</span>
-                        </div>
-                    </div>
-                    <button class="mt-8 flex items-center gap-2 text-primary font-bold hover:gap-3 transition-all">
-                        Ver calendario completo <span class="material-symbols-outlined">arrow_forward</span>
-                    </button>
-                </div>
-                <div class="flex-1 w-full flex justify-center lg:justify-end">
-                    <div class="bg-white dark:bg-[#1e2930] rounded-2xl shadow-2xl p-6 border border-gray-100 dark:border-gray-700 max-w-2xl w-full">
-                        <div class="flex flex-col md:flex-row gap-6 justify-center">
-                            <div class="flex min-w-[280px] flex-1 flex-col gap-2">
-                                <div class="flex items-center p-1 justify-between mb-2">
-                                    <button class="hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-1"><span class="material-symbols-outlined dark:text-white">chevron_left</span></button>
-                                    <p class="text-[#111618] dark:text-white text-base font-bold text-center">Enero 2024</p>
-                                    <div class="w-8"></div>
-                                </div>
-                                <div class="grid grid-cols-7 gap-y-2 text-center">
-                                    <p class="text-gray-400 text-xs font-bold">D</p>
-                                    <p class="text-gray-400 text-xs font-bold">L</p>
-                                    <p class="text-gray-400 text-xs font-bold">M</p>
-                                    <p class="text-gray-400 text-xs font-bold">M</p>
-                                    <p class="text-gray-400 text-xs font-bold">J</p>
-                                    <p class="text-gray-400 text-xs font-bold">V</p>
-                                    <p class="text-gray-400 text-xs font-bold">S</p>
-                                    <span class="col-start-4 flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">1</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">2</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">3</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">4</span>
-                                    <span class="flex items-center justify-center h-8 w-8 rounded-full bg-primary text-white text-sm font-bold shadow-md shadow-primary/40">5</span>
-                                    <span class="flex items-center justify-center h-8 w-8 bg-primary/10 text-primary text-sm font-medium rounded-full">6</span>
-                                    <span class="flex items-center justify-center h-8 w-8 bg-primary/10 text-primary text-sm font-medium rounded-full">7</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm text-gray-400 line-through">8</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm text-gray-400 line-through">9</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm text-gray-400 line-through">10</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">11</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">12</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">13</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">14</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">15</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">16</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">17</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">18</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">19</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">20</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">21</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">22</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">23</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">24</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">25</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">26</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">27</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">28</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">29</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">30</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">31</span>
-                                </div>
-                            </div>
-                            <div class="h-px w-full bg-gray-100 dark:bg-gray-700 md:hidden"></div>
-                            <div class="flex min-w-[280px] flex-1 flex-col gap-2">
-                                <div class="flex items-center p-1 justify-between mb-2">
-                                    <div class="w-8"></div>
-                                    <p class="text-[#111618] dark:text-white text-base font-bold text-center">Febrero 2024</p>
-                                    <button class="hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-1"><span class="material-symbols-outlined dark:text-white">chevron_right</span></button>
-                                </div>
-                                <div class="grid grid-cols-7 gap-y-2 text-center">
-                                    <p class="text-gray-400 text-xs font-bold">D</p>
-                                    <p class="text-gray-400 text-xs font-bold">L</p>
-                                    <p class="text-gray-400 text-xs font-bold">M</p>
-                                    <p class="text-gray-400 text-xs font-bold">M</p>
-                                    <p class="text-gray-400 text-xs font-bold">J</p>
-                                    <p class="text-gray-400 text-xs font-bold">V</p>
-                                    <p class="text-gray-400 text-xs font-bold">S</p>
-                                    <span class="col-start-5 flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">1</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">2</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">3</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">4</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">5</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">6</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">7</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">8</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">9</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">10</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">11</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">12</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">13</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">14</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">15</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">16</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">17</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">18</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">19</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">20</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">21</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">22</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">23</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">24</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">25</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">26</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">27</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">28</span>
-                                    <span class="flex items-center justify-center h-8 w-8 text-sm dark:text-gray-300">29</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="py-20 bg-background-light dark:bg-background-dark" id="apartamentos">
-            <div class="px-6 md:px-20 mb-12 text-center">
-                <h2 class="text-3xl font-bold text-[#111618] dark:text-white mb-2">Apartamento Destacado</h2>
-                <p class="text-gray-500 dark:text-gray-400">Nuestra mejor propiedad para una estancia inolvidable</p>
-            </div>
-            <div class="flex justify-center px-6 md:px-20">
-                <div class="max-w-[420px] w-full bg-white dark:bg-[#1e2930] rounded-2xl overflow-hidden shadow-2xl group border border-gray-100 dark:border-gray-700">
-                    <div class="relative h-72 overflow-hidden">
-                        <div class="absolute top-4 right-4 z-10 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-gray-800 flex items-center gap-1 shadow-sm">
-                            <span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span> 5.0
-                        </div>
-                        <div class="h-full w-full bg-cover bg-center group-hover:scale-110 transition-transform duration-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDhr-fja2E9oqdW3FeI503YhZXCPEnOJ34yXhATmDRax6RvUtXR9_eoJUbYx6EnOIEBRlfT-n5Lm7cAmW4TdhEEg2CZTdot2tDAeJVpKdZFVPa2mr_j_H0Rr1Ch8-atttcHQXDqxmq88aXJm6kKarN2geXSWHwJTwm9KKqowzPZTLx_CDcwuyj5QbBGTsy5nFJtSVhcea4WvOFsS-dRRyjJDI8m1dEnYEeSgIcv6YlxLk2VrCukZJSRiVae4DykJUmwqInWo07FO3U');"></div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                            <button class="w-full bg-white text-primary font-bold py-2 rounded-lg text-sm">Reservar Ahora</button>
-                        </div>
-                    </div>
-                    <div class="p-8">
-                        <div class="text-xs font-bold text-primary uppercase tracking-wide mb-2">Reserva del Mar</div>
-                        <h3 class="text-2xl font-bold dark:text-white mb-3">Suite Familiar de Lujo</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 leading-relaxed">
-                            Lujo en cada detalle. Cocina gourmet, terraza privada con vista despejada al océano y acabados premium para el máximo confort de tu familia.
-                        </p>
-                        <div class="grid grid-cols-3 gap-4 text-sm text-gray-500 dark:text-gray-400 mb-8">
-                            <div class="flex flex-col items-center gap-1">
-                                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bed</span>
-                                <span>2 Hab</span>
-                            </div>
-                            <div class="flex flex-col items-center gap-1">
-                                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">shower</span>
-                                <span>2 Baños</span>
-                            </div>
-                            <div class="flex flex-col items-center gap-1">
-                                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">groups</span>
-                                <span>5 Huéspedes</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between pt-6 border-t border-gray-100 dark:border-gray-700">
-                            <div>
-                                <span class="text-2xl font-extrabold text-[#111618] dark:text-white">$210</span>
-                                <span class="text-gray-500 text-sm">/noche</span>
-                            </div>
-                            <button class="bg-primary/10 text-primary hover:bg-primary hover:text-white px-5 py-2 rounded-xl font-bold text-sm transition-colors">
-                                Ver detalles
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+
+        <?php include 'include/header.php'; ?>
+
+        <?php include 'include/serviciosofresidos.php'; ?>
+       
+       <?php include 'include/Consultadisponibilidadentiemporeal.php'; ?>
+        
+
+         <!-- reseñas -->
+        <?php include 'include/apartamentos.php'; ?>
 
 
         <!-- reseñas -->
