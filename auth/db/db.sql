@@ -2,6 +2,7 @@
 CREATE DATABASE IF NOT EXISTS santamarta_db;
 USE santamarta_db;
 
+
 -- Crear la tabla de usuarios
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -15,6 +16,19 @@ CREATE TABLE IF NOT EXISTS usuarios (
     reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+
+-- Crear la tabla de galería de apartamentos
+CREATE TABLE `galeria_apartamentos` (
+  `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `apartamento_id` int(6) UNSIGNED NOT NULL,
+  `tipo` enum('imagen','video') COLLATE utf8mb4_general_ci NOT NULL,
+  `ruta` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `apartamento_id` (`apartamento_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 -- Crear la tabla de apartamentos
 CREATE TABLE IF NOT EXISTS apartamentos (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -26,19 +40,23 @@ CREATE TABLE IF NOT EXISTS apartamentos (
     banos INT(3) NOT NULL,
     capacidad INT(3) NOT NULL,
     imagen_principal VARCHAR(255) NOT NULL,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    video VARCHAR(255) NULL DEFAULT NULL,
+    fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    servicios TEXT NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- Crear la tabla de PQR (Peticiones, Quejas y Reclamos)
 CREATE TABLE IF NOT EXISTS pqr (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT(6) UNSIGNED,
+    usuario_id INT(6) UNSIGNED NULL, -- En tu imagen "Nulo" dice "Sí"
     asunto VARCHAR(100) NOT NULL,
+    tipo VARCHAR(50) NOT NULL DEFAULT 'Petición', -- Este faltaba
     mensaje TEXT NOT NULL,
-    estado VARCHAR(20) DEFAULT 'Pendiente', -- 'Pendiente', 'En Progreso', 'Resuelto'
+    estado VARCHAR(20) DEFAULT 'Pendiente',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Crear la tabla de Respuestas PQR
 CREATE TABLE IF NOT EXISTS respuestas_pqr (
