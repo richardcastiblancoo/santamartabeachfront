@@ -127,13 +127,17 @@ function updateMonth(mIndex, nameId, gridId, headerId) {
     const nameEl = document.getElementById(nameId);
     const gridEl = document.getElementById(gridId);
     const headerEl = document.getElementById(headerId);
+    
     if (!nameEl || !gridEl) return;
     
-    nameEl.innerText = `${monthNames[mIndex]} ${year}`;
+    // Controlar desbordamiento de meses (índice 0-11)
+    const displayIndex = mIndex % 12;
+    
+    nameEl.innerText = `${monthNames[displayIndex]} ${year}`;
     if (headerEl) headerEl.innerHTML = dayNames.map(d => `<span>${d}</span>`).join('');
     
-    const firstDay = new Date(year, mIndex, 1).getDay();
-    const daysInMonth = new Date(year, mIndex + 1, 0).getDate();
+    const firstDay = new Date(year, displayIndex, 1).getDay();
+    const daysInMonth = new Date(year, displayIndex + 1, 0).getDate();
     
     let html = "";
     for (let i = 0; i < firstDay; i++) html += "<span></span>";
@@ -190,20 +194,16 @@ document.addEventListener("DOMContentLoaded", () => {
     initMapAnimation();
     initTestimonialLoop();
 
-    // Eventos Click Idioma PC
     document.getElementById("langBtn")?.addEventListener("click", (e) => {
         e.stopPropagation();
         document.getElementById("langMenu")?.classList.toggle("hidden");
     });
     
-    // Eventos Menú Móvil
     document.getElementById("menuBtn")?.addEventListener("click", toggleMobileMenu);
     document.getElementById("closeBtn")?.addEventListener("click", closeMobileMenu);
     
-    // Cerrar menú idioma al hacer click fuera
     document.addEventListener("click", () => document.getElementById("langMenu")?.classList.add("hidden"));
 
-    // Efecto Scroll Header
     window.addEventListener('scroll', () => {
         const header = document.getElementById('main-header');
         if (window.scrollY > 40) {
@@ -216,8 +216,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// API Global para acceso desde HTML
+/**
+ * 8. API GLOBAL
+ */
 window.changeLanguage = changeLanguage;
 window.toggleMobileMenu = toggleMobileMenu;
-window.nextMonth = () => { if (currentStartMonth < 11) { currentStartMonth++; renderCalendar(); } };
-window.prevMonth = () => { if (currentStartMonth > 0) { currentStartMonth--; renderCalendar(); } };
+window.nextMonth = () => { 
+    if (currentStartMonth < 10) { 
+        currentStartMonth++; 
+        renderCalendar(); 
+    } 
+};
+window.prevMonth = () => { 
+    if (currentStartMonth > 0) { 
+        currentStartMonth--; 
+        renderCalendar(); 
+    } 
+};
