@@ -72,8 +72,7 @@
         
 
          <!-- reseñas -->
-        <?php include 'include/apartamentos.php'; ?>
-
+        
 
         <!-- reseñas -->
         <?php include 'include/testimonios.php'; ?>
