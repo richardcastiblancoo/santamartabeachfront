@@ -3,6 +3,7 @@ CREATE DATABASE IF NOT EXISTS santamarta_db;
 USE santamarta_db;
 
 
+
 -- Crear la tabla de usuarios
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
