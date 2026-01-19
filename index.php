@@ -93,7 +93,7 @@
     <meta name="twitter:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
     <meta name="theme-color" content="#63b5f8ff">
     <!-- titulo -->
-    <title>santamartabeachfront - Alquiler de Apartamentos</title>
+    <title>santamartabeachfront - Reserva del Mar</title>
     <!-- links css y logo -->
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
