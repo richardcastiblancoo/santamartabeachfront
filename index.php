@@ -194,7 +194,7 @@
         <div class="flex items-center gap-3">
             <a href="/" class="flex items-center gap-3 group">
                 <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
-                    
+
                 </div>
                 <h1 class="text-white text-base md:text-lg font-black tracking-tighter uppercase">
                     Santamarta<span class="text-blue-500">beachfront</span>
@@ -392,86 +392,10 @@
         </div>
     </section>
 
+    <!-- disponibilidad -->
+     <?php include 'include/Consultadisponibilidadentiemporeal.php'; ?>
 
-    <section class="py-16 px-6 md:px-20 bg-[#101c22]" id="disponibilidad" aria-labelledby="disponibilidad-title" itemscope itemtype="https://schema.org/Accommodation">
-        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
 
-            <article class="flex-1 space-y-6">
-                <header>
-                    <span class="text-blue-500 font-bold uppercase tracking-wider text-sm block mb-2" data-i18n="dispo_tag">Disponibilidad Inmediata</span>
-                    <h2 id="disponibilidad-title" class="text-3xl md:text-5xl font-bold text-white leading-tight" itemprop="name">
-                        <span data-i18n="dispo_title">Consulta disponibilidad</span> <span class="text-blue-400" data-i18n="dispo_title_accent">en tiempo real</span>
-                    </h2>
-                </header>
-
-                <p class="text-gray-400 text-lg leading-relaxed" data-i18n="dispo_desc">
-                    Asegura tu estancia en los exclusivos apartamentos de <strong>Reserva del Mar</strong>. Revisa los días disponibles en el calendario y agenda tu visita a Playa Salguero, Santa Marta.
-                </p>
-
-                <div class="flex flex-col gap-4 pt-4" aria-hidden="true">
-                    <div class="flex items-center gap-3">
-                        <div class="size-3 rounded-full bg-blue-600"></div>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="dispo_legend_avail">Días Disponibles</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="size-3 rounded-full bg-gray-700"></div>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="dispo_legend_reser">Días Reservados</span>
-                    </div>
-                </div>
-
-                <div class="pt-6">
-                    <a href="https://wa.me/573183813381?text=Hola!%20Me%20gustaría%20reservar%20mi%20estancia%20en%20Santamarta%20Beachfront.%20¿Hay%20disponibilidad%20para%20mis%20fechas?"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-10 rounded-xl transition-all transform hover:-translate-y-1 shadow-lg shadow-blue-900/40 group"
-                        aria-label="Reservar estancia por WhatsApp">
-
-                        <span class="text-lg tracking-tight" data-i18n="dispo_btn_wa">Reservar por WhatsApp</span>
-
-                        <span class="material-symbols-outlined transition-transform group-hover:rotate-12 text-2xl" aria-hidden="true">
-                            calendar_add_on
-                        </span>
-                    </a>
-                </div>
-            </article>
-
-            <div class="flex-1 w-full flex justify-center lg:justify-end">
-                <div class="bg-[#1e2930] rounded-2xl shadow-2xl p-6 border border-white/10 max-w-2xl w-full relative overflow-hidden" role="region" aria-label="Calendario de ocupación">
-                    <div id="calendar-container" class="flex flex-col md:flex-row gap-8 justify-center transition-opacity duration-300">
-
-                        <div class="flex min-w-[280px] flex-1 flex-col gap-2">
-                            <div class="flex items-center p-1 justify-between mb-4">
-                                <button onclick="prevMonth()" class="hover:bg-gray-700 text-white rounded-full p-2 transition-colors">
-                                    <span class="material-symbols-outlined">chevron_left</span>
-                                </button>
-                                <time id="month1-name" class="text-white text-base font-bold uppercase tracking-widest"></time>
-                                <div class="md:hidden"></div>
-                            </div>
-                            <div id="grid-header-1" class="grid grid-cols-7 text-center text-[11px] text-blue-400 font-extrabold mb-2 uppercase">
-                            </div>
-                            <div class="grid grid-cols-7 gap-1 text-center" id="grid-month1"></div>
-                        </div>
-
-                        <div class="h-px w-full bg-gray-700 md:hidden"></div>
-
-                        <div class="flex min-w-[280px] flex-1 flex-col gap-2">
-                            <div class="flex items-center p-1 justify-between mb-4">
-                                <div class="md:hidden"></div>
-                                <time id="month2-name" class="text-white text-base font-bold uppercase tracking-widest"></time>
-                                <button onclick="nextMonth()" class="hover:bg-gray-700 text-white rounded-full p-2 transition-colors">
-                                    <span class="material-symbols-outlined">chevron_right</span>
-                                </button>
-                            </div>
-                            <div id="grid-header-2" class="grid grid-cols-7 text-center text-[11px] text-blue-400 font-extrabold mb-2 uppercase">
-                            </div>
-                            <div class="grid grid-cols-7 gap-1 text-center" id="grid-month2"></div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- apartamento -->
     <?php include 'include/apartamentos.php'; ?>
