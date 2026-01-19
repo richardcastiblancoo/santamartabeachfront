@@ -1,10 +1,9 @@
-const CACHE_NAME = 'v1_cache_miapp';
+const CACHE_NAME = 'v2_cache_miapp';
 const urlsToCache = [
   '/',
   '/index.php',
   '/css/style.css',
-  '/js/main.js',
-  '/'
+  '/public/dist/main.js'
 ];
 
 

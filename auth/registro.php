@@ -144,7 +144,7 @@
         </div>
     </div>
 
-    <script src="/js/registro.js"></script>
+    <script src="/public/dist/registro.js"></script>
 </body>
 
 </html>

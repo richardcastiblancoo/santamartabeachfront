@@ -253,7 +253,7 @@
     </div>
 
     <!-- ================= SCRIPT ================= -->
-    <script src="/js/pliticayterminos.js"></script>
+    <script src="/public/dist/pliticayterminos.js"></script>
 
 </body>
 

@@ -141,7 +141,7 @@
         </div>
     </div>
 
-    <script src="/js/login.js"></script>
+    <script src="/public/dist/login.js"></script>
 </body>
 
 </html>

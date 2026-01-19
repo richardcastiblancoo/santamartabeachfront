@@ -87,7 +87,7 @@
 
     </div>
 
-    <script src="/js/main.js"></script>
+    <script src="/public/dist/main.js"></script>
 
 </body>
 

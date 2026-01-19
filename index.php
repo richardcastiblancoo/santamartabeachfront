@@ -170,104 +170,172 @@
             height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <header id="main-header" class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-6 md:px-10 transition-all duration-300">
-        <div class="flex items-center gap-4">
+    <style>
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            /* Tamaño fluido y compacto */
+            line-height: 1.1;
+            letter-spacing: -0.05em;
+        }
+
+        .glass-booking {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Estilo para el input date en modo oscuro */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1) opacity(0.5);
+        }
+    </style>
+
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-10 transition-all duration-300">
+        <div class="flex items-center gap-3">
             <a href="/" class="flex items-center gap-3 group">
-                <div class="size-10 md:size-14 flex items-center justify-center transition-transform group-hover:scale-105">
-                    <img src="" class="w-full h-auto" alt="">
+                <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
+
                 </div>
-                <h1 class="text-white text-lg md:text-xl font-bold tracking-tight">
-                    Santamarta<span class="text-blue-500">beachfront</span></span>
+                <h1 class="text-white text-base md:text-lg font-black tracking-tighter uppercase">
+                    Santamarta<span class="text-blue-500">beachfront</span>
                 </h1>
             </a>
         </div>
 
-        <nav class="hidden md:flex flex-1 justify-end gap-8">
-            <ul class="flex items-center gap-9 list-none">
-                <li><a class="text-white text-sm font-medium hover:text-blue-400 transition-colors" href="#apartamentos" data-i18n="nav_apartments">Apartamentos</a></li>
-                <li><a class="text-white text-sm font-medium hover:text-blue-400 transition-colors" href="#ubicacion" data-i18n="nav_location">Ubicación</a></li>
-                <li><a class="text-white text-sm font-medium hover:text-blue-400 transition-colors" href="#nosotros" data-i18n="nav_about">Nosotros</a></li>
-                <li><a class="text-white text-sm font-medium hover:text-blue-400 transition-colors" href="#contacto" data-i18n="nav_contact">Contacto</a></li>
+        <nav class="hidden md:flex items-center gap-8">
+            <ul class="flex items-center gap-6 list-none">
+                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-[0.2em] hover:text-white transition-colors" href="#apartamentos" data-i18n="nav_apartments">Apartamentos</a></li>
+                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-[0.2em] hover:text-white transition-colors" href="#ubicacion" data-i18n="nav_location">Ubicación</a></li>
+                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-[0.2em] hover:text-white transition-colors" href="#contacto" data-i18n="nav_contact">Contacto</a></li>
             </ul>
 
-            <div class="flex items-center gap-6 border-l border-white/30 pl-6">
-                <div class="relative">
-                    <button id="langBtn" class="flex items-center gap-2 text-white text-sm font-medium h-10 px-3 rounded-lg hover:bg-white/10 transition-colors">
-                        <img class="currentFlag w-5 h-5 rounded-full object-cover" src="https://flagcdn.com/w40/co.png">
-                        <span class="currentLangText">ES</span>
+            <div class="flex items-center gap-4 border-l border-white/20 pl-6">
+                <div class="relative group">
+                    <button class="flex items-center gap-2 text-white text-[11px] font-bold uppercase tracking-widest h-9 px-3 rounded-lg hover:bg-white/10 transition-colors">
+                        <img class="w-4 h-4 rounded-full object-cover" src="https://flagcdn.com/w40/co.png">
+                        <span>ES</span>
                         <span class="material-symbols-outlined text-sm">expand_more</span>
                     </button>
-                    <ul id="langMenu" class="hidden absolute top-full right-0 mt-2 w-40 bg-white rounded-xl shadow-2xl py-2 z-[60] list-none">
-                        <li><a href="javascript:void(0)" onclick="changeLanguage('ES')" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 text-sm text-gray-800">Español</a></li>
-                        <li><a href="javascript:void(0)" onclick="changeLanguage('EN')" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 text-sm text-gray-800">English</a></li>
+                    <ul class="hidden group-hover:block absolute top-full right-0 mt-1 w-32 bg-slate-900 border border-white/10 rounded-xl py-2 list-none shadow-2xl">
+                        <li><a href="#" onclick="changeLanguage('ES')" class="block px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ESPAÑOL</a></li>
+                        <li><a href="#" onclick="changeLanguage('EN')" class="block px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
                     </ul>
                 </div>
-                <a href="/auth/login.php" class="h-10 px-7 bg-blue-600 text-white text-sm font-bold rounded-lg flex items-center hover:bg-blue-700 transition-colors" data-i18n="nav_login">Iniciar sesión</a>
+                <a href="/auth/login.php" class="h-9 px-6 bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest rounded-full flex items-center hover:bg-blue-500 transition-all">Login</a>
             </div>
         </nav>
 
-        <button id="menuBtn" class="md:hidden text-white p-2">
+        <button onclick="toggleMobileMenu()" class="md:hidden text-white p-2">
             <span class="material-symbols-outlined text-3xl">menu</span>
         </button>
-
-        <div id="mobileMenu" class="fixed inset-0 bg-slate-950/98 backdrop-blur-2xl z-[100] flex flex-col items-center justify-center transition-all duration-500 -translate-y-full opacity-0 pointer-events-none md:hidden">
-            <button id="closeBtn" class="absolute top-6 right-6 text-white/70">
-                <span class="material-symbols-outlined text-4xl">close</span>
-            </button>
-
-            <ul class="flex flex-col items-center gap-8 list-none text-center mb-10">
-                <li class="mobile-nav-item translate-y-4 opacity-0 transition-all duration-500">
-                    <a class="text-white text-3xl font-bold hover:text-blue-500" href="#apartamentos" onclick="toggleMobileMenu()" data-i18n="nav_apartments">Apartamentos</a>
-                </li>
-                <li class="mobile-nav-item translate-y-4 opacity-0 transition-all duration-500">
-                    <a class="text-white text-3xl font-bold hover:text-blue-500" href="#ubicacion" onclick="toggleMobileMenu()" data-i18n="nav_location">Ubicación</a>
-                </li>
-                <li class="mobile-nav-item translate-y-4 opacity-0 transition-all duration-500">
-                    <a class="text-white text-3xl font-bold hover:text-blue-500" href="#nosotros" onclick="toggleMobileMenu()" data-i18n="nav_about">Nosotros</a>
-                </li>
-                <li class="mobile-nav-item translate-y-4 opacity-0 transition-all duration-500">
-                    <a class="text-white text-3xl font-bold hover:text-blue-500" href="#contacto" onclick="toggleMobileMenu()" data-i18n="nav_contact">Contacto</a>
-                </li>
-            </ul>
-
-            <div class="flex flex-col items-center gap-6 w-full px-10 border-t border-white/10 pt-8">
-                <div class="flex gap-6">
-                    <button onclick="changeLanguage('ES')" class="flex items-center gap-2 text-white border border-white/20 px-5 py-2 rounded-full">
-                        <img src="https://flagcdn.com/w40/co.png" class="w-5 h-5 rounded-full"> <span class="font-bold">ES</span>
-                    </button>
-                    <button onclick="changeLanguage('EN')" class="flex items-center gap-2 text-white border border-white/20 px-5 py-2 rounded-full">
-                        <img src="https://flagcdn.com/w40/us.png" class="w-5 h-5 rounded-full"> <span class="font-bold">EN</span>
-                    </button>
-                </div>
-                <a href="/auth/login.php" class="w-full max-w-xs h-14 bg-blue-600 text-white text-lg font-bold rounded-xl flex items-center justify-center shadow-lg" data-i18n="nav_login">Iniciar sesión</a>
-            </div>
-        </div>
     </header>
 
-
-    <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-gray-900">
+    <section class="relative w-full min-h-screen flex items-center justify-center overflow-hidden font-sans">
         <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-black/60 z-10"></div>
             <video class="w-full h-full object-cover" autoplay muted loop playsinline>
                 <source src="/public/video/santamarta-video-tayrona.mp4" type="video/mp4">
             </video>
         </div>
 
-        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto pt-20">
-            <h2 class="text-white text-5xl md:text-7xl lg:text-8xl font-black">
-                <span data-i18n="hero_title_top">Vive la experiencia en</span><br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-cyan-300 inline-block" data-i18n="hero_title_accent">
-                    Santa marta frente al mar
-                </span>
-            </h2>
-            <p class="text-white/95 text-lg md:text-2xl mt-8" data-i18n="hero_desc">
-                Los mejores apartamentos en Santamartabeachfront te esperan.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-5 justify-center mt-10">
-                <a href="#apartamentos" class="bg-primary text-white font-bold h-14 px-8 rounded-xl flex items-center justify-center" data-i18n="btn_view">Visualizar</a>
-                <a href="#contacto" class="bg-white/10 border border-white/80 text-white font-bold h-14 px-8 rounded-xl flex items-center justify-center" data-i18n="btn_contact">Contactar</a>
+        <div class="relative z-20 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center pt-20">
+
+            <div class="text-left">
+                <h2 class="text-4xl md:text-6xl font-black text-white leading-tight">
+                    Vive la experiencia en<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                        Santa Marta frente al mar
+                    </span>
+                </h2>
+                <p class="text-white/80 text-sm md:text-base mt-4 max-w-sm leading-relaxed">
+                    Exclusividad y confort en los mejores apartamentos de la costa caribeña.
+                </p>
+            </div>
+
+            <div class="flex justify-end">
+                <div class="bg-white/10 backdrop-blur-xl border border-white/20 w-full max-w-md p-8 rounded-3xl shadow-2xl">
+                    <h3 class="text-white text-xl font-bold mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-blue-400">send</span>
+                        Solicitar Reserva
+                    </h3>
+
+                    <form class="space-y-4">
+                        <div class="space-y-1">
+                            <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Nombre Completo</label>
+                            <input type="text" id="nombre" required placeholder="Tu nombre"
+                                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-blue-500 transition-all placeholder:text-white/20">
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Apartamento</label>
+                            <select id="producto" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-blue-500">
+                                <option value="Suite Vista Mar">Suite Vista Mar</option>
+                                <option value="Penthouse Deluxe">Penthouse Deluxe</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Entrada</label>
+                                <input type="date" id="checkin" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-[12px] focus:outline-none">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Salida</label>
+                                <input type="date" id="checkout" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-[12px] focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Mensaje adicional</label>
+                            <textarea id="mensaje" rows="2" placeholder="Comentarios..."
+                                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-blue-500 transition-all placeholder:text-white/20"></textarea>
+                        </div>
+
+                        <button type="button" onclick="enviarAWhatsApp()"
+                            class="w-full h-14 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-xl transition-all shadow-xl shadow-blue-600/20 mt-2">
+                            Enviar a WhatsApp
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
+
+    <script>
+        function enviarAWhatsApp() {
+            // 1. TU NÚMERO AQUÍ (sin el +)
+            const miNumero = "573022315451";
+
+            // 2. RECOGER DATOS
+            const nom = document.getElementById('nombre').value;
+            const pro = document.getElementById('producto').value;
+            const ent = document.getElementById('checkin').value;
+            const sal = document.getElementById('checkout').value;
+            const msg = document.getElementById('mensaje').value;
+
+            if (!nom || !ent || !sal) {
+                alert("Por favor rellena nombre y fechas.");
+                return;
+            }
+
+            // 3. ARMAR MENSAJE
+            const mensajeFinal = `*SOLICITUD DE RESERVA*%0A` +
+                `*Nombre:* ${nom}%0A` +
+                `*Apartamento:* ${pro}%0A` +
+                `*Entrada:* ${ent}%0A` +
+                `*Salida:* ${sal}%0A` +
+                `*Mensaje:* ${msg || 'Sin mensaje'}`;
+
+            // 4. ABRIR WHATSAPP
+            window.open(`https://api.whatsapp.com/send?phone=${miNumero}&text=${mensajeFinal}`, '_blank');
+        }
+    </script>
+
+    <style>
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+    </style>
 
 
 
@@ -592,7 +660,7 @@
     <?php include 'include/footer.php'; ?>
 
     <!-- ================= SCRIPT ================= -->
-    <script src="/js/main.js"></script>
+    <script src="/public/dist/main.js"></script>
     <script src="sw.js"></script>
 
 </body>
