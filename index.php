@@ -452,7 +452,7 @@
     </section>
 
     <!-- apartamento -->
-
+    <?php include 'include/apartamentos.php'; ?>
 
     <!-- testimonios -->
     <section class="py-32 bg-[#101c22] overflow-hidden" aria-labelledby="testimonios-title">

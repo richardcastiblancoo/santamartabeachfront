@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /auth/
+Disallow: /php/dashboard-admin/
+Disallow: /php/dashboard-huesped/
+Disallow: /debug_reservas.php
+Disallow: /update_schema.php
+Disallow: /check_column.php
+Disallow: /php/update_pqr_table.php
+Disallow: /auth/conexion_be.php
+Disallow: /auth/db/
+Disallow: /*.sql
+Sitemap: /sitemap.xml
