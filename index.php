@@ -194,7 +194,7 @@
         <div class="flex items-center gap-3">
             <a href="/" class="flex items-center gap-3 group">
                 <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
-
+                    
                 </div>
                 <h1 class="text-white text-base md:text-lg font-black tracking-tighter uppercase">
                     Santamarta<span class="text-blue-500">beachfront</span>
@@ -230,9 +230,9 @@
         </button>
     </header>
 
-    <section class="relative w-full min-h-screen flex items-center justify-center overflow-hidden font-sans">
+    <section class="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <div class="absolute inset-0 bg-black/60 z-10"></div>
+            <div class="absolute inset-0 bg-black/50 z-10"></div>
             <video class="w-full h-full object-cover" autoplay muted loop playsinline>
                 <source src="/public/video/santamarta-video-tayrona.mp4" type="video/mp4">
             </video>
@@ -241,101 +241,55 @@
         <div class="relative z-20 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center pt-20">
 
             <div class="text-left">
-                <h2 class="text-4xl md:text-6xl font-black text-white leading-tight">
-                    Vive la experiencia en<br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                <h2 class="hero-title font-black text-white">
+                    <span data-i18n="hero_title_top">Vive la experiencia en</span><br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400" data-i18n="hero_title_accent">
                         Santa Marta frente al mar
                     </span>
                 </h2>
-                <p class="text-white/80 text-sm md:text-base mt-4 max-w-sm leading-relaxed">
+                <p class="text-white/80 text-sm md:text-base mt-4 max-w-sm leading-relaxed" data-i18n="hero_desc">
                     Exclusividad y confort en los mejores apartamentos de la costa caribeña.
                 </p>
+                <div class="flex gap-4 mt-8">
+                    <a href="#apartamentos" class="bg-white text-slate-900 font-black text-[11px] uppercase tracking-widest h-11 px-8 rounded-lg flex items-center hover:bg-blue-50 transition-all">Ver Galería</a>
+                    <a href="#contacto" class="bg-white/10 border border-white/20 text-white font-black text-[11px] uppercase tracking-widest h-11 px-8 rounded-lg flex items-center backdrop-blur-md hover:bg-white/20 transition-all">Contacto</a>
+                </div>
             </div>
 
             <div class="flex justify-end">
-                <div class="bg-white/10 backdrop-blur-xl border border-white/20 w-full max-w-md p-8 rounded-3xl shadow-2xl">
-                    <h3 class="text-white text-xl font-bold mb-6 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-blue-400">send</span>
-                        Solicitar Reserva
+                <div class="glass-booking w-full max-w-md p-8 rounded-2xl shadow-2xl">
+                    <h3 class="text-white text-lg font-bold mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-blue-400">event_available</span>
+                        Reserva tu estancia
                     </h3>
-
                     <form class="space-y-4">
-                        <div class="space-y-1">
-                            <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Nombre Completo</label>
-                            <input type="text" id="nombre" required placeholder="Tu nombre"
-                                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-blue-500 transition-all placeholder:text-white/20">
-                        </div>
-
-                        <div class="space-y-1">
-                            <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Apartamento</label>
-                            <select id="producto" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-blue-500">
-                                <option value="Suite Vista Mar">Suite Vista Mar</option>
-                                <option value="Penthouse Deluxe">Penthouse Deluxe</option>
-                            </select>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 gap-4">
                             <div class="space-y-1">
-                                <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Entrada</label>
-                                <input type="date" id="checkin" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-[12px] focus:outline-none">
+                                <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Alojamiento</label>
+                                <select class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500">
+                                    <option class="bg-slate-900">Suite Vista Mar</option>
+                                    <option class="bg-slate-900">Penthouse Deluxe</option>
+                                </select>
                             </div>
-                            <div class="space-y-1">
-                                <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Salida</label>
-                                <input type="date" id="checkout" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-[12px] focus:outline-none">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Entrada</label>
+                                    <input type="date" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Salida</label>
+                                    <input type="date" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none">
+                                </div>
                             </div>
                         </div>
-
-                        <div class="space-y-1">
-                            <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Mensaje adicional</label>
-                            <textarea id="mensaje" rows="2" placeholder="Comentarios..."
-                                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-blue-500 transition-all placeholder:text-white/20"></textarea>
-                        </div>
-
-                        <button type="button" onclick="enviarAWhatsApp()"
-                            class="w-full h-14 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-xl transition-all shadow-xl shadow-blue-600/20 mt-2">
-                            Enviar a WhatsApp
+                        <button class="w-full h-12 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-lg transition-all shadow-xl shadow-blue-600/20 mt-2">
+                            Ver Disponibilidad
                         </button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
-
-    <script>
-        function enviarAWhatsApp() {
-            // 1. TU NÚMERO AQUÍ (sin el +)
-            const miNumero = "573022315451";
-
-            // 2. RECOGER DATOS
-            const nom = document.getElementById('nombre').value;
-            const pro = document.getElementById('producto').value;
-            const ent = document.getElementById('checkin').value;
-            const sal = document.getElementById('checkout').value;
-            const msg = document.getElementById('mensaje').value;
-
-            if (!nom || !ent || !sal) {
-                alert("Por favor rellena nombre y fechas.");
-                return;
-            }
-
-            // 3. ARMAR MENSAJE
-            const mensajeFinal = `*SOLICITUD DE RESERVA*%0A` +
-                `*Nombre:* ${nom}%0A` +
-                `*Apartamento:* ${pro}%0A` +
-                `*Entrada:* ${ent}%0A` +
-                `*Salida:* ${sal}%0A` +
-                `*Mensaje:* ${msg || 'Sin mensaje'}`;
-
-            // 4. ABRIR WHATSAPP
-            window.open(`https://api.whatsapp.com/send?phone=${miNumero}&text=${mensajeFinal}`, '_blank');
-        }
-    </script>
-
-    <style>
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-        }
-    </style>
 
 
 
