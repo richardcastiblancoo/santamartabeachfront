@@ -9,4 +9,3 @@ Disallow: /php/update_pqr_table.php
 Disallow: /auth/conexion_be.php
 Disallow: /auth/db/
 Disallow: /*.sql
-Sitemap: /sitemap.xml

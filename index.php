@@ -6,8 +6,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta name="description" content="Vive la experiencia frente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
-    <meta name="keywords" content="
-    apartamentos Santa Marta,
+    <meta name="keywords" content="apartamentos Santa Marta,
     alquiler de apartamentos en Santa Marta,
     apartamentos turísticos Santa Marta,
     apartamentos frente al mar Santa Marta,
@@ -101,6 +100,7 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <!-- los scripts -->
@@ -171,20 +171,61 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <style>
+        :root {
+            scroll-behavior: auto;
+        }
+
+        /* Evita scroll automático */
+
         .hero-title {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            /* Tamaño fluido y compacto */
+            font-size: clamp(2rem, 5vw, 4rem);
             line-height: 1.1;
             letter-spacing: -0.05em;
+            min-height: 2.2em;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: #3b82f6;
+            margin-left: 4px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
         }
 
         .glass-booking {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(12px);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Estilo para el input date en modo oscuro */
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu {
+            transform: translateY(-100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #mobile-menu.active {
+            transform: translateY(0);
+        }
+
         input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(1) opacity(0.5);
         }
@@ -193,10 +234,8 @@
     <header id="main-header" class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-10 transition-all duration-300">
         <div class="flex items-center gap-3">
             <a href="/" class="flex items-center gap-3 group">
-                <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
-
-                </div>
-                <h1 class="text-white text-base md:text-lg font-black tracking-tighter uppercase">
+                <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="Logo" class="size-10 md:size-12 object-contain">
+                <h1 class="text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
                     Santamarta<span class="text-blue-500">beachfront</span>
                 </h1>
             </a>
@@ -204,92 +243,179 @@
 
         <nav class="hidden md:flex items-center gap-8">
             <ul class="flex items-center gap-6 list-none">
-                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-[0.2em] hover:text-white transition-colors" href="#apartamentos" data-i18n="nav_apartments">Apartamentos</a></li>
-                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-[0.2em] hover:text-white transition-colors" href="#ubicacion" data-i18n="nav_location">Ubicación</a></li>
-                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-[0.2em] hover:text-white transition-colors" href="#contacto" data-i18n="nav_contact">Contacto</a></li>
+                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#apartamentos">Apartamentos</a></li>
+                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#ubicacion">Ubicación</a></li>
+                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#contacto">Contacto</a></li>
             </ul>
 
             <div class="flex items-center gap-4 border-l border-white/20 pl-6">
                 <div class="relative group">
                     <button class="flex items-center gap-2 text-white text-[11px] font-bold uppercase tracking-widest h-9 px-3 rounded-lg hover:bg-white/10 transition-colors">
-                        <img class="w-4 h-4 rounded-full object-cover" src="https://flagcdn.com/w40/co.png">
+                        <img class="w-4 h-4 rounded-full object-cover" src="https://flagcdn.com/w40/co.png" alt="ES">
                         <span>ES</span>
                         <span class="material-symbols-outlined text-sm">expand_more</span>
                     </button>
-                    <ul class="hidden group-hover:block absolute top-full right-0 mt-1 w-32 bg-slate-900 border border-white/10 rounded-xl py-2 list-none shadow-2xl">
-                        <li><a href="#" onclick="changeLanguage('ES')" class="block px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ESPAÑOL</a></li>
-                        <li><a href="#" onclick="changeLanguage('EN')" class="block px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
+                    <ul class="hidden group-hover:block absolute top-full right-0 mt-1 w-32 bg-slate-900 border border-white/10 rounded-xl py-2 shadow-2xl">
+                        <li><button onclick="changeLanguage('ES')" class="w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ESPAÑOL</button></li>
+                        <li><button onclick="changeLanguage('EN')" class="w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</button></li>
                     </ul>
                 </div>
-                <a href="/auth/login.php" class="h-9 px-6 bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest rounded-full flex items-center hover:bg-blue-500 transition-all">Login</a>
+                <a href="/auth/login.php" class="h-9 px-6 bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest rounded-full flex items-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20">Inicio Sesión</a>
             </div>
         </nav>
 
-        <button onclick="toggleMobileMenu()" class="md:hidden text-white p-2">
+        <button onclick="toggleMobileMenu(true)" class="md:hidden text-white p-2">
             <span class="material-symbols-outlined text-3xl">menu</span>
         </button>
     </header>
 
-    <section class="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <div class="absolute inset-0 bg-black/50 z-10"></div>
-            <video class="w-full h-full object-cover" autoplay muted loop playsinline>
-                <source src="/public/video/santamarta-video-tayrona.mp4" type="video/mp4">
-            </video>
+    <div id="mobile-menu" class="fixed inset-0 bg-slate-950/98 backdrop-blur-xl z-[100] flex flex-col md:hidden">
+        <div class="flex justify-between items-center p-6 border-b border-white/10">
+            <div class="flex gap-4">
+                <button onclick="changeLanguage('ES')" class="text-white font-bold text-xs border border-white/20 px-3 py-1 rounded">ES</button>
+                <button onclick="changeLanguage('EN')" class="text-white/40 font-bold text-xs border border-white/10 px-3 py-1 rounded">EN</button>
+            </div>
+            <button onclick="toggleMobileMenu(false)" class="text-white">
+                <span class="material-symbols-outlined text-4xl">close</span>
+            </button>
         </div>
+        <nav class="flex flex-col items-center justify-center flex-grow gap-8">
+            <a href="#apartamentos" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartamentos</a>
+            <a href="#ubicacion" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Ubicación</a>
+            <a href="#contacto" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Contacto</a>
+            <a href="/auth/login.php" class="mt-4 px-12 py-4 bg-blue-600 text-white rounded-full font-black uppercase tracking-widest">Inicio Sesión</a>
+        </nav>
+    </div>
 
-        <div class="relative z-20 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center pt-20">
-
-            <div class="text-left">
-                <h2 class="hero-title font-black text-white">
-                    <span data-i18n="hero_title_top">Vive la experiencia en</span><br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400" data-i18n="hero_title_accent">
-                        Santa Marta frente al mar
-                    </span>
-                </h2>
-                <p class="text-white/80 text-sm md:text-base mt-4 max-w-sm leading-relaxed" data-i18n="hero_desc">
-                    Exclusividad y confort en los mejores apartamentos de la costa caribeña.
-                </p>
-                <div class="flex gap-4 mt-8">
-                    <a href="#apartamentos" class="bg-white text-slate-900 font-black text-[11px] uppercase tracking-widest h-11 px-8 rounded-lg flex items-center hover:bg-blue-50 transition-all">Ver Galería</a>
-                    <a href="#contacto" class="bg-white/10 border border-white/20 text-white font-black text-[11px] uppercase tracking-widest h-11 px-8 rounded-lg flex items-center backdrop-blur-md hover:bg-white/20 transition-all">Contacto</a>
-                </div>
+    <main>
+        <section class="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute inset-0 bg-black/50 z-10"></div>
+                <video class="w-full h-full object-cover" autoplay muted loop playsinline>
+                    <source src="/public/video/santamarta-video-tayrona.mp4" type="video/mp4">
+                </video>
             </div>
 
-            <div class="flex justify-end">
-                <div class="glass-booking w-full max-w-md p-8 rounded-2xl shadow-2xl">
-                    <h3 class="text-white text-lg font-bold mb-6 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-blue-400">event_available</span>
-                        Reserva tu estancia
-                    </h3>
-                    <form class="space-y-4">
-                        <div class="grid grid-cols-1 gap-4">
+            <div class="relative z-20 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center pt-24 pb-12">
+
+                <div class="text-left">
+                    <h2 class="hero-title font-black text-white">
+                        <span id="typewriter"></span><span class="cursor"></span><br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                            Santa Marta frente al mar
+                        </span>
+                    </h2>
+                    <p class="text-white/80 text-sm md:text-base mt-6 max-w-sm leading-relaxed">
+                        Exclusividad y confort en los mejores apartamentos de la costa caribeña.
+                    </p>
+                    <div class="flex flex-wrap gap-4 mt-8">
+                        <a href="#apartamentos" class="bg-white text-slate-900 font-black text-[11px] uppercase tracking-widest h-11 px-8 rounded-lg flex items-center hover:bg-blue-50 transition-all shadow-xl">Ver Galería</a>
+                        <a href="#contacto" class="bg-white/10 border border-white/20 text-white font-black text-[11px] uppercase tracking-widest h-11 px-8 rounded-lg flex items-center backdrop-blur-md hover:bg-white/20 transition-all">Contacto</a>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="glass-booking w-full max-w-md p-8 rounded-3xl shadow-2xl">
+                        <h3 class="text-white text-lg font-bold mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-blue-400">event_available</span>
+                            Reserva tu estancia
+                        </h3>
+
+                        <form class="space-y-4">
+                            <div class="space-y-1">
+                                <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Nombre Completo</label>
+                                <input type="text" placeholder="Tu nombre" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">WhatsApp</label>
+                                    <input type="tel" placeholder="+57..." class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Correo</label>
+                                    <input type="email" placeholder="tu@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
+                                </div>
+                            </div>
+
                             <div class="space-y-1">
                                 <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Alojamiento</label>
-                                <select class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500">
-                                    <option class="bg-slate-900">Suite Vista Mar</option>
-                                    <option class="bg-slate-900">Penthouse Deluxe</option>
+                                <select class="glass-input w-full rounded-xl px-4 py-3 text-sm appearance-none">
+                                    <option>Reserva del Mar - Apartamento 1730</option>
                                 </select>
                             </div>
+
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="space-y-1">
                                     <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Entrada</label>
-                                    <input type="date" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none">
+                                    <input type="date" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                                 </div>
                                 <div class="space-y-1">
                                     <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Salida</label>
-                                    <input type="date" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none">
+                                    <input type="date" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                                 </div>
                             </div>
-                        </div>
-                        <button class="w-full h-12 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-lg transition-all shadow-xl shadow-blue-600/20 mt-2">
-                            Ver Disponibilidad
-                        </button>
-                    </form>
+
+                            <button type="submit" class="w-full h-14 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest text-[11px] rounded-xl transition-all shadow-xl shadow-blue-600/30 mt-4">
+                                Ver Disponibilidad
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
+
+    <script>
+        // --- ANIMACIÓN TYPEWRITER ---
+        const textElement = document.getElementById('typewriter');
+        const text = "Vive la experiencia en";
+        let index = 0;
+        let isDeleting = false;
+        let speed = 100;
+
+        function type() {
+            const currentText = text.substring(0, index);
+            textElement.textContent = currentText;
+
+            if (!isDeleting && index < text.length) {
+                index++;
+                speed = 100;
+            } else if (isDeleting && index > 0) {
+                index--;
+                speed = 50;
+            } else {
+                isDeleting = !isDeleting;
+                speed = isDeleting ? 2500 : 700;
+            }
+            setTimeout(type, speed);
+        }
+        type();
+
+        // --- MENÚ MÓVIL ---
+        function toggleMobileMenu(open) {
+            const menu = document.getElementById('mobile-menu');
+            if (open) {
+                menu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                menu.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // --- HEADER SCROLL ---
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(15, 23, 42, 0.95)';
+                header.classList.add('py-2', 'shadow-2xl');
+            } else {
+                header.style.background = 'transparent';
+                header.classList.remove('py-2', 'shadow-2xl');
+            }
+        });
+    </script>
 
 
 
@@ -393,7 +519,7 @@
     </section>
 
     <!-- disponibilidad -->
-     <?php include 'include/Consultadisponibilidadentiemporeal.php'; ?>
+    <?php include 'include/Consultadisponibilidadentiemporeal.php'; ?>
 
 
 

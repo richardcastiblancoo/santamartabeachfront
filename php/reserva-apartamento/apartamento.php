@@ -115,11 +115,12 @@ if ($result_videos && $result_videos->num_rows > 0) {
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Penthouse Vista Coral - Detalle del Apartamento</title>
+    <title>Santamartabeachfront | reserva</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="shortcut icon" href="/public/img/logo-portada.png" type="image/x-icon">
@@ -201,7 +202,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
             <div class="flex items-center justify-between max-w-[1280px] mx-auto">
                 <div class="flex items-center gap-2 text-[#111618] dark:text-white">
                     <div class="size-6 text-primary">
-                        <img src="" alt="">
+                        <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" width="50px" alt="logo-apartamento">
                     </div>
                     <h2 class="text-xl font-extrabold leading-tight tracking-tight">Santamartabeachfront</h2>
                 </div>
@@ -371,7 +372,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
             </div>
 
 
-            
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 py-10">
                 <div class="lg:col-span-2">
                     <div class="border-b border-slate-200 dark:border-slate-800 pb-6 mb-8">
@@ -845,9 +846,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
                     <div class="col-span-1">
                         <div class="flex items-center gap-2 mb-6">
                             <div class="size-6 text-primary">
-                                <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                                    <path clip-rule="evenodd" d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z" fill="currentColor" fill-rule="evenodd"></path>
-                                </svg>
+                                <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" width="50px" alt="logo-apartamento">
                             </div>
                             <h2 class="text-xl font-extrabold leading-tight tracking-tight">Santamarta<span class="text-primary">beachfront</span></h2>
                         </div>
