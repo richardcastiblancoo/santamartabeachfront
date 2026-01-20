@@ -5,7 +5,9 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Inicio de Sesión</title>
-    <link rel="shortcut icon" href="/public/img/logo-portada.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -32,7 +34,7 @@
 
     <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-10">
         <a href="/" class="flex items-center gap-2">
-            <img src="" class="h-10 w-auto" alt="">
+            <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" class="h-10 w-auto" alt="logo">
             <span class="hidden sm:block font-bold text-lg tracking-tight text-[#111618] dark:text-white lg:text-white">Santamartabeachfront</span>
         </a>
 
@@ -141,7 +143,7 @@
         </div>
     </div>
 
-    <script src="/public/dist/login.js"></script>
+    <script src="/js/login.js"></script>
 </body>
 
 </html>

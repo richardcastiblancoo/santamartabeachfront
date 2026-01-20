@@ -32,6 +32,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Panel de Administrador</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -105,7 +106,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
             <div class="p-6 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
                     <div class="bg-primary/10 p-2 rounded-lg">
-                        <span class="material-symbols-outlined text-primary">beach_access</span>
+                        <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo" class="w-8 h-8">
                     </div>
                     <div>
                         <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamarta</h1>

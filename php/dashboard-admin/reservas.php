@@ -22,18 +22,18 @@ $stats = mysqli_fetch_assoc($stats_result);
 if ($stats['total'] == 0) {
     $u_check = mysqli_query($conn, "SELECT id FROM usuarios LIMIT 1");
     $a_check = mysqli_query($conn, "SELECT id, precio FROM apartamentos LIMIT 1");
-    
+
     if (mysqli_num_rows($u_check) > 0 && mysqli_num_rows($a_check) > 0) {
         $u_id = mysqli_fetch_assoc($u_check)['id'];
         $a_row = mysqli_fetch_assoc($a_check);
         $a_id = $a_row['id'];
         $precio = $a_row['precio'];
-        
+
         $sql_insert = "INSERT INTO reservas (usuario_id, apartamento_id, fecha_inicio, fecha_fin, total, estado) VALUES 
         ($u_id, $a_id, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 5 DAY), " . ($precio * 5) . ", 'Confirmada'),
         ($u_id, $a_id, DATE_ADD(CURDATE(), INTERVAL 10 DAY), DATE_ADD(CURDATE(), INTERVAL 13 DAY), " . ($precio * 3) . ", 'Pendiente')";
         mysqli_query($conn, $sql_insert);
-        
+
         // Recargar estadísticas
         $stats_result = mysqli_query($conn, $stats_query);
         $stats = mysqli_fetch_assoc($stats_result);
@@ -76,6 +76,7 @@ $result = mysqli_query($conn, $query);
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Gestión de Reservas</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -145,11 +146,13 @@ $result = mysqli_query($conn, $query);
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
+
+
     <div class="flex h-screen w-full">
         <aside class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full hidden md:flex shrink-0 z-20">
             <div class="p-6 flex items-center gap-3">
                 <div class="bg-primary/10 p-2 rounded-lg">
-                    <span class="material-symbols-outlined text-primary">beach_access</span>
+                    <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo" class="w-8 h-8">
                 </div>
                 <div class="overflow-hidden">
                     <h1 class="text-base font-bold text-text-main dark:text-white leading-none truncate">Santamartabeachfront</h1>
@@ -168,7 +171,6 @@ $result = mysqli_query($conn, $query);
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary" href="#">
                     <span class="material-symbols-outlined fill-1">calendar_month</span>
                     <span class="text-sm font-semibold">Reservas</span>
-                    <span class="ml-auto bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full"><?php echo $stats['total']; ?></span>
                 </a>
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/usuarios.php">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
@@ -200,6 +202,8 @@ $result = mysqli_query($conn, $query);
                 </div>
             </div>
         </aside>
+
+        
         <div class="flex flex-col flex-1 min-w-0">
             <header class="h-16 bg-card-light dark:bg-card-dark border-b border-[#f0f3f4] dark:border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10">
                 <div class="flex items-center gap-4">
@@ -233,7 +237,7 @@ $result = mysqli_query($conn, $query);
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Pendientes -->
                     <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
                         <div class="flex items-center gap-3">
@@ -374,11 +378,11 @@ $result = mysqli_query($conn, $query);
                                         // Imágenes
                                         $usuario_img = !empty($row['usuario_imagen']) ? '../../assets/img/usuarios/' . $row['usuario_imagen'] : 'https://ui-avatars.com/api/?name=' . $row['nombre_final'] . '+' . $row['apellido_final'];
                                         $apartamento_img = !empty($row['apartamento_imagen']) ? '../../assets/img/apartamentos/' . $row['apartamento_imagen'] : 'https://placehold.co/400x300?text=No+Image';
-                                        
+
                                         // Datos de contacto
                                         $email_contacto = $row['email_final'];
                                         $telefono_contacto = !empty($row['telefono_cliente']) ? $row['telefono_cliente'] : 'No registrado';
-                                        
+
                                         // Composición de ocupantes
                                         $ocupantes = [];
                                         if ($row['adultos'] > 0) $ocupantes[] = $row['adultos'] . ' Adul.';
@@ -393,7 +397,7 @@ $result = mysqli_query($conn, $query);
                                                 <div class="flex flex-col">
                                                     <span class="font-bold text-text-main dark:text-white"><?php echo htmlspecialchars($row['nombre_final'] . ' ' . $row['apellido_final']); ?></span>
                                                     <span class="text-[10px] text-text-secondary">
-                                                        <?php echo !empty($row['usuario_id']) ? '#USR-'.$row['usuario_id'] : 'Invitado'; ?>
+                                                        <?php echo !empty($row['usuario_id']) ? '#USR-' . $row['usuario_id'] : 'Invitado'; ?>
                                                     </span>
                                                 </div>
                                             </td>
@@ -412,7 +416,7 @@ $result = mysqli_query($conn, $query);
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-col">
                                                     <span class="text-xs font-semibold text-text-main dark:text-white"><?php echo $ocupantes_str; ?></span>
-                                                    <?php if(!empty($row['nombres_huespedes'])): ?>
+                                                    <?php if (!empty($row['nombres_huespedes'])): ?>
                                                         <span class="text-[10px] text-text-secondary truncate max-w-[100px]" title="<?php echo htmlspecialchars($row['nombres_huespedes']); ?>">
                                                             <?php echo htmlspecialchars($row['nombres_huespedes']); ?>
                                                         </span>
@@ -496,7 +500,7 @@ $result = mysqli_query($conn, $query);
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div class="relative transform overflow-hidden rounded-2xl bg-card-light dark:bg-card-dark text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-[#f0f3f4] dark:border-gray-800">
-                    
+
                     <!-- Header -->
                     <div class="bg-background-light/50 dark:bg-gray-800/50 px-4 py-3 sm:px-6 flex justify-between items-center border-b border-[#f0f3f4] dark:border-gray-800">
                         <h3 class="text-base font-semibold leading-6 text-text-main dark:text-white" id="modal-title">Detalle de Reserva #<span id="modal-id"></span></h3>
@@ -561,21 +565,21 @@ $result = mysqli_query($conn, $query);
                             </div>
                         </div>
 
-                            <div class="flex justify-between items-center pt-4 border-t border-[#f0f3f4] dark:border-gray-800">
-                                <div>
-                                    <span class="text-xs text-text-secondary block">Estado</span>
-                                    <select id="modal-estado-select" onchange="updateStatus(this.value)" class="bg-transparent border border-gray-300 dark:border-gray-600 rounded-md text-xs font-bold mt-1 py-1 pl-2 pr-8 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
-                                        <option value="Pendiente">Pendiente</option>
-                                        <option value="Confirmada">Confirmada</option>
-                                        <option value="Completada">Completada</option>
-                                        <option value="Cancelada">Cancelada</option>
-                                    </select>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs text-text-secondary block">Total Pagado</span>
-                                    <span class="text-2xl font-bold text-text-main dark:text-white">$<span id="modal-total"></span></span>
-                                </div>
+                        <div class="flex justify-between items-center pt-4 border-t border-[#f0f3f4] dark:border-gray-800">
+                            <div>
+                                <span class="text-xs text-text-secondary block">Estado</span>
+                                <select id="modal-estado-select" onchange="updateStatus(this.value)" class="bg-transparent border border-gray-300 dark:border-gray-600 rounded-md text-xs font-bold mt-1 py-1 pl-2 pr-8 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Confirmada">Confirmada</option>
+                                    <option value="Completada">Completada</option>
+                                    <option value="Cancelada">Cancelada</option>
+                                </select>
                             </div>
+                            <div class="text-right">
+                                <span class="text-xs text-text-secondary block">Total Pagado</span>
+                                <span class="text-2xl font-bold text-text-main dark:text-white">$<span id="modal-total"></span></span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Footer -->
@@ -587,121 +591,7 @@ $result = mysqli_query($conn, $query);
         </div>
     </div>
 
-    <script>
-        // Inicializar Flatpickr
-        document.addEventListener('DOMContentLoaded', function() {
-            flatpickr("#date-range", {
-                mode: "range",
-                dateFormat: "Y-m-d",
-                locale: "es",
-                theme: "dark",
-                onChange: function(selectedDates, dateStr, instance) {
-                   // Aquí puedes agregar lógica para filtrar si lo deseas
-                   console.log("Fechas seleccionadas:", dateStr);
-                }
-            });
-        });
-
-        let currentReservationId = null;
-
-        function openModal(data) {
-            currentReservationId = data.id;
-            const modal = document.getElementById('reservationModal');
-            
-            // Set basic info
-            document.getElementById('modal-id').textContent = data.id;
-            document.getElementById('modal-huesped').textContent = data.huesped;
-            document.getElementById('modal-email').textContent = data.email;
-            document.getElementById('modal-telefono').textContent = data.telefono;
-            document.getElementById('modal-ocupantes').textContent = data.ocupantes;
-            document.getElementById('modal-nombres-huespedes').textContent = data.nombres_huespedes ? 'Huéspedes: ' + data.nombres_huespedes : 'Sin nombres adicionales registrados';
-            document.getElementById('modal-apartamento').textContent = data.apartamento;
-            document.getElementById('modal-checkin').textContent = data.fecha_inicio;
-            document.getElementById('modal-checkout').textContent = data.fecha_fin;
-            document.getElementById('modal-noches').textContent = data.noches;
-            document.getElementById('modal-total').textContent = data.total;
-
-            // Set images
-            document.getElementById('modal-user-img').style.backgroundImage = `url('${data.imagen_usuario}')`;
-            document.getElementById('modal-apt-img').style.backgroundImage = `url('${data.imagen_apartamento}')`;
-
-            // Set Status Select
-            const statusSelect = document.getElementById('modal-estado-select');
-            statusSelect.value = data.estado;
-            
-            // Aplicar colores iniciales al select según el estado
-            updateSelectColor(statusSelect);
-
-            // Show modal
-            modal.classList.remove('hidden');
-        }
-
-        function updateSelectColor(select) {
-            const status = select.value;
-            let colorClass = '';
-            
-            // Reset classes (manteniendo base)
-            select.className = "bg-transparent border border-gray-300 dark:border-gray-600 rounded-md text-xs font-bold mt-1 py-1 pl-2 pr-8 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white";
-
-            switch(status) {
-                case 'Confirmada':
-                    select.classList.add('text-green-700', 'dark:text-green-400', 'bg-green-50', 'dark:bg-green-900/20');
-                    break;
-                case 'Pendiente':
-                    select.classList.add('text-yellow-700', 'dark:text-yellow-400', 'bg-yellow-50', 'dark:bg-yellow-900/20');
-                    break;
-                case 'Completada':
-                    select.classList.add('text-blue-700', 'dark:text-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
-                    break;
-                case 'Cancelada':
-                    select.classList.add('text-red-700', 'dark:text-red-400', 'bg-red-50', 'dark:bg-red-900/20');
-                    break;
-            }
-        }
-
-        function updateStatus(newStatus) {
-            const select = document.getElementById('modal-estado-select');
-            updateSelectColor(select);
-
-            if(!currentReservationId) return;
-
-            // Enviar actualización al servidor via fetch
-            fetch('actualizar_estado_reserva.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `id=${currentReservationId}&estado=${newStatus}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success) {
-                    // Opcional: Mostrar notificación de éxito
-                    console.log('Estado actualizado correctamente');
-                    // Recargar página para reflejar cambios en la tabla principal
-                    window.location.reload();
-                } else {
-                    alert('Error al actualizar el estado: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Hubo un error al conectar con el servidor');
-            });
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('reservationModal');
-            modal.classList.add('hidden');
-        }
-
-        // Close on Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                closeModal();
-            }
-        });
-    </script>
+    <script src="/js/reserva.js"></script>
 
 </body>
 

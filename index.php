@@ -286,32 +286,26 @@
             <a href="/auth/login.php" class="mt-4 px-12 py-4 bg-blue-600 text-white rounded-full font-black uppercase tracking-widest">Inicio Sesión</a>
         </nav>
     </div>
-
     <main>
         <section class="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
             <div class="absolute inset-0 z-0">
                 <div class="absolute inset-0 bg-black/50 z-10"></div>
-                <video class="w-full h-full object-cover" autoplay muted loop playsinline>
+                <video class="w-full h-full object-cover" autoplay muted loop playsinline aria-hidden="true">
                     <source src="/public/video/santamarta-video-tayrona.mp4" type="video/mp4">
                 </video>
             </div>
 
             <div class="relative z-20 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center pt-24 pb-12">
-
                 <div class="text-left">
                     <h2 class="hero-title font-black text-white">
                         <span id="typewriter"></span><span class="cursor"></span><br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
                             Santa Marta frente al mar
                         </span>
                     </h2>
-                    <p class="text-white/80 text-sm md:text-base mt-6 max-w-sm leading-relaxed">
+                    <p class="text-white text-sm md:text-base mt-6 max-w-sm leading-relaxed">
                         Exclusividad y confort en los mejores apartamentos de la costa caribeña.
                     </p>
-                    <div class="flex flex-wrap gap-4 mt-8">
-                        <a href="#apartamentos" class="bg-white text-slate-900 font-black text-[11px] uppercase tracking-widest h-11 px-8 rounded-lg flex items-center hover:bg-blue-50 transition-all shadow-xl">Ver Galería</a>
-                        <a href="#contacto" class="bg-white/10 border border-white/20 text-white font-black text-[11px] uppercase tracking-widest h-11 px-8 rounded-lg flex items-center backdrop-blur-md hover:bg-white/20 transition-all">Contacto</a>
-                    </div>
                 </div>
 
                 <div class="flex justify-end">
@@ -321,43 +315,43 @@
                             Reserva tu estancia
                         </h3>
 
-                        <form class="space-y-4">
+                        <form id="reservaForm" class="space-y-4">
                             <div class="space-y-1">
-                                <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Nombre Completo</label>
-                                <input type="text" placeholder="Tu nombre" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
+                                <label for="full-name" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Nombre Completo</label>
+                                <input id="full-name" type="text" placeholder="Tu nombre" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-1">
-                                    <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">WhatsApp</label>
-                                    <input type="tel" placeholder="+57..." class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
+                                    <label for="whatsapp" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">WhatsApp</label>
+                                    <input id="whatsapp" type="tel" placeholder="+57..." class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Correo</label>
-                                    <input type="email" placeholder="tu@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
+                                    <label for="email" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Correo</label>
+                                    <input id="email" type="email" placeholder="tu@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
                                 </div>
                             </div>
 
                             <div class="space-y-1">
-                                <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Alojamiento</label>
-                                <select class="glass-input w-full rounded-xl px-4 py-3 text-sm appearance-none">
-                                    <option>Reserva del Mar - Apartamento 1730</option>
+                                <label for="accommodation" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Alojamiento</label>
+                                <select id="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-slate-800 border border-white/20 appearance-none">
+                                    <option value="Reserva del Mar - Apartamento 1730">Reserva del Mar - Apartamento 1730</option>
                                 </select>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="space-y-1">
-                                    <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Entrada</label>
-                                    <input type="date" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
+                                    <label for="check-in" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Entrada</label>
+                                    <input id="check-in" type="date" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-blue-400 text-[9px] font-black uppercase tracking-widest ml-1">Salida</label>
-                                    <input type="date" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
+                                    <label for="check-out" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Salida</label>
+                                    <input id="check-out" type="date" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
                                 </div>
                             </div>
 
                             <button type="submit" class="w-full h-14 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest text-[11px] rounded-xl transition-all shadow-xl shadow-blue-600/30 mt-4">
-                                Ver Disponibilidad
+                                Enviar a WhatsApp
                             </button>
                         </form>
                     </div>
@@ -365,6 +359,8 @@
             </div>
         </section>
     </main>
+
+
 
     <script>
         // --- ANIMACIÓN TYPEWRITER ---
@@ -414,6 +410,41 @@
                 header.style.background = 'transparent';
                 header.classList.remove('py-2', 'shadow-2xl');
             }
+        });
+
+        //---------------------------
+        // formulario de whasapp
+        document.getElementById('reservaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // 1. Obtener los valores de los campos
+            const nombre = document.getElementById('full-name').value;
+            const tel = document.getElementById('whatsapp').value;
+            const email = document.getElementById('email').value;
+            const alojamiento = document.getElementById('accommodation').value;
+            const entrada = document.getElementById('check-in').value;
+            const salida = document.getElementById('check-out').value;
+
+            // 2. Definir el número de teléfono (sin espacios ni símbolos)
+            const telefonoVentas = "573183813381";
+
+            // 3. Crear el mensaje con formato amigable
+            const mensaje = `*Nueva Solicitud de Reserva*%0A` +
+                `---------------------------------%0A` +
+                `*Nombre:* ${nombre}%0A` +
+                `*WhatsApp:* ${tel}%0A` +
+                `*Correo:* ${email}%0A` +
+                `*Alojamiento:* ${alojamiento}%0A` +
+                `*Fecha Entrada:* ${entrada}%0A` +
+                `*Fecha Salida:* ${salida}%0A` +
+                `---------------------------------%0A` +
+                `¡Hola! Me gustaría confirmar disponibilidad.`;
+
+            // 4. Construir la URL de WhatsApp
+            const urlWhatsApp = `https://wa.me/${telefonoVentas}?text=${mensaje}`;
+
+            // 5. Abrir en una nueva pestaña
+            window.open(urlWhatsApp, '_blank');
         });
     </script>
 
@@ -605,10 +636,86 @@
     <?php include 'include/ubicacion.php'; ?>
 
     <!-- footer -->
-    <?php include 'include/footer.php'; ?>
+    <footer class="bg-[#101c22] text-white pt-20 pb-10" id="contacto" itemscope itemtype="https://schema.org/Organization">
+        <hr class="border-t border-gray-800 my-12" aria-hidden="true">
 
-    <!-- ================= SCRIPT ================= -->
-    <script src="/public/dist/main.js"></script>
+        <div class="max-w-7xl mx-auto px-6 md:px-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 py-16">
+
+                <section class="space-y-6">
+                    <a href="/" class="flex items-center gap-2 group" aria-label="Ir al inicio">
+                        <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
+                            <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xl font-bold text-white tracking-tight" itemprop="name">
+                            Santamarta<span class="text-blue-400">beachfront</span>
+                        </span>
+                    </a>
+                    <p class="text-gray-300 text-sm leading-relaxed max-w-xs" itemprop="description" data-i18n="foo_desc">
+                        La plataforma líder en alquileres vacacionales de lujo en Santa Marta. Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_contact_title">Información de Contacto</h2>
+                    <address class="not-italic">
+                        <ul class="space-y-4 text-sm text-gray-300">
+                            <li>
+                                <a href="mailto:17clouds@gmail.com" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="email">
+                                    <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">mail</span>
+                                    <span>17clouds@gmail.com</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://wa.me/573183813381" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="telephone">
+                                    <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">call</span>
+                                    <span>+57 318 3813381</span>
+                                </a>
+                            </li>
+                            <li class="flex items-start gap-3" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                                <span class="material-symbols-outlined text-blue-400" aria-hidden="true">location_on</span>
+                                <span class="leading-relaxed">
+                                    <span itemprop="streetAddress" data-i18n="foo_address">Apartamento 1730 - Torre 4, Reserva del Mar, Playa Salguero</span><br>
+                                    <span itemprop="addressLocality">Santa Marta</span>, <span itemprop="addressCountry" data-i18n="foo_country">Colombia</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </address>
+                </section>
+
+                <section>
+                    <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Síguenos</h2>
+                    <nav aria-label="Redes sociales">
+                        <ul class="flex gap-4 list-none p-0">
+                            <li>
+                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
+                                    <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
+                                    <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </section>
+            </div>
+
+            <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-[11px] sm:text-xs text-gray-400 gap-4">
+                <p>© <time datetime="2026">2026</time> Santamarta Beachfront. <span data-i18n="foo_rights">Todos los derechos reservados.</span></p>
+                <nav aria-label="Enlaces legales">
+                    <ul class="flex gap-8 list-none p-0">
+                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_privacy">Políticas de Privacidad</a></li>
+                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_terms">Términos y Condiciones</a></li>
+                    </ul>
+                </nav>
+            </aside>
+        </div>
+    </footer>
+
+    <!-- ================= SCRIPT =============== -->
+    <script src="/js/main.js"></script>
     <script src="sw.js"></script>
 
 </body>

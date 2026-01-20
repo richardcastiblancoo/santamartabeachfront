@@ -13,6 +13,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Panel de Administrador</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -73,11 +74,12 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
+    
     <div class="flex h-screen w-full">
         <aside class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full hidden md:flex shrink-0 z-20">
             <div class="p-6 flex items-center gap-3">
                 <div class="bg-primary/10 p-2 rounded-lg">
-                    <span class="material-symbols-outlined text-primary">beach_access</span>
+                    <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo" class="w-8 h-8">
                 </div>
                 <div>
                     <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamarta</h1>
@@ -96,7 +98,6 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/reservas.php">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">calendar_month</span>
                     <span class="text-sm font-medium">Reservas</span>
-                    <span class="ml-auto bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">4</span>
                 </a>
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/usuarios.php">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
@@ -118,6 +119,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                     </a>
                 </div>
             </div>
+
             <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800">
                 <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
                     <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM'; ?>");'></div>
@@ -128,6 +130,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                 </div>
             </div>
         </aside>
+
         <div class="flex flex-col flex-1 min-w-0">
             <header class="h-16 bg-card-light dark:bg-card-dark border-b border-[#f0f3f4] dark:border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10">
                 <div class="flex items-center gap-4">
@@ -143,6 +146,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                     </button>
                 </div>
             </header>
+
             <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth bg-background-light dark:bg-background-dark">
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="w-full lg:w-64 shrink-0 space-y-1">
@@ -156,6 +160,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                             <span class="text-sm font-medium">Seguridad</span>
                         </button>
                     </div>
+                    
                     <div class="flex-1">
                         <div class="space-y-6" id="profile-settings">
                             <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm p-6">
@@ -202,6 +207,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                                 </form>
                             </div>
                         </div>
+
                         <div class="space-y-6 hidden" id="security-settings">
                             <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm p-6">
                                 <div class="mb-6 pb-4 border-b border-[#f0f3f4] dark:border-gray-800">
@@ -264,104 +270,14 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                                     </div>
                                 </form>
                             </div>
-
-
-
-
                         </div>
                     </div>
                 </div>
             </main>
         </div>
     </div>
-    <script>
-        function showTab(tabName) {
-            // IDs of setting containers
-            const containers = ['profile-settings', 'security-settings'];
-            // IDs of buttons
-            const buttons = ['btn-profile', 'btn-security'];
-            containers.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.add('hidden');
-            });
-            buttons.forEach(id => {
-                const btn = document.getElementById(id);
-                if (btn) {
-                    btn.classList.remove('bg-card-light', 'dark:bg-card-dark', 'text-primary', 'border-l-4', 'border-primary', 'shadow-sm');
-                    btn.classList.add('text-text-secondary', 'hover:bg-card-light', 'dark:hover:bg-card-dark', 'hover:text-text-main');
-                    const span = btn.querySelector('span:last-child');
-                    if (span) span.classList.remove('font-semibold');
-                    if (span) span.classList.add('font-medium');
-                }
-            });
-            // Show active container
-            const activeContainer = document.getElementById(tabName + '-settings');
-            if (activeContainer) activeContainer.classList.remove('hidden');
-            // Active active button
-            const activeBtn = document.getElementById('btn-' + tabName);
-            if (activeBtn) {
-                activeBtn.classList.remove('text-text-secondary', 'hover:bg-card-light', 'dark:hover:bg-card-dark', 'hover:text-text-main');
-                activeBtn.classList.add('bg-card-light', 'dark:bg-card-dark', 'text-primary', 'border-l-4', 'border-primary', 'shadow-sm');
-                const span = activeBtn.querySelector('span:last-child');
-                if (span) span.classList.remove('font-medium');
-                if (span) span.classList.add('font-semibold');
-            }
-        }
-
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const button = input.nextElementSibling;
-            const icon = button.querySelector('span');
-
-            if (input.type === "password") {
-                input.type = "text";
-                icon.textContent = "visibility_off";
-            } else {
-                input.type = "password";
-                icon.textContent = "visibility";
-            }
-        }
-
-        // Driver.js Tour
-        document.addEventListener('DOMContentLoaded', function() {
-            const driver = window.driver.js.driver;
-
-            const driverObj = driver({
-                showProgress: true,
-                nextBtnText: 'Siguiente',
-                prevBtnText: 'Anterior',
-                doneBtnText: 'Finalizar',
-                steps: [
-                    { element: 'header h2', popover: { title: 'Configuración del Sistema', description: 'Aquí podrás gestionar tu perfil, seguridad y preferencias visuales de la plataforma.' } },
-                    { element: 'aside', popover: { title: 'Menú Principal', description: 'Utiliza este menú para navegar entre las diferentes secciones del panel de administración.' } },
-                    { element: '#btn-profile', popover: { title: 'Perfil Personal', description: 'En esta sección puedes actualizar tu foto, nombre y correo electrónico.' } },
-                    { 
-                        element: '#profile-settings', 
-                        popover: { title: 'Editar Perfil', description: 'Utiliza este formulario para modificar tus datos personales.' },
-                        onHighlightStarted: () => showTab('profile')
-                    },
-                    { 
-                        element: '#btn-security', 
-                        popover: { title: 'Seguridad', description: 'Gestiona la seguridad de tu cuenta.' },
-                        onHighlightStarted: () => showTab('security')
-                    },
-                    { 
-                        element: '#security-settings', 
-                        popover: { title: 'Credenciales', description: 'Actualiza tu nombre de usuario y cambia tu contraseña periódicamente para mayor seguridad.' },
-                        onHighlightStarted: () => showTab('security')
-                    }
-                ]
-            });
-
-            const startBtn = document.getElementById('start-tour-btn');
-            if(startBtn) {
-                startBtn.addEventListener('click', () => {
-                    driverObj.drive();
-                });
-            }
-        });
-    </script>
+    
+    <script src="/js/configuracion.js"></script>
 
 </body>
-
 </html>

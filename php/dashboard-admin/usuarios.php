@@ -54,6 +54,7 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Gestión de Usuarios</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -123,7 +124,7 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
         <aside class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full hidden md:flex shrink-0 z-20">
             <div class="p-6 flex items-center gap-3">
                 <div class="bg-primary/10 p-2 rounded-lg">
-                    <span class="material-symbols-outlined text-primary">beach_access</span>
+                    <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo" class="w-8 h-8">
                 </div>
                 <div>
                     <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamartabeachfront</h1>
@@ -142,7 +143,6 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/reservas.php">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">calendar_month</span>
                     <span class="text-sm font-medium">Reservas</span>
-                    <span class="ml-auto bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">4</span>
                 </a>
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary" href="#users-section">
                     <span class="material-symbols-outlined fill-1">group</span>
@@ -542,143 +542,9 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                 </div>
             </div>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const searchInput = document.getElementById('search_input');
-                if (searchInput) {
-                    searchInput.addEventListener('keyup', function() {
-                        let query = this.value;
-                        let role = "<?php echo $role_filter; ?>";
-                        
-                        let formData = new FormData();
-                        formData.append('search', query);
-                        formData.append('role', role);
-                        
-                        fetch('buscar_usuarios_be.php', {
-                            method: 'POST',
-                            body: formData
-                        })
-                        .then(response => response.text())
-                        .then(data => {
-                            document.querySelector('tbody').innerHTML = data;
-                        })
-                        .catch(error => console.error('Error:', error));
-                    });
-                }
-            });
-
-            function openDeleteModal(id) {
-                const modal = document.getElementById('delete-user-modal');
-                const confirmBtn = document.getElementById('confirm-delete-btn');
-                confirmBtn.href = `eliminar_usuario_be.php?id=${id}`;
-                modal.classList.remove('hidden');
-                modal.style.display = 'flex';
-            }
-
-            function closeDeleteModal() {
-                const modal = document.getElementById('delete-user-modal');
-                modal.classList.add('hidden');
-                modal.style.display = 'none';
-            }
-
-            function openEditModal(data) {
-                document.getElementById('edit-id').value = data.id;
-                document.getElementById('edit-nombre').value = data.nombre;
-                document.getElementById('edit-apellido').value = data.apellido;
-                document.getElementById('edit-usuario').value = data.usuario;
-                document.getElementById('edit-email').value = data.email;
-
-                // Seleccionar el rol correcto
-                const rolSelect = document.getElementById('edit-rol');
-                const rol = data.rol.charAt(0).toUpperCase() + data.rol.slice(1).toLowerCase(); // Capitalizar
-                for (let i = 0; i < rolSelect.options.length; i++) {
-                    if (rolSelect.options[i].value.toLowerCase() === data.rol.toLowerCase()) {
-                        rolSelect.selectedIndex = i;
-                        break;
-                    }
-                }
-
-                // Previsualizar imagen actual
-                let imagenUrl = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.nombre + ' ' + data.apellido) + '&background=random';
-                if (data.imagen) {
-                    imagenUrl = data.imagen.startsWith('assets/') ? '../../' + data.imagen : '../../assets/img/usuarios/' + data.imagen;
-                }
-                document.getElementById('edit-image-preview').style.backgroundImage = `url('${imagenUrl}')`;
-
-                const modal = document.getElementById('edit-user-modal');
-                modal.classList.remove('hidden');
-                modal.style.display = 'flex';
-            }
-
-            function closeEditModal() {
-                const modal = document.getElementById('edit-user-modal');
-                modal.classList.add('hidden');
-                modal.style.display = 'none';
-            }
-
-            function openPreviewModal(data) {
-                document.getElementById('preview-name').textContent = data.nombre + ' ' + data.apellido;
-                document.getElementById('preview-email').textContent = data.email;
-                document.getElementById('preview-username').textContent = data.usuario;
-                document.getElementById('preview-date').textContent = new Date(data.reg_date).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-
-                // Imagen
-                let imagenUrl = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.nombre + ' ' + data.apellido) + '&background=random';
-                if (data.imagen) {
-                    imagenUrl = data.imagen.startsWith('assets/') ? '../../' + data.imagen : '../../assets/img/usuarios/' + data.imagen;
-                }
-                document.getElementById('preview-image').style.backgroundImage = `url('${imagenUrl}')`;
-
-                // Rol y estilos
-                const roleBadge = document.getElementById('preview-role');
-                roleBadge.textContent = data.rol;
-                if (data.rol.toLowerCase() === 'admin') {
-                    roleBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase mb-6 bg-blue-100 text-blue-700';
-                } else {
-                    roleBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase mb-6 bg-gray-100 text-gray-700';
-                }
-
-                const modal = document.getElementById('preview-user-modal');
-                modal.classList.remove('hidden');
-                modal.style.display = 'flex';
-            }
-
-            function closePreviewModal() {
-                const modal = document.getElementById('preview-user-modal');
-                modal.classList.add('hidden');
-                modal.style.display = 'none';
-            }
-
-            // Driver.js Tour
-            document.addEventListener('DOMContentLoaded', function() {
-                const driver = window.driver.js.driver;
-
-                const driverObj = driver({
-                    showProgress: true,
-                    nextBtnText: 'Siguiente',
-                    prevBtnText: 'Anterior',
-                    doneBtnText: 'Finalizar',
-                    steps: [
-                        { element: '#users-header', popover: { title: 'Gestión de Usuarios', description: 'Aquí puedes administrar todos los usuarios registrados en la plataforma.' } },
-                        { element: '#add-user-btn', popover: { title: 'Nuevo Usuario', description: 'Haz clic aquí para registrar manualmente un nuevo administrador o usuario.' } },
-                        { element: '#filter-tabs', popover: { title: 'Filtros Rápidos', description: 'Navega fácilmente entre todos los usuarios, solo huéspedes o solo administradores.' } },
-                        { element: '#search-form', popover: { title: 'Búsqueda Avanzada', description: 'Encuentra usuarios rápidamente por su nombre, correo electrónico o nombre de usuario.' } },
-                        { element: '#users-section table', popover: { title: 'Lista de Usuarios', description: 'Consulta la información detallada, roles y estado de cada usuario en esta tabla.' } },
-                        { element: '#users-section table tbody tr:first-child td:last-child', popover: { title: 'Acciones', description: 'Usa estos botones para ver detalles, editar información o eliminar un usuario.' } }
-                    ]
-                });
-
-                document.getElementById('start-tour-btn').addEventListener('click', () => {
-                    driverObj.drive();
-                });
-            });
-        </script>
     </div>
+
+    <script src="/js/usuario.js"></script>
 
 </body>
 

@@ -7,6 +7,7 @@
     <title id="page-title">Políticas y Términos - Santamartabeachfront</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="shortcut icon" href="/public/img/logo-portada.png" type="image/x-icon">
@@ -51,7 +52,7 @@
     <header class="flex items-center justify-between border-b border-solid border-b-[#f0f3f4] dark:border-b-gray-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-10 py-4 sticky top-0 z-50">
         <div class="flex items-center gap-4 text-[#111618] dark:text-white">
             <div class="size-10 md:size-14 text-primary flex items-center justify-center">
-                <img src="" class="w-full h-auto" alt="">
+                <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" class="w-full h-auto" alt="">
             </div>
             <h2 class="hidden md:block text-[#111618] dark:text-white text-lg font-bold leading-tight tracking-tight">Santamartabeachfront</h2>
         </div>

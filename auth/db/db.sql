@@ -72,39 +72,32 @@ CREATE TABLE IF NOT EXISTS respuestas_pqr (
 );
 
 
-CREATE TABLE IF NOT EXISTS reservas (
-    -- Identificadores y Relaciones
+-- Esto borra la tabla y todos sus datos si ya existía antes
+DROP TABLE IF EXISTS reservas;
+
+-- Ahora se crea la tabla totalmente vacía
+CREATE TABLE reservas (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT(6) UNSIGNED NULL,
     apartamento_id INT(6) UNSIGNED NULL,
-
-    -- Datos del Cliente Principal
     nombre_cliente VARCHAR(100) NULL,
     apellido_cliente VARCHAR(100) NULL,
     email_cliente VARCHAR(100) NULL,
     telefono_cliente VARCHAR(50) NULL,
-
-    -- Detalles de la Estancia
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL,
-    
-    -- Huéspedes
     adultos INT(11) DEFAULT 1,
     ninos INT(11) DEFAULT 0,
     bebes INT(11) DEFAULT 0,
-    perro_guia TINYINT(1) DEFAULT 0, -- Usado para booleanos
+    perro_guia TINYINT(1) DEFAULT 0,
     nombres_huespedes TEXT NULL,
-
-    -- Información Financiera y Estado
     total DECIMAL(10, 2) NOT NULL,
     estado VARCHAR(20) DEFAULT 'Pendiente', 
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    -- Claves Foráneas (Asumiendo que las tablas existen)
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
     FOREIGN KEY (apartamento_id) REFERENCES apartamentos(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 
 -- NOTA: El usuario administrador por defecto se crea automáticamente 
 -- desde el archivo php/conexion_be.php con la contraseña encriptada correctamente.
