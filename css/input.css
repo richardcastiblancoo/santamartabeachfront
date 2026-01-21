@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------- */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #13a4ec; /* Blue primary color */
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0f8bc7;
+}
+
+/* Animación de sacudida */
+.shake-horizontal {
+  animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Animación de menu */
+.lang-dropdown:hover .lang-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.lang-menu {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+}
+/* ---------------------------------- */
+
+/* Animación optimizada testimonio */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50% - 12px));
+  } /* Mueve exactamente la mitad del contenido */
+}
+
+.animate-infinite-scroll {
+  display: flex;
+  width: max-content;
+  animation: scroll 30s linear infinite; /* Ajusta los segundos para más o menos velocidad */
+}
+
+.animate-infinite-scroll:hover {
+  animation-play-state: paused; /* Se detiene al pasar el mouse para facilitar la lectura */
+}
+
+.mask-fade-edges {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+/* ---------------------------------- */
+
+/* Animación de mapa */
+#map-ubicacion {
+  background: #0b141a;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #101c22 !important;
+  color: white !important;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.leaflet-popup-tip {
+  background: #101c22 !important;
+}
+
+.shrink-0 {
+  flex-shrink: 0;
+}
+/* ---------------------- */
+
+/* */
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem); /* Tamaño fluido y compacto */
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+}
+.glass-booking {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* Estilo para el input date en modo oscuro */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.5);
+}
+
+/* Custom Flatpickr Theme */
+.flatpickr-calendar {
+    background-color: #1e293b !important; /* dark:bg-slate-800 equivalent */
+    border-radius: 1rem !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid #334155 !important; /* dark:border-slate-700 */
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+.flatpickr-day {
+    color: #f8fafc !important; /* text-slate-50 */
+}
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, .flatpickr-day.endRange.inRange, .flatpickr-day.focus, .flatpickr-day:hover, .flatpickr-day.prevMonthDay:hover, .flatpickr-day.nextMonthDay:hover, .flatpickr-day:focus, .flatpickr-day.prevMonthDay:focus, .flatpickr-day.nextMonthDay:focus {
+    background: #13a4ec !important;
+    border-color: #13a4ec !important;
+    color: white !important;
+}
+.flatpickr-day.inRange {
+    box-shadow: -5px 0 0 #0c4a6e, 5px 0 0 #0c4a6e !important;
+    background: #0c4a6e !important;
+    border-color: #0c4a6e !important;
+    color: #e0f2fe !important;
+}
+.flatpickr-months .flatpickr-month {
+    background: transparent !important;
+    color: #f8fafc !important;
+    fill: #f8fafc !important;
+}
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    font-weight: 700 !important;
+    color: #f8fafc !important;
+}
+.flatpickr-current-month input.cur-year {
+    color: #f8fafc !important;
+}
+.flatpickr-weekday {
+    font-weight: 600 !important;
+    color: #94a3b8 !important; /* text-slate-400 */
+}
+.flatpickr-calendar.arrowTop:before, .flatpickr-calendar.arrowTop:after {
+    border-bottom-color: #1e293b !important;
+}
