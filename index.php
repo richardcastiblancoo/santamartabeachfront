@@ -106,7 +106,7 @@
     <!-- los scripts -->
     <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
-
+    <script defer src="https://cdn.tailwindcss.com"></script>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
