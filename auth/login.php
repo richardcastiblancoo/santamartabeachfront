@@ -134,6 +134,17 @@
                     <button class="w-full rounded-xl h-12 bg-primary text-white font-bold shadow-md hover:shadow-lg hover:bg-[#0f8bc7] transition-all">
                         <span data-key="btn-enter">Entrar</span>
                     </button>
+
+                    <div class="flex items-center gap-4 my-1">
+                        <div class="h-px bg-[#dbe2e6] dark:bg-gray-700 flex-1"></div>
+                        <span class="text-xs font-bold text-[#617c89] dark:text-gray-500">O</span>
+                        <div class="h-px bg-[#dbe2e6] dark:bg-gray-700 flex-1"></div>
+                    </div>
+
+                    <a href="login_google.php" class="w-full rounded-xl h-12 bg-white dark:bg-gray-800 border border-[#dbe2e6] dark:border-gray-600 text-[#111618] dark:text-white font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-3">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+                        <span>Continuar con Google</span>
+                    </a>
                 </form>
 
                 <p class="text-center text-sm text-[#617c89] dark:text-gray-400">

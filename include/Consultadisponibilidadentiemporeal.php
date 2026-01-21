@@ -59,83 +59,8 @@
                         <div class="grid grid-cols-7 gap-y-2 text-center" id="grid-month2">
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<script>
-    let currentStartMonth = 0; // 0 = Enero
-    const year = 2026;
-    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-
-    function renderCalendar() {
-        const container = document.getElementById('calendar-container');
-        container.style.opacity = 0;
-
-        setTimeout(() => {
-            updateMonth(currentStartMonth, 'month1-name', 'grid-month1');
-            updateMonth(currentStartMonth + 1, 'month2-name', 'grid-month2');
-            container.style.opacity = 1;
-        }, 200);
-    }
-
-    function updateMonth(mIndex, nameId, gridId) {
-        // Manejo de desbordamiento de meses (ej: Diciembre + 1)
-        const displayMonth = mIndex % 12;
-        const displayYear = year + Math.floor(mIndex / 12);
-
-        document.getElementById(nameId).innerText = `${monthNames[displayMonth]} ${displayYear}`;
-
-        const grid = document.getElementById(gridId);
-        grid.innerHTML = `
-            <p class="text-gray-500 text-xs font-bold">D</p>
-            <p class="text-gray-500 text-xs font-bold">L</p>
-            <p class="text-gray-500 text-xs font-bold">M</p>
-            <p class="text-gray-500 text-xs font-bold">M</p>
-            <p class="text-gray-500 text-xs font-bold">J</p>
-            <p class="text-gray-500 text-xs font-bold">V</p>
-            <p class="text-gray-500 text-xs font-bold">S</p>
-        `;
-
-        const firstDay = new Date(displayYear, displayMonth, 1).getDay();
-        const daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
-
-        // Celdas vacías iniciales
-        for (let i = 0; i < firstDay; i++) {
-            grid.innerHTML += '<span></span>';
-        }
-
-        // Renderizado de días
-        for (let d = 1; d <= daysInMonth; d++) {
-            // Ejemplo visual de estados (puedes adaptar esta lógica a tus datos reales)
-            if (displayMonth === 0 && d === 5) {
-                grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto rounded-full bg-blue-600 text-white text-sm font-bold shadow-md shadow-blue-500/40">${d}</span>`;
-            } else if (displayMonth === 0 && (d === 6 || d === 7)) {
-                grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto bg-blue-500/10 text-blue-400 text-sm font-medium rounded-full">${d}</span>`;
-            } else if (displayMonth === 0 && d >= 8 && d <= 10) {
-                grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto text-sm text-gray-600 line-through">${d}</span>`;
-            } else {
-                grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto text-sm text-gray-300 hover:bg-white/5 rounded-full cursor-pointer transition-colors">${d}</span>`;
-            }
-        }
-    }
-
-    function nextMonth() {
-        if (currentStartMonth < 10) { // Límite hasta Nov-Dic
-            currentStartMonth++;
-            renderCalendar();
-        }
-    }
-
-    function prevMonth() {
-        if (currentStartMonth > 0) {
-            currentStartMonth--;
-            renderCalendar();
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', renderCalendar);
-</script>

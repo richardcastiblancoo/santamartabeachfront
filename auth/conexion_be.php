@@ -1,8 +1,10 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "santamarta_db";
+require_once __DIR__ . '/env_loader.php';
+
+$servername = getenv('DB_HOST') ?: "localhost";
+$username = getenv('DB_USER') ?: "root";
+$password = getenv('DB_PASS') ?: "";
+$dbname = getenv('DB_NAME') ?: "santamarta_db";
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password);

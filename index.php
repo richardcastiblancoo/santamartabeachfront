@@ -449,188 +449,83 @@
     </script>
 
 
+    <!-- disponibilidad -->
+    <?php include 'include/serviciosofresidos.php'; ?>
 
-    <section class="py-24 px-6 md:px-20 bg-[#101c22]" id="nosotros" aria-labelledby="about-title">
-        <div class="max-w-7xl mx-auto">
-            <header class="text-center mb-16">
-                <span class="text-blue-500 font-bold uppercase tracking-[0.3em] text-xs block mb-3" data-i18n="am_tag">Amenidades</span>
-                <h2 id="about-title" class="text-3xl md:text-5xl font-bold text-white mb-6" data-i18n="am_title">
-                    ¿Por qué elegirnos?
+    <!-- disponibilidad -->
+    <section class="py-16 px-6 md:px-20 bg-[#101c22]" id="disponibilidad">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
+
+            <div class="flex-1 space-y-6">
+                <span class="text-blue-500 font-bold uppercase tracking-wider text-sm">Planifica tu viaje</span>
+                <h2 class="text-3xl md:text-5xl font-bold text-white leading-tight">
+                    Consulta disponibilidad en tiempo real
                 </h2>
-                <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed" data-i18n="am_subtitle">
-                    Disfruta de una experiencia inigualable con instalaciones de clase mundial diseñadas para tu confort y bienestar frente al Caribe.
+                <p class="text-gray-400 text-lg">
+                    Nuestros apartamentos son muy solicitados. Revisa el calendario para asegurar tus fechas ideales para unas vacaciones inolvidables.
                 </p>
-            </header>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">beach_access</span>
+                <div class="flex flex-col gap-4 pt-4">
+                    <div class="flex items-center gap-3">
+                        <div class="size-3 rounded-full bg-blue-600"></div>
+                        <span class="text-sm font-medium text-gray-300">Fechas Disponibles</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card1_t">Salida directa al mar</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card1_d">Acceso privado a la playa. Sal de tu apartamento y pisa la arena dorada al instante.</p>
-                </article>
+                    <div class="flex items-center gap-3">
+                        <div class="size-3 rounded-full bg-gray-700"></div>
+                        <span class="text-sm font-medium text-gray-300">No Disponible</span>
+                    </div>
+                </div>
 
-                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">pool</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card2_t">Piscina de Adultos</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card2_d">Piscina principal diseñada para la relajación con vistas panorámicas al océano.</p>
-                </article>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-6">
+                    <a href="https://wa.me/573183813381?text=Hola!%20Me%20gustaría%20consultar%20disponibilidad%20para%20una%20reserva."
+                        target="_blank"
+                        class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-600/20 active:scale-95">
+                        <span class="material-symbols-outlined">calendar_add_on</span>
+                        Reservar por WhatsApp
+                    </a>
+                </div>
+            </div>
 
-                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-yellow-500/10 rounded-xl flex items-center justify-center text-yellow-500 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">child_care</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card3_t">Piscina de Niños</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card3_d">Un área segura, controlada y divertida para que los más pequeños disfruten al máximo.</p>
-                </article>
+            <div class="flex-1 w-full flex justify-center lg:justify-end">
+                <div class="bg-[#1e2930] rounded-2xl shadow-2xl p-6 border border-white/10 max-w-2xl w-full relative overflow-hidden">
 
-                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">hot_tub</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card4_t">Jacuzzi Premium</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card4_d">Zona de hidromasaje con vistas espectaculares, ideal para desconectar al atardecer.</p>
-                </article>
+                    <div id="calendar-container" class="flex flex-col md:flex-row gap-6 justify-center transition-opacity duration-300">
 
-                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-red-500/10 rounded-xl flex items-center justify-center text-red-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">spa</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card5_t">Sauna y Turco</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card5_d">Circuito de bienestar con sauna finlandesa y baño turco de lujo para tu salud.</p>
-                </article>
+                        <div class="flex min-w-[280px] flex-1 flex-col gap-2">
+                            <div class="flex items-center p-1 justify-between mb-2">
+                                <button onclick="prevMonth()" class="hover:bg-gray-700 text-white rounded-full p-1 transition-colors">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </button>
+                                <p id="month1-name" class="text-white text-base font-bold text-center w-full">Enero 2026</p>
+                            </div>
+                            <div class="grid grid-cols-7 gap-y-2 text-center" id="grid-month1">
+                            </div>
+                        </div>
 
-                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-orange-500/10 rounded-xl flex items-center justify-center text-orange-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">fitness_center</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card6_t">Gimnasio 24/7</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card6_d">Equipamiento moderno de cardio y fuerza disponible a cualquier hora del día.</p>
-                </article>
+                        <div class="h-px w-full bg-gray-700 md:hidden"></div>
 
-                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">local_bar</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card7_t">Sky Bar</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card7_d">Bar en la azotea con coctelería premium y la mejor vista panorámica de la costa.</p>
-                </article>
-
-                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">verified_user</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card8_t">Seguridad 24/7</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card8_d">Vigilancia profesional y control de acceso constante para tu total tranquilidad.</p>
-                </article>
-
-                <div class="sm:col-span-2 lg:col-span-3 xl:col-span-4 mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                        <span class="material-symbols-outlined text-blue-500">wifi</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_wifi">WiFi Fibra Óptica</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                        <span class="material-symbols-outlined text-blue-500">directions_car</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_parking">Parking Incluido</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                        <span class="material-symbols-outlined text-blue-500">outdoor_grill</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_bbq">Zona BBQ</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                        <span class="material-symbols-outlined text-blue-500">sports_esports</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_games">Salón de Juegos</span>
+                        <div class="flex min-w-[280px] flex-1 flex-col gap-2">
+                            <div class="flex items-center p-1 justify-between mb-2">
+                                <p id="month2-name" class="text-white text-base font-bold text-center w-full">Febrero 2026</p>
+                                <button onclick="nextMonth()" class="hover:bg-gray-700 text-white rounded-full p-1 transition-colors">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-7 gap-y-2 text-center" id="grid-month2">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- disponibilidad -->
-    <?php include 'include/Consultadisponibilidadentiemporeal.php'; ?>
-
 
 
     <!-- apartamento -->
     <?php include 'include/apartamentos.php'; ?>
 
     <!-- testimonios -->
-    <section class="py-32 bg-[#101c22] overflow-hidden" aria-labelledby="testimonios-title">
-        <div class="max-w-7xl mx-auto mb-16 px-6">
-            <header class="text-center">
-                <span class="text-blue-500 font-bold uppercase tracking-[0.3em] text-xs block mb-3" data-i18n="test_tag">Comunidad</span>
-                <h2 id="testimonios-title" class="text-4xl md:text-5xl font-bold text-white mb-6" data-i18n="test_title">Experiencias Inolvidables</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed" data-i18n="test_desc">
-                    Únete a los cientos de viajeros que han confiado en <strong>Reserva del Mar</strong>.
-                </p>
-            </header>
-        </div>
-
-        <div class="relative w-full overflow-hidden mask-fade-edges">
-            <div class="animate-infinite-scroll gap-6" id="testimonial-track">
-                <div class="flex gap-6">
-                    <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
-                        <div>
-                            <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8" data-i18n="test_1_quote">"¡Simplemente espectacular! La vista desde el balcón es inigualable."</blockquote>
-                        </div>
-                        <footer class="flex items-center gap-4">
-                            <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=carolina" alt="Carolina">
-                            <div><cite class="not-italic font-bold text-white block">Carolina Méndez</cite><span class="text-xs text-blue-400 uppercase font-semibold">Bogotá, COL</span></div>
-                        </footer>
-                    </article>
-
-                    <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
-                        <div>
-                            <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8" data-i18n="test_2_quote">"La ubicación es envidiable. Estar a un paso de la playa Salguero lo es todo."</blockquote>
-                        </div>
-                        <footer class="flex items-center gap-4">
-                            <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=david" alt="David">
-                            <div><cite class="not-italic font-bold text-white block">David Johnson</cite><span class="text-xs text-blue-400 uppercase font-semibold">Miami, USA</span></div>
-                        </footer>
-                    </article>
-
-                    <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
-                        <div>
-                            <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8" data-i18n="test_3_quote">"El apartamento estaba impecable. Los atardeceres desde la piscina son de otro mundo."</blockquote>
-                        </div>
-                        <footer class="flex items-center gap-4">
-                            <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=lucia" alt="Lucía">
-                            <div><cite class="not-italic font-bold text-white block">Lucía Ferreyra</cite><span class="text-xs text-blue-400 uppercase font-semibold">Buenos Aires, ARG</span></div>
-                        </footer>
-                    </article>
-
-                    <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
-                        <div>
-                            <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8" data-i18n="test_4_quote">"Como nómada digital, el WiFi funcionó perfecto. Trabajar aquí fue increíble."</blockquote>
-                        </div>
-                        <footer class="flex items-center gap-4">
-                            <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=sofia" alt="Sofía">
-                            <div><cite class="not-italic font-bold text-white block">Sofía Ramírez</cite><span class="text-xs text-blue-400 uppercase font-semibold">Medellín, COL</span></div>
-                        </footer>
-                    </article>
-
-                    <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
-                        <div>
-                            <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8" data-i18n="test_5_quote">"Excelente atención del personal. Sin duda volveremos con toda mi familia."</blockquote>
-                        </div>
-                        <footer class="flex items-center gap-4">
-                            <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=roberto" alt="Roberto">
-                            <div><cite class="not-italic font-bold text-white block">Roberto Gómez</cite><span class="text-xs text-blue-400 uppercase font-semibold">Cali, COL</span></div>
-                        </footer>
-                    </article>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <?php include 'include/testimonios.php'; ?>
 
     <!-- ubicacion -->
     <?php include 'include/ubicacion.php'; ?>
@@ -717,6 +612,100 @@
     <!-- ================= SCRIPT =============== -->
     <script src="/js/main.js"></script>
     <script src="sw.js"></script>
+
+    <script>
+        /**
+         * ==========================================
+         * CALENDARIO INTERACTIVO
+         * ==========================================
+         */
+        let currentStartMonth = 0; // 0 = Enero
+        const year = 2026;
+        const monthNames = [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre",
+        ];
+
+        function renderCalendar() {
+            const container = document.getElementById("calendar-container");
+            container.style.opacity = 0;
+
+            setTimeout(() => {
+                updateMonth(currentStartMonth, "month1-name", "grid-month1");
+                updateMonth(currentStartMonth + 1, "month2-name", "grid-month2");
+                container.style.opacity = 1;
+            }, 200);
+        }
+
+        function updateMonth(mIndex, nameId, gridId) {
+            // Manejo de desbordamiento de meses (ej: Diciembre + 1)
+            const displayMonth = mIndex % 12;
+            const displayYear = year + Math.floor(mIndex / 12);
+
+            document.getElementById(nameId).innerText =
+                `${monthNames[displayMonth]} ${displayYear}`;
+
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = `
+            <p class="text-gray-500 text-xs font-bold">D</p>
+            <p class="text-gray-500 text-xs font-bold">L</p>
+            <p class="text-gray-500 text-xs font-bold">M</p>
+            <p class="text-gray-500 text-xs font-bold">M</p>
+            <p class="text-gray-500 text-xs font-bold">J</p>
+            <p class="text-gray-500 text-xs font-bold">V</p>
+            <p class="text-gray-500 text-xs font-bold">S</p>
+        `;
+
+            const firstDay = new Date(displayYear, displayMonth, 1).getDay();
+            const daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
+
+            // Celdas vacías iniciales
+            for (let i = 0; i < firstDay; i++) {
+                grid.innerHTML += "<span></span>";
+            }
+
+            // Renderizado de días
+            for (let d = 1; d <= daysInMonth; d++) {
+                // Ejemplo visual de estados (puedes adaptar esta lógica a tus datos reales)
+                if (displayMonth === 0 && d === 5) {
+                    grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto rounded-full bg-blue-600 text-white text-sm font-bold shadow-md shadow-blue-500/40">${d}</span>`;
+                } else if (displayMonth === 0 && (d === 6 || d === 7)) {
+                    grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto bg-blue-500/10 text-blue-400 text-sm font-medium rounded-full">${d}</span>`;
+                } else if (displayMonth === 0 && d >= 8 && d <= 10) {
+                    grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto text-sm text-gray-600 line-through">${d}</span>`;
+                } else {
+                    grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto text-sm text-gray-300 hover:bg-white/5 rounded-full cursor-pointer transition-colors">${d}</span>`;
+                }
+            }
+        }
+
+        function nextMonth() {
+            if (currentStartMonth < 10) {
+                // Límite hasta Nov-Dic
+                currentStartMonth++;
+                renderCalendar();
+            }
+        }
+
+        function prevMonth() {
+            if (currentStartMonth > 0) {
+                currentStartMonth--;
+                renderCalendar();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", renderCalendar);
+    </script>
 
 </body>
 

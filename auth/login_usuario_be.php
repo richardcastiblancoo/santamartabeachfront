@@ -15,7 +15,13 @@ if (mysqli_num_rows($validar_login) > 0) {
     $nombre = $row['nombre'];
     
     if (password_verify($password, $password_bd)) {
-                $_SESSION['id'] = $row['id'];
+        // Verificar si el email está confirmado (si no es usuario de Google)
+        if (empty($row['google_id']) && isset($row['is_verified']) && $row['is_verified'] == 0) {
+             // Permitir acceso pero notificar (opcional: usar una variable de sesión para mostrar banner en dashboard)
+             $_SESSION['show_verify_alert'] = true;
+        }
+
+        $_SESSION['id'] = $row['id'];
                 $_SESSION['usuario'] = $usuario;
                 $_SESSION['nombre'] = $nombre;
                 $_SESSION['apellido'] = $row['apellido'];

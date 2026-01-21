@@ -14,6 +14,19 @@ $result_apartamentos = $conn->query($sql_apartamentos);
 
 // Obtener PQR del usuario
 $usuario_id = $_SESSION['id'];
+
+// Verificar si es usuario de Google
+$sql_user_check = "SELECT google_id, is_verified FROM usuarios WHERE id = '$usuario_id'";
+$result_user_check = $conn->query($sql_user_check);
+$user_data_check = $result_user_check->fetch_assoc();
+$is_google_user = !empty($user_data_check['google_id']);
+$is_verified = !empty($user_data_check['is_verified']) && $user_data_check['is_verified'] == 1;
+
+// Si es Google user, asumimos verificado para efectos visuales
+if ($is_google_user) {
+    $is_verified = true;
+}
+
 $sql_pqr = "SELECT * FROM pqr WHERE usuario_id = '$usuario_id' ORDER BY fecha_creacion DESC";
 $result_pqr = $conn->query($sql_pqr);
 
@@ -46,6 +59,19 @@ $sql_reservas_pasadas = "SELECT r.*, a.titulo, a.ubicacion, a.imagen_principal
                  AND r.fecha_fin < '$fecha_actual' 
                  ORDER BY r.fecha_inicio DESC";
 $result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
+
+// Determinar imagen de perfil (Google vs Local)
+$profile_image = 'https://avatar.iran.liara.run/public/30';
+if (!empty($_SESSION['imagen'])) {
+    $img_session = trim($_SESSION['imagen']);
+    // Verificar si es una URL completa (http/https)
+    if (strpos($img_session, 'http') === 0) {
+        $profile_image = $img_session;
+    } else {
+        // Es una imagen local
+        $profile_image = '../../' . $img_session;
+    }
+}
 ?>
 <html class="dark" lang="es">
 
@@ -53,6 +79,7 @@ $result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Panel de Control - Santamartabeachfront</title>
+    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -128,13 +155,15 @@ $result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
             background: #94a3b8;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white flex flex-col min-h-screen overflow-x-hidden">
     <header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e5e7eb] dark:border-b-gray-800 bg-white dark:bg-[#1a2c35] px-4 md:px-10 py-3 shadow-sm">
         <div class="flex items-center gap-4">
             <div class="size-8 text-primary flex items-center justify-center">
-                <span class="material-symbols-outlined text-3xl">beach_access</span>
+                <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo">
             </div>
             <h2 class="hidden md:block text-[#111618] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Santamartabeachfront</h2>
         </div>
@@ -162,7 +191,8 @@ $result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
                     </div>
                 </div>
 
-                <div onclick="openConfigModal()" class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-white dark:border-gray-700 shadow-sm cursor-pointer transition-transform hover:scale-105" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../' . $_SESSION['imagen'] : 'https://avatar.iran.liara.run/public/30'; ?>");'>
+                <div onclick="openConfigModal()" class="rounded-full size-10 border-2 border-white dark:border-gray-700 shadow-sm cursor-pointer transition-transform hover:scale-105 overflow-hidden relative">
+                    <img src="<?php echo $profile_image; ?>" class="w-full h-full object-cover" referrerpolicy="no-referrer" alt="Perfil">
                 </div>
                 <a href="../../auth/cerrar_sesion.php" class="flex items-center justify-center rounded-full size-10 hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-500 hover:text-red-600 transition-colors" title="Cerrar Sesión">
                     <span class="material-symbols-outlined">logout</span>
@@ -172,7 +202,20 @@ $result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
     </header>
 
     <main class="flex-1 w-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 py-8 space-y-8">
-        <section class="flex flex-col gap-2">
+        <section id="welcome-section" class="flex flex-col gap-2">
+            <?php if (isset($_SESSION['show_verify_alert']) && $_SESSION['show_verify_alert']): ?>
+                <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 rounded shadow-sm flex justify-between items-center" role="alert">
+                    <div>
+                        <p class="font-bold">Cuenta no verificada</p>
+                        <p>Por favor verifica tu correo electrónico para acceder a todas las funciones. Revisa tu Configuración.</p>
+                    </div>
+                    <button onclick="openConfigModal()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm transition-colors">
+                        Verificar ahora
+                    </button>
+                </div>
+                <?php unset($_SESSION['show_verify_alert']); ?>
+            <?php endif; ?>
+
             <p class="text-[#111618] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">
                 <span data-key="welcome-user">Hola, <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
             </p>
@@ -180,7 +223,7 @@ $result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
         </section>
 
         <section class="relative overflow-hidden rounded-2xl shadow-lg group">
-            <div class="flex min-h-[400px] flex-col gap-6 bg-cover bg-center bg-no-repeat items-start justify-end px-6 pb-10 md:px-10 md:pb-12 transition-transform duration-700 hover:scale-[1.01]" style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%), url("https://images.unsplash.com/photo-1512100356956-c1226c3af3e8?q=80&w=1964&auto=format&fit=crop");'>
+            <div class="flex min-h-[400px] flex-col gap-6 bg-cover bg-center bg-no-repeat items-start justify-end px-6 pb-10 md:px-10 md:pb-12 transition-transform duration-700 hover:scale-[1.01]" style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%), url("https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?q=80&w=1964&auto=format&fit=crop");'>
                 <div class="absolute top-6 right-6 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">schedule</span>
                     <span data-key="checkin-days" class="text-xs font-bold uppercase tracking-wider text-gray-800 dark:text-white">Check-in: 3 Días</span>
@@ -193,6 +236,10 @@ $result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
                         Apartamento Vista al Mar - Edificio El Rodadero. Todo está listo para tu llegada.
                     </h2>
                     <div class="flex flex-wrap gap-3">
+                        <button onclick="startTour()" class="flex items-center justify-center rounded-lg h-12 px-6 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 text-base font-bold transition-all" title="Ver tutorial">
+                            <span class="mr-2 material-symbols-outlined">help</span>
+                            Ayuda
+                        </button>
                         <button class="flex items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-sky-500 text-white text-base font-bold transition-all shadow-md hover:shadow-lg">
                             <span class="mr-2 material-symbols-outlined">key</span>
                             <span data-key="btn-arrival">Ver detalles de llegada</span>
@@ -543,7 +590,7 @@ $result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
                 <div class="p-6 space-y-5">
                     <div class="flex flex-col items-center gap-3">
                         <div class="w-20 h-20 rounded-full bg-cover bg-center border-4 border-gray-100 dark:border-gray-700 relative overflow-hidden group shadow-sm">
-                            <img id="preview-image" src="<?php echo !empty($_SESSION['imagen']) ? '../../' . $_SESSION['imagen'] : 'https://avatar.iran.liara.run/public/30'; ?>" class="w-full h-full object-cover">
+                            <img id="preview-image" src="<?php echo $profile_image; ?>" class="w-full h-full object-cover" referrerpolicy="no-referrer">
                             <label for="imagen-upload" class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                                 <span class="material-symbols-outlined text-white text-xl">edit</span>
                             </label>
@@ -570,13 +617,29 @@ $result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
 
                     <div>
                         <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Correo (Gmail)</label>
-                        <input name="email" value="<?php echo $_SESSION['email']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="email" required />
+                        <input name="email" value="<?php echo $_SESSION['email']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white <?php echo $is_google_user ? 'opacity-70 cursor-not-allowed' : ''; ?>" type="email" required <?php echo $is_google_user ? 'readonly' : ''; ?> />
+
+                        <div class="mt-2">
+                            <?php if ($is_verified): ?>
+                                <div class="w-full flex items-center justify-center gap-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 px-3 py-2 rounded-lg border border-green-100 dark:border-green-800" title="Cuenta verificada">
+                                    <span class="material-symbols-outlined text-base">verified</span>
+                                    <span class="text-xs font-bold">Correo verificado</span>
+                                </div>
+                            <?php else: ?>
+                                <button type="button" onclick="enviarVerificacion()" class="w-full bg-yellow-100 hover:bg-yellow-200 text-yellow-800 text-xs font-bold px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 border border-yellow-200" title="Haz clic para verificar tu correo">
+                                    <span class="material-symbols-outlined text-base">mark_email_unread</span>
+                                    Enviar correo de verificación
+                                </button>
+                            <?php endif; ?>
+                        </div>
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Nueva Contraseña</label>
-                        <input name="password" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="password" placeholder="••••••••" />
-                    </div>
+                    <?php if (!$is_google_user): ?>
+                        <div>
+                            <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Nueva Contraseña</label>
+                            <input name="password" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white" type="password" placeholder="••••••••" />
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="p-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-2 sticky bottom-0 z-10">
                     <a class="px-4 py-2 text-xs font-bold text-gray-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closeConfigModal()">Cancelar</a>
@@ -999,6 +1062,33 @@ $result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
             modal.style.display = 'none';
         }
 
+        function enviarVerificacion() {
+            if(!confirm("¿Deseas enviar un correo de verificación a tu dirección de email actual?")) return;
+
+            fetch('enviar_verificacion_be.php')
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        // En localhost, mostramos el link directamente para facilitar
+                        if(data.debug_link) {
+                            let link = data.debug_link;
+                            // Crear un modal o prompt temporal
+                            let mensaje = "Correo 'enviado'.\n\nComo estás en un entorno de pruebas (Localhost), es probable que el correo no llegue realmente.\n\nCopia y pega este enlace en tu navegador para verificar:";
+                            prompt(mensaje, link);
+                            console.log("LINK DE VERIFICACIÓN: " + link);
+                        } else {
+                            alert(data.message);
+                        }
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Ocurrió un error al intentar enviar la verificación.");
+                });
+        }
+
         function previewImage(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -1125,7 +1215,81 @@ $result_reservas_pasadas = $conn->query($sql_reservas_pasadas);
             requestNotificationPermission();
             checkNotificationsHuesped();
             setInterval(checkNotificationsHuesped, 10000); // Polling cada 10s
+
+            // Iniciar tour si no se ha visto
+            if (!localStorage.getItem('huesped_tour_v1')) {
+                setTimeout(startTour, 1000);
+            }
         });
+
+        function startTour() {
+            const driver = window.driver.js.driver;
+
+            const driverObj = driver({
+                showProgress: true,
+                animate: true,
+                steps: [{
+                        element: '#welcome-section',
+                        popover: {
+                            title: '¡Bienvenido!',
+                            description: 'Este es tu panel de control principal donde podrás gestionar toda tu estancia.',
+                            side: "bottom",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: '#hero-section',
+                        popover: {
+                            title: 'Próxima Aventura',
+                            description: 'Aquí verás los detalles más importantes de tu próxima llegada o reserva activa.',
+                            side: "bottom",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: '#tabs-navigation',
+                        popover: {
+                            title: 'Navegación',
+                            description: 'Alterna entre tus reservas futuras, historial de viajes y explora nuevos apartamentos.',
+                            side: "bottom",
+                            align: 'start'
+                        }
+                    },
+                    {
+                        element: '#notification-btn',
+                        popover: {
+                            title: 'Notificaciones',
+                            description: 'Recibe alertas sobre tus reservas y respuestas a tus solicitudes aquí.',
+                            side: "bottom",
+                            align: 'end'
+                        }
+                    },
+                    {
+                        element: '#profile-btn',
+                        popover: {
+                            title: 'Tu Perfil',
+                            description: 'Configura tu cuenta, verifica tu correo y actualiza tus datos personales.',
+                            side: "bottom",
+                            align: 'end'
+                        }
+                    },
+                    {
+                        element: '#pqr-section',
+                        popover: {
+                            title: 'Centro de Ayuda (PQR)',
+                            description: '¿Tienes alguna duda o inconveniente? Crea solicitudes de soporte aquí mismo.',
+                            side: "top",
+                            align: 'start'
+                        }
+                    }
+                ],
+                onDestroyed: () => {
+                    localStorage.setItem('huesped_tour_v1', 'true');
+                }
+            });
+
+            driverObj.drive();
+        }
     </script>
 </body>
 

@@ -12,7 +12,7 @@ $nombre = mysqli_real_escape_string($conn, $_POST['nombre']);
 $apellido = mysqli_real_escape_string($conn, $_POST['apellido']);
 $usuario = mysqli_real_escape_string($conn, $_POST['usuario']);
 $email = mysqli_real_escape_string($conn, $_POST['email']);
-$password = $_POST['password'];
+$password = isset($_POST['password']) ? $_POST['password'] : '';
 
 // Verificar si el usuario o email ya existen (excluyendo el actual)
 $check_query = "SELECT * FROM usuarios WHERE (usuario = '$usuario' OR email = '$email') AND id != '$id'";

@@ -2,15 +2,111 @@
 <html class="dark" lang="es">
 
 <head>
+    <!-- los metadatos -->
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title id="page-title">Políticas y Términos - Santamartabeachfront</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <meta name="description" content="Vive la experiencia frente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
+    <meta name="keywords" content="apartamentos Santa Marta,
+    alquiler de apartamentos en Santa Marta,
+    apartamentos turísticos Santa Marta,
+    apartamentos frente al mar Santa Marta,
+    apartamentos con vista al mar,
+    apartamentos en Rodadero,
+    apartamentos playa Salguero,
+    alojamiento en Santa Marta,
+    hospedaje Santa Marta,
+    hoteles en Santa Marta,
+    apartahoteles Santa Marta,
+    arriendo vacacional Santa Marta,
+    alquiler por días Santa Marta,
+    alquiler por noches Santa Marta,
+    vacaciones en Santa Marta,
+    turismo en Santa Marta,
+    Caribe colombiano,
+    playas de Santa Marta,
+    playa Salguero Santa Marta,
+    Rodadero Santa Marta,
+    apartamentos con piscina,
+    apartamentos familiares Santa Marta,
+    alojamiento económico Santa Marta,
+    alojamiento de lujo Santa Marta,
+    apartamentos amoblados Santa Marta,
+    apartamentos vacacionales Colombia,
+    turismo de playa Colombia,
+    viajar a Santa Marta,
+    donde hospedarse en Santa Marta,
+    mejores apartamentos Santa Marta,
+    reservas del mar,
+    reservas del mar Santa Marta,
+    reservas del mar apartamentos,
+    reservas del mar playa Salguero,
+    apartamento reservas del mar,
+    apartamento turístico Santa Marta,
+    alquiler vacaciones Caribe,
+    apartamentos cerca del mar,
+    apartamentos modernos Santa Marta,
+    apartamentos con aire acondicionado,
+    apartamentos con wifi Santa Marta,
+    apartamentos con parqueadero,
+    apartamentos con balcón,
+    apartamentos con vista panorámica,
+    apartamentos para parejas,
+    apartamentos para familias,
+    apartamentos para grupos,
+    apartamentos pet friendly Santa Marta,
+    alojamiento cerca del aeropuerto Santa Marta,
+    alojamiento cerca del centro histórico,
+    turismo Magdalena,
+    vacaciones en el Magdalena,
+    alojamiento playa privada,
+    apartamentos con seguridad 24 horas,
+    edificio reservas del mar,
+    hospedaje frente al mar Santa Marta,
+    turismo internacional Santa Marta,
+    viajes al Caribe colombiano,
+    playas del Caribe colombiano,
+    apartamentos para descanso,
+    alquiler temporal Santa Marta,
+    apartamentos cerca del Rodadero,
+    apartamentos en primera línea de playa,
+    alquiler de lujo Santa Marta,
+    apartamentos exclusivos Santa Marta,
+    turismo familiar Santa Marta,
+    alojamiento premium Santa Marta,
+    vacaciones inolvidables Santa Marta,
+    reservar apartamento Santa Marta
+    ">
+    <meta name="author" content="santamartabeachfront">
+    <meta name="robots" content="index, follow">
+    <!-- opengraph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.santamartabeachfront.com">
+    <meta property="og:title" content="Santamartabeachfront">
+    <meta property="og:description" content="Vive la experiencia rente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
+    <meta property="og:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
+    <!-- opengraph twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.santamartabeachfront.com/">
+    <meta name="twitter:title" content="santamartabeachfront - Alquiler de Apartamentos">
+    <meta name="twitter:description" content="Vive la experiencia frente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
+    <meta name="twitter:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
+    <meta name="theme-color" content="#63b5f8ff">
+    <!-- titulo -->
+    <title>santamartabeachfront - Reserva del Mar</title>
+    <!-- links css y logo -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="canonical" href="https://santamartabeachfront.com">
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link rel="stylesheet" href="/css/style.css">
     <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <link rel="shortcut icon" href="/public/img/logo-portada.png" type="image/x-icon">
+    <!-- los scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -254,8 +350,7 @@
     </div>
 
     <!-- ================= SCRIPT ================= -->
-    <script src="/public/dist/pliticayterminos.js"></script>
+    <script src="/js/pliticayterminos.js"></script>
 
 </body>
-
 </html>
