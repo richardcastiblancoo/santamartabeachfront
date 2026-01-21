@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="p-6">
-                        <div class="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-1"><?php echo $row['ubicacion']; ?></div>
+                        <div class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1"><?php echo $row['ubicacion']; ?></div>
                         <h3 class="text-xl font-bold text-white mb-2"><?php echo $row['titulo']; ?></h3>
                         <p class="text-gray-400 text-xs mb-6 leading-relaxed line-clamp-2">
                             <?php echo $row['descripcion']; ?>

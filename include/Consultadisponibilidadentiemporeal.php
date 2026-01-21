@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
 
         <div class="flex-1 space-y-6">
-            <span class="text-blue-500 font-bold uppercase tracking-wider text-sm">Planifica tu viaje</span>
+            <span class="text-blue-400 font-bold uppercase tracking-wider text-sm">Planifica tu viaje</span>
             <h2 class="text-3xl md:text-5xl font-bold text-white leading-tight">
                 Consulta disponibilidad en tiempo real
             </h2>

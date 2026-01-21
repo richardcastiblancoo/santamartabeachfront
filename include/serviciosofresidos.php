@@ -77,19 +77,19 @@
 
             <div class="sm:col-span-2 lg:col-span-3 xl:col-span-4 mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                    <span class="material-symbols-outlined text-blue-500">wifi</span>
+                    <span class="material-symbols-outlined text-blue-400">wifi</span>
                     <span class="text-sm font-medium text-gray-300" data-i18n="am_wifi">WiFi Fibra Óptica</span>
                 </div>
                 <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                    <span class="material-symbols-outlined text-blue-500">directions_car</span>
+                    <span class="material-symbols-outlined text-blue-400">directions_car</span>
                     <span class="text-sm font-medium text-gray-300" data-i18n="am_parking">Parking Incluido</span>
                 </div>
                 <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                    <span class="material-symbols-outlined text-blue-500">outdoor_grill</span>
+                    <span class="material-symbols-outlined text-blue-400">outdoor_grill</span>
                     <span class="text-sm font-medium text-gray-300" data-i18n="am_bbq">Zona BBQ</span>
                 </div>
                 <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                    <span class="material-symbols-outlined text-blue-500">sports_esports</span>
+                    <span class="material-symbols-outlined text-blue-400">sports_esports</span>
                     <span class="text-sm font-medium text-gray-300" data-i18n="am_games">Salón de Juegos</span>
                 </div>
             </div>

@@ -240,7 +240,7 @@
                     class="size-14 md:size-20 object-contain">
 
                 <h1 class="flex items-center text-white text-base md:text-lg font-black tracking-tighter uppercase leading-none hidden md:inline-block">
-                    Santamarta<span class="text-blue-500">beachfront</span>
+                    Santamarta<span class="text-blue-400">beachfront</span>
                 </h1>
             </a>
         </div>
@@ -455,7 +455,7 @@
     </script>
 
 
-    <!-- disponibilidad -->
+    <!-- serviciosofresidos -->
     <?php include 'include/serviciosofresidos.php'; ?>
 
     <!-- disponibilidad -->
