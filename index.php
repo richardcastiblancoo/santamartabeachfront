@@ -297,7 +297,7 @@
             <div class="absolute inset-0 z-0">
                 <div class="absolute inset-0 bg-black/50 z-10"></div>
                 <video class="w-full h-full object-cover" autoplay muted loop playsinline aria-hidden="true">
-                    <source src="/public/video/video-optimizado-tayrona.mp4" type="video/mp4">
+                    <source src="/public/video/santamarta-video-tayrona.mp4" type="video/mp4">
                 </video>
             </div>
 
