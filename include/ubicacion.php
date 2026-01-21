@@ -2,12 +2,12 @@
     
     <article class="p-10 lg:p-16 flex flex-col justify-center order-2 lg:order-1">
         <header>
-            <div class="flex items-center gap-2 text-blue-500 font-bold mb-6"> 
+            <div class="flex items-center gap-2 text-blue-400 font-bold mb-6"> 
                 <span class="material-symbols-outlined text-3xl">location_on</span>
                 <span class="uppercase tracking-[0.3em] text-sm">Ubicación Privilegiada</span>
             </div>
             <h2 class="text-3xl lg:text-5xl font-bold mb-8 text-white leading-tight">
-                Playa Salguero: <br><span class="text-blue-500">El corazón de Santa Marta</span>
+                Playa Salguero: <br><span class="text-blue-400">El corazón de Santa Marta</span>
             </h2>
         </header>
 
@@ -18,7 +18,7 @@
         <address class="not-italic mb-10 space-y-3 border-l-4 border-blue-600 pl-6 py-2 bg-blue-900/10 rounded-r-xl max-w-md">
             <p class="text-xl font-black text-white">Reserva del Mar - Torre 4</p>
             <p class="text-lg text-slate-300">Apartamento 1730</p>
-            <p class="text-sm text-slate-500 uppercase tracking-[0.2em]">Santa Marta, Colombia</p>
+            <p class="text-sm text-slate-400 uppercase tracking-[0.2em]">Santa Marta, Colombia</p>
         </address>
 
         <ul class="space-y-4 mb-10" role="list">
@@ -117,7 +117,7 @@
 
                 // 4. Marcador y pausa final
                 L.marker(coordsFinal).addTo(markerLayer)
-                    .bindPopup('<div class="text-center p-1"><b class="text-blue-500">Reserva del Mar</b><br><span class="text-xs">Torre 4 - Apartamento 1730</span></div>')
+                    .bindPopup('<div class="text-center p-1"><b class="text-blue-400">Reserva del Mar</b><br><span class="text-xs">Torre 4 - Apartamento 1730</span></div>')
                     .openPopup();
                 
                 status.innerText = "Destino Alcanzado";

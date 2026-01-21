@@ -75,7 +75,7 @@
                         <div class="flex items-center justify-between pt-5 border-t border-white/5">
                             <div>
                                 <span class="text-xl font-black text-white">$<?php echo number_format($row['precio'], 0, ',', '.'); ?></span>
-                                <span class="text-gray-500 text-[10px]">/noche</span>
+                                <span class="text-gray-400 text-[10px]">/noche</span>
                             </div>
                             <a href="/php/reserva-apartamento/apartamento.php?id=<?php echo $row['id']; ?>" 
                                class="bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white px-4 py-2 rounded-lg font-bold text-[11px] transition-all">

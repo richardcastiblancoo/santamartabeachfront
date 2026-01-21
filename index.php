@@ -463,7 +463,7 @@
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
 
             <div class="flex-1 space-y-6">
-                <span class="text-blue-500 font-bold uppercase tracking-wider text-sm">Planifica tu viaje</span>
+                <span class="text-blue-400 font-bold uppercase tracking-wider text-sm">Planifica tu viaje</span>
                 <h2 class="text-3xl md:text-5xl font-bold text-white leading-tight">
                     Consulta disponibilidad en tiempo real
                 </h2>
@@ -688,7 +688,7 @@
                 } else if (displayMonth === 0 && (d === 6 || d === 7)) {
                     grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto bg-blue-500/10 text-blue-400 text-sm font-medium rounded-full">${d}</span>`;
                 } else if (displayMonth === 0 && d >= 8 && d <= 10) {
-                    grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto text-sm text-gray-600 line-through">${d}</span>`;
+                    grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto text-sm text-gray-400 line-through">${d}</span>`;
                 } else {
                     grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto text-sm text-gray-300 hover:bg-white/5 rounded-full cursor-pointer transition-colors">${d}</span>`;
                 }
