@@ -2,98 +2,24 @@
 <html class="dark" lang="es">
 
 <head>
-    <!-- los metadatos -->
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta name="description" content="Vive la experiencia frente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
-    <meta name="keywords" content="apartamentos Santa Marta,
-    alquiler de apartamentos en Santa Marta,
-    apartamentos turísticos Santa Marta,
-    apartamentos frente al mar Santa Marta,
-    apartamentos con vista al mar,
-    apartamentos en Rodadero,
-    apartamentos playa Salguero,
-    alojamiento en Santa Marta,
-    hospedaje Santa Marta,
-    hoteles en Santa Marta,
-    apartahoteles Santa Marta,
-    arriendo vacacional Santa Marta,
-    alquiler por días Santa Marta,
-    alquiler por noches Santa Marta,
-    vacaciones en Santa Marta,
-    turismo en Santa Marta,
-    Caribe colombiano,
-    playas de Santa Marta,
-    playa Salguero Santa Marta,
-    Rodadero Santa Marta,
-    apartamentos con piscina,
-    apartamentos familiares Santa Marta,
-    alojamiento económico Santa Marta,
-    alojamiento de lujo Santa Marta,
-    apartamentos amoblados Santa Marta,
-    apartamentos vacacionales Colombia,
-    turismo de playa Colombia,
-    viajar a Santa Marta,
-    donde hospedarse en Santa Marta,
-    mejores apartamentos Santa Marta,
-    reservas del mar,
-    reservas del mar Santa Marta,
-    reservas del mar apartamentos,
-    reservas del mar playa Salguero,
-    apartamento reservas del mar,
-    apartamento turístico Santa Marta,
-    alquiler vacaciones Caribe,
-    apartamentos cerca del mar,
-    apartamentos modernos Santa Marta,
-    apartamentos con aire acondicionado,
-    apartamentos con wifi Santa Marta,
-    apartamentos con parqueadero,
-    apartamentos con balcón,
-    apartamentos con vista panorámica,
-    apartamentos para parejas,
-    apartamentos para familias,
-    apartamentos para grupos,
-    apartamentos pet friendly Santa Marta,
-    alojamiento cerca del aeropuerto Santa Marta,
-    alojamiento cerca del centro histórico,
-    turismo Magdalena,
-    vacaciones en el Magdalena,
-    alojamiento playa privada,
-    apartamentos con seguridad 24 horas,
-    edificio reservas del mar,
-    hospedaje frente al mar Santa Marta,
-    turismo internacional Santa Marta,
-    viajes al Caribe colombiano,
-    playas del Caribe colombiano,
-    apartamentos para descanso,
-    alquiler temporal Santa Marta,
-    apartamentos cerca del Rodadero,
-    apartamentos en primera línea de playa,
-    alquiler de lujo Santa Marta,
-    apartamentos exclusivos Santa Marta,
-    turismo familiar Santa Marta,
-    alojamiento premium Santa Marta,
-    vacaciones inolvidables Santa Marta,
-    reservar apartamento Santa Marta
-    ">
+    <meta name="keywords" content="apartamentos Santa Marta, alquiler de apartamentos en Santa Marta, apartamentos turísticos Santa Marta, apartamentos frente al mar Santa Marta, apartamentos con vista al mar, apartamentos en Rodadero, apartamentos playa Salguero, alojamiento en Santa Marta, hospedaje Santa Marta, hoteles en Santa Marta, apartahoteles Santa Marta, arriendo vacacional Santa Marta, alquiler por días Santa Marta, alquiler por noches Santa Marta, vacaciones en Santa Marta, turismo en Santa Marta, Caribe colombiano, playas de Santa Marta, playa Salguero Santa Marta, Rodadero Santa Marta, apartamentos con piscina, apartamentos familiares Santa Marta, alojamiento económico Santa Marta, alojamiento de lujo Santa Marta, apartamentos amoblados Santa Marta, apartamentos vacacionales Colombia, turismo de playa Colombia, viajar a Santa Marta, donde hospedarse en Santa Marta, mejores apartamentos Santa Marta, reservas del mar, reservas del mar Santa Marta, reservas del mar apartamentos, reservas del mar playa Salguero, apartamento reservas del mar, apartamento turístico Santa Marta, alquiler vacaciones Caribe, apartamentos cerca del mar, apartamentos modernos Santa Marta, apartamentos con aire acondicionado, apartamentos con wifi Santa Marta, apartamentos con parqueadero, apartamentos con balcón, apartamentos con vista panorámica, apartamentos para parejas, apartamentos para familias, apartamentos para grupos, apartamentos pet friendly Santa Marta, alojamiento cerca del aeropuerto Santa Marta, alojamiento cerca del centro histórico, turismo Magdalena, vacaciones en el Magdalena, alojamiento playa privada, apartamentos con seguridad 24 horas, edificio reservas del mar, hospedaje frente al mar Santa Marta, turismo internacional Santa Marta, viajes al Caribe colombiano, playas del Caribe colombiano, apartamentos para descanso, alquiler temporal Santa Marta, apartamentos cerca del Rodadero, apartamentos en primera línea de playa, alquiler de lujo Santa Marta, apartamentos exclusivos Santa Marta, turismo familiar Santa Marta, alojamiento premium Santa Marta, vacaciones inolvidables Santa Marta, reservar apartamento Santa Marta">
     <meta name="author" content="santamartabeachfront">
     <meta name="robots" content="index, follow">
-    <!-- opengraph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.santamartabeachfront.com">
     <meta property="og:title" content="Santamartabeachfront">
     <meta property="og:description" content="Vive la experiencia rente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
     <meta property="og:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
-    <!-- opengraph twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://www.santamartabeachfront.com/">
     <meta name="twitter:title" content="santamartabeachfront - Alquiler de Apartamentos">
     <meta name="twitter:description" content="Vive la experiencia frente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
     <meta name="twitter:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
     <meta name="theme-color" content="#63b5f8ff">
-    <!-- titulo -->
     <title>santamartabeachfront - Reserva del Mar</title>
-    <!-- links css y logo -->
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="canonical" href="https://santamartabeachfront.com">
@@ -103,9 +29,8 @@
     <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <!-- los scripts -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <style>
         body {
             font-family: "Plus Jakarta Sans", sans-serif;
@@ -116,25 +41,35 @@
             top: 5rem;
             height: fit-content;
         }
+
+        /* Lógica para que los números no se repitan automáticamente */
+        .legal-content {
+            counter-reset: section-counter;
+        }
+
+        .section-title::before {
+            counter-increment: section-counter;
+            content: counter(section-counter) ". ";
+            color: #3b82f6;
+            /* Color primario azul */
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-[#111618] dark:text-white transition-colors duration-200">
-
     <header class="flex items-center justify-between border-b border-solid border-b-[#f0f3f4] dark:border-b-gray-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-10 py-4 sticky top-0 z-50">
         <div class="flex items-center gap-4 text-[#111618] dark:text-white">
             <div class="size-10 md:size-14 text-primary flex items-center justify-center">
-                <img src="/public/img/logo-definitivo.png" class="w-full h-auto" alt="">
+                <img src="/public/img/logo-definitivo.png" class="w-full h-auto" alt="Logo">
             </div>
             <h2 class="hidden md:block text-[#111618] dark:text-white text-lg font-bold leading-tight tracking-tight">Santamartabeachfront</h2>
         </div>
-
         <div id="navContainer" class="hidden lg:flex flex-col lg:flex-row items-center gap-4 absolute lg:static top-[73px] left-0 w-full lg:w-auto bg-white dark:bg-background-dark lg:bg-transparent p-6 lg:p-0 border-b lg:border-none border-gray-100 dark:border-gray-800 shadow-xl lg:shadow-none transition-all duration-300 ease-in-out">
 
             <a href="/" class="w-full lg:w-auto flex items-center justify-center px-8 h-11 rounded-xl lg:rounded-full bg-gradient-to-r from-blue-600 to-blue-400 text-white text-sm font-bold shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition-all active:scale-95" data-key="nav-inicio">
                 Inicio
             </a>
-
             <div class="w-full lg:w-auto flex items-center justify-center bg-gray-50 dark:bg-gray-800/50 rounded-xl lg:rounded-full p-1 border border-gray-100 dark:border-gray-700/50">
                 <div class="relative w-full lang-dropdown">
                     <button id="langBtn" class="w-full flex items-center justify-between lg:justify-start gap-3 h-10 px-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all">
@@ -160,7 +95,6 @@
                 </div>
             </div>
         </div>
-
         <button id="menuBtn" class="lg:hidden p-2 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 active:scale-90 transition-transform">
             <span class="material-symbols-outlined" id="menuIcon">menu</span>
         </button>
@@ -212,11 +146,11 @@
                 </div>
             </aside>
 
-            <div class="flex-1 bg-white dark:bg-background-dark rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-8 md:p-12 overflow-hidden">
+            <div class="flex-1 bg-white dark:bg-background-dark rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-8 md:p-12 overflow-hidden legal-content">
 
                 <section class="mb-12 scroll-mt-24" id="intro">
-                    <h2 class="text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center gap-2">
-                        <span class="text-primary">1.</span> <span data-key="sec1-titulo">Introducción</span>
+                    <h2 class="section-title text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center">
+                        <span data-key="sec1-titulo">Introducción</span>
                     </h2>
                     <div class="space-y-4">
                         <p class="text-[#111618] dark:text-gray-300 text-base font-normal leading-relaxed" data-key="sec1-p1">
@@ -229,8 +163,8 @@
                 </section>
 
                 <section class="mb-12 scroll-mt-24" id="data">
-                    <h2 class="text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center gap-2">
-                        <span class="text-primary">2.</span> <span data-key="sec2-titulo">Uso de Datos y Privacidad</span>
+                    <h2 class="section-title text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center">
+                        <span data-key="sec2-titulo">Uso de Datos y Privacidad</span>
                     </h2>
                     <p class="text-[#111618] dark:text-gray-300 text-base font-normal leading-relaxed mb-4" data-key="sec2-p1">
                         Valoramos su privacidad y nos comprometemos a proteger su información personal. Los datos recopilados se utilizan exclusivamente para:
@@ -252,8 +186,8 @@
                 </section>
 
                 <section class="mb-12 scroll-mt-24" id="cancel">
-                    <h2 class="text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center gap-2">
-                        <span class="text-primary">3.</span> <span data-key="sec3-titulo">Cancelaciones y Reembolsos</span>
+                    <h2 class="section-title text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center">
+                        <span data-key="sec3-titulo">Cancelaciones y Reembolsos</span>
                     </h2>
                     <p class="text-[#111618] dark:text-gray-300 text-base font-normal leading-relaxed mb-6" data-key="sec3-p1">
                         Entendemos que los planes pueden cambiar. Nuestra política de reembolso se basa en el tiempo de antelación con el que se realice la cancelación:
@@ -285,8 +219,8 @@
                 </section>
 
                 <section class="mb-12 scroll-mt-24" id="resp">
-                    <h2 class="text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center gap-2">
-                        <span class="text-primary">4.</span> <span data-key="sec4-titulo">Responsabilidades del Huésped</span>
+                    <h2 class="section-title text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center">
+                        <span data-key="sec4-titulo">Responsabilidades del Huésped</span>
                     </h2>
                     <p class="text-[#111618] dark:text-gray-300 text-base font-normal leading-relaxed mb-4" data-key="sec4-p1">
                         Para garantizar una convivencia armoniosa y el mantenimiento de nuestras propiedades, el huésped se compromete a:
@@ -311,25 +245,23 @@
                     </div>
                 </section>
 
-                <section class="scroll-mt-24" id="intellect">
-                    <h2 class="text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center gap-2">
-                        <span class="text-primary">5.</span> <span data-key="sec5-titulo">Propiedad Intelectual</span>
+                <section class="mb-12 scroll-mt-24" id="intellect">
+                    <h2 class="section-title text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center">
+                        <span data-key="sec5-titulo">Propiedad Intelectual</span>
                     </h2>
                     <p class="text-[#111618] dark:text-gray-300 text-base font-normal leading-relaxed" data-key="sec5-p1">
                         Todo el contenido de este sitio web, incluyendo textos, logotipos, imágenes y diseño de interfaz, es propiedad exclusiva de Santamartabeachfront o sus licenciantes. Queda prohibida su reproducción total o parcial sin autorización expresa.
                     </p>
                 </section>
 
-                <section class="pt-12 mt-12 border-t border-slate-200 dark:border-slate-800">
-
-
+                <footer class="pt-8 mt-12 border-t border-slate-200 dark:border-slate-800">
+                    <p class="text-sm text-center text-gray-500">© 2026 Santamartabeachfront - Todos los derechos reservados.</p>
+                </footer>
             </div>
         </div>
     </main>
-    </div>
 
-    <!-- ================= SCRIPT ================= -->
     <script src="/js/pliticayterminos.js"></script>
-
 </body>
+
 </html>

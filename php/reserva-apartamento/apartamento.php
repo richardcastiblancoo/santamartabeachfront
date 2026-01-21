@@ -529,7 +529,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
                     </section>
 
                     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-                    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                    <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {

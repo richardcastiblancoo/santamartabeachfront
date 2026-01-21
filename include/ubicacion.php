@@ -64,7 +64,9 @@
 
 
 <script>
-    (function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof L === 'undefined') return;
+        
         const coordsFinal = [11.1911119, -74.2311344]; 
         const coordsColombia = [4.5709, -74.2973];
         const coordsEspacio = [20, 0];
@@ -126,7 +128,7 @@
         window.addEventListener('load', fixMap);
         window.addEventListener('resize', fixMap);
         animarMapa();
-    })();
+    });
 </script>
 
 <style>
