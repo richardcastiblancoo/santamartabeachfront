@@ -147,6 +147,8 @@
 
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
 
+
+
     <style>
         :root {
             scroll-behavior: auto;
