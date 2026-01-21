@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Inicio de Sesión</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -33,9 +33,15 @@
 <body class="bg-background-light dark:bg-background-dark text-[#111618] dark:text-white min-h-screen flex flex-col font-display antialiased overflow-x-hidden">
 
     <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-10">
-        <a href="/" class="flex items-center gap-2">
-            <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" class="h-10 w-auto" alt="logo">
-            <span class="hidden sm:block font-bold text-lg tracking-tight text-[#111618] dark:text-white lg:text-white">Santamartabeachfront</span>
+        <a href="/" class="flex items-center gap-3">
+            <img
+                src="/public/img/logo-definitivo.png"
+                class="h-16 md:h-24 w-auto object-contain"
+                alt="logo">
+
+            <span class="hidden sm:block font-bold text-lg md:text-xl tracking-tight text-blue-500">
+                Santamartabeachfront
+            </span>
         </a>
 
         <div class="hidden md:flex items-center gap-4 bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-lg">
@@ -69,7 +75,7 @@
 
     <div class="flex flex-1 w-full min-h-screen">
         <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gray-200 dark:bg-gray-900">
-            <img src="/public/img/torre-imagen.jpeg"
+            <img src="/public/img/torre-portada-login.webp"
                 alt="Santamartabeachfront View"
                 class="absolute inset-0 w-full h-full object-cover">
 
@@ -123,7 +129,7 @@
                     <label class="flex flex-col gap-2">
                         <div class="flex justify-between">
                             <p data-key="label-pass" class="text-sm font-bold text-[#111618] dark:text-white">Contraseña</p>
-                            <a data-key="forgot-pass" class="text-primary text-xs font-bold hover:underline" href="#">¿Olvidaste tu contraseña?</a>
+                            <a data-key="forgot-pass" class="text-primary text-xs font-bold hover:underline" href="/auth/recuperar_password.php">¿Olvidaste tu contraseña?</a>
                         </div>
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#617c89] material-symbols-outlined">lock</span>

@@ -7,7 +7,7 @@
                 <section class="space-y-6">
                     <a href="/" class="flex items-center gap-2 group" aria-label="Ir al inicio">
                         <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
-                            <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo" class="w-full h-full object-cover">
+                            <img src="/public/img/logo-definitivo.png" alt="logo" class="w-full h-full object-cover">
                         </div>
                         <span class="text-xl font-bold text-white tracking-tight" itemprop="name">
                             Santamarta<span class="text-blue-400">beachfront</span>

@@ -100,7 +100,7 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <!-- los scripts -->
@@ -160,15 +160,15 @@
         })(window, document, 'script', 'dataLayer', 'GTM-WWFXJJRB');
     </script>
     <!-- End Google Tag Manager -->
-
-</head>
-
-<body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
-
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WWFXJJRB"
             height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
+
+
 
     <style>
         :root {
@@ -234,12 +234,18 @@
     <header id="main-header" class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-10 transition-all duration-300">
         <div class="flex items-center gap-3">
             <a href="/" class="flex items-center gap-3 group">
-                <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="Logo" class="size-10 md:size-12 object-contain">
-                <h1 class="text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
+                <img
+                    src="/public/img/logo-definitivo.png"
+                    alt="Logo"
+                    class="size-14 md:size-20 object-contain">
+
+                <h1 class="flex items-center text-white text-base md:text-lg font-black tracking-tighter uppercase leading-none hidden md:inline-block">
                     Santamarta<span class="text-blue-500">beachfront</span>
                 </h1>
             </a>
         </div>
+
+
 
         <nav class="hidden md:flex items-center gap-8">
             <ul class="flex items-center gap-6 list-none">
@@ -291,7 +297,7 @@
             <div class="absolute inset-0 z-0">
                 <div class="absolute inset-0 bg-black/50 z-10"></div>
                 <video class="w-full h-full object-cover" autoplay muted loop playsinline aria-hidden="true">
-                    <source src="/public/video/santamarta-video-tayrona.mp4" type="video/mp4">
+                    <source src="/public/video/video-optimizado-tayrona.mp4" type="video/mp4">
                 </video>
             </div>
 
@@ -540,7 +546,7 @@
                 <section class="space-y-6">
                     <a href="/" class="flex items-center gap-2 group" aria-label="Ir al inicio">
                         <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
-                            <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo" class="w-full h-full object-cover">
+                            <img src="/public/img/logo-definitivo.png" alt="logo" class="w-full h-full object-cover">
                         </div>
                         <span class="text-xl font-bold text-white tracking-tight" itemprop="name">
                             Santamarta<span class="text-blue-400">beachfront</span>
