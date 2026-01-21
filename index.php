@@ -663,10 +663,4 @@
     </script>
 
 </body>
-
-</html>ocument.addEventListener("DOMContentLoaded", renderCalendar);
-</script>
-
-</body>
-
 </html>
