@@ -1,11 +1,31 @@
 User-agent: *
+# Bloquear acceso a directorios de administración y lógica interna
 Disallow: /auth/
 Disallow: /php/dashboard-admin/
 Disallow: /php/dashboard-huesped/
+Disallow: /include/
+Disallow: /assets/archivos/
+
+# Bloquear scripts de mantenimiento y base de datos
 Disallow: /debug_reservas.php
 Disallow: /update_schema.php
 Disallow: /check_column.php
+Disallow: /check_session.php
 Disallow: /php/update_pqr_table.php
 Disallow: /auth/conexion_be.php
 Disallow: /auth/db/
 Disallow: /*.sql
+
+# Bloquear archivos de entorno y dependencias
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /webpack.config.js
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Permitir páginas de acceso público específicas (opcional, sobrescribe Disallow parent)
+Allow: /auth/login.php
+Allow: /auth/registro.php
+
+# Mapa del sitio
+Sitemap: http://localhost/sitemap.xml
