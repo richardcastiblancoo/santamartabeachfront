@@ -369,55 +369,6 @@
 
 
     <script>
-        // --- ANIMACIÓN TYPEWRITER ---
-        const textElement = document.getElementById('typewriter');
-        const text = "Vive la experiencia en";
-        let index = 0;
-        let isDeleting = false;
-        let speed = 100;
-
-        function type() {
-            const currentText = text.substring(0, index);
-            textElement.textContent = currentText;
-
-            if (!isDeleting && index < text.length) {
-                index++;
-                speed = 100;
-            } else if (isDeleting && index > 0) {
-                index--;
-                speed = 50;
-            } else {
-                isDeleting = !isDeleting;
-                speed = isDeleting ? 2500 : 700;
-            }
-            setTimeout(type, speed);
-        }
-        type();
-
-        // --- MENÚ MÓVIL ---
-        function toggleMobileMenu(open) {
-            const menu = document.getElementById('mobile-menu');
-            if (open) {
-                menu.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            } else {
-                menu.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        // --- HEADER SCROLL ---
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
-                header.style.background = 'rgba(15, 23, 42, 0.95)';
-                header.classList.add('py-2', 'shadow-2xl');
-            } else {
-                header.style.background = 'transparent';
-                header.classList.remove('py-2', 'shadow-2xl');
-            }
-        });
-
         //---------------------------
         // formulario de whasapp
         document.getElementById('reservaForm').addEventListener('submit', function(e) {

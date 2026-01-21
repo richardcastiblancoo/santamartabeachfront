@@ -205,8 +205,8 @@ function initTestimonialLoop() {
 
 document.addEventListener("DOMContentLoaded", () => {
   // Configuración inicial
-  changeLanguage(currentLang);
-  initMapAnimation();
+  // changeLanguage(currentLang);
+  // initMapAnimation();
   initTestimonialLoop();
 
   // Listener para el menú desplegable de idiomas
@@ -257,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
  * ==========================================
  */
 
-window.changeLanguage = changeLanguage;
+// window.changeLanguage = changeLanguage;
 window.toggleMobileMenu = toggleMobileMenu;
 
 /**
