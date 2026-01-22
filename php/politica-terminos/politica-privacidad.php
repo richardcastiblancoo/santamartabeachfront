@@ -11,257 +11,345 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.santamartabeachfront.com">
     <meta property="og:title" content="Santamartabeachfront">
-    <meta property="og:description" content="Vive la experiencia rente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
+    <meta property="og:description" content="Vive la experiencia frente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
     <meta property="og:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://www.santamartabeachfront.com/">
     <meta name="twitter:title" content="santamartabeachfront - Alquiler de Apartamentos">
-    <meta name="twitter:description" content="Vive la experiencia frente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
     <meta name="twitter:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
     <meta name="theme-color" content="#63b5f8ff">
     <title>santamartabeachfront - Reserva del Mar</title>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="canonical" href="https://santamartabeachfront.com">
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
     <style>
         body {
             font-family: "Plus Jakarta Sans", sans-serif;
+            scroll-behavior: smooth;
         }
 
         .sidebar-sticky {
             position: sticky;
-            top: 5rem;
+            top: 6rem;
             height: fit-content;
         }
 
-        /* Lógica para que los números no se repitan automáticamente */
         .legal-content {
             counter-reset: section-counter;
         }
 
-        .section-title::before {
-            counter-increment: section-counter;
-            content: counter(section-counter) ". ";
-            color: #3b82f6;
-            /* Color primario azul */
-            margin-right: 0.5rem;
+        @media (max-width: 1023px) {
+            #navContainer {
+                display: none;
+                flex-direction: column;
+                position: fixed;
+                top: 73px;
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 73px);
+                background-color: white;
+                z-index: 40;
+                padding: 2rem;
+            }
+
+            .dark #navContainer {
+                background-color: #0f172a;
+            }
+
+            #navContainer.flex {
+                display: flex;
+            }
         }
     </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark text-[#111618] dark:text-white transition-colors duration-200">
-    <header class="flex items-center justify-between border-b border-solid border-b-[#f0f3f4] dark:border-b-gray-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-10 py-4 sticky top-0 z-50">
-        <div class="flex items-center gap-4 text-[#111618] dark:text-white">
-            <div class="size-10 md:size-14 text-primary flex items-center justify-center">
+<body class="bg-gray-50 dark:bg-[#0f172a] text-[#111618] dark:text-white transition-colors duration-200">
+
+    <header class="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-md px-6 md:px-10 py-4 sticky top-0 z-50">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
                 <img src="/public/img/logo-definitivo.png" class="w-full h-auto" alt="Logo">
             </div>
-            <h2 class="hidden md:block text-[#111618] dark:text-white text-lg font-bold leading-tight tracking-tight">Santamartabeachfront</h2>
+            <h2 class="hidden md:block text-lg font-bold tracking-tight">Santamartabeachfront</h2>
         </div>
-        <div id="navContainer" class="hidden lg:flex flex-col lg:flex-row items-center gap-4 absolute lg:static top-[73px] left-0 w-full lg:w-auto bg-white dark:bg-background-dark lg:bg-transparent p-6 lg:p-0 border-b lg:border-none border-gray-100 dark:border-gray-800 shadow-xl lg:shadow-none transition-all duration-300 ease-in-out">
 
-            <a href="/" class="w-full lg:w-auto flex items-center justify-center px-8 h-11 rounded-xl lg:rounded-full bg-gradient-to-r from-blue-600 to-blue-400 text-white text-sm font-bold shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition-all active:scale-95" data-key="nav-inicio">
-                Inicio
-            </a>
-            <div class="w-full lg:w-auto flex items-center justify-center bg-gray-50 dark:bg-gray-800/50 rounded-xl lg:rounded-full p-1 border border-gray-100 dark:border-gray-700/50">
-                <div class="relative w-full lang-dropdown">
-                    <button id="langBtn" class="w-full flex items-center justify-between lg:justify-start gap-3 h-10 px-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-full overflow-hidden border border-white dark:border-gray-600 shadow-sm">
-                                <img id="currentFlag" src="https://flagcdn.com/w80/co.png" alt="Colombia" class="w-full h-full object-cover">
-                            </div>
-                            <span class="lg:hidden text-sm font-medium">Cambiar Idioma</span>
-                        </div>
-                        <span class="material-symbols-outlined text-lg opacity-60">expand_more</span>
-                    </button>
+        <div id="navContainer" class="hidden lg:flex items-center gap-4">
+            <a href="/" class="w-full lg:w-auto flex items-center justify-center px-8 h-11 rounded-xl lg:rounded-full bg-blue-600 text-white text-sm font-bold shadow-lg hover:bg-blue-700 transition-all" data-key="nav-inicio">Inicio</a>
 
-                    <div id="langMenu" class="hidden absolute bottom-full lg:bottom-auto lg:top-full right-0 mb-2 lg:mt-2 w-full lg:w-44 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl py-2 z-[60] border border-gray-100 dark:border-gray-700">
-                        <a href="#" data-lang="ES" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                            <img src="https://flagcdn.com/w40/co.png" class="w-6 h-6 rounded-full object-cover" alt="CO">
-                            <span class="text-[#111618] dark:text-white text-sm font-medium">Español</span>
-                        </a>
-                        <a href="#" data-lang="EN" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                            <img src="https://flagcdn.com/w40/us.png" class="w-6 h-6 rounded-full object-cover" alt="US">
-                            <span class="text-[#111618] dark:text-white text-sm font-medium">English</span>
-                        </a>
+            <div class="relative w-full lg:w-auto lang-dropdown">
+                <button id="langBtn" class="w-full flex items-center justify-between lg:justify-start gap-3 h-11 px-4 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                    <div class="flex items-center gap-2">
+                        <img id="currentFlag" src="https://flagcdn.com/w80/co.png" class="w-6 h-6 rounded-full object-cover">
+                        <span class="text-sm font-medium lg:hidden">Idioma</span>
                     </div>
+                    <span class="material-symbols-outlined text-lg opacity-60">expand_more</span>
+                </button>
+                <div id="langMenu" class="hidden absolute top-full right-0 mt-2 w-full lg:w-44 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl py-2 z-50 border border-gray-100 dark:border-gray-700">
+                    <a href="#" data-lang="ES" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <img src="https://flagcdn.com/w40/co.png" class="w-6 h-6 rounded-full object-cover">
+                        <span class="text-sm font-medium">Español</span>
+                    </a>
+                    <a href="#" data-lang="EN" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <img src="https://flagcdn.com/w40/us.png" class="w-6 h-6 rounded-full object-cover">
+                        <span class="text-sm font-medium">English</span>
+                    </a>
                 </div>
             </div>
         </div>
-        <button id="menuBtn" class="lg:hidden p-2 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 active:scale-90 transition-transform">
+
+        <button id="menuBtn" class="lg:hidden p-2 rounded-xl bg-gray-100 dark:bg-gray-800">
             <span class="material-symbols-outlined" id="menuIcon">menu</span>
         </button>
     </header>
 
-    <main class="flex-1 max-w-[1280px] mx-auto w-full px-4 md:px-10 py-8">
-        <div class="flex flex-wrap justify-between items-end gap-3 mb-8 border-b border-gray-100 dark:border-gray-800 pb-6">
-            <div class="flex min-w-72 flex-col gap-2">
-                <h1 class="text-[#111618] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]" data-key="titulo-principal">Políticas y Términos</h1>
-                <p class="text-[#617c89] dark:text-gray-400 text-base font-normal" data-key="ultima-actualizacion">Última actualización: 1 de febrero, 2026</p>
-            </div>
+    <main class="max-w-[1280px] mx-auto w-full px-4 md:px-10 py-8">
+        <div class="mb-8 border-b border-gray-100 dark:border-gray-800 pb-6">
+            <h1 class="text-4xl font-black tracking-tight" data-key="titulo-principal">Políticas y Términos</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-2" data-key="ultima-actualizacion">Última actualización: 1 de febrero, 2026</p>
         </div>
 
         <div class="flex flex-col lg:flex-row gap-12">
-            <aside class="w-full lg:w-72 flex-shrink-0">
-                <div class="sidebar-sticky flex flex-col gap-6 bg-white dark:bg-background-dark p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
-                    <div class="flex flex-col gap-1">
-                        <h3 class="text-[#111618] dark:text-white text-base font-bold" data-key="aside-nav">Navegación</h3>
-                        <p class="text-[#617c89] dark:text-gray-400 text-xs uppercase tracking-wider font-semibold" data-key="aside-legal">Secciones legales</p>
+            <aside class="w-full lg:w-72">
+                <div class="sidebar-sticky flex flex-col gap-6 bg-white dark:bg-gray-800/50 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+                    <div>
+                        <h3 class="font-bold text-base" data-key="aside-nav">Navegación</h3>
+                        <p class="text-xs text-gray-400 uppercase font-semibold" data-key="aside-legal">Secciones legales</p>
                     </div>
                     <nav class="flex flex-col gap-1">
-                        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-semibold transition-all" href="#intro">
-                            <span class="material-symbols-outlined text-xl">info</span>
+                        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" href="#intro">
+                            <span class="material-symbols-outlined text-xl text-blue-500">info</span>
                             <span class="text-sm" data-key="link-intro">Introducción</span>
                         </a>
-                        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111618] dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all" href="#data">
-                            <span class="material-symbols-outlined text-xl">database</span>
+                        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" href="#data">
+                            <span class="material-symbols-outlined text-xl text-blue-500">database</span>
                             <span class="text-sm" data-key="link-data">Uso de Datos</span>
                         </a>
-                        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111618] dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all" href="#cancel">
-                            <span class="material-symbols-outlined text-xl">calendar_month</span>
+                        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" href="#cancel">
+                            <span class="material-symbols-outlined text-xl text-blue-500">calendar_month</span>
                             <span class="text-sm" data-key="link-cancel">Cancelaciones</span>
                         </a>
-                        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111618] dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all" href="#resp">
-                            <span class="material-symbols-outlined text-xl">verified_user</span>
+                        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" href="#resp">
+                            <span class="material-symbols-outlined text-xl text-blue-500">verified_user</span>
                             <span class="text-sm" data-key="link-resp">Responsabilidades</span>
                         </a>
-                        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111618] dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all" href="#intellect">
-                            <span class="material-symbols-outlined text-xl">gavel</span>
+                        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" href="#intellect">
+                            <span class="material-symbols-outlined text-xl text-blue-500">gavel</span>
                             <span class="text-sm" data-key="link-intellect">Propiedad Intelectual</span>
                         </a>
                     </nav>
-                    <div class="mt-4 pt-6 border-t border-gray-100 dark:border-gray-800">
-                        <div class="bg-primary/5 p-4 rounded-lg">
-                            <p class="text-xs text-primary font-bold mb-2 uppercase" data-key="ayuda-titulo">¿Necesitas ayuda?</p>
-                            <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" data-key="ayuda-desc">Si tienes dudas sobre nuestras políticas, contáctanos a 17clouds@gmail.com</p>
-                        </div>
+                    <div class="mt-4 p-4 bg-blue-500/5 rounded-xl border border-blue-500/10">
+                        <p class="text-xs text-blue-500 font-bold mb-1" data-key="ayuda-titulo">¿Necesitas ayuda?</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed" data-key="ayuda-desc">Si tienes dudas sobre nuestras políticas, contáctanos a 17clouds@gmail.com</p>
                     </div>
                 </div>
             </aside>
 
-            <div class="flex-1 bg-white dark:bg-background-dark rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-8 md:p-12 overflow-hidden legal-content">
+            <div class="flex-1 bg-white dark:bg-gray-800 rounded-2xl p-8 md:p-12 shadow-sm border border-gray-100 dark:border-gray-800 legal-content">
 
-                <section class="mb-12 scroll-mt-24" id="intro">
-                    <h2 class="section-title text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center">
-                        <span data-key="sec1-titulo">Introducción</span>
-                    </h2>
-                    <div class="space-y-4">
-                        <p class="text-[#111618] dark:text-gray-300 text-base font-normal leading-relaxed" data-key="sec1-p1">
-                            Bienvenido a Santamartabeachfront. Al utilizar nuestros servicios de alquiler de apartamentos frente al mar, usted acepta cumplir con los siguientes términos y condiciones. Estos términos rigen su relación con nuestra plataforma y las estancias en nuestras propiedades.
-                        </p>
-                        <p class="text-[#111618] dark:text-gray-300 text-base font-normal leading-relaxed" data-key="sec1-p2">
-                            Este acuerdo es vinculante para todos los huéspedes que reserven a través de nuestro sitio web, aplicaciones móviles o canales de terceros afiliados. Le recomendamos leer cuidadosamente cada sección antes de proceder con su pago.
-                        </p>
-                    </div>
+                <section class="mb-12 scroll-mt-28" id="intro">
+                    <h2 class="text-2xl font-bold mb-4" data-key="sec1-titulo">1. Introducción</h2>
+                    <p class="leading-relaxed text-gray-600 dark:text-gray-300" data-key="sec1-p1">
+                        Bienvenido a Santamartabeachfront. Al utilizar nuestros servicios de alquiler de apartamentos frente al mar, usted acepta cumplir con los siguientes términos y condiciones. Estos términos rigen su relación con nuestra plataforma y las estancias en nuestras propiedades.
+                    </p>
+                    <p class="leading-relaxed text-gray-600 dark:text-gray-300 mt-4">
+                        Este acuerdo es vinculante para todos los huéspedes que reserven a través de nuestro sitio web, aplicaciones móviles o canales de terceros afiliados. Le recomendamos leer cuidadosamente cada sección antes de proceder con su pago.
+                    </p>
                 </section>
 
-                <section class="mb-12 scroll-mt-24" id="data">
-                    <h2 class="section-title text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center">
-                        <span data-key="sec2-titulo">Uso de Datos y Privacidad</span>
-                    </h2>
-                    <p class="text-[#111618] dark:text-gray-300 text-base font-normal leading-relaxed mb-4" data-key="sec2-p1">
+                <section class="mb-12 scroll-mt-28" id="data">
+                    <h2 class="text-2xl font-bold mb-4" data-key="sec2-titulo">2. Uso de Datos y Privacidad</h2>
+                    <p class="leading-relaxed text-gray-600 dark:text-gray-300 mb-4">
                         Valoramos su privacidad y nos comprometemos a proteger su información personal. Los datos recopilados se utilizan exclusivamente para:
                     </p>
-                    <ul class="space-y-3 pl-2">
+                    <ul class="space-y-3 pl-2 text-gray-600 dark:text-gray-300">
                         <li class="flex items-start gap-3">
-                            <span class="material-symbols-outlined text-primary text-xl mt-0.5">check_circle</span>
-                            <span class="text-[#111618] dark:text-gray-300 text-base" data-key="sec2-item1">Procesamiento de reservas y pagos seguros.</span>
+                            <span class="material-symbols-outlined text-blue-500 text-xl">check_circle</span>
+                            <span>Procesamiento de reservas y pagos seguros.</span>
                         </li>
                         <li class="flex items-start gap-3">
-                            <span class="material-symbols-outlined text-primary text-xl mt-0.5">check_circle</span>
-                            <span class="text-[#111618] dark:text-gray-300 text-base" data-key="sec2-item2">Comunicación directa sobre el estado de su estancia y llegada.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="material-symbols-outlined text-primary text-xl mt-0.5">check_circle</span>
-                            <span class="text-[#111618] dark:text-gray-300 text-base" data-key="sec2-item3">Mejora de nuestros servicios mediante análisis estadístico anónimo.</span>
+                            <span class="material-symbols-outlined text-blue-500 text-xl">check_circle</span>
+                            <span>Comunicación directa sobre el estado de su estancia y llegada.</span>
                         </li>
                     </ul>
                 </section>
 
-                <section class="mb-12 scroll-mt-24" id="cancel">
-                    <h2 class="section-title text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center">
-                        <span data-key="sec3-titulo">Cancelaciones y Reembolsos</span>
-                    </h2>
-                    <p class="text-[#111618] dark:text-gray-300 text-base font-normal leading-relaxed mb-6" data-key="sec3-p1">
-                        Entendemos que los planes pueden cambiar. Nuestra política de reembolso se basa en el tiempo de antelación con el que se realice la cancelación:
-                    </p>
-                    <div class="overflow-hidden rounded-xl border border-gray-100 dark:border-gray-800">
-                        <table class="min-w-full divide-y divide-gray-100 dark:divide-gray-800">
+                <section class="mb-12 scroll-mt-28" id="cancel">
+                    <h2 class="text-2xl font-bold mb-4" data-key="sec3-titulo">3. Cancelaciones y Reembolsos</h2>
+                    <div class="overflow-x-auto rounded-xl border border-gray-100 dark:border-gray-700 mt-6">
+                        <table class="w-full text-left">
                             <thead class="bg-gray-50 dark:bg-gray-900/50">
                                 <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider" data-key="table-h1">Antelación</th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider" data-key="table-h2">Reembolso</th>
+                                    <th class="px-6 py-4 text-xs font-bold uppercase text-gray-400" data-key="table-h1">Antelación</th>
+                                    <th class="px-6 py-4 text-xs font-bold uppercase text-gray-400" data-key="table-h2">Reembolso</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white dark:bg-background-dark divide-y divide-gray-50 dark:divide-gray-800">
+                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700 text-gray-600 dark:text-gray-300">
                                 <tr>
-                                    <td class="px-6 py-4 text-sm text-[#111618] dark:text-gray-300" data-key="table-r1-c1">Más de 30 días</td>
-                                    <td class="px-6 py-4 text-sm font-bold text-green-600" data-key="table-r1-c2">100% Reembolsable</td>
+                                    <td class="px-6 py-4 text-sm" data-key="table-r1-c1">Más de 30 días</td>
+                                    <td class="px-6 py-4 text-sm font-bold text-green-500" data-key="table-r1-c2">100% Reembolsable</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 text-sm text-[#111618] dark:text-gray-300" data-key="table-r2-c1">15 a 29 días</td>
-                                    <td class="px-6 py-4 text-sm font-bold text-primary" data-key="table-r2-c2">50% Reembolsable</td>
+                                    <td class="px-6 py-4 text-sm">15 a 29 días</td>
+                                    <td class="px-6 py-4 text-sm font-bold text-blue-500">50% Reembolsable</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-6 py-4 text-sm text-[#111618] dark:text-gray-300" data-key="table-r3-c1">Menos de 14 días</td>
-                                    <td class="px-6 py-4 text-sm font-bold text-red-500" data-key="table-r3-c2">No Reembolsable</td>
+                                    <td class="px-6 py-4 text-sm">Menos de 14 días</td>
+                                    <td class="px-6 py-4 text-sm font-bold text-red-500">No Reembolsable</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </section>
 
-                <section class="mb-12 scroll-mt-24" id="resp">
-                    <h2 class="section-title text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center">
-                        <span data-key="sec4-titulo">Responsabilidades del Huésped</span>
-                    </h2>
-                    <p class="text-[#111618] dark:text-gray-300 text-base font-normal leading-relaxed mb-4" data-key="sec4-p1">
-                        Para garantizar una convivencia armoniosa y el mantenimiento de nuestras propiedades, el huésped se compromete a:
-                    </p>
+                <section class="mb-12 scroll-mt-28" id="resp">
+                    <h2 class="text-2xl font-bold mb-4" data-key="sec4-titulo">4. Responsabilidades del Huésped</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800">
-                            <p class="font-bold text-sm mb-1 text-[#111618] dark:text-white" data-key="sec4-item1-t">Cuidado del Inmueble</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400" data-key="sec4-item1-d">Mantener el mobiliario y las instalaciones en buen estado durante su estancia.</p>
+                        <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800">
+                            <p class="font-bold text-sm mb-1">Cuidado del Inmueble</p>
+                            <p class="text-sm text-gray-500">Mantener el mobiliario y las instalaciones en buen estado durante su estancia.</p>
                         </div>
-                        <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800">
-                            <p class="font-bold text-sm mb-1 text-[#111618] dark:text-white" data-key="sec4-item2-t">Normas de Convivencia</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400" data-key="sec4-item2-d">Respetar los niveles de ruido y las zonas comunes del edificio/complejo.</p>
-                        </div>
-                        <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800">
-                            <p class="font-bold text-sm mb-1 text-[#111618] dark:text-white" data-key="sec4-item3-t">Capacidad Máxima</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400" data-key="sec4-item3-d">No exceder el número de personas registradas al momento de la reserva.</p>
-                        </div>
-                        <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800">
-                            <p class="font-bold text-sm mb-1 text-[#111618] dark:text-white" data-key="sec4-item4-t">Registro de Identidad</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400" data-key="sec4-item4-d">Presentar documentos de identidad válidos para todos los ocupantes.</p>
+                        <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800">
+                            <p class="font-bold text-sm mb-1">Capacidad Máxima</p>
+                            <p class="text-sm text-gray-500">No exceder el número de personas registradas al momento de la reserva.</p>
                         </div>
                     </div>
                 </section>
 
-                <section class="mb-12 scroll-mt-24" id="intellect">
-                    <h2 class="section-title text-[#111618] dark:text-white tracking-tight text-2xl font-bold leading-tight mb-4 flex items-center">
-                        <span data-key="sec5-titulo">Propiedad Intelectual</span>
-                    </h2>
-                    <p class="text-[#111618] dark:text-gray-300 text-base font-normal leading-relaxed" data-key="sec5-p1">
-                        Todo el contenido de este sitio web, incluyendo textos, logotipos, imágenes y diseño de interfaz, es propiedad exclusiva de Santamartabeachfront o sus licenciantes. Queda prohibida su reproducción total o parcial sin autorización expresa.
+                <section class="mb-12 scroll-mt-28" id="intellect">
+                    <h2 class="text-2xl font-bold mb-4" data-key="sec5-titulo">5. Propiedad Intelectual</h2>
+                    <p class="leading-relaxed text-gray-600 dark:text-gray-300">
+                        Todo el contenido de este sitio web, incluyendo textos, logotipos, imágenes y diseño de interfaz, es propiedad exclusiva de Santamartabeachfront. Queda prohibida su reproducción total o parcial sin autorización expresa.
                     </p>
                 </section>
 
-                <footer class="pt-8 mt-12 border-t border-slate-200 dark:border-slate-800">
-                    <p class="text-sm text-center text-gray-500">© 2026 Santamartabeachfront - Todos los derechos reservados.</p>
+                <footer class="pt-8 border-t border-gray-100 dark:border-gray-700 text-center">
+                    <p class="text-sm text-gray-400">© 2026 Santamartabeachfront - Todos los derechos reservados.</p>
                 </footer>
             </div>
         </div>
     </main>
 
-    <script src="/js/pliticayterminos.js"></script>
+    <script>
+        const translations = {
+            ES: {
+                "nav-inicio": "Inicio",
+                "titulo-principal": "Políticas y Términos",
+                "ultima-actualizacion": "Última actualización: 1 de febrero, 2026",
+                "aside-nav": "Navegación",
+                "aside-legal": "Secciones legales",
+                "link-intro": "Introducción",
+                "link-data": "Uso de Datos",
+                "link-cancel": "Cancelaciones",
+                "link-resp": "Responsabilidades",
+                "link-intellect": "Propiedad Intelectual",
+                "ayuda-titulo": "¿Necesitas ayuda?",
+                "ayuda-desc": "Si tienes dudas sobre nuestras políticas, contáctanos a 17clouds@gmail.com",
+                "sec1-titulo": "1. Introducción",
+                "sec1-p1": "Bienvenido a Santamartabeachfront. Al utilizar nuestros servicios de alquiler de apartamentos frente al mar, usted acepta cumplir con los siguientes términos y condiciones. Estos términos rigen su relación con nuestra plataforma y las estancias en nuestras propiedades.",
+                "sec2-titulo": "2. Uso de Datos y Privacidad",
+                "sec3-titulo": "3. Cancelaciones y Reembolsos",
+                "table-h1": "Antelación",
+                "table-h2": "Reembolso",
+                "table-r1-c1": "Más de 30 días",
+                "table-r1-c2": "100% Reembolsable",
+                "sec4-titulo": "4. Responsabilidades del Huésped",
+                "sec5-titulo": "5. Propiedad Intelectual",
+            },
+            EN: {
+                "nav-inicio": "Home",
+                "titulo-principal": "Policies & Terms",
+                "ultima-actualizacion": "Last updated: February 1, 2026",
+                "aside-nav": "Navigation",
+                "aside-legal": "Legal Sections",
+                "link-intro": "Introduction",
+                "link-data": "Data Usage",
+                "link-cancel": "Cancellations",
+                "link-resp": "Responsibilities",
+                "link-intellect": "Intellectual Property",
+                "ayuda-titulo": "Need help?",
+                "ayuda-desc": "If you have questions about our policies, contact us at 17clouds@gmail.com",
+                "sec1-titulo": "1. Introduction",
+                "sec1-p1": "Welcome to Santamartabeachfront. By using our beachfront apartment rental services, you agree to comply with the following terms and conditions. These terms govern your relationship with our platform and stays at our properties.",
+                "sec2-titulo": "2. Data Usage & Privacy",
+                "sec3-titulo": "3. Cancellations & Refunds",
+                "table-h1": "Notice Period",
+                "table-h2": "Refund",
+                "table-r1-c1": "More than 30 days",
+                "table-r1-c2": "100% Refundable",
+                "sec4-titulo": "4. Guest Responsibilities",
+                "sec5-titulo": "5. Intellectual Property",
+            },
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const menuBtn = document.getElementById("menuBtn");
+            const navContainer = document.getElementById("navContainer");
+            const menuIcon = document.getElementById("menuIcon");
+            const langBtn = document.getElementById("langBtn");
+            const langMenu = document.getElementById("langMenu");
+            const currentFlag = document.getElementById("currentFlag");
+            const langOptions = langMenu.querySelectorAll("a");
+
+            function translatePage(lang) {
+                const elements = document.querySelectorAll("[data-key]");
+                elements.forEach((el) => {
+                    const key = el.getAttribute("data-key");
+                    if (translations[lang] && translations[lang][key]) {
+                        el.textContent = translations[lang][key];
+                    }
+                });
+                localStorage.setItem("preferredLang", lang);
+            }
+
+            menuBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const isHidden = navContainer.classList.contains("hidden");
+                if (isHidden) {
+                    navContainer.classList.remove("hidden");
+                    navContainer.classList.add("flex");
+                    menuIcon.textContent = "close";
+                    document.body.style.overflow = "hidden";
+                } else {
+                    closeMobileMenu();
+                }
+            });
+
+            function closeMobileMenu() {
+                navContainer.classList.add("hidden");
+                navContainer.classList.remove("flex");
+                menuIcon.textContent = "menu";
+                document.body.style.overflow = "";
+            }
+
+            langBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                langMenu.classList.toggle("hidden");
+            });
+
+            langOptions.forEach((option) => {
+                option.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const selectedLang = option.getAttribute("data-lang");
+                    currentFlag.src = option.querySelector("img").src;
+                    translatePage(selectedLang);
+                    langMenu.classList.add("hidden");
+                    if (window.innerWidth < 1024) closeMobileMenu();
+                });
+            });
+
+            document.addEventListener("click", (e) => {
+                if (!e.target.closest(".lang-dropdown")) langMenu.classList.add("hidden");
+                if (window.innerWidth < 1024 && !e.target.closest("#navContainer") && !e.target.closest("#menuBtn")) {
+                    closeMobileMenu();
+                }
+            });
+
+            const savedLang = localStorage.getItem("preferredLang") || "ES";
+            translatePage(savedLang);
+            currentFlag.src = savedLang === "EN" ? "https://flagcdn.com/w80/us.png" : "https://flagcdn.com/w80/co.png";
+        });
+    </script>
 </body>
 
 </html>
