@@ -59,13 +59,19 @@
                                 <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
                             </a>
                         </li>
+                        <li>
+                            <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
+                                <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </section>
         </div>
 
         <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-[11px] sm:text-xs text-gray-400 gap-4">
-            <p>© <time datetime="2026">2026</time> Santamarta Beachfront. <span data-i18n="foo_rights">Todos los derechos reservados.</span></p>
+            <p>© <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront. <span data-i18n="foo_rights">Todos los derechos reservados.</span></p>
+
             <nav aria-label="Enlaces legales">
                 <ul class="flex gap-8 list-none p-0">
                     <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_privacy">Políticas de Privacidad</a></li>
@@ -75,3 +81,10 @@
         </aside>
     </div>
 </footer>
+
+<script>
+    const yearElement = document.getElementById('current-year');
+    const currentYear = new Date().getFullYear();
+    yearElement.textContent = currentYear;
+    yearElement.setAttribute('datetime', currentYear);
+</script>
