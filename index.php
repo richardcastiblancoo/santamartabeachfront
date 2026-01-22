@@ -1,112 +1,15 @@
 <!DOCTYPE html>
-<html class="light" lang="es-CO">
+<html class="light" lang="en">
 
 <head>
-    <!-- los metadatos -->
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta name="description" content="Vive la experiencia frente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
-    <meta name="keywords" content="apartamentos Santa Marta,
-    alquiler de apartamentos en Santa Marta,
-    apartamentos turísticos Santa Marta,
-    apartamentos frente al mar Santa Marta,
-    apartamentos con vista al mar,
-    apartamentos en Rodadero,
-    apartamentos playa Salguero,
-    alojamiento en Santa Marta,
-    hospedaje Santa Marta,
-    hoteles en Santa Marta,
-    apartahoteles Santa Marta,
-    arriendo vacacional Santa Marta,
-    alquiler por días Santa Marta,
-    alquiler por noches Santa Marta,
-    vacaciones en Santa Marta,
-    turismo en Santa Marta,
-    Caribe colombiano,
-    playas de Santa Marta,
-    playa Salguero Santa Marta,
-    Rodadero Santa Marta,
-    apartamentos con piscina,
-    apartamentos familiares Santa Marta,
-    alojamiento económico Santa Marta,
-    alojamiento de lujo Santa Marta,
-    apartamentos amoblados Santa Marta,
-    apartamentos vacacionales Colombia,
-    turismo de playa Colombia,
-    viajar a Santa Marta,
-    donde hospedarse en Santa Marta,
-    mejores apartamentos Santa Marta,
-    reservas del mar,
-    reservas del mar Santa Marta,
-    reservas del mar apartamentos,
-    reservas del mar playa Salguero,
-    apartamento reservas del mar,
-    apartamento turístico Santa Marta,
-    alquiler vacaciones Caribe,
-    apartamentos cerca del mar,
-    apartamentos modernos Santa Marta,
-    apartamentos con aire acondicionado,
-    apartamentos con wifi Santa Marta,
-    apartamentos con parqueadero,
-    apartamentos con balcón,
-    apartamentos con vista panorámica,
-    apartamentos para parejas,
-    apartamentos para familias,
-    apartamentos para grupos,
-    apartamentos pet friendly Santa Marta,
-    alojamiento cerca del aeropuerto Santa Marta,
-    alojamiento cerca del centro histórico,
-    turismo Magdalena,
-    vacaciones en el Magdalena,
-    alojamiento playa privada,
-    apartamentos con seguridad 24 horas,
-    edificio reservas del mar,
-    hospedaje frente al mar Santa Marta,
-    turismo internacional Santa Marta,
-    viajes al Caribe colombiano,
-    playas del Caribe colombiano,
-    apartamentos para descanso,
-    alquiler temporal Santa Marta,
-    apartamentos cerca del Rodadero,
-    apartamentos en primera línea de playa,
-    alquiler de lujo Santa Marta,
-    apartamentos exclusivos Santa Marta,
-    turismo familiar Santa Marta,
-    alojamiento premium Santa Marta,
-    vacaciones inolvidables Santa Marta,
-    reservar apartamento Santa Marta
-    ">
-    <meta name="author" content="santamartabeachfront">
-    <meta name="robots" content="index, follow">
-    <!-- opengraph -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.santamartabeachfront.com">
-    <meta property="og:title" content="Santamartabeachfront">
-    <meta property="og:description" content="Vive la experiencia rente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
-    <meta property="og:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
-    <!-- opengraph twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://www.santamartabeachfront.com/">
-    <meta name="twitter:title" content="santamartabeachfront - Alquiler de Apartamentos">
-    <meta name="twitter:description" content="Vive la experiencia frente al mar lo mejores apartamentos en Santamartabeachfront te esperan. Despierta con el sonido de las olas.">
-    <meta name="twitter:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
-    <meta name="theme-color" content="#63b5f8ff">
-    <!-- titulo -->
-    <title>santamartabeachfront - Reserva del Mar</title>
-    <!-- links css y logo -->
-    <link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="canonical" href="https://santamartabeachfront.com">
+    <title>Santamartabeachfront - Beachfront Apartment Rentals</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <!-- los scripts -->
-    <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
-    <script defer src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -124,50 +27,37 @@
                         "DEFAULT": "0.25rem",
                         "lg": "0.5rem",
                         "xl": "0.75rem",
+                        "2xl": "1rem",
                         "full": "9999px"
                     },
                 },
             },
         }
     </script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('Service Worker registrado', reg))
-                    .catch(err => console.warn('Error al registrar SW', err));
-            });
+    <style type="text/tailwindcss">
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
         }
-    </script>
-
-    <!-- Google Tag Manager -->
-    <script>
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-WWFXJJRB');
-    </script>
-    <!-- End Google Tag Manager -->
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WWFXJJRB"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .lang-dropdown:hover .lang-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .lang-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.2s ease;
+        }
+    </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
-
-
-
+    <!-- header -->
     <style>
         :root {
             scroll-behavior: auto;
@@ -260,8 +150,8 @@
                         <span class="material-symbols-outlined text-sm">expand_more</span>
                     </button>
                     <ul class="hidden group-hover:block absolute top-full right-0 mt-1 w-32 bg-slate-900 border border-white/10 rounded-xl py-2 shadow-2xl">
-                        <li><button onclick="changeLanguage('ES')" class="w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ESPAÑOL</button></li>
-                        <li><button onclick="changeLanguage('EN')" class="w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</button></li>
+                        <li><a href="index.php" onclick="changeLanguage('ES')" class="w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ESPAÑOL</a></li>
+                        <li><a href="/lang/index.php" onclick="changeLanguage('EN')" class="w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
                     </ul>
                 </div>
                 <a href="/auth/login.php" class="h-9 px-6 bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest rounded-full flex items-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20">Inicio Sesión</a>
@@ -275,10 +165,10 @@
 
     <div id="mobile-menu" class="fixed inset-0 bg-slate-950/98 backdrop-blur-xl z-[100] flex flex-col md:hidden">
         <div class="flex justify-between items-center p-6 border-b border-white/10">
-            <div class="flex gap-4">
-                <button onclick="changeLanguage('ES')" class="text-white font-bold text-xs border border-white/20 px-3 py-1 rounded">ES</button>
-                <button onclick="changeLanguage('EN')" class="text-white/40 font-bold text-xs border border-white/10 px-3 py-1 rounded">EN</button>
-            </div>
+            <ul class="hidden group-hover:block absolute top-full right-0 mt-1 w-32 bg-slate-900 border border-white/10 rounded-xl py-2 shadow-2xl">
+                <li><a href="index.php" onclick="changeLanguage('ES')" class="w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ESPAÑOL</a></li>
+                <li><a href="/lang/index.php" onclick="changeLanguage('EN')" class="w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
+            </ul>
             <button onclick="toggleMobileMenu(false)" class="text-white">
                 <span class="material-symbols-outlined text-4xl">close</span>
             </button>
@@ -364,8 +254,6 @@
         </section>
     </main>
 
-
-
     <script>
         //---------------------------
         // formulario de whasapp
@@ -403,11 +291,107 @@
         });
     </script>
 
+    <!-- amenidades -->
+    <section class="py-24 px-6 md:px-20 bg-[#101c22]" id="nosotros" aria-labelledby="about-title">
+        <div class="max-w-7xl mx-auto">
+            <header class="text-center mb-16">
+                <span class="text-blue-500 font-bold uppercase tracking-[0.3em] text-xs block mb-3" data-i18n="am_tag">Amenidades</span>
+                <h2 id="about-title" class="text-3xl md:text-5xl font-bold text-white mb-6" data-i18n="am_title">
+                    ¿Por qué elegirnos?
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed" data-i18n="am_subtitle">
+                    Disfruta de una experiencia inigualable con instalaciones de clase mundial diseñadas para tu confort y bienestar frente al Caribe.
+                </p>
+            </header>
 
-    <!-- serviciosofresidos -->
-    <?php include 'include/serviciosofresidos.php'; ?>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
+                    <div class="size-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-5 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-3xl star-fill">beach_access</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card1_t">Salida directa al mar</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card1_d">Acceso privado a la playa. Sal de tu apartamento y pisa la arena dorada al instante.</p>
+                </article>
 
-    <!-- disponibilidad -->
+                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
+                    <div class="size-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-5 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-3xl star-fill">pool</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card2_t">Piscina de Adultos</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card2_d">Piscina principal diseñada para la relajación con vistas panorámicas al océano.</p>
+                </article>
+
+                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
+                    <div class="size-12 bg-yellow-500/10 rounded-xl flex items-center justify-center text-yellow-500 mb-5 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-3xl star-fill">child_care</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card3_t">Piscina de Niños</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card3_d">Un área segura, controlada y divertida para que los más pequeños disfruten al máximo.</p>
+                </article>
+
+                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
+                    <div class="size-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-5 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-3xl star-fill">hot_tub</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card4_t">Jacuzzi Premium</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card4_d">Zona de hidromasaje con vistas espectaculares, ideal para desconectar al atardecer.</p>
+                </article>
+
+                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
+                    <div class="size-12 bg-red-500/10 rounded-xl flex items-center justify-center text-red-400 mb-5 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-3xl star-fill">spa</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card5_t">Sauna y Turco</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card5_d">Circuito de bienestar con sauna finlandesa y baño turco de lujo para tu salud.</p>
+                </article>
+
+                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
+                    <div class="size-12 bg-orange-500/10 rounded-xl flex items-center justify-center text-orange-400 mb-5 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-3xl star-fill">fitness_center</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card6_t">Gimnasio 24/7</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card6_d">Equipamiento moderno de cardio y fuerza disponible a cualquier hora del día.</p>
+                </article>
+
+                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
+                    <div class="size-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-5 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-3xl star-fill">local_bar</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card7_t">Sky Bar</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card7_d">Bar en la azotea con coctelería premium y la mejor vista panorámica de la costa.</p>
+                </article>
+
+                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
+                    <div class="size-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-5 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-3xl star-fill">verified_user</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card8_t">Seguridad 24/7</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card8_d">Vigilancia profesional y control de acceso constante para tu total tranquilidad.</p>
+                </article>
+
+                <div class="sm:col-span-2 lg:col-span-3 xl:col-span-4 mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
+                        <span class="material-symbols-outlined text-blue-400">wifi</span>
+                        <span class="text-sm font-medium text-gray-300" data-i18n="am_wifi">WiFi Fibra Óptica</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
+                        <span class="material-symbols-outlined text-blue-400">directions_car</span>
+                        <span class="text-sm font-medium text-gray-300" data-i18n="am_parking">Parking Incluido</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
+                        <span class="material-symbols-outlined text-blue-400">outdoor_grill</span>
+                        <span class="text-sm font-medium text-gray-300" data-i18n="am_bbq">Zona BBQ</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
+                        <span class="material-symbols-outlined text-blue-400">sports_esports</span>
+                        <span class="text-sm font-medium text-gray-300" data-i18n="am_games">Salón de Juegos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- disponible? -->
     <section class="py-16 px-6 md:px-20 bg-[#101c22]" id="disponibilidad">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
 
@@ -476,14 +460,178 @@
     </section>
 
 
+
     <!-- apartamento -->
-    <?php include 'include/apartamentos.php'; ?>
+    <section class="py-20 bg-[#101c22]" id="apartamentos">
+        <div class="px-6 md:px-20 mb-10 text-center">
+            <h2 class="text-3xl font-bold text-white mb-2">Apartamentos Destacados</h2>
+            <p class="text-gray-400 text-sm">Nuestras mejores propiedades para una estancia inolvidable</p>
+        </div>
 
-    <!-- testimonios -->
-    <?php include 'include/testimonios.php'; ?>
+        <div class="flex flex-wrap justify-center gap-6 px-6 md:px-20">
+            <?php
+            // Ajustar ruta de conexión dependiendo de dónde se incluya
+            $ruta_conexion = 'auth/conexion_be.php';
+            if (!file_exists($ruta_conexion)) {
+                $ruta_conexion = '../auth/conexion_be.php';
+                if (!file_exists($ruta_conexion)) {
+                    $ruta_conexion = '../../auth/conexion_be.php';
+                }
+            }
 
-    <!-- ubicacion -->
-    <?php include 'include/ubicacion.php'; ?>
+            include_once $ruta_conexion;
+
+            $sql = "SELECT a.*, COALESCE(AVG(r.calificacion), 0) as promedio_calificacion 
+                FROM apartamentos a 
+                LEFT JOIN resenas r ON a.id = r.apartamento_id 
+                GROUP BY a.id 
+                ORDER BY a.fecha_creacion DESC LIMIT 6";
+            $result = $conn->query($sql);
+
+            if ($result && $result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+            ?>
+                    <article class="max-w-[360px] w-full bg-[#1e2930]/40 backdrop-blur-md rounded-3xl overflow-hidden shadow-2xl group border border-white/10 transition-all duration-300 hover:border-blue-500/30">
+
+                        <div class="relative h-60 overflow-hidden">
+                            <div class="absolute top-3 right-3 z-10 bg-[#101c22]/80 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold text-white flex items-center gap-1 border border-white/5">
+                                <span class="material-symbols-outlined text-yellow-500 text-xs" style="font-variation-settings: 'FILL' 1;">star</span> <?php echo number_format($row['promedio_calificacion'], 1); ?>
+                            </div>
+
+                            <?php
+                            // Usar ruta absoluta desde la raíz del servidor para evitar problemas con includes
+                            $ruta_web_img = '/assets/img/apartamentos/' . $row['imagen_principal'];
+                            ?>
+
+                            <div class="h-full w-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+                                style="background-image: url('<?php echo $ruta_web_img; ?>');">
+                            </div>
+
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#101c22]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
+                                <button class="w-full bg-blue-600 text-white font-bold py-2 rounded-xl text-xs uppercase tracking-wider shadow-lg">
+                                    Reservar Ahora
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1"><?php echo $row['ubicacion']; ?></div>
+                            <h3 class="text-xl font-bold text-white mb-2"><?php echo $row['titulo']; ?></h3>
+                            <p class="text-gray-400 text-xs mb-6 leading-relaxed line-clamp-2">
+                                <?php echo $row['descripcion']; ?>
+                            </p>
+
+                            <div class="grid grid-cols-3 gap-2 text-[10px] text-gray-400 mb-6">
+                                <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
+                                    <span class="material-symbols-outlined text-blue-400 text-lg">bed</span>
+                                    <span><?php echo $row['habitaciones']; ?> Hab</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
+                                    <span class="material-symbols-outlined text-blue-400 text-lg">shower</span>
+                                    <span><?php echo $row['banos']; ?> Baños</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
+                                    <span class="material-symbols-outlined text-blue-400 text-lg">groups</span>
+                                    <span><?php echo $row['capacidad']; ?> Pers</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-5 border-t border-white/5">
+                                <div>
+                                    <span class="text-xl font-black text-white">$<?php echo number_format($row['precio'], 0, ',', '.'); ?></span>
+                                    <span class="text-gray-400 text-[10px]">/noche</span>
+                                </div>
+                                <a href="/php/reserva-apartamento/apartamento.php?id=<?php echo $row['id']; ?>"
+                                    class="bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white px-4 py-2 rounded-lg font-bold text-[11px] transition-all">
+                                    Ver detalles
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+            <?php
+                }
+            } else {
+                echo '<p class="text-gray-400 w-full text-center">No hay apartamentos disponibles por el momento.</p>';
+            }
+            ?>
+        </div>
+    </section>
+
+
+
+    <!-- Testimonios -->
+    <section class="py-32 bg-[#101c22] overflow-hidden" aria-labelledby="testimonios-title">
+        <div class="max-w-7xl mx-auto mb-16 px-6">
+            <header class="text-center">
+                <span class="text-blue-500 font-bold uppercase tracking-[0.3em] text-xs block mb-3" data-i18n="test_tag">Comunidad</span>
+                <h2 id="testimonios-title" class="text-4xl md:text-5xl font-bold text-white mb-6" data-i18n="test_title">Experiencias Inolvidables</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed" data-i18n="test_desc">
+                    Únete a los cientos de viajeros que han confiado en <strong>Reserva del Mar</strong>.
+                </p>
+            </header>
+        </div>
+
+        <div class="relative w-full overflow-hidden mask-fade-edges">
+            <div class="animate-infinite-scroll gap-6" id="testimonial-track">
+                <div class="flex gap-6">
+                    <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
+                        <div>
+                            <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8" data-i18n="test_1_quote">"¡Simplemente espectacular! La vista desde el balcón es inigualable."</blockquote>
+                        </div>
+                        <footer class="flex items-center gap-4">
+                            <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=carolina" alt="Carolina">
+                            <div><cite class="not-italic font-bold text-white block">Carolina Méndez</cite><span class="text-xs text-blue-400 uppercase font-semibold">Bogotá, COL</span></div>
+                        </footer>
+                    </article>
+
+                    <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
+                        <div>
+                            <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8" data-i18n="test_2_quote">"La ubicación es envidiable. Estar a un paso de la playa Salguero lo es todo."</blockquote>
+                        </div>
+                        <footer class="flex items-center gap-4">
+                            <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=david" alt="David">
+                            <div><cite class="not-italic font-bold text-white block">David Johnson</cite><span class="text-xs text-blue-400 uppercase font-semibold">Miami, USA</span></div>
+                        </footer>
+                    </article>
+
+                    <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
+                        <div>
+                            <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8" data-i18n="test_3_quote">"El apartamento estaba impecable. Los atardeceres desde la piscina son de otro mundo."</blockquote>
+                        </div>
+                        <footer class="flex items-center gap-4">
+                            <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=lucia" alt="Lucía">
+                            <div><cite class="not-italic font-bold text-white block">Lucía Ferreyra</cite><span class="text-xs text-blue-400 uppercase font-semibold">Buenos Aires, ARG</span></div>
+                        </footer>
+                    </article>
+
+                    <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
+                        <div>
+                            <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8" data-i18n="test_4_quote">"Como nómada digital, el WiFi funcionó perfecto. Trabajar aquí fue increíble."</blockquote>
+                        </div>
+                        <footer class="flex items-center gap-4">
+                            <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=sofia" alt="Sofía">
+                            <div><cite class="not-italic font-bold text-white block">Sofía Ramírez</cite><span class="text-xs text-blue-400 uppercase font-semibold">Medellín, COL</span></div>
+                        </footer>
+                    </article>
+
+                    <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
+                        <div>
+                            <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8" data-i18n="test_5_quote">"Excelente atención del personal. Sin duda volveremos con toda mi familia."</blockquote>
+                        </div>
+                        <footer class="flex items-center gap-4">
+                            <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=roberto" alt="Roberto">
+                            <div><cite class="not-italic font-bold text-white block">Roberto Gómez</cite><span class="text-xs text-blue-400 uppercase font-semibold">Cali, COL</span></div>
+                        </footer>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- footer -->
     <footer class="bg-[#101c22] text-white pt-20 pb-10" id="contacto" itemscope itemtype="https://schema.org/Organization">
@@ -564,103 +712,9 @@
         </div>
     </footer>
 
-    <!-- ================= SCRIPT =============== -->
-    <script src="/js/main.js"></script>
-    <script src="sw.js"></script>
-
-    <script>
-        /**
-         * ==========================================
-         * CALENDARIO INTERACTIVO
-         * ==========================================
-         */
-        let currentStartMonth = 0; // 0 = Enero
-        const year = 2026;
-        const monthNames = [
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre",
-        ];
-
-        function renderCalendar() {
-            const container = document.getElementById("calendar-container");
-            container.style.opacity = 0;
-
-            setTimeout(() => {
-                updateMonth(currentStartMonth, "month1-name", "grid-month1");
-                updateMonth(currentStartMonth + 1, "month2-name", "grid-month2");
-                container.style.opacity = 1;
-            }, 200);
-        }
-
-        function updateMonth(mIndex, nameId, gridId) {
-            // Manejo de desbordamiento de meses (ej: Diciembre + 1)
-            const displayMonth = mIndex % 12;
-            const displayYear = year + Math.floor(mIndex / 12);
-
-            document.getElementById(nameId).innerText =
-                `${monthNames[displayMonth]} ${displayYear}`;
-
-            const grid = document.getElementById(gridId);
-            grid.innerHTML = `
-            <p class="text-gray-500 text-xs font-bold">D</p>
-            <p class="text-gray-500 text-xs font-bold">L</p>
-            <p class="text-gray-500 text-xs font-bold">M</p>
-            <p class="text-gray-500 text-xs font-bold">M</p>
-            <p class="text-gray-500 text-xs font-bold">J</p>
-            <p class="text-gray-500 text-xs font-bold">V</p>
-            <p class="text-gray-500 text-xs font-bold">S</p>
-        `;
-
-            const firstDay = new Date(displayYear, displayMonth, 1).getDay();
-            const daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
-
-            // Celdas vacías iniciales
-            for (let i = 0; i < firstDay; i++) {
-                grid.innerHTML += "<span></span>";
-            }
-
-            // Renderizado de días
-            for (let d = 1; d <= daysInMonth; d++) {
-                // Ejemplo visual de estados (puedes adaptar esta lógica a tus datos reales)
-                if (displayMonth === 0 && d === 5) {
-                    grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto rounded-full bg-blue-600 text-white text-sm font-bold shadow-md shadow-blue-500/40">${d}</span>`;
-                } else if (displayMonth === 0 && (d === 6 || d === 7)) {
-                    grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto bg-blue-500/10 text-blue-400 text-sm font-medium rounded-full">${d}</span>`;
-                } else if (displayMonth === 0 && d >= 8 && d <= 10) {
-                    grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto text-sm text-gray-400 line-through">${d}</span>`;
-                } else {
-                    grid.innerHTML += `<span class="flex items-center justify-center h-8 w-8 mx-auto text-sm text-gray-300 hover:bg-white/5 rounded-full cursor-pointer transition-colors">${d}</span>`;
-                }
-            }
-        }
-
-        function nextMonth() {
-            if (currentStartMonth < 10) {
-                // Límite hasta Nov-Dic
-                currentStartMonth++;
-                renderCalendar();
-            }
-        }
-
-        function prevMonth() {
-            if (currentStartMonth > 0) {
-                currentStartMonth--;
-                renderCalendar();
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", renderCalendar);
-    </script>
+    <!-- Footer -->
+   
 
 </body>
+
 </html>
