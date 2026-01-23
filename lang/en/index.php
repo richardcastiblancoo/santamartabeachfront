@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="es-CO">
+<html class="light" lang="en">
 
 <head>
     <!-- metadata -->
@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link rel="manifest" href="manifest.json">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <!-- icono redes sociales -->
@@ -23,7 +24,6 @@
     <!-- mapa mundi -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- scripts -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -68,10 +68,60 @@
             transform: translateY(10px);
             transition: all 0.2s ease;
         }
+
+        /* mapa */
+           .leaflet-tile-container {
+        filter: contrast(1.05) brightness(0.9);
+    }
+
+    .leaflet-popup-content-wrapper {
+        background: #101c22 !important;
+        color: white !important;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .leaflet-popup-tip {
+        background: #101c22 !important;
+    }
+
+    /* testimonio */
+    /* Styles for infinite scroll */
+        @keyframes infinite-scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+
+            /* Scrolls half (the original content) */
+        }
+
+        .animate-infinite-scroll {
+            display: flex;
+            width: max-content;
+            /* Critical to prevent clipping */
+            animation: infinite-scroll 40s linear infinite;
+        }
+
+        /* Pause on hover */
+        .animate-infinite-scroll:hover {
+            animation-play-state: paused;
+        }
+
+        /* Edge gradient for smooth entry/exit of cards */
+        .mask-fade-edges {
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        }
     </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
+
+
     <!-- header -->
     <style>
         :root {
@@ -131,18 +181,16 @@
             filter: invert(1) opacity(0.5);
         }
 
-        /* --- NUEVOS ESTILOS PARA IDIOMAS --- */
+        /* --- NEW LANGUAGE STYLES --- */
         .lang-dropdown {
             display: none;
-            /* Oculto por defecto */
         }
 
         .lang-dropdown.active {
             display: block;
-            /* Se muestra solo cuando tiene la clase active */
         }
     </style>
-    <!-- header-->
+
     <header id="main-header" class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-10 transition-all duration-300">
         <div class="flex items-center gap-3">
             <a href="/" class="flex items-center gap-3 group">
@@ -155,24 +203,24 @@
 
         <nav class="hidden md:flex items-center gap-8">
             <ul class="flex items-center gap-6 list-none">
-                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#apartamentos">Apartamentos</a></li>
-                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#ubicacion">Ubicación</a></li>
-                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="/php/gastronomia.php">guia gastronomicas</a></li>
+                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#apartamentos">Apartments</a></li>
+                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#ubicacion">Location</a></li>
+                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="/php/gastronomia.php">Dining Guide</a></li>
             </ul>
 
             <div class="flex items-center gap-4 border-l border-white/20 pl-6">
                 <div class="relative">
                     <button id="langBtn" onclick="toggleLang(event)" class="flex items-center gap-2 text-white text-[11px] font-bold uppercase tracking-widest h-9 px-3 rounded-lg hover:bg-white/10 transition-colors">
-                        <img class="w-4 h-4 rounded-full object-cover" src="https://flagcdn.com/w40/co.png" alt="ES">
-                        <span>ES</span>
+                        <img class="w-4 h-4 rounded-full object-cover" src="https://flagcdn.com/w40/us.png" alt="EN">
+                        <span>EN</span>
                         <span class="material-symbols-outlined text-sm">expand_more</span>
                     </button>
                     <ul id="langMenu" class="lang-dropdown absolute top-full right-0 mt-1 w-32 bg-slate-900 border border-white/10 rounded-xl py-2 shadow-2xl">
-                        <li><a href="index.php" onclick="changeLanguage('ES')" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ESPAÑOL</a></li>
-                        <li><a href="/lang/en/index.php" onclick="changeLanguage('EN')" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
+                        <li><a href="index.php" onclick="changeLanguage('ES')" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">SPANISH</a></li>
+                        <li><a href="/lang/index.php" onclick="changeLanguage('EN')" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
                     </ul>
                 </div>
-                <a href="/auth/login.php" class="h-9 px-6 bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest rounded-full flex items-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20">Inicio Sesión</a>
+                <a href="/auth/login.php" class="h-9 px-6 bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest rounded-full flex items-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20">Login</a>
             </div>
         </nav>
 
@@ -185,11 +233,11 @@
         <div class="flex justify-between items-center p-6 border-b border-white/10">
             <div class="relative">
                 <button onclick="toggleLangMobile(event)" class="flex items-center gap-2 text-white text-[11px] font-bold">
-                    <img class="w-4 h-4 rounded-full" src="https://flagcdn.com/w40/co.png" alt="ES"> ES
+                    <img class="w-4 h-4 rounded-full" src="https://flagcdn.com/w40/us.png" alt="EN"> EN
                 </button>
                 <ul id="langMenuMobile" class="lang-dropdown absolute left-0 mt-2 w-32 bg-slate-900 border border-white/10 rounded-xl py-2">
-                    <li><a href="index.php" class="block px-4 py-2 text-white text-[11px]">ESPAÑOL</a></li>
-                    <li><a href="/lang/en/index.php" class="block px-4 py-2 text-white text-[11px]">ENGLISH</a></li>
+                    <li><a href="index.php" class="block px-4 py-2 text-white text-[11px]">SPANISH</a></li>
+                    <li><a href="/lang/index.php" class="block px-4 py-2 text-white text-[11px]">ENGLISH</a></li>
                 </ul>
             </div>
             <button onclick="toggleMobileMenu(false)" class="text-white">
@@ -197,10 +245,10 @@
             </button>
         </div>
         <nav class="flex flex-col items-center justify-center flex-grow gap-8">
-            <a href="#apartamentos" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartamentos</a>
-            <a href="#ubicacion" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Ubicación</a>
-            <a href="/php/gastronomia.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">guia gastronomicas</a>
-            <a href="/auth/login.php" class="mt-4 px-12 py-4 bg-blue-600 text-white rounded-full font-black uppercase tracking-widest">Inicio Sesión</a>
+            <a href="#apartamentos" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartments</a>
+            <a href="#ubicacion" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Location</a>
+            <a href="/php/gastronomia.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Dining Guide</a>
+            <a href="/auth/login.php" class="mt-4 px-12 py-4 bg-blue-600 text-white rounded-full font-black uppercase tracking-widest">Login</a>
         </nav>
     </div>
 
@@ -218,11 +266,11 @@
                     <h2 class="hero-title font-black text-white">
                         <span id="typewriter"></span><span class="cursor"></span><br>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-                            Santa Marta frente al mar
+                            Santa Marta beachfront
                         </span>
                     </h2>
                     <p class="text-white text-sm md:text-base mt-6 max-w-sm leading-relaxed">
-                        Exclusividad y confort en los mejores apartamentos de la costa caribeña.
+                        Exclusivity and comfort in the best apartments on the Caribbean coast.
                     </p>
                 </div>
 
@@ -230,13 +278,13 @@
                     <div class="glass-booking w-full max-w-md p-8 rounded-3xl shadow-2xl">
                         <h3 class="text-white text-lg font-bold mb-6 flex items-center gap-2">
                             <span class="material-symbols-outlined text-blue-400">event_available</span>
-                            Reserva tu estancia
+                            Book your stay
                         </h3>
 
                         <form id="reservaForm" class="space-y-4">
                             <div class="space-y-1">
-                                <label for="full-name" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Nombre Completo</label>
-                                <input id="full-name" type="text" placeholder="Tu nombre" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
+                                <label for="full-name" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Full Name</label>
+                                <input id="full-name" type="text" placeholder="Your name" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -245,31 +293,31 @@
                                     <input id="whatsapp" type="tel" placeholder="+57..." class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
                                 </div>
                                 <div class="space-y-1">
-                                    <label for="email" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Correo</label>
-                                    <input id="email" type="email" placeholder="tu@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
+                                    <label for="email" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Email</label>
+                                    <input id="email" type="email" placeholder="you@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
                                 </div>
                             </div>
 
                             <div class="space-y-1">
-                                <label for="accommodation" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Alojamiento</label>
+                                <label for="accommodation" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Accommodation</label>
                                 <select id="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-slate-800 border border-white/20 appearance-none">
-                                    <option value="Reserva del Mar - Apartamento 1730">Reserva del Mar - Apartamento 1730</option>
+                                    <option value="Reserva del Mar - Apartamento 1730">Reserva del Mar - Apartment 1730</option>
                                 </select>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="space-y-1">
-                                    <label for="check-in" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Entrada</label>
+                                    <label for="check-in" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Check-in</label>
                                     <input id="check-in" type="date" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
                                 </div>
                                 <div class="space-y-1">
-                                    <label for="check-out" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Salida</label>
+                                    <label for="check-out" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Check-out</label>
                                     <input id="check-out" type="date" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
                                 </div>
                             </div>
 
                             <button type="submit" class="w-full h-14 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest text-[11px] rounded-xl transition-all shadow-xl shadow-blue-600/30 mt-4">
-                                Enviar a WhatsApp
+                                Send to WhatsApp
                             </button>
                         </form>
                     </div>
@@ -279,7 +327,7 @@
     </main>
 
     <script>
-        // --- FUNCIONES DE IDIOMA ---
+        // --- LANGUAGE FUNCTIONS ---
         function toggleLang(event) {
             event.stopPropagation();
             document.getElementById('langMenu').classList.toggle('active');
@@ -290,7 +338,6 @@
             document.getElementById('langMenuMobile').classList.toggle('active');
         }
 
-        // Cerrar menús al hacer clic fuera
         document.addEventListener('click', function(e) {
             const menu = document.getElementById('langMenu');
             const menuMobile = document.getElementById('langMenuMobile');
@@ -298,14 +345,14 @@
             if (!e.target.closest('#langMenuMobile')) menuMobile.classList.remove('active');
         });
 
-        // --- MENÚ MÓVIL ---
+        // --- MOBILE MENU ---
         function toggleMobileMenu(open) {
             const menu = document.getElementById('mobile-menu');
             if (open) menu.classList.add('active');
             else menu.classList.remove('active');
         }
 
-        // --- FORMULARIO WHATSAPP ---
+        // --- WHATSAPP FORM ---
         document.getElementById('reservaForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const nombre = document.getElementById('full-name').value;
@@ -316,22 +363,22 @@
             const salida = document.getElementById('check-out').value;
 
             const telefonoVentas = "573183813381";
-            const mensaje = `*Nueva Solicitud de Reserva*%0A` +
+            const mensaje = `*New Booking Request*%0A` +
                 `---------------------------------%0A` +
-                `*Nombre:* ${nombre}%0A` +
+                `*Name:* ${nombre}%0A` +
                 `*WhatsApp:* ${tel}%0A` +
-                `*Correo:* ${email}%0A` +
-                `*Alojamiento:* ${alojamiento}%0A` +
-                `*Fecha Entrada:* ${entrada}%0A` +
-                `*Fecha Salida:* ${salida}%0A` +
+                `*Email:* ${email}%0A` +
+                `*Accommodation:* ${alojamiento}%0A` +
+                `*Check-in:* ${entrada}%0A` +
+                `*Check-out:* ${salida}%0A` +
                 `---------------------------------%0A` +
-                `¡Hola! Me gustaría confirmar disponibilidad.`;
+                `Hello! I would like to confirm availability.`;
 
             window.open(`https://wa.me/${telefonoVentas}?text=${mensaje}`, '_blank');
         });
 
-        // --- EFECTO TYPEWRITER (Ejemplo básico) ---
-        const text = "Disfruta de";
+        // --- TYPEWRITER EFFECT ---
+        const text = "Enjoy";
         let i = 0;
 
         function type() {
@@ -348,12 +395,12 @@
     <section class="py-24 px-6 md:px-20 bg-[#101c22]" id="nosotros" aria-labelledby="about-title">
         <div class="max-w-7xl mx-auto">
             <header class="text-center mb-16">
-                <span class="text-blue-500 font-bold uppercase tracking-[0.3em] text-xs block mb-3" data-i18n="am_tag">Amenidades</span>
+                <span class="text-blue-500 font-bold uppercase tracking-[0.3em] text-xs block mb-3" data-i18n="am_tag">Amenities</span>
                 <h2 id="about-title" class="text-3xl md:text-5xl font-bold text-white mb-6" data-i18n="am_title">
-                    ¿Por qué elegirnos?
+                    Why choose us?
                 </h2>
                 <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed" data-i18n="am_subtitle">
-                    Disfruta de una experiencia inigualable con instalaciones de clase mundial diseñadas para tu confort y bienestar frente al Caribe.
+                    Enjoy an unparalleled experience with world-class facilities designed for your comfort and well-being facing the Caribbean.
                 </p>
             </header>
 
@@ -362,48 +409,48 @@
                     <div class="size-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-5 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-3xl star-fill">beach_access</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card1_t">Salida directa al mar</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card1_d">Acceso privado a la playa. Sal de tu apartamento y pisa la arena dorada al instante.</p>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card1_t">Direct Beach Access</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card1_d">Private access to the beach. Walk out of your apartment and step onto golden sand instantly.</p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
                     <div class="size-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-5 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-3xl star-fill">pool</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card2_t">Piscina de Adultos</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card2_d">Piscina principal diseñada para la relajación con vistas panorámicas al océano.</p>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card2_t">Adults' Pool</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card2_d">Main pool designed for relaxation with panoramic ocean views.</p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
                     <div class="size-12 bg-yellow-500/10 rounded-xl flex items-center justify-center text-yellow-500 mb-5 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-3xl star-fill">child_care</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card3_t">Piscina de Niños</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card3_d">Un área segura, controlada y divertida para que los más pequeños disfruten al máximo.</p>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card3_t">Kids' Pool</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card3_d">A safe, controlled, and fun area for the little ones to enjoy to the fullest.</p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
                     <div class="size-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-5 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-3xl star-fill">hot_tub</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card4_t">Jacuzzi Premium</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card4_d">Zona de hidromasaje con vistas espectaculares, ideal para desconectar al atardecer.</p>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card4_t">Premium Jacuzzi</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card4_d">Hydromassage area with spectacular views, ideal for disconnecting at sunset.</p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
                     <div class="size-12 bg-red-500/10 rounded-xl flex items-center justify-center text-red-400 mb-5 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-3xl star-fill">spa</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card5_t">Sauna y Turco</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card5_d">Circuito de bienestar con sauna finlandesa y baño turco de lujo para tu salud.</p>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card5_t">Sauna & Steam Room</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card5_d">Wellness circuit featuring a Finnish sauna and luxury steam bath for your health.</p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
                     <div class="size-12 bg-orange-500/10 rounded-xl flex items-center justify-center text-orange-400 mb-5 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-3xl star-fill">fitness_center</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card6_t">Gimnasio 24/7</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card6_d">Equipamiento moderno de cardio y fuerza disponible a cualquier hora del día.</p>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card6_t">24/7 Fitness Center</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card6_d">Modern cardio and strength equipment available at any time of the day.</p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
@@ -411,69 +458,69 @@
                         <span class="material-symbols-outlined text-3xl star-fill">local_bar</span>
                     </div>
                     <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card7_t">Sky Bar</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card7_d">Bar en la azotea con coctelería premium y la mejor vista panorámica de la costa.</p>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card7_d">Rooftop bar with premium cocktails and the best panoramic coastal views.</p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
                     <div class="size-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-5 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-3xl star-fill">verified_user</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card8_t">Seguridad 24/7</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card8_d">Vigilancia profesional y control de acceso constante para tu total tranquilidad.</p>
+                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card8_t">24/7 Security</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card8_d">Professional surveillance and constant access control for your total peace of mind.</p>
                 </article>
 
                 <div class="sm:col-span-2 lg:col-span-3 xl:col-span-4 mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
                         <span class="material-symbols-outlined text-blue-400">wifi</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_wifi">WiFi Fibra Óptica</span>
+                        <span class="text-sm font-medium text-gray-300" data-i18n="am_wifi">Fiber Optic WiFi</span>
                     </div>
                     <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
                         <span class="material-symbols-outlined text-blue-400">directions_car</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_parking">Parking Incluido</span>
+                        <span class="text-sm font-medium text-gray-300" data-i18n="am_parking">Parking Included</span>
                     </div>
                     <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
                         <span class="material-symbols-outlined text-blue-400">outdoor_grill</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_bbq">Zona BBQ</span>
+                        <span class="text-sm font-medium text-gray-300" data-i18n="am_bbq">BBQ Area</span>
                     </div>
                     <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
                         <span class="material-symbols-outlined text-blue-400">sports_esports</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_games">Salón de Juegos</span>
+                        <span class="text-sm font-medium text-gray-300" data-i18n="am_games">Game Room</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- disponible? -->
+    <!-- fecha -->
     <section class="py-16 px-6 md:px-20 bg-[#101c22]" id="disponibilidad">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
 
             <div class="flex-1 space-y-6">
-                <span class="text-blue-400 font-bold uppercase tracking-wider text-sm">Planifica tu viaje</span>
+                <span class="text-blue-400 font-bold uppercase tracking-wider text-sm">Plan your trip</span>
                 <h2 class="text-3xl md:text-5xl font-bold text-white leading-tight">
-                    Consulta disponibilidad en tiempo real
+                    Check real-time availability
                 </h2>
                 <p class="text-gray-400 text-lg">
-                    Nuestros apartamentos son muy solicitados. Revisa el calendario para asegurar tus fechas ideales.
+                    Our apartments are highly requested. Check the calendar to secure your ideal dates.
                 </p>
 
                 <div class="flex flex-col gap-4 pt-4">
                     <div class="flex items-center gap-3">
                         <div class="size-3 rounded-full bg-blue-600"></div>
-                        <span class="text-sm font-medium text-gray-300">Fechas Disponibles</span>
+                        <span class="text-sm font-medium text-gray-300">Available Dates</span>
                     </div>
                     <div class="flex items-center gap-3">
                         <div class="size-3 rounded-full bg-gray-700"></div>
-                        <span class="text-sm font-medium text-gray-300">No Disponible / Pasado</span>
+                        <span class="text-sm font-medium text-gray-300">Unavailable / Past</span>
                     </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-6">
-                    <a href="https://wa.me/573183813381?text=Hola!%20Me%20gustaría%20consultar%20disponibilidad%20para%20una%20reserva."
+                    <a href="https://wa.me/573183813381?text=Hello!%20I%20would%20like%20to%20check%20availability%20for%20a%20reservation."
                         target="_blank"
                         class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-600/20 active:scale-95">
                         <span class="material-symbols-outlined">calendar_add_on</span>
-                        Reservar por WhatsApp
+                        Book via WhatsApp
                     </a>
                 </div>
             </div>
@@ -516,20 +563,16 @@
         </div>
     </section>
 
-
-
-
-
     <!-- apartamento -->
     <section class="py-20 bg-[#101c22]" id="apartamentos">
         <div class="px-6 md:px-20 mb-10 text-center">
-            <h2 class="text-3xl font-bold text-white mb-2">Apartamentos Destacados</h2>
-            <p class="text-gray-400 text-sm">Nuestras mejores propiedades para una estancia inolvidable</p>
+            <h2 class="text-3xl font-bold text-white mb-2">Featured Apartments</h2>
+            <p class="text-gray-400 text-sm">Our best properties for an unforgettable stay</p>
         </div>
 
         <div class="flex flex-wrap justify-center gap-6 px-6 md:px-20">
             <?php
-            // Ajustar ruta de conexión dependiendo de dónde se incluya
+            // Adjust connection path depending on where it's included
             $ruta_conexion = 'auth/conexion_be.php';
             if (!file_exists($ruta_conexion)) {
                 $ruta_conexion = '../auth/conexion_be.php';
@@ -558,7 +601,7 @@
                             </div>
 
                             <?php
-                            // Usar ruta absoluta desde la raíz del servidor para evitar problemas con includes
+                            // Absolute path from server root to avoid include issues
                             $ruta_web_img = '/assets/img/apartamentos/' . $row['imagen_principal'];
                             ?>
 
@@ -568,7 +611,7 @@
 
                             <div class="absolute inset-0 bg-gradient-to-t from-[#101c22]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
                                 <button class="w-full bg-blue-600 text-white font-bold py-2 rounded-xl text-xs uppercase tracking-wider shadow-lg">
-                                    Reservar Ahora
+                                    Book Now
                                 </button>
                             </div>
                         </div>
@@ -583,26 +626,26 @@
                             <div class="grid grid-cols-3 gap-2 text-[10px] text-gray-400 mb-6">
                                 <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
                                     <span class="material-symbols-outlined text-blue-400 text-lg">bed</span>
-                                    <span><?php echo $row['habitaciones']; ?> Hab</span>
+                                    <span><?php echo $row['habitaciones']; ?> Beds</span>
                                 </div>
                                 <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
                                     <span class="material-symbols-outlined text-blue-400 text-lg">shower</span>
-                                    <span><?php echo $row['banos']; ?> Baños</span>
+                                    <span><?php echo $row['banos']; ?> Baths</span>
                                 </div>
                                 <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
                                     <span class="material-symbols-outlined text-blue-400 text-lg">groups</span>
-                                    <span><?php echo $row['capacidad']; ?> Pers</span>
+                                    <span><?php echo $row['capacidad']; ?> Guests</span>
                                 </div>
                             </div>
 
                             <div class="flex items-center justify-between pt-5 border-t border-white/5">
                                 <div>
                                     <span class="text-xl font-black text-white">$<?php echo number_format($row['precio'], 0, ',', '.'); ?></span>
-                                    <span class="text-gray-400 text-[10px]">/noche</span>
+                                    <span class="text-gray-400 text-[10px]">/night</span>
                                 </div>
                                 <a href="/php/reserva-apartamento/apartamento.php?id=<?php echo $row['id']; ?>"
                                     class="bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white px-4 py-2 rounded-lg font-bold text-[11px] transition-all">
-                                    Ver detalles
+                                    View details
                                 </a>
                             </div>
                         </div>
@@ -610,55 +653,20 @@
             <?php
                 }
             } else {
-                echo '<p class="text-gray-400 w-full text-center">No hay apartamentos disponibles por el momento.</p>';
+                echo '<p class="text-gray-400 w-full text-center">No apartments available at the moment.</p>';
             }
             ?>
         </div>
     </section>
 
-
-
-    <!-- Testimonios -->
-    <style>
-        /* Estilos para el scroll infinito */
-        @keyframes infinite-scroll {
-            from {
-                transform: translateX(0);
-            }
-
-            to {
-                transform: translateX(-50%);
-            }
-
-            /* Se desplaza la mitad (el contenido original) */
-        }
-
-        .animate-infinite-scroll {
-            display: flex;
-            width: max-content;
-            /* Importante para que no se corte */
-            animation: infinite-scroll 40s linear infinite;
-        }
-
-        /* Pausar al pasar el mouse */
-        .animate-infinite-scroll:hover {
-            animation-play-state: paused;
-        }
-
-        /* Degradado en los bordes para que las tarjetas aparezcan/desaparezcan suavemente */
-        .mask-fade-edges {
-            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-        }
-    </style>
-
+    <!-- testimonio -->
     <section class="py-32 bg-[#101c22] overflow-hidden" aria-labelledby="testimonios-title">
         <div class="max-w-7xl mx-auto mb-16 px-6">
             <header class="text-center">
-                <span class="text-blue-500 font-bold uppercase tracking-[0.3em] text-xs block mb-3" data-i18n="test_tag">Comunidad</span>
-                <h2 id="testimonios-title" class="text-4xl md:text-5xl font-bold text-white mb-6" data-i18n="test_title">Experiencias Inolvidables</h2>
+                <span class="text-blue-500 font-bold uppercase tracking-[0.3em] text-xs block mb-3" data-i18n="test_tag">Community</span>
+                <h2 id="testimonios-title" class="text-4xl md:text-5xl font-bold text-white mb-6" data-i18n="test_title">Unforgettable Experiences</h2>
                 <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed" data-i18n="test_desc">
-                    Únete a los cientos de viajeros que han confiado en <strong>Reserva del Mar</strong>.
+                    Join the hundreds of travelers who have trusted <strong>Reserva del Mar</strong>.
                 </p>
             </header>
         </div>
@@ -670,7 +678,7 @@
                     <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
                         <div>
                             <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"¡Simplemente espectacular! La vista desde el balcón es inigualable."</blockquote>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"Simply spectacular! The view from the balcony is unmatched."</blockquote>
                         </div>
                         <footer class="flex items-center gap-4">
                             <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=carolina" alt="Carolina">
@@ -681,7 +689,7 @@
                     <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
                         <div>
                             <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"La ubicación es envidiable. Estar a un paso de la playa Salguero lo es todo."</blockquote>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"The location is enviable. Being just steps away from Salguero Beach is everything."</blockquote>
                         </div>
                         <footer class="flex items-center gap-4">
                             <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=david" alt="David">
@@ -692,7 +700,7 @@
                     <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
                         <div>
                             <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"El apartamento estaba impecable. Los atardeceres desde la piscina son de otro mundo."</blockquote>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"The apartment was spotless. The sunsets from the pool are out of this world."</blockquote>
                         </div>
                         <footer class="flex items-center gap-4">
                             <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=lucia" alt="Lucía">
@@ -703,7 +711,7 @@
                     <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
                         <div>
                             <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"Como nómada digital, el WiFi funcionó perfecto. Trabajar aquí fue increíble."</blockquote>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"As a digital nomad, the WiFi worked perfectly. Working here was incredible."</blockquote>
                         </div>
                         <footer class="flex items-center gap-4">
                             <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=sofia" alt="Sofía">
@@ -716,7 +724,7 @@
                     <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
                         <div>
                             <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"¡Simplemente espectacular! La vista desde el balcón es inigualable."</blockquote>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"Simply spectacular! The view from the balcony is unmatched."</blockquote>
                         </div>
                         <footer class="flex items-center gap-4">
                             <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=carolina" alt="Carolina">
@@ -727,7 +735,7 @@
                     <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
                         <div>
                             <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"La ubicación es envidiable. Estar a un paso de la playa Salguero lo es todo."</blockquote>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"The location is enviable. Being just steps away from Salguero Beach is everything."</blockquote>
                         </div>
                         <footer class="flex items-center gap-4">
                             <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=david" alt="David">
@@ -738,7 +746,7 @@
                     <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
                         <div>
                             <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"El apartamento estaba impecable. Los atardeceres desde la piscina son de otro mundo."</blockquote>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"The apartment was spotless. The sunsets from the pool are out of this world."</blockquote>
                         </div>
                         <footer class="flex items-center gap-4">
                             <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=lucia" alt="Lucía">
@@ -749,7 +757,7 @@
                     <article class="w-[350px] md:w-[400px] bg-[#1e2930]/30 p-8 rounded-3xl border border-white/5 backdrop-blur-md flex flex-col justify-between shrink-0">
                         <div>
                             <div class="flex text-yellow-500 mb-5"><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span><span class="material-symbols-outlined">star</span></div>
-                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"Como nómada digital, el WiFi funcionó perfecto. Trabajar aquí fue increíble."</blockquote>
+                            <blockquote class="text-gray-200 text-lg italic leading-relaxed mb-8">"As a digital nomad, the WiFi worked perfectly. Working here was incredible."</blockquote>
                         </div>
                         <footer class="flex items-center gap-4">
                             <img class="size-12 rounded-full border-2 border-blue-500/20 object-cover" src="https://i.pravatar.cc/150?u=sofia" alt="Sofía">
@@ -757,33 +765,31 @@
                         </footer>
                     </article>
                 </div>
-
             </div>
         </div>
     </section>
 
-
-    <!-- mapa mundi -->
+    <!-- ubicacion -->
     <section class="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] min-h-[500px] bg-[#101c22] overflow-hidden" id="ubicacion">
 
         <article class="p-10 lg:p-16 flex flex-col justify-center order-2 lg:order-1">
             <header>
                 <div class="flex items-center gap-2 text-blue-400 font-bold mb-6">
                     <span class="material-symbols-outlined text-3xl">location_on</span>
-                    <span class="uppercase tracking-[0.3em] text-sm">Ubicación Privilegiada</span>
+                    <span class="uppercase tracking-[0.3em] text-sm">Prime Location</span>
                 </div>
                 <h2 class="text-3xl lg:text-5xl font-bold mb-8 text-white leading-tight">
-                    Playa Salguero: <br><span class="text-blue-400">El corazón de Santa Marta</span>
+                    Playa Salguero: <br><span class="text-blue-400">The heart of Santa Marta</span>
                 </h2>
             </header>
 
             <p class="text-gray-400 mb-10 text-lg leading-relaxed max-w-xl">
-                Descubre la tranquilidad de <strong>Reserva del Mar</strong>, ubicado en la zona más exclusiva y con acceso directo al mar.
+                Discover the tranquility of <strong>Reserva del Mar</strong>, located in the most exclusive area with direct access to the sea.
             </p>
 
             <address class="not-italic mb-10 space-y-3 border-l-4 border-blue-600 pl-6 py-2 bg-blue-900/10 rounded-r-xl max-w-md">
-                <p class="text-xl font-black text-white">Reserva del Mar - Torre 4</p>
-                <p class="text-lg text-slate-300">Apartamento 1730</p>
+                <p class="text-xl font-black text-white">Reserva del Mar - Tower 4</p>
+                <p class="text-lg text-slate-300">Apartment 1730</p>
                 <p class="text-sm text-slate-400 uppercase tracking-[0.2em]">Santa Marta, Colombia</p>
             </address>
 
@@ -792,24 +798,24 @@
                     <div class="size-10 shrink-0 rounded-full bg-cyan-900/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-xl">beach_access</span>
                     </div>
-                    <span class="text-gray-300 font-medium text-base">A solo 1 minuto de la playa</span>
+                    <span class="text-gray-300 font-medium text-base">Just 1 minute from the beach</span>
                 </li>
                 <li class="flex items-center gap-4 group">
                     <div class="size-10 shrink-0 rounded-full bg-green-900/30 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-xl">flight</span>
                     </div>
-                    <span class="text-gray-300 font-medium text-base">15 min del Aeropuerto Internacional</span>
+                    <span class="text-gray-300 font-medium text-base">15 min from the International Airport</span>
                 </li>
                 <li class="flex items-center gap-4 group">
                     <div class="size-10 shrink-0 rounded-full bg-blue-900/30 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-xl">restaurant</span>
                     </div>
-                    <span class="text-gray-300 font-medium text-base">5 min de la Zona Gastronómica</span>
+                    <span class="text-gray-300 font-medium text-base">5 min from the Dining District</span>
                 </li>
             </ul>
 
             <a href="https://www.google.com/maps/search/?api=1&query=11.1911119,-74.2311344" target="_blank" class="self-start px-10 py-4 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/20 active:scale-95 text-center">
-                ¿Cómo llegar? (Google Maps)
+                How to get there? (Google Maps)
             </a>
         </article>
 
@@ -822,11 +828,99 @@
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
                     </span>
-                    <p id="map-status" class="text-[9px] font-black text-white uppercase tracking-[0.2em] whitespace-nowrap">Iniciando satélite...</p>
+                    <p id="map-status" class="text-[9px] font-black text-white uppercase tracking-[0.2em] whitespace-nowrap">Initializing satellite...</p>
                 </div>
             </div>
         </aside>
     </section>
+
+    <!-- footer -->
+    <footer class="bg-[#101c22] text-white pt-20 pb-10" id="contacto" itemscope itemtype="https://schema.org/Organization">
+        <hr class="border-t border-gray-800 my-12" aria-hidden="true">
+
+        <div class="max-w-7xl mx-auto px-6 md:px-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 py-16">
+
+                <section class="space-y-6">
+                    <a href="/" class="flex items-center gap-2 group" aria-label="Go to home">
+                        <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
+                            <img src="/public/img/logo-definitivo.png" alt="logo" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xl font-bold text-white tracking-tight" itemprop="name">
+                            Santamarta<span class="text-blue-400">beachfront</span>
+                        </span>
+                    </a>
+                    <p class="text-gray-300 text-sm leading-relaxed max-w-xs" itemprop="description" data-i18n="foo_desc">
+                        The leading platform for luxury vacation rentals in Santa Marta. Unique experiences, superior comfort, and the best views of the Colombian Caribbean.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_contact_title">Contact Information</h2>
+                    <address class="not-italic">
+                        <ul class="space-y-4 text-sm text-gray-300">
+                            <li>
+                                <a href="mailto:17clouds@gmail.com" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="email">
+                                    <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">mail</span>
+                                    <span>17clouds@gmail.com</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://wa.me/573183813381" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="telephone">
+                                    <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">call</span>
+                                    <span>+57 318 3813381</span>
+                                </a>
+                            </li>
+                            <li class="flex items-start gap-3" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                                <span class="material-symbols-outlined text-blue-400" aria-hidden="true">location_on</span>
+                                <span class="leading-relaxed">
+                                    <span itemprop="streetAddress" data-i18n="foo_address">Apartment 1730 - Tower 4, Reserva del Mar, Playa Salguero</span><br>
+                                    <span itemprop="addressLocality">Santa Marta</span>, <span itemprop="addressCountry" data-i18n="foo_country">Colombia</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </address>
+                </section>
+
+                <section>
+                    <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Follow Us</h2>
+                    <nav aria-label="Social media">
+                        <ul class="flex gap-4 list-none p-0">
+                            <li>
+                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
+                                    <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
+                                    <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
+                                    <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </section>
+            </div>
+
+            <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-[11px] sm:text-xs text-gray-400 gap-4">
+                <p>© <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront. <span data-i18n="foo_rights">All rights reserved.</span></p>
+
+                <nav aria-label="Legal links">
+                    <ul class="flex gap-8 list-none p-0">
+                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_privacy">Privacy Policy</a></li>
+                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_terms">Terms and Conditions</a></li>
+                    </ul>
+                </nav>
+            </aside>
+        </div>
+    </footer>
+
+    <!-- scripts -->
+    <script src="/js/main.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -907,111 +1001,88 @@
         });
     </script>
 
-    <style>
-        .leaflet-tile-container {
-            filter: contrast(1.05) brightness(0.9);
+    <script>
+        let currentViewDate = new Date();
+
+        function renderCalendars() {
+            const grid1 = document.getElementById('grid-month1');
+            const grid2 = document.getElementById('grid-month2');
+            const name1 = document.getElementById('month1-name');
+            const name2 = document.getElementById('month2-name');
+
+            const date1 = new Date(currentViewDate.getFullYear(), currentViewDate.getMonth(), 1);
+            const date2 = new Date(currentViewDate.getFullYear(), currentViewDate.getMonth() + 1, 1);
+
+            const options = {
+                month: 'long',
+                year: 'numeric'
+            };
+
+            // Cambiado a 'en-US' para que los meses salgan en inglés
+            name1.innerText = date1.toLocaleDateString('en-US', options);
+            name2.innerText = date2.toLocaleDateString('en-US', options);
+
+            renderMonth(date1, grid1);
+            renderMonth(date2, grid2);
         }
 
-        .leaflet-popup-content-wrapper {
-            background: #101c22 !important;
-            color: white !important;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        function renderMonth(date, container) {
+            container.innerHTML = '';
+            // Días de la semana en inglés
+            const daysOfWeek = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Headers
+            daysOfWeek.forEach(day => {
+                const d = document.createElement('div');
+                d.className = 'text-gray-500 text-xs font-bold py-2';
+                d.innerText = day;
+                container.appendChild(d);
+            });
+
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            let firstDay = new Date(year, month, 1).getDay() - 1;
+            if (firstDay === -1) firstDay = 6; // Sunday fix
+
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Initial padding
+            for (let i = 0; i < firstDay; i++) {
+                container.appendChild(document.createElement('div'));
+            }
+
+            // Days of the month
+            for (let day = 1; day <= totalDays; day++) {
+                const dateObj = new Date(year, month, day);
+                const isPast = dateObj < today;
+
+                // Logic for occupied days simulation
+                const isOccupied = isPast || (day % 7 === 0 || day % 8 === 0);
+
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'py-2 flex flex-col items-center gap-1';
+
+                const textClass = isOccupied ? 'text-gray-600 line-through' : 'text-white font-medium';
+                const dotClass = isOccupied ? 'bg-gray-700' : 'bg-blue-600';
+
+                dayDiv.innerHTML = `
+                <span class="${textClass} text-sm">${day}</span>
+                <div class="size-1 rounded-full ${dotClass}"></div>
+            `;
+                container.appendChild(dayDiv);
+            }
         }
 
-        .leaflet-popup-tip {
-            background: #101c22 !important;
+        function changeMonth(offset) {
+            currentViewDate.setMonth(currentViewDate.getMonth() + offset);
+            renderCalendars();
         }
-    </style>
 
+        document.addEventListener('DOMContentLoaded', renderCalendars);
+    </script>
 
-    <!-- footer -->
-    <footer class="bg-[#101c22] text-white pt-20 pb-10" id="contacto" itemscope itemtype="https://schema.org/Organization">
-        <hr class="border-t border-gray-800 my-12" aria-hidden="true">
-
-        <div class="max-w-7xl mx-auto px-6 md:px-10">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 py-16">
-
-                <section class="space-y-6">
-                    <a href="/" class="flex items-center gap-2 group" aria-label="Ir al inicio">
-                        <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
-                            <img src="/public/img/logo-definitivo.png" alt="logo" class="w-full h-full object-cover">
-                        </div>
-                        <span class="text-xl font-bold text-white tracking-tight" itemprop="name">
-                            Santamarta<span class="text-blue-400">beachfront</span>
-                        </span>
-                    </a>
-                    <p class="text-gray-300 text-sm leading-relaxed max-w-xs" itemprop="description" data-i18n="foo_desc">
-                        La plataforma líder en alquileres vacacionales de lujo en Santa Marta. Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
-                    </p>
-                </section>
-
-                <section>
-                    <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_contact_title">Información de Contacto</h2>
-                    <address class="not-italic">
-                        <ul class="space-y-4 text-sm text-gray-300">
-                            <li>
-                                <a href="mailto:17clouds@gmail.com" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="email">
-                                    <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">mail</span>
-                                    <span>17clouds@gmail.com</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://wa.me/573183813381" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="telephone">
-                                    <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">call</span>
-                                    <span>+57 318 3813381</span>
-                                </a>
-                            </li>
-                            <li class="flex items-start gap-3" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
-                                <span class="material-symbols-outlined text-blue-400" aria-hidden="true">location_on</span>
-                                <span class="leading-relaxed">
-                                    <span itemprop="streetAddress" data-i18n="foo_address">Apartamento 1730 - Torre 4, Reserva del Mar, Playa Salguero</span><br>
-                                    <span itemprop="addressLocality">Santa Marta</span>, <span itemprop="addressCountry" data-i18n="foo_country">Colombia</span>
-                                </span>
-                            </li>
-                        </ul>
-                    </address>
-                </section>
-
-                <section>
-                    <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Síguenos</h2>
-                    <nav aria-label="Redes sociales">
-                        <ul class="flex gap-4 list-none p-0">
-                            <li>
-                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
-                                    <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
-                                    <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
-                                    <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </section>
-            </div>
-
-            <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-[11px] sm:text-xs text-gray-400 gap-4">
-                <p>© <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront. <span data-i18n="foo_rights">Todos los derechos reservados.</span></p>
-
-                <nav aria-label="Enlaces legales">
-                    <ul class="flex gap-8 list-none p-0">
-                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_privacy">Políticas de Privacidad</a></li>
-                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_terms">Términos y Condiciones</a></li>
-                    </ul>
-                </nav>
-            </aside>
-        </div>
-    </footer>
-
-    <!-- scripst -->
-    <script src="js/main.js"></script>
 
 </body>
 

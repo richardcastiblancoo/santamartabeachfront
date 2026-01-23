@@ -120,7 +120,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
-    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="shortcut icon" href="/public/img/logo-portada.png" type="image/x-icon">
@@ -200,11 +200,13 @@ if ($result_videos && $result_videos->num_rows > 0) {
 
         <header class="sticky top-0 z-50 w-full bg-white dark:bg-background-dark border-b border-solid border-[#f0f3f4] dark:border-slate-800 px-4 md:px-10 lg:px-40 py-3">
             <div class="flex items-center justify-between max-w-[1280px] mx-auto">
-                <div class="flex items-center gap-2 text-[#111618] dark:text-white">
-                    <div class="size-6 text-primary">
-                        <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" width="50px" alt="logo-apartamento">
-                    </div>
-                    <h2 class="text-xl font-extrabold leading-tight tracking-tight">Santamartabeachfront</h2>
+                <div class="flex items-center gap-3">
+                    <a href="/" class="flex items-center gap-3 group">
+                        <img src="/public/img/logo-definitivo.png" alt="Logo" class="size-14 md:size-20 object-contain">
+                        <h1 class="flex items-center text-white text-base md:text-lg font-black tracking-tighter uppercase leading-none hidden md:inline-block">
+                            Santamarta<span class="text-blue-400">beachfront</span>
+                        </h1>
+                    </a>
                 </div>
 
                 <div class="hidden md:flex items-center gap-4 lg:gap-6">
