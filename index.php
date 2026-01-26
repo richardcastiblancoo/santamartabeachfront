@@ -5,13 +5,24 @@
     <!-- metadata -->
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta name="keywords" content="reserva del mar, Santamartabeachfront, apartamentos, beachfront, mar, reserva">
+    <meta name="keywords" content="reserva del mar 1, Santamartabeachfront, apartamentos, beachfront, mar, reserva, Santa Marta Colombia, Playa Salguero, El Rodadero, Pozos Colorados, sur de Santa Marta, primera línea de playa, sector exclusivo Playa Salguero, edificios frente al mar, zona turística, cerca del Aeropuerto Santa Marta, salida directa al mar, zona residencial tranquila, renta vacacional Playa Salguero, condominios de lujo, alojamiento cerca de Arrecife, vista al mar Caribe, balcón al mar, sonido de las olas, atardeceres en Santa Marta, estilo de vida playero, vacaciones frente al océano, apartamentos modernos con vista, experiencia premium, despertar frente al mar, brisa marina, relax total, escapada romántica, turismo de sol y playa Colombia, lujo asequible, confort y mar, piscina infinita, piscina con vista al mar, edificio con jacuzzi y sauna, gimnasio frente al mar, zona BBQ, parqueadero privado, seguridad 24 horas, acceso privado a la playa, áreas comunes de lujo, ascensor, recepción tipo hotel, Wi-Fi alta velocidad, salón social, zonas verdes, vigilancia permanente, apartamentos familiares, vacaciones con niños, alojamiento para grupos, apartamentos pet-friendly, teletrabajo frente al mar, viajes de negocios, apartamentos ventilados, cocina equipada, suites familiares, alojamiento seguro, alquiler por días, estancias largas, nómadas digitales, retiro de fin de semana, hospedaje para parejas, cerca del Parque Tayrona, tours Bahía Concha, buceo Santa Marta, snorkeling El Rodadero, paseos en yate, restaurantes Playa Salguero, vida nocturna El Rodadero, excursiones Ciudad Perdida, Taganga, avistamiento de aves Sierra Nevada, Marina de Santa Marta, centro histórico, gastronomía costeña, guía turística, kayak, alquiler vacacional, Airbnb Santa Marta, Booking Reserva del Mar 1, apartamentos amoblados, renta por temporada, short term rentals, luxury rentals Colombia, best beachfront condos, holiday rentals, inmobiliaria Santa Marta, condominio Reserva del Mar 1, apartamentos turísticos, propiedad raíz, La Perla de América, playas de Santa Marta, Caribe Colombiano vacaciones, Magallanes y Salguero, clima Santa Marta, destinos top Colombia 2026, playas tranquilas, Sierra Nevada de Santa Marta, experiencia caribeña auténtica, Reserva del Mar 1 Colombia">
     <meta name="author" content="Santamartabeachfront">
     <meta name="robots" content="index, follow">
+    <meta name="description" content="Reserva del Mar 1: Apartamentos de lujo frente al mar en Playa Salguero, Santa Marta. Piscina infinita, acceso directo a la playa y confort total. ¡Reserva ya!">
     <!-- titulo -->
     <title>Santamartabeachfront - reserva del mar</title>
     <!-- opengraf -->
-
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://santamartabeachfront.com/">
+    <meta property="og:title" content="Reserva del Mar 1 | Apartamentos de Lujo Frente al Mar">
+    <meta property="og:description" content="Vive la mejor experiencia en Santa Marta. Apartamentos exclusivos en Playa Salguero con piscina infinita, acceso directo al mar y vistas espectaculares al Caribe.">
+    <meta property="og:image" content="https://santamartabeachfront.com/public/img/logo-definitivo.png">
+    <!-- opengraf X -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://santamartabeachfront.com/">
+    <meta property="twitter:title" content="Reserva del Mar 1 | Apartamentos de Lujo Frente al Mar">
+    <meta property="twitter:description" content="Disfruta de Playa Salguero en Reserva del Mar 1. Apartamentos con balcón al mar, piscina y confort premium en Santa Marta.">
+    <meta property="twitter:image" content="https://santamartabeachfront.com/public/img/logo-definitivo.png">
     <!-- links -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link rel="manifest" href="manifest.json">
