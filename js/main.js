@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- ANIMACIÓN TYPEWRITER ---
   const textElement = document.getElementById("typewriter");
   if (textElement) {
-    const text = "Vive la experiencia en";
+    const text = "Vive y disfruta la experiencia en";
     let index = 0;
     let isDeleting = false;
     let speed = 100;

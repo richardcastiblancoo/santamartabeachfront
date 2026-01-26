@@ -5,13 +5,24 @@
     <!-- metadata -->
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta name="keywords" content="reserva del mar, Santamartabeachfront, apartamentos, beachfront, mar, reserva">
+    <meta name="keywords" content="reserva del mar 1, Santamartabeachfront, apartamentos, beachfront, mar, reserva, Santa Marta Colombia, Playa Salguero, El Rodadero, Pozos Colorados, sur de Santa Marta, primera línea de playa, sector exclusivo Playa Salguero, edificios frente al mar, zona turística, cerca del Aeropuerto Santa Marta, salida directa al mar, zona residencial tranquila, renta vacacional Playa Salguero, condominios de lujo, alojamiento cerca de Arrecife, vista al mar Caribe, balcón al mar, sonido de las olas, atardeceres en Santa Marta, estilo de vida playero, vacaciones frente al océano, apartamentos modernos con vista, experiencia premium, despertar frente al mar, brisa marina, relax total, escapada romántica, turismo de sol y playa Colombia, lujo asequible, confort y mar, piscina infinita, piscina con vista al mar, edificio con jacuzzi y sauna, gimnasio frente al mar, zona BBQ, parqueadero privado, seguridad 24 horas, acceso privado a la playa, áreas comunes de lujo, ascensor, recepción tipo hotel, Wi-Fi alta velocidad, salón social, zonas verdes, vigilancia permanente, apartamentos familiares, vacaciones con niños, alojamiento para grupos, apartamentos pet-friendly, teletrabajo frente al mar, viajes de negocios, apartamentos ventilados, cocina equipada, suites familiares, alojamiento seguro, alquiler por días, estancias largas, nómadas digitales, retiro de fin de semana, hospedaje para parejas, cerca del Parque Tayrona, tours Bahía Concha, buceo Santa Marta, snorkeling El Rodadero, paseos en yate, restaurantes Playa Salguero, vida nocturna El Rodadero, excursiones Ciudad Perdida, Taganga, avistamiento de aves Sierra Nevada, Marina de Santa Marta, centro histórico, gastronomía costeña, guía turística, kayak, alquiler vacacional, Airbnb Santa Marta, Booking Reserva del Mar 1, apartamentos amoblados, renta por temporada, short term rentals, luxury rentals Colombia, best beachfront condos, holiday rentals, inmobiliaria Santa Marta, condominio Reserva del Mar 1, apartamentos turísticos, propiedad raíz, La Perla de América, playas de Santa Marta, Caribe Colombiano vacaciones, Magallanes y Salguero, clima Santa Marta, destinos top Colombia 2026, playas tranquilas, Sierra Nevada de Santa Marta, experiencia caribeña auténtica, Reserva del Mar 1 Colombia">
     <meta name="author" content="Santamartabeachfront">
     <meta name="robots" content="index, follow">
+    <meta name="description" content="Reserva del Mar 1: Apartamentos de lujo frente al mar en Playa Salguero, Santa Marta. Piscina infinita, acceso directo a la playa y confort total. ¡Reserva ya!">
     <!-- titulo -->
-    <title>Santamartabeachfront - reserva del mar</title>
+    <title>Santamartabeachfront - Reserva del Mar 1</title>
     <!-- opengraf -->
-
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://santamartabeachfront.com/">
+    <meta property="og:title" content="Reserva del Mar 1 | Apartamentos de Lujo Frente al Mar">
+    <meta property="og:description" content="Vive la mejor experiencia en Santa Marta. Apartamentos exclusivos en Playa Salguero con piscina infinita, acceso directo al mar y vistas espectaculares al Caribe.">
+    <meta property="og:image" content="https://santamartabeachfront.com/public/img/logo-definitivo.png">
+    <!-- opengraf X -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://santamartabeachfront.com/">
+    <meta property="twitter:title" content="Reserva del Mar 1 | Apartamentos de Lujo Frente al Mar">
+    <meta property="twitter:description" content="Disfruta de Playa Salguero en Reserva del Mar 1. Apartamentos con balcón al mar, piscina y confort premium en Santa Marta.">
+    <meta property="twitter:image" content="https://santamartabeachfront.com/public/img/logo-definitivo.png">
     <!-- links -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link rel="manifest" href="manifest.json">
@@ -20,7 +31,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <!-- icono redes sociales -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.1.0/css/all.min.css">
     <!-- mapa mundi -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -123,11 +134,15 @@
 
 
     <!-- header -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+
     <style>
         :root {
             scroll-behavior: auto;
         }
 
+        /* --- HERO STYLES --- */
         .hero-title {
             font-size: clamp(2rem, 5vw, 4rem);
             line-height: 1.1;
@@ -168,6 +183,73 @@
             transition: all 0.3s ease;
         }
 
+        /* --- CALENDAR ADJUSTMENTS --- */
+        .flatpickr-calendar {
+            background: #111827 !important;
+            border: 1px solid #374151 !important;
+            border-radius: 1rem !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+            width: auto !important;
+            padding: 15px !important;
+        }
+
+        .flatpickr-months {
+            padding: 10px 0 !important;
+        }
+
+        .flatpickr-month {
+            color: white !important;
+            fill: white !important;
+            font-weight: 700 !important;
+        }
+
+        .flatpickr-current-month {
+            font-size: 1.2rem !important;
+            display: flex !important;
+            justify-content: center !important;
+            gap: 5px;
+        }
+
+        .flatpickr-weekday {
+            color: #9ca3af !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
+        }
+
+        .flatpickr-day {
+            color: #f3f4f6 !important;
+            border-radius: 8px !important;
+            margin-top: 5px !important;
+        }
+
+        .flatpickr-day.flatpickr-disabled,
+        .flatpickr-day.prevMonthDay,
+        .flatpickr-day.nextMonthDay {
+            color: #4b5563 !important;
+            opacity: 0.5;
+        }
+
+        .flatpickr-day.selected,
+        .flatpickr-day.startRange,
+        .flatpickr-day.endRange {
+            background: #3b82f6 !important;
+            border-color: #3b82f6 !important;
+            color: white !important;
+        }
+
+        .flatpickr-day.inRange {
+            background: rgba(59, 130, 246, 0.15) !important;
+            box-shadow: none !important;
+            border-color: transparent !important;
+        }
+
+        .flatpickr-prev-month,
+        .flatpickr-next-month {
+            fill: white !important;
+            padding: 15px !important;
+        }
+
+        /* --- MENUS --- */
         #mobile-menu {
             transform: translateY(-100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -177,11 +259,6 @@
             transform: translateY(0);
         }
 
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1) opacity(0.5);
-        }
-
-        /* --- NEW LANGUAGE STYLES --- */
         .lang-dropdown {
             display: none;
         }
@@ -195,7 +272,7 @@
         <div class="flex items-center gap-3">
             <a href="/" class="flex items-center gap-3 group">
                 <img src="/public/img/logo-definitivo.png" alt="Logo" class="size-14 md:size-20 object-contain">
-                <h1 class="flex items-center text-white text-base md:text-lg font-black tracking-tighter uppercase leading-none hidden md:inline-block">
+                <h1 class="text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
                     Santamarta<span class="text-blue-400">beachfront</span>
                 </h1>
             </a>
@@ -203,6 +280,7 @@
 
         <nav class="hidden md:flex items-center gap-8">
             <ul class="flex items-center gap-6 list-none">
+                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#">Welcome to Santa Marta</a></li>
                 <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#apartamentos">Apartments</a></li>
                 <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#ubicacion">Location</a></li>
                 <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="/php/gastronomia.php">Dining Guide</a></li>
@@ -216,8 +294,8 @@
                         <span class="material-symbols-outlined text-sm">expand_more</span>
                     </button>
                     <ul id="langMenu" class="lang-dropdown absolute top-full right-0 mt-1 w-32 bg-slate-900 border border-white/10 rounded-xl py-2 shadow-2xl">
-                        <li><a href="index.php" onclick="changeLanguage('ES')" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">SPANISH</a></li>
-                        <li><a href="/lang/index.php" onclick="changeLanguage('EN')" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
+                        <li><a href="/index.php" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ESPAÑOL</a></li>
+                        <li><a href="/lang/en/index.php" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
                     </ul>
                 </div>
                 <a href="/auth/login.php" class="h-9 px-6 bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest rounded-full flex items-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20">Login</a>
@@ -236,8 +314,8 @@
                     <img class="w-4 h-4 rounded-full" src="https://flagcdn.com/w40/us.png" alt="EN"> EN
                 </button>
                 <ul id="langMenuMobile" class="lang-dropdown absolute left-0 mt-2 w-32 bg-slate-900 border border-white/10 rounded-xl py-2">
-                    <li><a href="index.php" class="block px-4 py-2 text-white text-[11px]">SPANISH</a></li>
-                    <li><a href="/lang/index.php" class="block px-4 py-2 text-white text-[11px]">ENGLISH</a></li>
+                    <li><a href="/index.php" class="block px-4 py-2 text-white text-[11px]">ESPAÑOL</a></li>
+                    <li><a href="/lang/en/index.php" class="block px-4 py-2 text-white text-[11px]">ENGLISH</a></li>
                 </ul>
             </div>
             <button onclick="toggleMobileMenu(false)" class="text-white">
@@ -245,6 +323,7 @@
             </button>
         </div>
         <nav class="flex flex-col items-center justify-center flex-grow gap-8">
+            <a href="/" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Welcome to Santa Marta</a>
             <a href="#apartamentos" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartments</a>
             <a href="#ubicacion" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Location</a>
             <a href="/php/gastronomia.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Dining Guide</a>
@@ -255,21 +334,21 @@
     <main>
         <section class="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
             <div class="absolute inset-0 z-0">
-                <div class="absolute inset-0 bg-black/50 z-10"></div>
-                <video class="w-full h-full object-cover" autoplay muted loop playsinline aria-hidden="true">
+                <div class="absolute inset-0 bg-black/20 z-10"></div>
+                <video class="w-full h-full object-cover" autoplay muted loop playsinline>
                     <source src="/public/video/santamarta-video-tayrona.mp4" type="video/mp4">
                 </video>
             </div>
 
             <div class="relative z-20 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center pt-24 pb-12">
                 <div class="text-left">
-                    <h2 class="hero-title font-black text-white">
+                    <h2 class="hero-title font-black text-white drop-shadow-xl">
                         <span id="typewriter"></span><span class="cursor"></span><br>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
                             Santa Marta beachfront
                         </span>
                     </h2>
-                    <p class="text-white text-sm md:text-base mt-6 max-w-sm leading-relaxed">
+                    <p class="text-white text-sm md:text-base mt-6 max-w-sm leading-relaxed drop-shadow-lg">
                         Exclusivity and comfort in the best apartments on the Caribbean coast.
                     </p>
                 </div>
@@ -283,36 +362,33 @@
 
                         <form id="reservaForm" class="space-y-4">
                             <div class="space-y-1">
-                                <label for="full-name" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Full Name</label>
-                                <input id="full-name" type="text" placeholder="Your name" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
+                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Full Name</label>
+                                <input id="full-name" type="text" placeholder="Your name" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-1">
-                                    <label for="whatsapp" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">WhatsApp</label>
-                                    <input id="whatsapp" type="tel" placeholder="+57..." class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
+                                    <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">WhatsApp</label>
+                                    <input id="whatsapp" type="tel" placeholder="+57..." class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                                 </div>
                                 <div class="space-y-1">
-                                    <label for="email" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Email</label>
-                                    <input id="email" type="email" placeholder="you@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
+                                    <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Email</label>
+                                    <input id="email" type="email" placeholder="your@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                                 </div>
                             </div>
 
                             <div class="space-y-1">
-                                <label for="accommodation" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Accommodation</label>
-                                <select id="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-slate-800 border border-white/20 appearance-none">
-                                    <option value="Reserva del Mar - Apartamento 1730">Reserva del Mar - Apartment 1730</option>
+                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Accommodation</label>
+                                <select id="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm bg-slate-800">
+                                    <option value="Reserva del Mar - Apartment 1730">Reserva del Mar - Apartment 1730</option>
                                 </select>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="space-y-1">
-                                    <label for="check-in" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Check-in</label>
-                                    <input id="check-in" type="date" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
-                                </div>
-                                <div class="space-y-1">
-                                    <label for="check-out" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Check-out</label>
-                                    <input id="check-out" type="date" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white bg-white/10 border border-white/20" required>
+                            <div class="space-y-1">
+                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Check-in / Check-out</label>
+                                <div class="relative">
+                                    <input id="date-range" type="text" placeholder="Select your dates" class="glass-input w-full rounded-xl px-4 py-3 text-sm cursor-pointer" readonly required>
+                                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none">calendar_month</span>
                                 </div>
                             </div>
 
@@ -326,8 +402,21 @@
         </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script>
-        // --- LANGUAGE FUNCTIONS ---
+        // --- CALENDAR CONFIGURATION ---
+        const datePicker = flatpickr("#date-range", {
+            mode: "range",
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            showMonths: window.innerWidth > 900 ? 2 : 1,
+            animate: true,
+            disableMobile: "true",
+            static: false,
+        });
+
+        // --- LANGUAGES ---
         function toggleLang(event) {
             event.stopPropagation();
             document.getElementById('langMenu').classList.toggle('active');
@@ -341,8 +430,8 @@
         document.addEventListener('click', function(e) {
             const menu = document.getElementById('langMenu');
             const menuMobile = document.getElementById('langMenuMobile');
-            if (!e.target.closest('#langBtn')) menu.classList.remove('active');
-            if (!e.target.closest('#langMenuMobile')) menuMobile.classList.remove('active');
+            if (menu && !e.target.closest('#langBtn')) menu.classList.remove('active');
+            if (menuMobile && !e.target.closest('#langMenuMobile')) menuMobile.classList.remove('active');
         });
 
         // --- MOBILE MENU ---
@@ -352,45 +441,45 @@
             else menu.classList.remove('active');
         }
 
-        // --- WHATSAPP FORM ---
+        // --- WHATSAPP ---
         document.getElementById('reservaForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const nombre = document.getElementById('full-name').value;
             const tel = document.getElementById('whatsapp').value;
             const email = document.getElementById('email').value;
             const alojamiento = document.getElementById('accommodation').value;
-            const entrada = document.getElementById('check-in').value;
-            const salida = document.getElementById('check-out').value;
-
+            const fechas = document.getElementById('date-range').value;
             const telefonoVentas = "573183813381";
-            const mensaje = `*New Booking Request*%0A` +
-                `---------------------------------%0A` +
-                `*Name:* ${nombre}%0A` +
-                `*WhatsApp:* ${tel}%0A` +
-                `*Email:* ${email}%0A` +
-                `*Accommodation:* ${alojamiento}%0A` +
-                `*Check-in:* ${entrada}%0A` +
-                `*Check-out:* ${salida}%0A` +
-                `---------------------------------%0A` +
-                `Hello! I would like to confirm availability.`;
-
+            const mensaje = `*New Booking Request*%0A---------------------------------%0A*Name:* ${nombre}%0A*WhatsApp:* ${tel}%0A*Email:* ${email}%0A*Accommodation:* ${alojamiento}%0A*Dates:* ${fechas}%0A---------------------------------%0AHello! I'd like to check availability.`;
             window.open(`https://wa.me/${telefonoVentas}?text=${mensaje}`, '_blank');
         });
 
-        // --- TYPEWRITER EFFECT ---
-        const text = "Enjoy";
-        let i = 0;
+        // --- TYPEWRITER ---
+        const textElement = document.getElementById("typewriter");
+        if (textElement) {
+            const text = "Live and enjoy the experience in";
+            let index = 0,
+                isDeleting = false,
+                speed = 100;
 
-        function type() {
-            if (i < text.length) {
-                document.getElementById("typewriter").innerHTML += text.charAt(i);
-                i++;
-                setTimeout(type, 150);
+            function type() {
+                const currentText = text.substring(0, index);
+                textElement.textContent = currentText;
+                if (!isDeleting && index < text.length) {
+                    index++;
+                    speed = 100;
+                } else if (isDeleting && index > 0) {
+                    index--;
+                    speed = 50;
+                } else {
+                    isDeleting = !isDeleting;
+                    speed = isDeleting ? 2500 : 700;
+                }
+                setTimeout(type, speed);
             }
+            type();
         }
-        type();
     </script>
-
     <!-- amenidades -->
     <section class="py-24 px-6 md:px-20 bg-[#101c22]" id="nosotros" aria-labelledby="about-title">
         <div class="max-w-7xl mx-auto">
