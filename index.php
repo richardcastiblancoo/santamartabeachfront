@@ -24,6 +24,7 @@
     <meta property="twitter:description" content="Disfruta de Playa Salguero en Reserva del Mar 1. Apartamentos con balcón al mar, piscina y confort premium en Santa Marta.">
     <meta property="twitter:image" content="https://santamartabeachfront.com/public/img/logo-definitivo.png">
     <!-- links -->
+     <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link rel="manifest" href="manifest.json">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
