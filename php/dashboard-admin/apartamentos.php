@@ -18,7 +18,7 @@ include '../../auth/conexion_be.php';
     <title>Santamartabeachfront - Panel de Administrador</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -90,7 +90,7 @@ include '../../auth/conexion_be.php';
         <aside class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full hidden md:flex shrink-0 z-20">
             <div class="p-6 flex items-center gap-3">
                 <div class="bg-primary/10 p-2 rounded-lg">
-                    <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo" class="w-8 h-8">
+                    <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-8 h-8">
                 </div>
                 <div>
                     <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamartabeachfront</h1>

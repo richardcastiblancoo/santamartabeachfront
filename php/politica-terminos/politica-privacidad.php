@@ -69,7 +69,7 @@
     <header class="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-md px-6 md:px-10 py-4 sticky top-0 z-50">
         <div class="flex items-center gap-4">
             <div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
-                <img src="/public/img/logo-definitivo.png" class="w-full h-auto" alt="Logo">
+                <img src="/public/img/logo-definitivo.webp" class="w-full h-auto" alt="Logo">
             </div>
             <h2 class="hidden md:block text-lg font-bold tracking-tight">Santamartabeachfront</h2>
         </div>

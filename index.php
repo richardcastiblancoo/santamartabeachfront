@@ -24,7 +24,7 @@
     <meta property="twitter:description" content="Disfruta de Playa Salguero en Reserva del Mar 1. Apartamentos con balcón al mar, piscina y confort premium en Santa Marta.">
     <meta property="twitter:image" content="https://santamartabeachfront.com/public/img/logo-definitivo.png">
     <!-- links -->
-     <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link rel="manifest" href="manifest.json">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -93,7 +93,70 @@
             scroll-behavior: auto;
         }
 
-        /* --- ESTILOS DEL HERO (MANTENIDOS) --- */
+        /* --- COMPORTAMIENTO HEADER --- */
+        #main-header {
+            transition: background-color 0.4s ease;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        @media (min-width: 769px) {
+            #main-header {
+                position: absolute;
+                top: 0;
+                background: transparent !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #main-header {
+                position: fixed;
+                height: 80px;
+                top: 0;
+            }
+
+            .header-scrolled-mobile {
+                background: rgba(15, 23, 42, 0.98) !important;
+                backdrop-filter: blur(12px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        /* --- LOGO 150PX Y TEXTO PEGADO --- */
+        .logo-container img {
+            height: 140px;
+            /* Agrandado a 150px */
+            width: auto;
+            object-fit: contain;
+            transform: translateY(20px);
+            /* Bajado un poco más por su nuevo tamaño */
+        }
+
+        .brand-text {
+            margin-left: -40px;
+            /* Súper pegado al logo */
+            margin-top: 10px;
+        }
+
+        /* --- MENÚ FULL BLANCO --- */
+        .nav-link {
+            color: #FFFFFF !important;
+            /* Blanco total */
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+
+        /* --- HERO Y OTROS --- */
         .hero-title {
             font-size: clamp(2rem, 5vw, 4rem);
             line-height: 1.1;
@@ -131,86 +194,8 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            transition: all 0.3s ease;
         }
 
-        /* --- AJUSTE CALENDARIO PARA QUE SE VEA COMO LA IMAGEN --- */
-        .flatpickr-calendar {
-            background: #111827 !important;
-            /* Fondo ultra oscuro como tu captura */
-            border: 1px solid #374151 !important;
-            border-radius: 1rem !important;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
-            width: auto !important;
-            /* Permite que crezca a lo ancho */
-            padding: 15px !important;
-        }
-
-        /* Contenedor de los dos meses */
-        .flatpickr-months {
-            padding: 10px 0 !important;
-        }
-
-        /* Estilo de los nombres de los meses (Enero 2026, Febrero 2026) */
-        .flatpickr-month {
-            color: white !important;
-            fill: white !important;
-            font-weight: 700 !important;
-        }
-
-        .flatpickr-current-month {
-            font-size: 1.2rem !important;
-            display: flex !important;
-            justify-content: center !important;
-            gap: 5px;
-        }
-
-        /* Días de la semana (Lu, Ma, Mi...) */
-        .flatpickr-weekday {
-            color: #9ca3af !important;
-            /* Gris suave */
-            font-weight: 600 !important;
-            font-size: 0.9rem !important;
-        }
-
-        /* Días individuales */
-        .flatpickr-day {
-            color: #f3f4f6 !important;
-            border-radius: 8px !important;
-            margin-top: 5px !important;
-        }
-
-        /* Días fuera del mes o deshabilitados */
-        .flatpickr-day.flatpickr-disabled,
-        .flatpickr-day.prevMonthDay,
-        .flatpickr-day.nextMonthDay {
-            color: #4b5563 !important;
-            opacity: 0.5;
-        }
-
-        /* Rango seleccionado (Azul como tu imagen) */
-        .flatpickr-day.selected,
-        .flatpickr-day.startRange,
-        .flatpickr-day.endRange {
-            background: #3b82f6 !important;
-            border-color: #3b82f6 !important;
-            color: white !important;
-        }
-
-        .flatpickr-day.inRange {
-            background: rgba(59, 130, 246, 0.15) !important;
-            box-shadow: none !important;
-            border-color: transparent !important;
-        }
-
-        /* Flechas de navegación */
-        .flatpickr-prev-month,
-        .flatpickr-next-month {
-            fill: white !important;
-            padding: 15px !important;
-        }
-
-        /* --- MENÚS --- */
         #mobile-menu {
             transform: translateY(-100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -229,22 +214,22 @@
         }
     </style>
 
-    <header id="main-header" class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-10 transition-all duration-300">
-        <div class="flex items-center gap-3">
-            <a href="/" class="flex items-center gap-3 group">
-                <img src="/public/img/logo-definitivo.png" alt="Logo" class="size-14 md:size-20 object-contain">
-                <h1 class="text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
+    <header id="main-header" class="left-0 w-full z-50 justify-between px-0 md:pr-10">
+        <div class="flex items-center h-full">
+            <a href="/" class="flex items-center group logo-container">
+                <img src="/public/img/logo-definitivo.webp" alt="Logo">
+                <h1 class="brand-text text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
                     Santamarta<span class="text-blue-400">beachfront</span>
                 </h1>
             </a>
         </div>
 
-        <nav class="hidden md:flex items-center gap-8">
+        <nav class="hidden md:flex items-center gap-8 h-full">
             <ul class="flex items-center gap-6 list-none">
-                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#">Bienvenido a Santa marta</a></li>
-                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#apartamentos">Apartamentos</a></li>
-                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="#ubicacion">Ubicación</a></li>
-                <li><a class="text-white/70 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors" href="/php/gastronomia.php">Guía Gastronómica</a></li>
+                <li><a class="nav-link" href="#">Bienvenido a Santa Marta</a></li>
+                <li><a class="nav-link" href="#apartamentos">Apartamentos</a></li>
+                <li><a class="nav-link" href="#ubicacion">Ubicación</a></li>
+                <li><a class="nav-link" href="/php/gastronomia.php">Guía Gastronómica</a></li>
             </ul>
 
             <div class="flex items-center gap-4 border-l border-white/20 pl-6">
@@ -263,7 +248,7 @@
             </div>
         </nav>
 
-        <button onclick="toggleMobileMenu(true)" class="md:hidden text-white p-2">
+        <button onclick="toggleMobileMenu(true)" class="md:hidden text-white p-6">
             <span class="material-symbols-outlined text-3xl">menu</span>
         </button>
     </header>
@@ -283,8 +268,8 @@
                 <span class="material-symbols-outlined text-4xl">close</span>
             </button>
         </div>
-        <nav class="flex flex-col items-center justify-center flex-grow gap-8">
-            <a href="/" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Bienvenido a Santa marta</a>
+        <nav class="flex flex-col items-center justify-center flex-grow gap-8 text-center">
+            <a href="/" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Bienvenido a Santa Marta</a>
             <a href="#apartamentos" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartamentos</a>
             <a href="#ubicacion" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Ubicación</a>
             <a href="/php/gastronomia.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Guía Gastronómica</a>
@@ -320,13 +305,11 @@
                             <span class="material-symbols-outlined text-blue-400">event_available</span>
                             Reserva tu estancia
                         </h3>
-
                         <form id="reservaForm" class="space-y-4">
                             <div class="space-y-1">
                                 <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Nombre Completo</label>
                                 <input id="full-name" type="text" placeholder="Tu nombre" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                             </div>
-
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-1">
                                     <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">WhatsApp</label>
@@ -337,22 +320,19 @@
                                     <input id="email" type="email" placeholder="tu@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                                 </div>
                             </div>
-
                             <div class="space-y-1">
                                 <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Alojamiento</label>
                                 <select id="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm bg-slate-800">
                                     <option value="Reserva del Mar - Apartamento 1730">Reserva del Mar - Apartamento 1730</option>
                                 </select>
                             </div>
-
                             <div class="space-y-1">
-                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Check-in / Check-out</label>
+                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Entrada | Salida</label>
                                 <div class="relative">
                                     <input id="date-range" type="text" placeholder="Selecciona las fechas" class="glass-input w-full rounded-xl px-4 py-3 text-sm cursor-pointer" readonly required>
                                     <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none">calendar_month</span>
                                 </div>
                             </div>
-
                             <button type="submit" class="w-full h-14 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest text-[11px] rounded-xl transition-all shadow-xl shadow-blue-600/30 mt-4">
                                 Enviar a WhatsApp
                             </button>
@@ -367,19 +347,27 @@
     <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 
     <script>
-        // --- CALENDARIO CONFIGURADO PARA DOS COLUMNAS ---
-        const datePicker = flatpickr("#date-range", {
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.innerWidth <= 768) {
+                if (window.scrollY > 40) {
+                    header.classList.add('header-scrolled-mobile');
+                } else {
+                    header.classList.remove('header-scrolled-mobile');
+                }
+            }
+        });
+
+        flatpickr("#date-range", {
             mode: "range",
             minDate: "today",
             dateFormat: "Y-m-d",
             locale: "es",
-            showMonths: window.innerWidth > 900 ? 2 : 1, // Dos meses solo si hay espacio suficiente
+            showMonths: window.innerWidth > 900 ? 2 : 1,
             animate: true,
-            disableMobile: "true", // Importante para usar nuestro diseño en móviles también
-            static: false, // Permite que flote sobre el contenido
+            disableMobile: "true"
         });
 
-        // --- IDIOMAS ---
         function toggleLang(event) {
             event.stopPropagation();
             document.getElementById('langMenu').classList.toggle('active');
@@ -389,6 +377,7 @@
             event.stopPropagation();
             document.getElementById('langMenuMobile').classList.toggle('active');
         }
+
         document.addEventListener('click', function(e) {
             const menu = document.getElementById('langMenu');
             const menuMobile = document.getElementById('langMenuMobile');
@@ -396,14 +385,12 @@
             if (menuMobile && !e.target.closest('#langMenuMobile')) menuMobile.classList.remove('active');
         });
 
-        // --- MENÚ MÓVIL ---
         function toggleMobileMenu(open) {
             const menu = document.getElementById('mobile-menu');
             if (open) menu.classList.add('active');
             else menu.classList.remove('active');
         }
 
-        // --- WHATSAPP ---
         document.getElementById('reservaForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const nombre = document.getElementById('full-name').value;
@@ -416,7 +403,6 @@
             window.open(`https://wa.me/${telefonoVentas}?text=${mensaje}`, '_blank');
         });
 
-        // --- TYPEWRITER ---
         const textElement = document.getElementById("typewriter");
         if (textElement) {
             const text = "Vive y disfruta la experiencia en";
@@ -442,6 +428,7 @@
             type();
         }
     </script>
+
 
     <!-- amenidades -->
     <section class="py-24 px-6 md:px-20 bg-[#101c22]" id="nosotros" aria-labelledby="about-title">
@@ -618,7 +605,7 @@
     <!-- apartamento -->
     <section class="py-20 bg-[#101c22]" id="apartamentos">
         <div class="px-6 md:px-20 mb-10 text-center">
-            <h2 class="text-3xl font-bold text-white mb-2">Apartamentos Destacados</h2>
+            <h2 class="text-3xl font-bold text-white mb-2">Apartamento Destacado</h2>
             <p class="text-gray-400 text-sm">Nuestras mejores propiedades para una estancia inolvidable</p>
         </div>
 
@@ -712,7 +699,7 @@
     </section>
 
     <!-- Testimonios -->
-   <?php include 'include/testimonios.php'; ?>
+    <?php include 'include/testimonios.php'; ?>
 
     <!-- mapa mundi -->
     <section class="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] min-h-[500px] bg-[#101c22] overflow-hidden" id="ubicacion">
@@ -729,11 +716,11 @@
             </header>
 
             <p class="text-gray-400 mb-10 text-lg leading-relaxed max-w-xl">
-                Descubre la tranquilidad de <strong>Reserva del Mar</strong>, ubicado en la zona más exclusiva y con acceso directo al mar.
+                Descubre la tranquilidad de <strong>Reserva del Mar 1</strong>, ubicado en la zona más exclusiva y con acceso directo al mar.
             </p>
 
             <address class="not-italic mb-10 space-y-3 border-l-4 border-blue-600 pl-6 py-2 bg-blue-900/10 rounded-r-xl max-w-md">
-                <p class="text-xl font-black text-white">Reserva del Mar - Torre 4</p>
+                <p class="text-xl font-black text-white">Reserva del Mar 1- Torre 4</p>
                 <p class="text-lg text-slate-300">Apartamento 1730</p>
                 <p class="text-sm text-slate-400 uppercase tracking-[0.2em]">Santa Marta, Colombia</p>
             </address>
@@ -835,7 +822,7 @@
                     await new Promise(r => setTimeout(r, 7000));
 
                     // PASO 4: RESERVA DEL MAR
-                    status.innerText = "4. Reserva del Mar";
+                    status.innerText = "4. Reserva del Mar 1";
                     map.flyTo(coords.reservaMar, 18, {
                         duration: 8,
                         easeLinearity: 0.25
@@ -844,7 +831,7 @@
 
                     // Marcador final
                     L.marker(coords.reservaMar).addTo(markerLayer)
-                        .bindPopup('<div class="text-center"><b>Reserva del Mar</b><br>Torre 4 - Apto 1730</div>')
+                        .bindPopup('<div class="text-center"><b>Reserva del Mar 1</b><br>Torre 4 - Apto 1730</div>')
                         .openPopup();
 
                     await new Promise(r => setTimeout(r, 10000));
@@ -884,7 +871,7 @@
                 <section class="space-y-6">
                     <a href="/" class="flex items-center gap-2 group" aria-label="Ir al inicio">
                         <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
-                            <img src="/public/img/logo-definitivo.png" alt="logo" class="w-full h-full object-cover">
+                            <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-full h-full object-cover">
                         </div>
                         <span class="text-xl font-bold text-white tracking-tight" itemprop="name">
                             Santamarta<span class="text-blue-400">beachfront</span>

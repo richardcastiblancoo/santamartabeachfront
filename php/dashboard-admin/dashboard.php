@@ -32,11 +32,11 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Panel de Administrador</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -105,8 +105,8 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
         <aside id="sidebar" class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-50 shrink-0">
             <div class="p-6 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <div class="bg-primary/10 p-2 rounded-lg">
-                        <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo" class="w-8 h-8">
+                    <div class="bg-primary/10 p-3 rounded-lg">
+                        <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-16 h-16 object-contain">
                     </div>
                     <div>
                         <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamarta</h1>
@@ -238,21 +238,21 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         <?php while ($apt = $apartamentos_res->fetch_assoc()): ?>
-                        <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm flex items-center gap-4 hover:border-primary/30 transition-colors">
-                            <div class="w-20 h-20 rounded-lg bg-cover bg-center shrink-0" style='background-image: url("<?php echo !empty($apt['imagen_principal']) ? '../../assets/img/apartamentos/' . $apt['imagen_principal'] : 'https://placehold.co/400'; ?>");'></div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex justify-between items-start">
-                                    <div class="truncate">
-                                        <h4 class="font-bold text-text-main dark:text-white truncate"><?php echo $apt['titulo']; ?></h4>
-                                        <p class="text-[11px] text-text-secondary"><?php echo $apt['ubicacion']; ?> • <?php echo $apt['habitaciones']; ?> Hab • <?php echo $apt['capacidad']; ?> Pax</p>
+                            <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm flex items-center gap-4 hover:border-primary/30 transition-colors">
+                                <div class="w-20 h-20 rounded-lg bg-cover bg-center shrink-0" style='background-image: url("<?php echo !empty($apt['imagen_principal']) ? '../../assets/img/apartamentos/' . $apt['imagen_principal'] : 'https://placehold.co/400'; ?>");'></div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex justify-between items-start">
+                                        <div class="truncate">
+                                            <h4 class="font-bold text-text-main dark:text-white truncate"><?php echo $apt['titulo']; ?></h4>
+                                            <p class="text-[11px] text-text-secondary"><?php echo $apt['ubicacion']; ?> • <?php echo $apt['habitaciones']; ?> Hab • <?php echo $apt['capacidad']; ?> Pax</p>
+                                        </div>
+                                        <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Activo</span>
                                     </div>
-                                    <span class="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Activo</span>
-                                </div>
-                                <div class="mt-2 flex gap-3">
-                                    <button onclick="openViewModal(<?php echo $apt['id']; ?>)" class="text-[11px] font-medium text-text-secondary hover:text-primary flex items-center gap-1"><span class="material-symbols-outlined text-xs">visibility</span> Ver</button>
+                                    <div class="mt-2 flex gap-3">
+                                        <button onclick="openViewModal(<?php echo $apt['id']; ?>)" class="text-[11px] font-medium text-text-secondary hover:text-primary flex items-center gap-1"><span class="material-symbols-outlined text-xs">visibility</span> Ver</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         <?php endwhile; ?>
                     </div>
                 </section>
@@ -285,50 +285,59 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                                 </thead>
                                 <tbody class="divide-y divide-[#f0f3f4] dark:divide-gray-800 text-sm">
                                     <?php if ($reservas_res->num_rows > 0): ?>
-                                    <?php while ($reserva = $reservas_res->fetch_assoc()): ?>
-                                    <tr class="group hover:bg-background-light dark:hover:bg-gray-800 transition-colors">
-                                        <td class="px-6 py-3">
-                                            <div class="flex items-center gap-2">
-                                                <div class="w-8 h-8 rounded bg-cover bg-center shrink-0" style='background-image: url("<?php echo !empty($reserva['imagen_principal']) ? '../../assets/img/apartamentos/' . $reserva['imagen_principal'] : 'https://placehold.co/100'; ?>");'></div>
-                                                <span class="font-bold text-xs text-text-main dark:text-white"><?php echo $reserva['titulo']; ?></span>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-3">
-                                            <div class="flex flex-col">
-                                                <span class="font-bold text-xs text-text-main dark:text-white"><?php echo $reserva['nombre'] . ' ' . $reserva['apellido']; ?></span>
-                                                <span class="text-[10px] text-text-secondary"><?php echo $reserva['email']; ?></span>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-3 text-text-main dark:text-white font-medium text-xs">
-                                            <?php echo date('d M', strtotime($reserva['fecha_inicio'])) . ' - ' . date('d M', strtotime($reserva['fecha_fin'])); ?>
-                                        </td>
-                                        <td class="px-6 py-3">
-                                            <?php
-                                            $estadoClass = '';
-                                            switch($reserva['estado']) {
-                                                case 'Confirmada': $estadoClass = 'bg-green-100 text-green-800'; break;
-                                                case 'Pendiente': $estadoClass = 'bg-yellow-100 text-yellow-800'; break;
-                                                case 'Cancelada': $estadoClass = 'bg-red-100 text-red-800'; break;
-                                                case 'Completada': $estadoClass = 'bg-blue-100 text-blue-800'; break;
-                                                default: $estadoClass = 'bg-gray-100 text-gray-800';
-                                            }
-                                            ?>
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold <?php echo $estadoClass; ?>"><?php echo $reserva['estado']; ?></span>
-                                        </td>
-                                        <td class="px-6 py-3 text-right">
-                                            <button class="bg-primary/10 text-primary hover:bg-primary/20 px-2.5 py-1 rounded text-[10px] font-bold transition-colors">Detalles</button>
-                                        </td>
-                                    </tr>
-                                    <?php endwhile; ?>
+                                        <?php while ($reserva = $reservas_res->fetch_assoc()): ?>
+                                            <tr class="group hover:bg-background-light dark:hover:bg-gray-800 transition-colors">
+                                                <td class="px-6 py-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-8 h-8 rounded bg-cover bg-center shrink-0" style='background-image: url("<?php echo !empty($reserva['imagen_principal']) ? '../../assets/img/apartamentos/' . $reserva['imagen_principal'] : 'https://placehold.co/100'; ?>");'></div>
+                                                        <span class="font-bold text-xs text-text-main dark:text-white"><?php echo $reserva['titulo']; ?></span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-3">
+                                                    <div class="flex flex-col">
+                                                        <span class="font-bold text-xs text-text-main dark:text-white"><?php echo $reserva['nombre'] . ' ' . $reserva['apellido']; ?></span>
+                                                        <span class="text-[10px] text-text-secondary"><?php echo $reserva['email']; ?></span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-3 text-text-main dark:text-white font-medium text-xs">
+                                                    <?php echo date('d M', strtotime($reserva['fecha_inicio'])) . ' - ' . date('d M', strtotime($reserva['fecha_fin'])); ?>
+                                                </td>
+                                                <td class="px-6 py-3">
+                                                    <?php
+                                                    $estadoClass = '';
+                                                    switch ($reserva['estado']) {
+                                                        case 'Confirmada':
+                                                            $estadoClass = 'bg-green-100 text-green-800';
+                                                            break;
+                                                        case 'Pendiente':
+                                                            $estadoClass = 'bg-yellow-100 text-yellow-800';
+                                                            break;
+                                                        case 'Cancelada':
+                                                            $estadoClass = 'bg-red-100 text-red-800';
+                                                            break;
+                                                        case 'Completada':
+                                                            $estadoClass = 'bg-blue-100 text-blue-800';
+                                                            break;
+                                                        default:
+                                                            $estadoClass = 'bg-gray-100 text-gray-800';
+                                                    }
+                                                    ?>
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold <?php echo $estadoClass; ?>"><?php echo $reserva['estado']; ?></span>
+                                                </td>
+                                                <td class="px-6 py-3 text-right">
+                                                    <button class="bg-primary/10 text-primary hover:bg-primary/20 px-2.5 py-1 rounded text-[10px] font-bold transition-colors">Detalles</button>
+                                                </td>
+                                            </tr>
+                                        <?php endwhile; ?>
                                     <?php else: ?>
-                                    <tr>
-                                        <td colspan="5" class="px-6 py-8 text-center text-text-secondary dark:text-gray-400">
-                                            <div class="flex flex-col items-center gap-2">
-                                                <span class="material-symbols-outlined text-4xl opacity-20">calendar_month</span>
-                                                <span class="text-sm">No hay reservas recientes</span>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td colspan="5" class="px-6 py-8 text-center text-text-secondary dark:text-gray-400">
+                                                <div class="flex flex-col items-center gap-2">
+                                                    <span class="material-symbols-outlined text-4xl opacity-20">calendar_month</span>
+                                                    <span class="text-sm">No hay reservas recientes</span>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     <?php endif; ?>
                                 </tbody>
                             </table>
@@ -342,28 +351,28 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                             Bandeja de PQR
                         </h2>
                         <?php if ($pqr_pendientes > 0): ?>
-                        <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full"><?php echo $pqr_pendientes; ?> Nuevas</span>
+                            <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full"><?php echo $pqr_pendientes; ?> Nuevas</span>
                         <?php endif; ?>
                     </div>
                     <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm flex flex-col divide-y divide-[#f0f3f4] dark:divide-gray-800">
                         <?php while ($pqr = $pqr_res->fetch_assoc()): ?>
-                        <?php 
+                            <?php
                             $userImg = !empty($pqr['usuario_imagen']) ? '../../assets/img/usuarios/' . $pqr['usuario_imagen'] : 'https://placehold.co/100';
-                        ?>
-                        <div class="p-4 hover:bg-background-light dark:hover:bg-gray-800 transition-colors cursor-pointer relative group flex items-start gap-4">
-                            
-                            <div class="flex-1 min-w-0">
-                                <div class="flex justify-between items-baseline mb-0.5">
-                                    <p class="font-bold text-sm text-text-main dark:text-white"><?php echo $pqr['nombre'] . ' ' . $pqr['apellido']; ?></p>
-                                    <p class="text-[10px] text-text-secondary dark:text-gray-400 font-medium uppercase"><?php echo date('d M H:i', strtotime($pqr['fecha_creacion'])); ?></p>
-                                </div>
-                                <h5 class="text-xs font-semibold text-text-main dark:text-gray-200 mb-0.5"><?php echo $pqr['asunto']; ?></h5>
-                                <p class="text-xs text-text-secondary dark:text-gray-400 line-clamp-1"><?php echo $pqr['mensaje']; ?></p>
-                                <div class="mt-2 flex gap-2">
-                                    <button onclick="openResponseModal(<?php echo $pqr['id']; ?>, '<?php echo addslashes($pqr['asunto']); ?>', '<?php echo addslashes($pqr['nombre'] . ' ' . $pqr['apellido']); ?>')" class="text-[10px] font-bold bg-primary text-white px-3 py-1 rounded hover:bg-primary-hover transition-colors">Responder</button>
+                            ?>
+                            <div class="p-4 hover:bg-background-light dark:hover:bg-gray-800 transition-colors cursor-pointer relative group flex items-start gap-4">
+
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex justify-between items-baseline mb-0.5">
+                                        <p class="font-bold text-sm text-text-main dark:text-white"><?php echo $pqr['nombre'] . ' ' . $pqr['apellido']; ?></p>
+                                        <p class="text-[10px] text-text-secondary dark:text-gray-400 font-medium uppercase"><?php echo date('d M H:i', strtotime($pqr['fecha_creacion'])); ?></p>
+                                    </div>
+                                    <h5 class="text-xs font-semibold text-text-main dark:text-gray-200 mb-0.5"><?php echo $pqr['asunto']; ?></h5>
+                                    <p class="text-xs text-text-secondary dark:text-gray-400 line-clamp-1"><?php echo $pqr['mensaje']; ?></p>
+                                    <div class="mt-2 flex gap-2">
+                                        <button onclick="openResponseModal(<?php echo $pqr['id']; ?>, '<?php echo addslashes($pqr['asunto']); ?>', '<?php echo addslashes($pqr['nombre'] . ' ' . $pqr['apellido']); ?>')" class="text-[10px] font-bold bg-primary text-white px-3 py-1 rounded hover:bg-primary-hover transition-colors">Responder</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         <?php endwhile; ?>
                     </div>
                 </section>
@@ -435,7 +444,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                     <div class="relative h-64 w-full bg-gray-100 dark:bg-gray-800 group">
                         <div id="view_image_container" class="h-full w-full bg-cover bg-center transition-opacity duration-300"></div>
                         <div id="view_video_container" class="hidden h-full w-full flex items-center justify-center bg-black"></div>
-                        
+
                         <!-- Navigation Arrows -->
                         <button id="prev-slide" onclick="prevSlide()" class="absolute left-0 top-0 bottom-0 px-4 flex items-center justify-center bg-gradient-to-r from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:from-black/70">
                             <span class="material-symbols-outlined text-white text-3xl">chevron_left</span>
@@ -443,7 +452,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                         <button id="next-slide" onclick="nextSlide()" class="absolute right-0 top-0 bottom-0 px-4 flex items-center justify-center bg-gradient-to-l from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:from-black/70">
                             <span class="material-symbols-outlined text-white text-3xl">chevron_right</span>
                         </button>
-                        
+
                         <!-- Counter -->
                         <div class="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1">
                             <span class="material-symbols-outlined text-[10px]">photo_library</span>
@@ -574,7 +583,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
             // Reset state
             currentGalleryIndex = 0;
             currentGalleryItems = [];
-            
+
             fetch(`get_apartamento.php?id=${id}`)
                 .then(response => response.json())
                 .then(data => {
@@ -588,7 +597,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                         document.getElementById('view_banos').textContent = data.banos;
                         document.getElementById('view_capacidad').textContent = data.capacidad;
                         document.getElementById('view_descripcion').textContent = data.descripcion;
-                        
+
                         // Add main image first
                         if (data.imagen_principal) {
                             currentGalleryItems.push({
@@ -601,28 +610,28 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                                 fullPath: "https://placehold.co/600x400"
                             });
                         }
-                        
+
                         // Fetch gallery items
                         return fetch(`obtener_galeria_be.php?id=${id}`);
                     }
                 })
                 .then(response => {
-                    if(response) return response.json();
+                    if (response) return response.json();
                 })
                 .then(galleryData => {
                     if (galleryData && Array.isArray(galleryData)) {
                         galleryData.forEach(item => {
                             let path = '';
-                            if(item.tipo === 'imagen') path = `../../assets/img/apartamentos/${item.ruta}`;
-                            else if(item.tipo === 'video') path = `../../assets/video/apartamentos/${item.ruta}`;
-                            
+                            if (item.tipo === 'imagen') path = `../../assets/img/apartamentos/${item.ruta}`;
+                            else if (item.tipo === 'video') path = `../../assets/video/apartamentos/${item.ruta}`;
+
                             currentGalleryItems.push({
                                 type: item.tipo,
                                 fullPath: path
                             });
                         });
                     }
-                    
+
                     updateCarousel();
                     document.getElementById('viewModal').classList.remove('hidden');
                 })
@@ -631,17 +640,17 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
 
         function updateCarousel() {
             if (currentGalleryItems.length === 0) return;
-            
+
             const item = currentGalleryItems[currentGalleryIndex];
             const imgContainer = document.getElementById('view_image_container');
             const vidContainer = document.getElementById('view_video_container');
             const counter = document.getElementById('slide-counter');
             const prevBtn = document.getElementById('prev-slide');
             const nextBtn = document.getElementById('next-slide');
-            
+
             // Update counter
             counter.textContent = `${currentGalleryIndex + 1}/${currentGalleryItems.length}`;
-            
+
             // Toggle buttons visibility
             if (currentGalleryItems.length > 1) {
                 prevBtn.classList.remove('hidden');
@@ -650,7 +659,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                 prevBtn.classList.add('hidden');
                 nextBtn.classList.add('hidden');
             }
-            
+
             if (item.type === 'imagen') {
                 imgContainer.style.backgroundImage = `url('${item.fullPath}')`;
                 imgContainer.classList.remove('hidden');
@@ -685,7 +694,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-            
+
             if (sidebar.classList.contains('-translate-x-full')) {
                 // Open sidebar
                 sidebar.classList.remove('-translate-x-full');
@@ -712,55 +721,54 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                 nextBtnText: 'Siguiente',
                 prevBtnText: 'Anterior',
                 doneBtnText: 'Finalizar',
-                steps: [
-                    { 
-                        element: 'body', 
-                        popover: { 
-                            title: 'Bienvenido al Panel de Administrador', 
-                            description: 'Este es un recorrido rápido para familiarizarte con las funcionalidades principales del dashboard.' 
-                        } 
+                steps: [{
+                        element: 'body',
+                        popover: {
+                            title: 'Bienvenido al Panel de Administrador',
+                            description: 'Este es un recorrido rápido para familiarizarte con las funcionalidades principales del dashboard.'
+                        }
                     },
-                    { 
-                        element: 'aside', 
-                        popover: { 
-                            title: 'Menú de Navegación', 
-                            description: 'Desde aquí puedes acceder a todas las secciones del sistema: Apartamentos, Reservas, Usuarios y Configuración.' 
-                        } 
+                    {
+                        element: 'aside',
+                        popover: {
+                            title: 'Menú de Navegación',
+                            description: 'Desde aquí puedes acceder a todas las secciones del sistema: Apartamentos, Reservas, Usuarios y Configuración.'
+                        }
                     },
-                    { 
-                        element: '#dashboard-section', 
-                        popover: { 
-                            title: 'Resumen Administrativo', 
-                            description: 'Visualiza rápidamente los indicadores clave como el total de reservas y PQR pendientes.' 
-                        } 
+                    {
+                        element: '#dashboard-section',
+                        popover: {
+                            title: 'Resumen Administrativo',
+                            description: 'Visualiza rápidamente los indicadores clave como el total de reservas y PQR pendientes.'
+                        }
                     },
-                    { 
-                        element: '#apartments-section', 
-                        popover: { 
-                            title: 'Gestión de Apartamentos', 
-                            description: 'Administra tus propiedades. Puedes ver el listado, filtrar, agregar nuevos apartamentos o editar los existentes.' 
-                        } 
+                    {
+                        element: '#apartments-section',
+                        popover: {
+                            title: 'Gestión de Apartamentos',
+                            description: 'Administra tus propiedades. Puedes ver el listado, filtrar, agregar nuevos apartamentos o editar los existentes.'
+                        }
                     },
-                    { 
-                        element: '#bookings-section', 
-                        popover: { 
-                            title: 'Control de Reservas', 
-                            description: 'Gestiona las reservas. Revisa el estado (Confirmada, Pendiente, etc.), detalles del huésped y fechas.' 
-                        } 
+                    {
+                        element: '#bookings-section',
+                        popover: {
+                            title: 'Control de Reservas',
+                            description: 'Gestiona las reservas. Revisa el estado (Confirmada, Pendiente, etc.), detalles del huésped y fechas.'
+                        }
                     },
-                    { 
-                        element: '#pqr-section', 
-                        popover: { 
-                            title: 'Bandeja de PQR', 
-                            description: 'Atiende las Peticiones, Quejas y Reclamos de los usuarios. Puedes ver el detalle y responder directamente.' 
-                        } 
+                    {
+                        element: '#pqr-section',
+                        popover: {
+                            title: 'Bandeja de PQR',
+                            description: 'Atiende las Peticiones, Quejas y Reclamos de los usuarios. Puedes ver el detalle y responder directamente.'
+                        }
                     },
-                    { 
-                        element: '#start-tour', 
-                        popover: { 
-                            title: 'Ayuda y Recorrido', 
-                            description: 'Si necesitas ver este recorrido nuevamente, puedes hacer clic en este botón de ayuda.' 
-                        } 
+                    {
+                        element: '#start-tour',
+                        popover: {
+                            title: 'Ayuda y Recorrido',
+                            description: 'Si necesitas ver este recorrido nuevamente, puedes hacer clic en este botón de ayuda.'
+                        }
                     }
                 ]
             });
@@ -771,7 +779,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                     driverObj.drive();
                 });
             }
-            
+
             // Opcional: Iniciar automáticamente si es la primera vez (puedes usar localStorage)
             // if (!localStorage.getItem('tour_visto')) {
             //     driverObj.drive();
