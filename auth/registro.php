@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Registro de Usuario</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -35,7 +35,7 @@
     <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-10">
         <a href="/" class="flex items-center gap-3">
             <img
-                src="/public/img/logo-definitivo.png"
+                src="/public/img/logo-definitivo.webp"
                 class="h-16 md:h-24 w-auto object-contain"
                 alt="logo">
 

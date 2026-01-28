@@ -30,6 +30,8 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
     <!-- icono redes sociales -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- mapa mundi -->
@@ -85,9 +87,6 @@
 
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
     <!-- header -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
-
     <style>
         :root {
             scroll-behavior: auto;
@@ -226,7 +225,7 @@
 
         <nav class="hidden md:flex items-center gap-8 h-full">
             <ul class="flex items-center gap-6 list-none">
-                <li><a class="nav-link" href="#">Bienvenido a Santa Marta</a></li>
+                <li><a class="nav-link" href="#">Bienvenidos a Santa Marta!</a></li>
                 <li><a class="nav-link" href="#apartamentos">Apartamentos</a></li>
                 <li><a class="nav-link" href="#ubicacion">Ubicación</a></li>
                 <li><a class="nav-link" href="/php/gastronomia.php">Guía Gastronómica</a></li>
@@ -269,7 +268,7 @@
             </button>
         </div>
         <nav class="flex flex-col items-center justify-center flex-grow gap-8 text-center">
-            <a href="/" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Bienvenido a Santa Marta</a>
+            <a href="/" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Bienvenidos a Santa Marta!</a>
             <a href="#apartamentos" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartamentos</a>
             <a href="#ubicacion" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Ubicación</a>
             <a href="/php/gastronomia.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Guía Gastronómica</a>
@@ -295,7 +294,7 @@
                         </span>
                     </h2>
                     <p class="text-white text-sm md:text-base mt-6 max-w-sm leading-relaxed drop-shadow-lg">
-                        Exclusividad y confort en los mejores apartamentos de la costa caribeña.
+                        Exclusividad y Confort en los Mejores Apartamentos de la Costa Caribeña Colombiana.
                     </p>
                 </div>
 
@@ -327,7 +326,7 @@
                                 </select>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Entrada | Salida</label>
+                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Llegada | Salida</label>
                                 <div class="relative">
                                     <input id="date-range" type="text" placeholder="Selecciona las fechas" class="glass-input w-full rounded-xl px-4 py-3 text-sm cursor-pointer" readonly required>
                                     <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none">calendar_month</span>
@@ -405,7 +404,7 @@
 
         const textElement = document.getElementById("typewriter");
         if (textElement) {
-            const text = "Vive y disfruta la experiencia en";
+            const text = "Vive y Disfruta la experiencia en";
             let index = 0,
                 isDeleting = false,
                 speed = 100;
@@ -540,7 +539,7 @@
                     Consulta disponibilidad en tiempo real
                 </h2>
                 <p class="text-gray-400 text-lg">
-                    Nuestros apartamentos son muy solicitados. Revisa el calendario para asegurar tus fechas ideales.
+                    Nuestros apartamentos son muy solicitados. Revisa el calendario para asegurar y reservar tus fechas ideales.
                 </p>
 
                 <div class="flex flex-col gap-4 pt-4">
@@ -605,7 +604,7 @@
     <!-- apartamento -->
     <section class="py-20 bg-[#101c22]" id="apartamentos">
         <div class="px-6 md:px-20 mb-10 text-center">
-            <h2 class="text-3xl font-bold text-white mb-2">Apartamento Destacado</h2>
+            <h2 class="text-3xl font-bold text-white mb-2">Apartamentos Extraordinários!</h2>
             <p class="text-gray-400 text-sm">Nuestras mejores propiedades para una estancia inolvidable</p>
         </div>
 
@@ -901,8 +900,8 @@
                             <li class="flex items-start gap-3" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
                                 <span class="material-symbols-outlined text-blue-400" aria-hidden="true">location_on</span>
                                 <span class="leading-relaxed">
-                                    <span itemprop="streetAddress" data-i18n="foo_address">Apartamento 1730 - Torre 4, Reserva del Mar, Playa Salguero</span><br>
-                                    <span itemprop="addressLocality">Santa Marta</span>, <span itemprop="addressCountry" data-i18n="foo_country">Colombia</span>
+                                    <span itemprop="streetAddress" data-i18n="foo_address">Apartamento 1730 - Torre 4 - Reserva del Mar 1
+                                        Calle 22 # 1 - 67 Playa Salguero, Gaira - Santa Marta, Colombia </span><br>
                                 </span>
                             </li>
                         </ul>
