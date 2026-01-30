@@ -78,7 +78,7 @@
 
     <div class="flex flex-1 w-full min-h-screen">
         <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gray-200 dark:bg-gray-900">
-            <img src="/public/img/torre-portada-login.webp" alt="Santamartabeachfront View" class="absolute inset-0 w-full h-full object-cover">
+            <img src="/public/img/portada-reserva.webp" alt="Santamartabeachfront View" class="absolute inset-0 w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-t from-[#101c22]/90 via-[#101c22]/30 to-transparent"></div>
             <div class="relative z-10 flex flex-col justify-end p-16 h-full w-full max-w-[720px] mx-auto">
                 <div class="mb-8">
