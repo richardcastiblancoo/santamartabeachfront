@@ -58,7 +58,7 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
     <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
@@ -121,15 +121,23 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
 
 <body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
     <div class="flex h-screen w-full">
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden transition-opacity opacity-0"></div>
+
         <aside class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full hidden md:flex shrink-0 z-20">
-            <div class="p-6 flex items-center gap-3">
-                <div class="bg-primary/10 p-2 rounded-lg">
-                    <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo" class="w-8 h-8">
+            <div class="p-6 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="bg-primary/10 p-3 rounded-lg">
+                        <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-16 h-16 object-contain">
+                    </div>
+                    <div>
+                        <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamarta</h1>
+                        <p class="text-xs text-text-secondary dark:text-gray-400 mt-1">Beachfront Admin</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamartabeachfront</h1>
-                    <p class="text-xs text-text-secondary dark:text-gray-400 mt-1">Beachfront Admin</p>
-                </div>
+                <!-- Botón cerrar menú en móvil -->
+                <button onclick="toggleSidebar()" class="md:hidden text-text-secondary hover:text-red-500">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
             <div class="flex-1 overflow-y-auto px-4 py-2 space-y-1">
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/dashboard.php">

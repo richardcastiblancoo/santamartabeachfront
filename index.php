@@ -92,6 +92,36 @@
             scroll-behavior: auto;
         }
 
+        /* ---------------------------------- */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #13a4ec;
+            /* Blue primary color */
+            border-radius: 0px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0f8bc7;
+        }
+
+
         /* --- COMPORTAMIENTO HEADER --- */
         #main-header {
             transition: background-color 0.4s ease;

@@ -87,15 +87,23 @@ include '../../auth/conexion_be.php';
 
 <body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
     <div class="flex h-screen w-full">
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden transition-opacity opacity-0"></div>
+
         <aside class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full hidden md:flex shrink-0 z-20">
-            <div class="p-6 flex items-center gap-3">
-                <div class="bg-primary/10 p-2 rounded-lg">
-                    <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-8 h-8">
+            <div class="p-6 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="bg-primary/10 p-3 rounded-lg">
+                        <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-16 h-16 object-contain">
+                    </div>
+                    <div>
+                        <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamarta</h1>
+                        <p class="text-xs text-text-secondary dark:text-gray-400 mt-1">Beachfront Admin</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamartabeachfront</h1>
-                    <p class="text-xs text-text-secondary dark:text-gray-400 mt-1">Admin Dashboard</p>
-                </div>
+                <!-- Botón cerrar menú en móvil -->
+                <button onclick="toggleSidebar()" class="md:hidden text-text-secondary hover:text-red-500">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
             <div class="flex-1 overflow-y-auto px-4 py-2 space-y-1">
                 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/dashboard.php">
@@ -132,10 +140,10 @@ include '../../auth/conexion_be.php';
             </div>
             <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800">
                 <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
-                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM");'></div>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM'; ?>");'></div>
                     <div class="flex flex-col overflow-hidden">
-                        <span class="text-sm font-bold truncate dark:text-white">Carlos Admin</span>
-                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate">admin@santamarta.com</span>
+                        <span class="text-sm font-bold truncate dark:text-white"><?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
+                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo $_SESSION['email']; ?></span>
                     </div>
                 </div>
             </div>
@@ -148,7 +156,7 @@ include '../../auth/conexion_be.php';
                     </button>
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Apartamentos</h2>
                 </div>
-                
+
             </header>
             <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth">
                 <section class="space-y-6" id="apartments-section">
@@ -427,7 +435,7 @@ include '../../auth/conexion_be.php';
                     <h4 class="text-lg font-bold text-text-main dark:text-white mb-3">Descripción</h4>
                     <p class="text-text-secondary leading-relaxed whitespace-pre-line" id="preview-description"></p>
                 </div>
-                
+
                 <div id="preview-services-container" class="mt-8 hidden">
                     <h4 class="text-lg font-bold text-text-main dark:text-white mb-3">Servicios y Amenidades</h4>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="preview-services-grid">
@@ -443,8 +451,9 @@ include '../../auth/conexion_be.php';
             </div>
         </div>
     </div>
-    
+
     <script src="/js/apartamento-noche.js"></script>
 
 </body>
+
 </html>

@@ -28,21 +28,34 @@
             },
         }
     </script>
+
+    <style>
+        /* --- LOGO 150PX Y TEXTO PEGADO --- */
+        .logo-container img {
+            height: 140px;
+            width: auto;
+            object-fit: contain;
+            transform: translateY(20px);
+        }
+
+        .brand-text {
+            margin-left: -40px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-[#111618] dark:text-white min-h-screen flex flex-col font-display antialiased overflow-x-hidden">
 
     <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-10">
-        <a href="/" class="flex items-center gap-3">
-            <img
-                src="/public/img/logo-definitivo.webp"
-                class="h-16 md:h-24 w-auto object-contain"
-                alt="logo">
-
-            <span class="hidden sm:block font-bold text-lg md:text-xl tracking-tight text-blue-500">
-                Santamartabeachfront
-            </span>
-        </a>
+        <div class="flex items-center h-full">
+            <a href="/" class="flex items-center group logo-container">
+                <img src="/public/img/logo-definitivo.webp" alt="Logo">
+                <h1 class="brand-text text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
+                    Santamarta<span class="text-blue-400">beachfront</span>
+                </h1>
+            </a>
+        </div>
 
 
         <div class="hidden md:flex items-center gap-4 bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-lg">
