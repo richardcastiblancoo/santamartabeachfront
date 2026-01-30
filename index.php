@@ -237,7 +237,7 @@
         <nav class="hidden md:flex items-center gap-8 h-full">
             <ul class="flex items-center gap-6 list-none">
                 <li><a class="nav-link" href="/php/bienvenidosantamarta.php">¡Bienvenidos a Santa Marta!</a></li>
-                <li><a class="nav-link" href="#apartamentos">Apartamentos</a></li>
+                <li><a class="nav-link" href="#apartamentos">Apartamento</a></li>
                 <li><a class="nav-link" href="#ubicacion">Ubicación</a></li>
                 <li><a class="nav-link" href="/php/gastronomia.php">Guía Gastronómica</a></li>
             </ul>
@@ -279,7 +279,7 @@
         </div>
         <nav class="flex flex-col items-center justify-center flex-grow gap-8 text-center">
             <a href="/php/bienvenidosantamarta.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">¡Bienvenidos a Santa Marta!</a>
-            <a href="#apartamentos" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartamentos</a>
+            <a href="#apartamentos" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartamento</a>
             <a href="#ubicacion" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Ubicación</a>
             <a href="/php/gastronomia.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Guía Gastronómica</a>
             <a href="/auth/login.php" class="mt-4 px-12 py-4 bg-blue-600 text-white rounded-full font-black uppercase tracking-widest">Inicio Sesión</a>
@@ -298,7 +298,7 @@
             <div class="relative z-20 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center pt-24 pb-12">
                 <div class="text-left">
                     <h2 class="hero-title font-black text-white drop-shadow-xl">
-                        <span id="typewriter"></span><span class="cursor"></span><br>
+                        Vive&nbsp;&nbsp;y&nbsp;&nbsp;Disfruta la experiencia en<br>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
                             Santa Marta frente al mar
                         </span>
@@ -363,6 +363,7 @@
     <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 
     <script>
+        // Scroll Header effect
         window.addEventListener('scroll', function() {
             const header = document.getElementById('main-header');
             if (window.innerWidth <= 768) {
@@ -374,6 +375,7 @@
             }
         });
 
+        // Datepicker init
         flatpickr("#date-range", {
             mode: "range",
             minDate: "today",
@@ -384,6 +386,7 @@
             disableMobile: "true"
         });
 
+        // Language toggles
         function toggleLang(event) {
             event.stopPropagation();
             document.getElementById('langMenu').classList.toggle('active');
@@ -407,6 +410,7 @@
             else menu.classList.remove('active');
         }
 
+        // Form handler
         document.getElementById('reservaForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const nombre = document.getElementById('full-name').value;
@@ -418,31 +422,6 @@
             const mensaje = `*Nueva Solicitud de Reserva*%0A---------------------------------%0A*Nombre:* ${nombre}%0A*WhatsApp:* ${tel}%0A*Correo:* ${email}%0A*Alojamiento:* ${alojamiento}%0A*Fechas:* ${fechas}%0A---------------------------------%0A¡Hola! Me gustaría confirmar disponibilidad.`;
             window.open(`https://wa.me/${telefonoVentas}?text=${mensaje}`, '_blank');
         });
-
-        const textElement = document.getElementById("typewriter");
-        if (textElement) {
-            const text = "Vive y Disfruta la experiencia en";
-            let index = 0,
-                isDeleting = false,
-                speed = 100;
-
-            function type() {
-                const currentText = text.substring(0, index);
-                textElement.textContent = currentText;
-                if (!isDeleting && index < text.length) {
-                    index++;
-                    speed = 100;
-                } else if (isDeleting && index > 0) {
-                    index--;
-                    speed = 50;
-                } else {
-                    isDeleting = !isDeleting;
-                    speed = isDeleting ? 2500 : 700;
-                }
-                setTimeout(type, speed);
-            }
-            type();
-        }
     </script>
 
 

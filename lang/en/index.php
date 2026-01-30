@@ -173,7 +173,7 @@
             }
         }
 
-        /* --- LOGO & BRANDING --- */
+        /* --- LOGO AND BRAND TEXT --- */
         .logo-container img {
             height: 140px;
             width: auto;
@@ -200,32 +200,12 @@
             opacity: 0.8;
         }
 
-        /* --- HERO & TYPEWRITER --- */
+        /* --- HERO SECTION --- */
         .hero-title {
             font-size: clamp(2rem, 5vw, 4rem);
             line-height: 1.1;
             letter-spacing: -0.05em;
             min-height: 2.2em;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 3px;
-            background-color: #3b82f6;
-            margin-left: 4px;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0;
-            }
         }
 
         .glass-booking {
@@ -256,6 +236,20 @@
         .lang-dropdown.active {
             display: block;
         }
+
+        .btn-login-premium {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-login-premium:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(59, 130, 246, 0.3);
+        }
     </style>
 
     <header id="main-header" class="left-0 w-full z-50 justify-between px-0 md:pr-10">
@@ -270,9 +264,9 @@
 
         <nav class="hidden md:flex items-center gap-8 h-full">
             <ul class="flex items-center gap-6 list-none">
-                <li><a class="nav-link" href="#">Welcome!</a></li>
-                <li><a class="nav-link" href="#apartments">Apartments</a></li>
-                <li><a class="nav-link" href="#location">Location</a></li>
+                <li><a class="nav-link" href="/php/bienvenidosantamarta.php">Welcome to Santa Marta!</a></li>
+                <li><a class="nav-link" href="#apartamentos">Apartments</a></li>
+                <li><a class="nav-link" href="#ubicacion">Location</a></li>
                 <li><a class="nav-link" href="/php/gastronomia.php">Dining Guide</a></li>
             </ul>
 
@@ -284,11 +278,10 @@
                         <span class="material-symbols-outlined text-sm">expand_more</span>
                     </button>
                     <ul id="langMenu" class="lang-dropdown absolute top-full right-0 mt-1 w-32 bg-slate-900 border border-white/10 rounded-xl py-2 shadow-2xl">
-                        <li><a href="index.php" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">SPANISH</a></li>
-                        <li><a href="/lang/en/index.php" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
+                        <li><a href="/index.php" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">SPANISH</a></li>
+                        <li><a href="#" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
                     </ul>
                 </div>
-                <a href="/auth/login.php" class="h-9 px-6 bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest rounded-full flex items-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20">Login</a>
             </div>
         </nav>
 
@@ -304,8 +297,8 @@
                     <img class="w-4 h-4 rounded-full" src="https://flagcdn.com/w40/us.png" alt="EN"> EN
                 </button>
                 <ul id="langMenuMobile" class="lang-dropdown absolute left-0 mt-2 w-32 bg-slate-900 border border-white/10 rounded-xl py-2">
-                    <li><a href="index.php" class="block px-4 py-2 text-white text-[11px]">SPANISH</a></li>
-                    <li><a href="/lang/en/index.php" class="block px-4 py-2 text-white text-[11px]">ENGLISH</a></li>
+                    <li><a href="/index.php" class="block px-4 py-2 text-white text-[11px]">SPANISH</a></li>
+                    <li><a href="#" class="block px-4 py-2 text-white text-[11px]">ENGLISH</a></li>
                 </ul>
             </div>
             <button onclick="toggleMobileMenu(false)" class="text-white">
@@ -313,9 +306,9 @@
             </button>
         </div>
         <nav class="flex flex-col items-center justify-center flex-grow gap-8 text-center">
-            <a href="/" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Welcome!</a>
-            <a href="#apartments" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartments</a>
-            <a href="#location" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Location</a>
+            <a href="/php/bienvenidosantamarta.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Welcome to Santa Marta!</a>
+            <a href="#apartamentos" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartments</a>
+            <a href="#ubicacion" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Location</a>
             <a href="/php/gastronomia.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Dining Guide</a>
             <a href="/auth/login.php" class="mt-4 px-12 py-4 bg-blue-600 text-white rounded-full font-black uppercase tracking-widest">Login</a>
         </nav>
@@ -333,21 +326,21 @@
             <div class="relative z-20 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center pt-24 pb-12">
                 <div class="text-left">
                     <h2 class="hero-title font-black text-white drop-shadow-xl">
-                        <span id="typewriter"></span><span class="cursor"></span><br>
+                        Live&nbsp;&nbsp;&&nbsp;&nbsp;Enjoy the experience in<br>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-                            Santa Marta beachfront
+                            Oceanfront Santa Marta
                         </span>
                     </h2>
                     <p class="text-white text-sm md:text-base mt-6 max-w-sm leading-relaxed drop-shadow-lg">
-                        Exclusivity and comfort in the finest apartments on the Colombian Caribbean coast.
+                        Exclusivity and Comfort in the Best Apartments of the Colombian Caribbean Coast.
                     </p>
                 </div>
 
-                <div class="flex justify-end">
+                <div class="flex flex-col items-end gap-6">
                     <div class="glass-booking w-full max-w-md p-8 rounded-3xl shadow-2xl">
                         <h3 class="text-white text-lg font-bold mb-6 flex items-center gap-2">
                             <span class="material-symbols-outlined text-blue-400">event_available</span>
-                            Book Your Stay
+                            Book your stay
                         </h3>
                         <form id="reservaForm" class="space-y-4">
                             <div class="space-y-1">
@@ -357,17 +350,17 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-1">
                                     <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">WhatsApp</label>
-                                    <input id="whatsapp" type="tel" placeholder="+57..." class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
+                                    <input id="whatsapp" type="tel" placeholder="+1..." class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                                 </div>
                                 <div class="space-y-1">
                                     <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Email</label>
-                                    <input id="email" type="email" placeholder="your@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
+                                    <input id="email" type="email" placeholder="you@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                                 </div>
                             </div>
                             <div class="space-y-1">
                                 <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Accommodation</label>
                                 <select id="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm bg-slate-800">
-                                    <option value="Reserva del Mar - Apt 1730">Reserva del Mar - Apt 1730</option>
+                                    <option value="Reserva del Mar - Apartment 1730">Apartment 1730 - Tower 4 - Reserva del Mar 1</option>
                                 </select>
                             </div>
                             <div class="space-y-1">
@@ -382,29 +375,50 @@
                             </button>
                         </form>
                     </div>
+
+                    <div class="w-full max-w-md">
+                        <a href="/auth/login.php" class="btn-login-premium w-full h-12 rounded-2xl flex items-center justify-center gap-3 text-white/80 hover:text-white group">
+                            <span class="material-symbols-outlined text-blue-400 group-hover:rotate-12 transition-transform">person</span>
+                            <span class="text-[10px] font-black uppercase tracking-[0.2em]">Login</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-        // Scroll Behavior
+        // Scroll Header effect
         window.addEventListener('scroll', function() {
             const header = document.getElementById('main-header');
             if (window.innerWidth <= 768) {
-                if (window.scrollY > 40) header.classList.add('header-scrolled-mobile');
-                else header.classList.remove('header-scrolled-mobile');
+                if (window.scrollY > 40) {
+                    header.classList.add('header-scrolled-mobile');
+                } else {
+                    header.classList.remove('header-scrolled-mobile');
+                }
             }
         });
 
-        // Language Dropdowns
-        function toggleLang(e) {
-            e.stopPropagation();
+        // Datepicker init (English default)
+        flatpickr("#date-range", {
+            mode: "range",
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            showMonths: window.innerWidth > 900 ? 2 : 1,
+            animate: true,
+            disableMobile: "true"
+        });
+
+        // Language toggles
+        function toggleLang(event) {
+            event.stopPropagation();
             document.getElementById('langMenu').classList.toggle('active');
         }
 
-        function toggleLangMobile(e) {
-            e.stopPropagation();
+        function toggleLangMobile(event) {
+            event.stopPropagation();
             document.getElementById('langMenuMobile').classList.toggle('active');
         }
 
@@ -417,44 +431,23 @@
 
         function toggleMobileMenu(open) {
             const menu = document.getElementById('mobile-menu');
-            open ? menu.classList.add('active') : menu.classList.remove('active');
+            if (open) menu.classList.add('active');
+            else menu.classList.remove('active');
         }
 
-        // Reservation Form
+        // Form handler
         document.getElementById('reservaForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const msg = `*New Booking Request*%0A*Name:* ${document.getElementById('full-name').value}%0A*WA:* ${document.getElementById('whatsapp').value}%0A*Email:* ${document.getElementById('email').value}%0A*Apt:* ${document.getElementById('accommodation').value}%0A*Dates:* ${document.getElementById('date-range').value}%0A%0AHi! I'm interested in checking availability.`;
-            window.open(`https://wa.me/573183813381?text=${msg}`, '_blank');
+            const name = document.getElementById('full-name').value;
+            const tel = document.getElementById('whatsapp').value;
+            const email = document.getElementById('email').value;
+            const accommodation = document.getElementById('accommodation').value;
+            const dates = document.getElementById('date-range').value;
+            const salesPhone = "573183813381";
+            const message = `*New Reservation Request*%0A---------------------------------%0A*Name:* ${name}%0A*WhatsApp:* ${tel}%0A*Email:* ${email}%0A*Accommodation:* ${accommodation}%0A*Dates:* ${dates}%0A---------------------------------%0AHi! I would like to confirm availability.`;
+            window.open(`https://wa.me/${salesPhone}?text=${message}`, '_blank');
         });
-
-        // FLUID & SLOW TYPEWRITER
-        const textElement = document.getElementById("typewriter");
-        const phrase = "Live and Enjoy the experience at";
-        let i = 0;
-        let isDeleting = false;
-
-        function type() {
-            const current = phrase.substring(0, i);
-            textElement.textContent = current;
-
-            // Speed: Slow (130ms) for writing, faster (60ms) for deleting
-            let speed = isDeleting ? 60 : 130;
-
-            if (!isDeleting && i === phrase.length) {
-                speed = 4000; // Pause at the end for reading
-                isDeleting = true;
-            } else if (isDeleting && i === 0) {
-                isDeleting = false;
-                speed = 1000; // Pause before restarting
-            }
-
-            i = isDeleting ? i - 1 : i + 1;
-            setTimeout(type, speed);
-        }
-
-        document.addEventListener('DOMContentLoaded', type);
     </script>
-
 
 
     <!-- amenidades -->
