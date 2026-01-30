@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Lugares Recomendados</title>
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -18,7 +18,7 @@
                         "primary": "#000000",
                         "accent": "#c26647",
                         "background-light": "#fdfaf8",
-                        "background-dark": "#0a0a0a",
+                        "background-dark": "#101c22",
                     },
                     fontFamily: {
                         "sans": ["Plus Jakarta Sans", "sans-serif"],
@@ -59,6 +59,18 @@
             transform: translateY(-5px);
             box-shadow: 0 15px 30px -10px rgba(194, 102, 71, 0.1);
         }
+        /* --- LOGO 150PX Y TEXTO PEGADO --- */
+        .logo-container img {
+            height: 140px;
+            width: auto;
+            object-fit: contain;
+            transform: translateY(20px);
+        }
+
+        .brand-text {
+            margin-left: -40px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -67,12 +79,12 @@
         <div class="layout-container flex h-full grow flex-col">
 
             <header class="flex items-center justify-between border-b border-gray-100 dark:border-gray-900 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-12 py-5 sticky top-0 z-50">
-                <div class="flex items-center gap-12">
-                    <a class="flex items-center gap-3 text-black dark:text-white" href="/index.php">
-                        <div class="size-8">
-                            <img src="/public/img/logo-definitivo.png" alt="logo" class="object-contain w-full h-full">
-                        </div>
-                        <h2 class="text-lg font-bold tracking-tight uppercase">Santamartabeachfront</h2>
+                <div class="flex items-center h-full">
+                    <a href="/" class="flex items-center group logo-container">
+                        <img src="/public/img/logo-definitivo.webp" alt="Logo">
+                        <h1 class="brand-text text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
+                            Santamarta<span class="text-blue-400">beachfront</span>
+                        </h1>
                     </a>
                 </div>
                 <div class="flex items-center gap-4">

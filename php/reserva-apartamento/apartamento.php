@@ -120,9 +120,10 @@ if ($result_videos && $result_videos->num_rows > 0) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="shortcut icon" href="/public/img/logo-portada.png" type="image/x-icon">
     <script id="tailwind-config">
         tailwind.config = {
@@ -192,6 +193,18 @@ if ($result_videos && $result_videos->num_rows > 0) {
         .flatpickr-calendar.arrowTop:before, .flatpickr-calendar.arrowTop:after {
             border-bottom-color: #1e293b !important;
         }
+        /* --- LOGO 150PX Y TEXTO PEGADO --- */
+        .logo-container img {
+            height: 140px;
+            width: auto;
+            object-fit: contain;
+            transform: translateY(20px);
+        }
+
+        .brand-text {
+            margin-left: -40px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -200,10 +213,10 @@ if ($result_videos && $result_videos->num_rows > 0) {
 
         <header class="sticky top-0 z-50 w-full bg-white dark:bg-background-dark border-b border-solid border-[#f0f3f4] dark:border-slate-800 px-4 md:px-10 lg:px-40 py-3">
             <div class="flex items-center justify-between max-w-[1280px] mx-auto">
-                <div class="flex items-center gap-3">
-                    <a href="/" class="flex items-center gap-3 group">
-                        <img src="/public/img/logo-definitivo.png" alt="Logo" class="size-14 md:size-20 object-contain">
-                        <h1 class="flex items-center text-white text-base md:text-lg font-black tracking-tighter uppercase leading-none hidden md:inline-block">
+                <div class="flex items-center h-full">
+                    <a href="/" class="flex items-center group logo-container">
+                        <img src="/public/img/logo-definitivo.webp" alt="Logo">
+                        <h1 class="brand-text text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
                             Santamarta<span class="text-blue-400">beachfront</span>
                         </h1>
                     </a>
@@ -246,10 +259,6 @@ if ($result_videos && $result_videos->num_rows > 0) {
                     <a href="/auth/login.php" class="text-2xl font-bold py-2">Iniciar sesión</a>
                     <a href="/auth/registro.php" class="text-2xl font-bold py-2 text-primary">Registrarse</a>
                 </nav>
-
-                <div class="mt-auto pb-10 text-center text-slate-400 text-sm">
-                    © 2026 Santamartabeachfront
-                </div>
             </div>
         </header>
 
@@ -374,11 +383,10 @@ if ($result_videos && $result_videos->num_rows > 0) {
             </div>
 
 
-
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 py-10">
                 <div class="lg:col-span-2">
                     <div class="border-b border-slate-200 dark:border-slate-800 pb-6 mb-8">
-                        <h2 class="text-2xl font-bold mb-2">Alojamiento entero: <?php echo $apartamento['titulo']; ?></h2>
+                        <h2 class="text-2xl font-bold mb-2">Alojamiento Completo: <?php echo $apartamento['titulo']; ?></h2>
                         <p class="text-[#617c89] dark:text-slate-400"><?php echo $apartamento['capacidad']; ?> Huéspedes · <?php echo $apartamento['habitaciones']; ?> Dormitorios · <?php echo $apartamento['banos']; ?> Baños</p>
                     </div>
                     <section class="mb-10">
@@ -387,7 +395,6 @@ if ($result_videos && $result_videos->num_rows > 0) {
                             <?php echo nl2br($apartamento['descripcion']); ?>
                         </p>
                     </section>
-
 
                     <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
                         <h3 class="text-xl font-bold mb-6">Lo que este lugar ofrece</h3>
@@ -842,63 +849,87 @@ if ($result_videos && $result_videos->num_rows > 0) {
 
 
     <?php if ($apartamento): ?>
-        <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pt-16 pb-8">
-            <div class="max-w-[1280px] mx-auto px-4 md:px-10 lg:px-40">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
-                    <div class="col-span-1">
-                        <div class="flex items-center gap-2 mb-6">
-                            <div class="size-6 text-primary">
-                                <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" width="50px" alt="logo-apartamento">
+        <!-- footer -->
+        <footer class="bg-[#101c22] text-white pt-20 pb-10" id="contacto" itemscope itemtype="https://schema.org/Organization">
+            <hr class="border-t border-gray-800 my-12" aria-hidden="true">
+            <div class="max-w-7xl mx-auto px-6 md:px-10">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 py-16">
+
+                    <section class="space-y-6">
+                        <a href="/" class="flex items-center gap-2 group" aria-label="Ir al inicio">
+                            <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
+                                <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-full h-full object-cover">
                             </div>
-                            <h2 class="text-xl font-extrabold leading-tight tracking-tight">Santamarta<span class="text-primary">beachfront</span></h2>
-                        </div>
-                        <p class="text-[#617c89] dark:text-slate-400 text-sm leading-relaxed mb-6">
+                            <span class="text-xl font-bold text-white tracking-tight" itemprop="name">
+                                Santamarta<span class="text-blue-400">beachfront</span>
+                            </span>
+                        </a>
+                        <p class="text-gray-300 text-sm leading-relaxed max-w-xs" itemprop="description" data-i18n="foo_desc">
                             La plataforma líder en alquileres vacacionales de lujo en Santa Marta. Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
                         </p>
-                    </div>
-                    <div class="col-span-1">
-                        <h4 class="font-bold mb-6 text-slate-900 dark:text-white uppercase text-xs tracking-wider">Información de Contacto</h4>
-                        <div class="space-y-4 text-sm font-medium text-[#617c89] dark:text-slate-400">
-                            <a href="mailto:17clouds@gmail.com" class="flex items-center gap-3 hover:text-primary transition-colors">
-                                <span class="material-symbols-outlined text-primary text-xl">mail</span>
-                                <span>17clouds@gmail.com</span>
-                            </a>
-                            <a href="https://wa.me/573183813381" target="_blank" class="flex items-center gap-3 hover:text-primary transition-colors">
-                                <span class="material-symbols-outlined text-primary text-xl">call</span>
-                                <span>+57 318 3813381</span>
-                            </a>
-                            <div class="flex items-start gap-3">
-                                <span class="material-symbols-outlined text-primary text-xl mt-1">location_on</span>
-                                <span>Apartamento 1730 - Torre 4, Reserva del Mar, Playa Salguero<br>Santa Marta, Colombia</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-span-1">
-                        <h4 class="font-bold mb-6 text-slate-900 dark:text-white uppercase text-xs tracking-wider">Síguenos</h4>
-                        <div class="flex gap-4">
-                            <!-- Instagram -->
-                            <a class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:text-white hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 shadow-sm hover:shadow-md group" href="https://www.instagram.com/" target="_blank" aria-label="Instagram">
-                                <svg class="size-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.451 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
-                                </svg>
-                            </a>
+                    </section>
 
-                            <!-- X (Twitter) -->
-                            <a class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:text-white hover:bg-black transition-all duration-300 shadow-sm hover:shadow-md group" href="https://x.com/" target="_blank" aria-label="X">
-                                <svg class="size-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
+                    <section>
+                        <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_contact_title">Información de Contacto</h2>
+                        <address class="not-italic">
+                            <ul class="space-y-4 text-sm text-gray-300">
+                                <li>
+                                    <a href="mailto:17clouds@gmail.com" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="email">
+                                        <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">mail</span>
+                                        <span>17clouds@gmail.com</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://wa.me/573183813381" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="telephone">
+                                        <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">call</span>
+                                        <span>+57 318 3813381</span>
+                                    </a>
+                                </li>
+                                <li class="flex items-start gap-3" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                                    <span class="material-symbols-outlined text-blue-400" aria-hidden="true">location_on</span>
+                                    <span class="leading-relaxed">
+                                        <span itemprop="streetAddress" data-i18n="foo_address">Apartamento 1730 - Torre 4 - Reserva del Mar 1
+                                            Calle 22 # 1 - 67 Playa Salguero, Gaira - Santa Marta, Colombia </span><br>
+                                    </span>
+                                </li>
+                            </ul>
+                        </address>
+                    </section>
+
+                    <section>
+                        <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Síguenos</h2>
+                        <nav aria-label="Redes sociales">
+                            <ul class="flex gap-4 list-none p-0">
+                                <li>
+                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
+                                        <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
+                                        <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
+                                        <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </section>
                 </div>
-                <div class="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-slate-200 dark:border-slate-800 text-xs text-[#617c89]">
-                    <p>© <?php echo date('Y'); ?> Santamarta Beachfront. Todos los derechos reservados.</p>
-                    <div class="flex gap-8">
-                        <a class="hover:text-primary transition-colors font-medium" href="/php/politica-terminos/politica-privacidad.php">Políticas de Privacidad</a>
-                        <a class="hover:text-primary transition-colors font-medium" href="/php/politica-terminos/politica-privacidad.php">Términos y Condiciones</a>
-                    </div>
-                </div>
+
+                <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-[11px] sm:text-xs text-gray-400 gap-4">
+                    <p>© <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront. <span data-i18n="foo_rights">Todos los derechos reservados.</span></p>
+
+                    <nav aria-label="Enlaces legales">
+                        <ul class="flex gap-8 list-none p-0">
+                            <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_privacy">Políticas de Privacidad</a></li>
+                            <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_terms">Términos y Condiciones</a></li>
+                        </ul>
+                    </nav>
+                </aside>
             </div>
         </footer>
 

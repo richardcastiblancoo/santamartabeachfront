@@ -30,7 +30,7 @@
 <section class="py-32 bg-[#101c22] overflow-hidden" aria-labelledby="testimonios-title">
     <div class="max-w-7xl mx-auto mb-16 px-6">
         <header class="text-center">
-            <span class="text-blue-500 font-bold uppercase tracking-[0.3em] text-xs block mb-3">Airbnb Reviews</span>
+            <span class="text-blue-500 font-bold uppercase tracking-[0.3em] text-xs block mb-3">Airbnb Reseñas</span>
             <h2 id="testimonios-title" class="text-4xl md:text-5xl font-bold text-white mb-6">Experiencias de Huéspedes</h2>
         </header>
     </div>

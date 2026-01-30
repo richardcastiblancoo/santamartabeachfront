@@ -127,23 +127,19 @@
         /* --- LOGO 150PX Y TEXTO PEGADO --- */
         .logo-container img {
             height: 140px;
-            /* Agrandado a 150px */
             width: auto;
             object-fit: contain;
             transform: translateY(20px);
-            /* Bajado un poco más por su nuevo tamaño */
         }
 
         .brand-text {
             margin-left: -40px;
-            /* Súper pegado al logo */
             margin-top: 10px;
         }
 
         /* --- MENÚ FULL BLANCO --- */
         .nav-link {
             color: #FFFFFF !important;
-            /* Blanco total */
             font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
@@ -211,6 +207,21 @@
         .lang-dropdown.active {
             display: block;
         }
+
+        /* NUEVO DISEÑO BOTÓN LOGIN (PARA EL INCLUDE) */
+        .btn-login-premium {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-login-premium:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(59, 130, 246, 0.3);
+        }
     </style>
 
     <header id="main-header" class="left-0 w-full z-50 justify-between px-0 md:pr-10">
@@ -225,7 +236,7 @@
 
         <nav class="hidden md:flex items-center gap-8 h-full">
             <ul class="flex items-center gap-6 list-none">
-                <li><a class="nav-link" href="#">Bienvenidos a Santa Marta!</a></li>
+                <li><a class="nav-link" href="/php/bienvenidosantamarta.php">¡Bienvenidos a Santa Marta!</a></li>
                 <li><a class="nav-link" href="#apartamentos">Apartamentos</a></li>
                 <li><a class="nav-link" href="#ubicacion">Ubicación</a></li>
                 <li><a class="nav-link" href="/php/gastronomia.php">Guía Gastronómica</a></li>
@@ -243,7 +254,6 @@
                         <li><a href="/lang/en/index.php" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
                     </ul>
                 </div>
-                <a href="/auth/login.php" class="h-9 px-6 bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest rounded-full flex items-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20">Inicio Sesión</a>
             </div>
         </nav>
 
@@ -268,7 +278,7 @@
             </button>
         </div>
         <nav class="flex flex-col items-center justify-center flex-grow gap-8 text-center">
-            <a href="/" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Bienvenidos a Santa Marta!</a>
+            <a href="/php/bienvenidosantamarta.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">¡Bienvenidos a Santa Marta!</a>
             <a href="#apartamentos" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartamentos</a>
             <a href="#ubicacion" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Ubicación</a>
             <a href="/php/gastronomia.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Guía Gastronómica</a>
@@ -298,7 +308,7 @@
                     </p>
                 </div>
 
-                <div class="flex justify-end">
+                <div class="flex flex-col items-end gap-6">
                     <div class="glass-booking w-full max-w-md p-8 rounded-3xl shadow-2xl">
                         <h3 class="text-white text-lg font-bold mb-6 flex items-center gap-2">
                             <span class="material-symbols-outlined text-blue-400">event_available</span>
@@ -322,7 +332,7 @@
                             <div class="space-y-1">
                                 <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Alojamiento</label>
                                 <select id="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm bg-slate-800">
-                                    <option value="Reserva del Mar - Apartamento 1730">Reserva del Mar - Apartamento 1730</option>
+                                    <option value="Reserva del Mar - Apartamento 1730">Apartamento 1730 - Torre 4 - Reserva del Mar 1</option>
                                 </select>
                             </div>
                             <div class="space-y-1">
@@ -336,6 +346,13 @@
                                 Enviar a WhatsApp
                             </button>
                         </form>
+                    </div>
+
+                    <div class="w-full max-w-md">
+                        <a href="/auth/login.php" class="btn-login-premium w-full h-12 rounded-2xl flex items-center justify-center gap-3 text-white/80 hover:text-white group">
+                            <span class="material-symbols-outlined text-blue-400 group-hover:rotate-12 transition-transform">person</span>
+                            <span class="text-[10px] font-black uppercase tracking-[0.2em]">Inicio Sesión</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -442,88 +459,86 @@
                 </p>
             </header>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
                     <div class="size-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">beach_access</span>
+                        <span class="material-symbols-outlined text-3xl">beach_access</span>
                     </div>
                     <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card1_t">Salida directa al mar</h3>
                     <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card1_d">Acceso privado a la playa. Sal de tu apartamento y pisa la arena dorada al instante.</p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">pool</span>
+                    <div class="flex gap-3 mb-5">
+                        <div class="size-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-3xl">pool</span>
+                        </div>
+                        <div class="size-12 bg-yellow-500/10 rounded-xl flex items-center justify-center text-yellow-500 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-3xl">child_care</span>
+                        </div>
                     </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card2_t">Piscina de Adultos</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card2_d">Piscina principal diseñada para la relajación con vistas panorámicas al océano.</p>
+                    <h3 class="text-lg font-bold mb-2 text-white">Piscinas de Adultos y Niños</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Piscina principal con vistas panorámicas y área infantil segura diseñada para la diversión familiar.
+                    </p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-yellow-500/10 rounded-xl flex items-center justify-center text-yellow-500 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">child_care</span>
+                    <div class="flex gap-3 mb-5">
+                        <div class="size-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-3xl">hot_tub</span>
+                        </div>
+                        <div class="size-12 bg-red-500/10 rounded-xl flex items-center justify-center text-red-400 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-3xl">spa</span>
+                        </div>
                     </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card3_t">Piscina de Niños</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card3_d">Un área segura, controlada y divertida para que los más pequeños disfruten al máximo.</p>
-                </article>
-
-                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">hot_tub</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card4_t">Jacuzzi Premium</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card4_d">Zona de hidromasaje con vistas espectaculares, ideal para desconectar al atardecer.</p>
-                </article>
-
-                <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
-                    <div class="size-12 bg-red-500/10 rounded-xl flex items-center justify-center text-red-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">spa</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card5_t">Sauna y Turco</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card5_d">Circuito de bienestar con sauna finlandesa y baño turco de lujo para tu salud.</p>
+                    <h3 class="text-lg font-bold mb-2 text-white">Jacuzzi y Wellness</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Relajación total con hidromasaje, sauna finlandesa y baño turco de lujo para tu salud y bienestar.
+                    </p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
                     <div class="size-12 bg-orange-500/10 rounded-xl flex items-center justify-center text-orange-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">fitness_center</span>
+                        <span class="material-symbols-outlined text-3xl">fitness_center</span>
                     </div>
                     <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card6_t">Gimnasio 24/7</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card6_d">Equipamiento moderno de cardio y fuerza disponible a cualquier hora del día.</p>
+                    <p class="text-gray-400 text-sm leading-relaxed">Equipamiento moderno de cardio y fuerza disponible a cualquier hora del día.</p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
                     <div class="size-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">local_bar</span>
+                        <span class="material-symbols-outlined text-3xl">local_bar</span>
                     </div>
                     <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card7_t">Sky Bar</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card7_d">Bar en la azotea con coctelería premium y la mejor vista panorámica de la costa.</p>
+                    <p class="text-gray-400 text-sm leading-relaxed">Bar en la azotea con coctelería premium y la mejor vista panorámica de la costa.</p>
                 </article>
 
                 <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
                     <div class="size-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-3xl star-fill">verified_user</span>
+                        <span class="material-symbols-outlined text-3xl">verified_user</span>
                     </div>
                     <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card8_t">Seguridad 24/7</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card8_d">Vigilancia profesional y control de acceso constante para tu total tranquilidad.</p>
+                    <p class="text-gray-400 text-sm leading-relaxed">Vigilancia profesional y control de acceso constante para tu total tranquilidad.</p>
                 </article>
+            </div>
 
-                <div class="sm:col-span-2 lg:col-span-3 xl:col-span-4 mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                        <span class="material-symbols-outlined text-blue-400">wifi</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_wifi">WiFi Fibra Óptica</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                        <span class="material-symbols-outlined text-blue-400">directions_car</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_parking">Parking Incluido</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                        <span class="material-symbols-outlined text-blue-400">outdoor_grill</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_bbq">Zona BBQ</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
-                        <span class="material-symbols-outlined text-blue-400">sports_esports</span>
-                        <span class="text-sm font-medium text-gray-300" data-i18n="am_games">Salón de Juegos</span>
-                    </div>
+            <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
+                    <span class="material-symbols-outlined text-blue-400">wifi</span>
+                    <span class="text-sm font-medium text-gray-300" data-i18n="am_wifi">WiFi Fibra Óptica</span>
+                </div>
+                <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
+                    <span class="material-symbols-outlined text-blue-400">directions_car</span>
+                    <span class="text-sm font-medium text-gray-300" data-i18n="am_parking">Parking Incluido</span>
+                </div>
+                <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
+                    <span class="material-symbols-outlined text-blue-400">outdoor_grill</span>
+                    <span class="text-sm font-medium text-gray-300" data-i18n="am_bbq">Zona BBQ</span>
+                </div>
+                <div class="flex items-center gap-3 p-4 bg-[#1e2930]/20 rounded-xl border border-dashed border-white/10">
+                    <span class="material-symbols-outlined text-blue-400">sports_esports</span>
+                    <span class="text-sm font-medium text-gray-300" data-i18n="am_games">Salón de Juegos</span>
                 </div>
             </div>
         </div>
@@ -604,7 +619,7 @@
     <!-- apartamento -->
     <section class="py-20 bg-[#101c22]" id="apartamentos">
         <div class="px-6 md:px-20 mb-10 text-center">
-            <h2 class="text-3xl font-bold text-white mb-2">Apartamentos Extraordinários!</h2>
+            <h2 class="text-3xl font-bold text-white mb-2">¡Apartamentos Extraordinários!</h2>
             <p class="text-gray-400 text-sm">Nuestras mejores propiedades para una estancia inolvidable</p>
         </div>
 
@@ -683,7 +698,7 @@
                                 </div>
                                 <a href="/php/reserva-apartamento/apartamento.php?id=<?php echo $row['id']; ?>"
                                     class="bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white px-4 py-2 rounded-lg font-bold text-[11px] transition-all">
-                                    Ver detalles
+                                    Ver Galeria
                                 </a>
                             </div>
                         </div>
@@ -729,7 +744,7 @@
                     <div class="size-10 shrink-0 rounded-full bg-cyan-900/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-xl">beach_access</span>
                     </div>
-                    <span class="text-gray-300 font-medium text-base">A solo 1 minuto de la playa</span>
+                    <span class="text-gray-300 font-medium text-base">A solo 30 metros de la playa</span>
                 </li>
                 <li class="flex items-center gap-4 group">
                     <div class="size-10 shrink-0 rounded-full bg-green-900/30 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform">

@@ -61,19 +61,33 @@
                 display: flex;
             }
         }
+
+        /* --- LOGO 150PX Y TEXTO PEGADO --- */
+        .logo-container img {
+            height: 140px;
+            width: auto;
+            object-fit: contain;
+            transform: translateY(20px);
+        }
+
+        .brand-text {
+            margin-left: -40px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
 <body class="bg-gray-50 dark:bg-[#0f172a] text-[#111618] dark:text-white transition-colors duration-200">
 
     <header class="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-md px-6 md:px-10 py-4 sticky top-0 z-50">
-        <div class="flex items-center gap-4">
-            <div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
-                <img src="/public/img/logo-definitivo.webp" class="w-full h-auto" alt="Logo">
-            </div>
-            <h2 class="hidden md:block text-lg font-bold tracking-tight">Santamartabeachfront</h2>
+        <div class="flex items-center h-full">
+            <a href="/" class="flex items-center group logo-container">
+                <img src="/public/img/logo-definitivo.webp" alt="Logo">
+                <h1 class="brand-text text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
+                    Santamarta<span class="text-blue-400">beachfront</span>
+                </h1>
+            </a>
         </div>
-
         <div id="navContainer" class="hidden lg:flex items-center gap-4">
             <a href="/" class="w-full lg:w-auto flex items-center justify-center px-8 h-11 rounded-xl lg:rounded-full bg-blue-600 text-white text-sm font-bold shadow-lg hover:bg-blue-700 transition-all" data-key="nav-inicio">Inicio</a>
 
