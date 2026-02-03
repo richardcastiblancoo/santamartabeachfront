@@ -156,14 +156,14 @@
 
         /* --- LOGO 150PX Y TEXTO PEGADO --- */
         .logo-container img {
-            height: 140px;
+            height: 160px;
             width: auto;
             object-fit: contain;
             transform: translateY(20px);
         }
 
         .brand-text {
-            margin-left: -40px;
+            margin-left: -50px;
             margin-top: 10px;
         }
 
@@ -257,9 +257,11 @@
     <header id="main-header" class="left-0 w-full z-50 justify-between px-0 md:pr-10">
         <div class="flex items-center h-full">
             <a href="/" class="flex items-center group logo-container">
-                <img src="/public/img/logo-definitivo.webp" alt="Logo">
-                <h1 class="brand-text text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
-                    Santamarta<span class="text-blue-400">beachfront</span>
+                <img src="/public/img/logo-definitivo.webp" alt="Logo" class="h-8 w-auto mr-2">
+                <h1 class="brand-text text-white text-lg md:text-xl font-black tracking-tighter uppercase hidden md:inline-block">
+                    Santamarta<span class="bg-gradient-to-r from-blue-800 to-indigo-900 bg-clip-text text-transparent">
+                        beachfront
+                    </span>
                 </h1>
             </a>
         </div>
@@ -327,9 +329,9 @@
 
             <div class="relative z-20 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center pt-24 pb-12">
                 <div class="text-left">
-                    <h2 class="hero-title font-black text-white drop-shadow-xl">
-                        Vive&nbsp;&nbsp;y&nbsp;&nbsp;Disfruta la experiencia en<br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
+                    <h2 class="hero-title font-black text-white drop-shadow-xl text-3xl md:text-5xl">
+                        Vive&nbsp;&nbsp;y&nbsp;&nbsp;<span class="text-amber-400">Disfruta</span> la experiencia en<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800">
                             Santa Marta frente al mar
                         </span>
                     </h2>
@@ -362,7 +364,7 @@
                             <div class="space-y-1">
                                 <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Alojamiento</label>
                                 <select id="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm bg-slate-800">
-                                    <option value="Reserva del Mar - Apartamento 1730">Apartamento 1730 - Torre 4 - Reserva del Mar 1</option>
+                                    <option value="Reserva del Mar - Apartamento 1730">Apartamentos 1730 - Torre 4 - Reserva del Mar 1</option>
                                 </select>
                             </div>
                             <div class="space-y-1">
@@ -887,28 +889,30 @@
 
     <!-- footer -->
     <footer class="bg-[#101c22] text-white pt-20 pb-10" id="contacto" itemscope itemtype="https://schema.org/Organization">
-        <hr class="border-t border-gray-800 my-12" aria-hidden="true">
         <div class="max-w-7xl mx-auto px-6 md:px-10">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 py-16">
+            <hr class="border-t border-gray-800 my-12 opacity-40" aria-hidden="true">
 
-                <section class="space-y-6">
-                    <a href="/" class="flex items-center gap-2 group" aria-label="Ir al inicio">
-                        <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
-                            <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-full h-full object-cover">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-24 py-16 items-start">
+
+                <section class="flex flex-col">
+                    <a href="/" class="flex items-center group w-fit -ml-4" aria-label="Ir al inicio">
+                        <div class="w-[130px] h-[130px] shrink-0 transition-transform group-hover:scale-105">
+                            <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-full h-full object-contain">
                         </div>
-                        <span class="text-xl font-bold text-white tracking-tight" itemprop="name">
+                        <span class="text-3xl font-bold text-white tracking-tighter -ml-9 mb-2" itemprop="name">
                             Santamarta<span class="text-blue-400">beachfront</span>
                         </span>
                     </a>
-                    <p class="text-gray-300 text-sm leading-relaxed max-w-xs" itemprop="description" data-i18n="foo_desc">
+
+                    <p class="text-gray-300 text-sm leading-relaxed max-w-xs pl-5 -mt-3 ml-6 border-l border-blue-400/20" itemprop="description" data-i18n="foo_desc">
                         La plataforma líder en alquileres vacacionales de lujo en Santa Marta. Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
                     </p>
                 </section>
 
-                <section>
-                    <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_contact_title">Información de Contacto</h2>
+                <section class="lg:pl-12 flex flex-col">
+                    <h2 class="font-bold mb-8 text-white uppercase tracking-widest text-xs" data-i18n="foo_contact_title">Información de Contacto</h2>
                     <address class="not-italic">
-                        <ul class="space-y-4 text-sm text-gray-300">
+                        <ul class="space-y-5 text-sm text-gray-300">
                             <li>
                                 <a href="mailto:17clouds@gmail.com" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="email">
                                     <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">mail</span>
@@ -924,40 +928,46 @@
                             <li class="flex items-start gap-3" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
                                 <span class="material-symbols-outlined text-blue-400" aria-hidden="true">location_on</span>
                                 <span class="leading-relaxed">
-                                    <span itemprop="streetAddress" data-i18n="foo_address">Apartamento 1730 - Torre 4 - Reserva del Mar 1
-                                        Calle 22 # 1 - 67 Playa Salguero, Gaira - Santa Marta, Colombia </span><br>
+                                    <span itemprop="streetAddress" data-i18n="foo_address">Apartamento 1730 - Torre 4 - Reserva del Mar 1<br>
+                                        Calle 22 # 1 - 67 Playa Salguero, Gaira - Santa Marta, Colombia </span>
                                 </span>
                             </li>
                         </ul>
                     </address>
                 </section>
 
-                <section>
-                    <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Síguenos</h2>
-                    <nav aria-label="Redes sociales">
-                        <ul class="flex gap-4 list-none p-0">
-                            <li>
-                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
-                                    <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
-                                    <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
-                                    <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                <section class="lg:items-end flex flex-col">
+                    <div class="w-fit lg:text-right">
+                        <h2 class="font-bold mb-8 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Síguenos</h2>
+                        <nav aria-label="Redes sociales">
+                            <ul class="flex gap-4 list-none p-0 lg:justify-end">
+                                <li>
+                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
+                                        <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
+                                        <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
+                                        <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </section>
             </div>
 
             <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-[11px] sm:text-xs text-gray-400 gap-4">
-                <p>© <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront. <span data-i18n="foo_rights">Todos los derechos reservados.</span></p>
+                <p>
+                    © <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront.
+                    <span data-i18n="foo_rights">Todos los derechos reservados.</span> |
+                    Hecho por <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit; font-weight: bold;">Richard Castiblanco</a>
+                </p>
 
                 <nav aria-label="Enlaces legales">
                     <ul class="flex gap-8 list-none p-0">
