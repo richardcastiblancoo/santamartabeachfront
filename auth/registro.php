@@ -5,9 +5,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Registro de Usuario</title>
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -30,16 +28,16 @@
     </script>
 
     <style>
-        /* --- LOGO 150PX Y TEXTO PEGADO --- */
-        .logo-container img {
+        /* Ajuste para que el logo se vea bien sobre la imagen */
+        .side-logo img {
             height: 140px;
             width: auto;
             object-fit: contain;
-            transform: translateY(20px);
+            transform: translateY(15px);
         }
 
-        .brand-text {
-            margin-left: -40px;
+        .side-brand-text {
+            margin-left: -35px;
             margin-top: 10px;
         }
     </style>
@@ -47,51 +45,34 @@
 
 <body class="bg-background-light dark:bg-background-dark text-[#111618] dark:text-white min-h-screen flex flex-col font-display antialiased overflow-x-hidden">
 
-    <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-10">
-        <div class="flex items-center h-full">
-            <a href="/" class="flex items-center group logo-container">
-                <img src="/public/img/logo-definitivo.webp" alt="Logo">
-                <h1 class="brand-text text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
-                    Santamarta<span class="text-blue-400">beachfront</span>
-                </h1>
-            </a>
-        </div>
-
-
+    <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-end px-6 py-4 md:px-10">
         <div class="hidden md:flex items-center gap-4 bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-lg">
-            <button onclick="changeLanguage('es')" id="btn-es" class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-primary text-white">
+            <button onclick="changeLanguage('es')" id="btn-es" class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all">
                 <img src="https://flagcdn.com/w40/co.png" class="w-4 h-4 rounded-full object-cover" alt="ES"> ES
             </button>
-            <button onclick="changeLanguage('en')" id="btn-en" class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all text-gray-500 hover:bg-white/10">
+            <button onclick="changeLanguage('en')" id="btn-en" class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all">
                 <img src="https://flagcdn.com/w40/us.png" class="w-4 h-4 rounded-full object-cover" alt="EN"> EN
             </button>
         </div>
 
-        <button id="menuBtn" class="md:hidden p-2 text-primary bg-white dark:bg-gray-800 rounded-lg shadow-md relative z-[60]">
+        <button id="menuBtn" class="md:hidden p-2 text-primary bg-white dark:bg-gray-800 rounded-lg shadow-md z-[60]">
             <span id="menuIcon" class="material-symbols-outlined text-2xl">menu</span>
         </button>
     </header>
 
-    <div id="mobileMenu" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col items-center justify-center gap-8 text-white md:hidden">
-        <a href="/" class="text-xl font-bold hover:text-primary transition">Inicio</a>
-        <div class="flex gap-4">
-            <button onclick="changeLanguage('es')" class="flex flex-col items-center gap-2 group">
-                <img src="https://flagcdn.com/w80/co.png" class="w-14 h-14 rounded-full border-2 border-transparent group-hover:border-primary transition" alt="ES">
-                <span class="text-sm font-bold">ESPAÑOL</span>
-            </button>
-            <button onclick="changeLanguage('en')" class="flex flex-col items-center gap-2 group">
-                <img src="https://flagcdn.com/w80/us.png" class="w-14 h-14 rounded-full border-2 border-transparent group-hover:border-primary transition" alt="EN">
-                <span class="text-sm font-bold">ENGLISH</span>
-            </button>
-        </div>
-        <button onclick="toggleMenu()" class="mt-8 px-6 py-2 border border-white/30 rounded-full text-sm">Cerrar</button>
-    </div>
-
     <div class="flex flex-1 w-full min-h-screen">
         <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gray-900">
-            <img src="/public/img/portada-reserva.webp" alt="Santamartabeachfront" class="absolute inset-0 w-full h-full object-cover opacity-80">
+            <img src="/public/img/portada-reserva.webp" alt="Santamartabeachfront" class="absolute inset-0 w-full h-full object-cover opacity-60">
 
-            <div class="absolute inset-0 bg-gradient-to-t from-[#101c22] via-[#101c22]/20 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#101c22] via-[#101c22]/30 to-transparent"></div>
+
+            <div class="absolute top-10 left-10 z-20 flex items-center side-logo">
+                <img src="/public/img/logo-definitivo.webp" alt="Logo">
+                <h1 class="side-brand-text text-white text-xl font-black tracking-tighter uppercase">
+                    Santamarta<span class="text-[#0369a1]">beachfront</span>
+                </h1>
+            </div>
+
             <div class="relative z-10 flex flex-col justify-end p-16 h-full w-full max-w-[720px] mx-auto">
                 <div class="mb-8">
                     <h1 data-key="hero-title" class="text-white text-5xl font-black leading-tight tracking-[-0.033em] mb-4">Bienvenido al paraíso</h1>
