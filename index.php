@@ -888,49 +888,34 @@
     </style>
 
     <!-- footer -->
-    <footer class="bg-[#101c22] text-white pt-20 pb-10" id="contacto" itemscope itemtype="https://schema.org/Organization">
+    <footer class="bg-[#101c22] text-white pt-10 pb-10 mt-[-2rem]" id="contacto">
         <div class="max-w-7xl mx-auto px-6 md:px-10">
-            <hr class="border-t border-gray-800 my-12 opacity-40" aria-hidden="true">
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-24 py-16 items-start">
-
-                <section class="flex flex-col">
-                    <a href="/" class="flex items-center group w-fit -ml-4" aria-label="Ir al inicio">
-                        <div class="w-[130px] h-[130px] shrink-0 transition-transform group-hover:scale-105">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-24 py-16 items-start border-t border-white/5">
+                <section class="flex flex-col items-center md:items-start text-center md:text-left">
+                    <a href="/" class="flex flex-col md:flex-row items-center group w-fit md:-ml-4">
+                        <div class="w-[100px] h-[100px] md:w-[130px] md:h-[130px] shrink-0">
                             <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-full h-full object-contain">
                         </div>
-                        <span class="text-3xl font-bold text-white tracking-tighter -ml-9 mb-2" itemprop="name">
+                        <span class="text-2xl md:text-3xl font-bold text-white tracking-tighter mt-[-20px] md:mt-0 md:-ml-9 mb-2">
                             Santamarta<span class="text-blue-400">beachfront</span>
                         </span>
                     </a>
-
-                    <p class="text-gray-300 text-sm leading-relaxed max-w-xs pl-5 -mt-3 ml-6 border-l border-blue-400/20" itemprop="description" data-i18n="foo_desc">
+                    <p class="text-gray-300 text-sm leading-relaxed max-w-xs md:pl-5 md:border-l md:border-blue-400/20" data-i18n="footer-desc">
                         La plataforma líder en alquileres vacacionales de lujo en Santa Marta. Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
                     </p>
                 </section>
 
-                <section class="lg:pl-12 flex flex-col">
-                    <h2 class="font-bold mb-8 text-white uppercase tracking-widest text-xs" data-i18n="foo_contact_title">Información de Contacto</h2>
+                <section class="lg:pl-12 flex flex-col items-center md:items-start">
+                    <h2 class="font-bold mb-8 text-white uppercase tracking-widest text-xs" data-i18n="footer-contact-title">Información de Contacto</h2>
                     <address class="not-italic">
-                        <ul class="space-y-5 text-sm text-gray-300">
-                            <li>
-                                <a href="mailto:17clouds@gmail.com" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="email">
-                                    <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">mail</span>
-                                    <span>17clouds@gmail.com</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://wa.me/573183813381" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="telephone">
-                                    <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">call</span>
-                                    <span>+57 318 3813381</span>
-                                </a>
-                            </li>
-                            <li class="flex items-start gap-3" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
-                                <span class="material-symbols-outlined text-blue-400" aria-hidden="true">location_on</span>
-                                <span class="leading-relaxed">
-                                    <span itemprop="streetAddress" data-i18n="foo_address">Apartamento 1730 - Torre 4 - Reserva del Mar 1<br>
-                                        Calle 22 # 1 - 67 Playa Salguero, Gaira - Santa Marta, Colombia </span>
-                                </span>
+                        <ul class="space-y-5 text-sm text-gray-300 text-center md:text-left">
+                            <li><a href="mailto:17clouds@gmail.com" class="flex items-center justify-center md:justify-start gap-3">
+                                    <span class="material-symbols-outlined text-blue-400">mail</span> 17clouds@gmail.com</a></li>
+                            <li><a href="https://wa.me/573183813381" class="flex items-center justify-center md:justify-start gap-3">
+                                    <span class="material-symbols-outlined text-blue-400">call</span> +57 318 3813381</a></li>
+                            <li class="flex items-start justify-center md:justify-start gap-3">
+                                <span class="material-symbols-outlined text-blue-400 shrink-0">location_on</span>
+                                <span>Apartamento 1730 - Torre 4 - Reserva del Mar 1<br> Calle 22 # 1 - 67 Playa Salguero, Santa Marta</span>
                             </li>
                         </ul>
                     </address>
@@ -961,23 +946,16 @@
                     </div>
                 </section>
             </div>
-
-            <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-[11px] sm:text-xs text-gray-400 gap-4">
+            <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-xs text-gray-400 text-center gap-4">
                 <p>
                     © <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront.
                     <span data-i18n="foo_rights">Todos los derechos reservados.</span> |
                     Hecho por <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit; font-weight: bold;">Richard Castiblanco</a>
                 </p>
-
-                <nav aria-label="Enlaces legales">
-                    <ul class="flex gap-8 list-none p-0">
-                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_privacy">Políticas de Privacidad</a></li>
-                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_terms">Términos y Condiciones</a></li>
-                    </ul>
-                </nav>
             </aside>
         </div>
     </footer>
+
 
     <!-- scripst -->
     <script src="js/main.js"></script>
