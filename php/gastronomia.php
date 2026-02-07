@@ -20,7 +20,7 @@
     <meta property="twitter:description" content="Disfruta de Playa Salguero en Reserva del Mar 1. Apartamentos con balcón al mar, piscina y confort premium en Santa Marta.">
     <meta property="twitter:image" content="https://santamartabeachfront.com/public/img/logo-definitivo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>

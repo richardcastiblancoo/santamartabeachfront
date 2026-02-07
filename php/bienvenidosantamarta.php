@@ -9,7 +9,7 @@
     <meta name="robots" content="index, follow">
     <meta name="description" content="Reserva del Mar 1: Apartamentos de lujo frente al mar en Playa Salguero, Santa Marta. Piscina infinita, acceso directo a la playa y confort total. ¡Reserva ya!">
     <title>Santamartabeachfront | Galería</title>
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap" rel="stylesheet" />
@@ -278,6 +278,13 @@
                     <span data-i18n="foo_rights">Todos los derechos reservados.</span> |
                     Hecho por <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit; font-weight: bold;">Richard Castiblanco</a>
                 </p>
+
+                <nav aria-label="Enlaces legales">
+                    <ul class="flex gap-8 list-none p-0">
+                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_privacy">Políticas de Privacidad</a></li>
+                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_terms">Términos y Condiciones</a></li>
+                    </ul>
+                </nav>
             </aside>
         </div>
     </footer>

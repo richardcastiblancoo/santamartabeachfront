@@ -771,7 +771,7 @@
                 </li>
             </ul>
 
-            <a href="https://www.google.com/maps/search/?api=1&query=11.1911119,-74.2311344" target="_blank" class="self-start px-10 py-4 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/20 active:scale-95 text-center">
+            <a href="https://www.google.com/maps/place/Santamartabeachfront+-+Reserva+del+Mar+1/@11.1914198,-74.2311532,19z/data=!4m6!3m5!1s0x8ef45f0cefa29521:0x25c7f603ab64ade5!8m2!3d11.1914234!4d-74.2310167!16s%2Fg%2F11mznm5s9h?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="self-start px-10 py-4 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/20 active:scale-95 text-center">
                 ¿Cómo llegar? (Google Maps)
             </a>
         </article>
@@ -795,12 +795,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof L === 'undefined') return;
 
-            // Coordenadas
+            // Coordenadas verificadas de Reserva del Mar 1
             const coords = {
                 planeta: [20, 0],
                 colombia: [4.5709, -74.2973],
                 santaMarta: [11.2404, -74.1990],
-                reservaMar: [11.1911119, -74.2311344]
+                reservaMar: [11.19142, -74.23102] // Ubicación exacta del edificio
             };
 
             const map = L.map('map-ubicacion', {
@@ -811,10 +811,10 @@
                 doubleClickZoom: false
             }).setView(coords.planeta, 2);
 
-            // Capa Satelital Natural (ESRI)
+            // Capa Satelital (ESRI)
             L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}').addTo(map);
 
-            // Capa de Etiquetas en Español/Multilingüe (CartoDB)
+            // Etiquetas (CartoDB) - Se ven mejor sobre el satélite
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', {
                 opacity: 0.8
             }).addTo(map);
@@ -833,33 +833,36 @@
                     // PASO 2: COLOMBIA
                     status.innerText = "2. Colombia";
                     map.flyTo(coords.colombia, 6, {
-                        duration: 7,
-                        easeLinearity: 0.25
-                    });
-                    await new Promise(r => setTimeout(r, 8000));
-
-                    // PASO 3: SANTA MARTA
-                    status.innerText = "3. Santa Marta";
-                    map.flyTo(coords.santaMarta, 12, {
-                        duration: 6,
-                        easeLinearity: 0.25
+                        duration: 6
                     });
                     await new Promise(r => setTimeout(r, 7000));
 
-                    // PASO 4: RESERVA DEL MAR
+                    // PASO 3: SANTA MARTA
+                    status.innerText = "3. Santa Marta";
+                    map.flyTo(coords.santaMarta, 13, {
+                        duration: 5
+                    });
+                    await new Promise(r => setTimeout(r, 6000));
+
+                    // PASO 4: RESERVA DEL MAR (ZOOM FINAL)
                     status.innerText = "4. Reserva del Mar 1";
                     map.flyTo(coords.reservaMar, 18, {
-                        duration: 8,
-                        easeLinearity: 0.25
+                        duration: 7
                     });
-                    await new Promise(r => setTimeout(r, 10000));
+                    await new Promise(r => setTimeout(r, 8000));
 
                     // Marcador final
                     L.marker(coords.reservaMar).addTo(markerLayer)
-                        .bindPopup('<div class="text-center"><b>Reserva del Mar 1</b><br>Torre 4 - Apto 1730</div>')
+                        .bindPopup(`
+                        <div style="text-align: center;">
+                            <strong style="color: #60a5fa;">Reserva del Mar 1</strong><br>
+                            Torre 4 - Apto 1730<br>
+                            <span style="font-size: 10px; opacity: 0.7;">Playa Salguero</span>
+                        </div>
+                    `)
                         .openPopup();
 
-                    await new Promise(r => setTimeout(r, 10000));
+                    await new Promise(r => setTimeout(r, 12000)); // Pausa para ver el marcador
                 }
             }
 
@@ -952,6 +955,13 @@
                     <span data-i18n="foo_rights">Todos los derechos reservados.</span> |
                     Hecho por <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit; font-weight: bold;">Richard Castiblanco</a>
                 </p>
+
+                <nav aria-label="Enlaces legales">
+                    <ul class="flex gap-8 list-none p-0">
+                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_privacy">Políticas de Privacidad</a></li>
+                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_terms">Términos y Condiciones</a></li>
+                    </ul>
+                </nav>
             </aside>
         </div>
     </footer>

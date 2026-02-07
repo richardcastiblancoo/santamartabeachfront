@@ -17,8 +17,8 @@
     <meta name="twitter:title" content="santamartabeachfront - Alquiler de Apartamentos">
     <meta name="twitter:image" content="https://santamartabeachfront.com/public/img/logo-portada.png">
     <meta name="theme-color" content="#63b5f8ff">
-    <title>santamartabeachfront - Reserva del Mar</title>
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.png" type="image/x-icon">
+    <title>santamartabeachfront - Políticas y Términos</title>
+    <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />

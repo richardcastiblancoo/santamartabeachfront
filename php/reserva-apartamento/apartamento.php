@@ -124,7 +124,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="shortcut icon" href="/public/img/logo-portada.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -147,6 +147,204 @@ if ($result_videos && $result_videos->num_rows > 0) {
                 },
             },
         }
+    </script>
+    <script>
+        const translations = {
+            es: {
+                "Santamartabeachfront": "Santamartabeachfront",
+                "Iniciar sesión": "Iniciar sesión",
+                "Registrarse": "Registrarse",
+                "Menú": "Menú",
+                "Idioma": "Idioma",
+                "Español": "Español",
+                "English": "English",
+                "Compartir": "Compartir",
+                "Sin reseñas": "Sin reseñas",
+                "reseñas": "reseñas",
+                "Descripción": "Descripción",
+                "Servicios": "Servicios",
+                "Disponibilidad": "Disponibilidad",
+                "Reseñas": "Reseñas",
+                "Precio por noche": "Precio por noche",
+                "Reservar ahora": "Reservar ahora",
+                "Selecciona fechas": "Selecciona fechas",
+                "Fecha de llegada": "Fecha de llegada",
+                "Fecha de salida": "Fecha de salida",
+                "Número de huéspedes": "Número de huéspedes",
+                "Adultos": "Adultos",
+                "Niños": "Niños",
+                "Bebés": "Bebés",
+                "Total": "Total",
+                "Impuestos": "Impuestos",
+                "Tarifa de servicio": "Tarifa de servicio",
+                "Noches": "Noches",
+                "No hay reseñas aún.": "No hay reseñas aún.",
+                "Escribe una reseña": "Escribe una reseña",
+                "Tu calificación": "Tu calificación",
+                "Tu reseña": "Tu reseña",
+                "Enviar reseña": "Enviar reseña",
+                "Califica tu experiencia": "Califica tu experiencia",
+                "Escribe tu comentario": "Escribe tu comentario",
+                "No se encontraron apartamentos.": "No se encontraron apartamentos.",
+                "No se encontraron videos.": "No se encontraron videos.",
+                "No se encontraron imágenes.": "No se encontraron imágenes.",
+                "No se encontraron servicios.": "No se encontraron servicios.",
+                "No se encontraron reseñas.": "No se encontraron reseñas.",
+                "No se encontraron rangos ocupados.": "No se encontraron rangos ocupados.",
+                "No se encontraron galerías.": "No se encontraron galerías.",
+                "No se encontraron datos del apartamento.": "No se encontraron datos del apartamento.",
+                "No se encontraron datos de la reserva.": "No se encontraron datos de la reserva.",
+                "No se encontraron datos del usuario.": "No se encontraron datos del usuario.",
+                "No se encontraron datos de la conexión.": "No se encontraron datos de la conexión.",
+                "No se encontraron datos de la sesión.": "No se encontraron datos de la sesión.",
+                "No se encontraron datos de la URL.": "No se encontraron datos de la URL.",
+                "No se encontraron datos de la base de datos.": "No se encontraron datos de la base de datos.",
+                "No se encontraron datos de la consulta.": "No se encontraron datos de la consulta.",
+                "No se encontraron datos del resultado.": "No se encontraron datos del resultado.",
+                "No se encontraron datos de la fila.": "No se encontraron datos de la fila.",
+                "No se encontraron datos de la columna.": "No se encontraron datos de la columna.",
+                "No se encontraron datos de la fecha.": "No se encontraron datos de la fecha.",
+                "No se encontraron datos del ID.": "No se encontraron datos del ID.",
+                "No se encontraron datos del tipo.": "No se encontraron datos del tipo.",
+                "No se encontraron datos de la ruta.": "No se encontraron datos de la ruta.",
+                "No se encontraron datos del estado.": "No se encontraron datos del estado.",
+                "No se encontraron datos del promedio.": "No se encontraron datos del promedio.",
+                "No se encontraron datos del total.": "No se encontraron datos del total.",
+                "No se encontraron datos del nombre.": "No se encontraron datos del nombre.",
+                "No se encontraron datos del apellido.": "No se encontraron datos del apellido.",
+                "No se encontraron datos de la imagen.": "No se encontraron datos de la imagen.",
+                "No se encontraron datos de la calificación.": "No se encontraron datos de la calificación.",
+                "No se encontraron datos del comentario.": "No se encontraron datos del comentario.",
+                "No se encontraron datos del usuario.": "No se encontraron datos del usuario.",
+                "No se encontraron datos del apartamento.": "No se encontraron datos del apartamento.",
+                "No se encontraron datos de la reserva.": "No se encontraron datos de la reserva.",
+                "No se encontraron datos de la fecha de inicio.": "No se encontraron datos de la fecha de inicio.",
+                "No se encontraron datos de la fecha de fin.": "No se encontraron datos de la fecha de fin.",
+                "No se encontraron datos del estado.": "No se encontraron datos del estado.",
+                "No se encontraron datos de la fecha actual.": "No se encontraron datos de la fecha actual.",
+                "No se encontraron datos del conteo.": "No se encontraron datos del conteo.",
+                "No se encontraron datos del resultado de la consulta.": "No se encontraron datos del resultado de la consulta.",
+                "No se encontraron datos del resultado de la fila.": "No se encontraron datos del resultado de la fila.",
+                "No se encontraron datos del resultado de la columna.": "No se encontraron datos del resultado de la columna.",
+                "No se encontraron datos del resultado de la fecha.": "No se encontraron datos del resultado de la fecha.",
+                "No se encontraron datos del resultado del ID.": "No se encontraron datos del resultado del ID.",
+                "No se encontraron datos del resultado del tipo.": "No se encontraron datos del resultado del tipo.",
+                "No se encontraron datos del resultado de la ruta.": "No se encontraron datos del resultado de la ruta.",
+                "No se encontraron datos del resultado del estado.": "No se encontraron datos del resultado del estado.",
+                "No se encontraron datos del resultado del promedio.": "No se encontraron datos del resultado del promedio.",
+                "No se encontraron datos del resultado del total.": "No se encontraron datos del resultado del total.",
+                "No se encontraron datos del resultado del nombre.": "No se encontraron datos del resultado del nombre.",
+                "No se encontraron datos del resultado del apellido.": "No se encontraron datos del resultado del apellido.",
+                "No se encontraron datos del resultado de la imagen.": "No se encontraron datos del resultado de la imagen.",
+                "No se encontraron datos del resultado de la calificación.": "No se encontraron datos del resultado de la calificación.",
+                "No se encontraron datos del resultado del comentario.": "No se encontraron datos del resultado del comentario.",
+                "No se encontraron datos del resultado del usuario.": "No se encontraron datos del resultado del usuario.",
+                "No se encontraron datos del resultado del apartamento.": "No se encontraron datos del resultado del apartamento.",
+                "No se encontraron datos del resultado de la reserva.": "No se encontraron datos del resultado de la reserva.",
+                "No se encontraron datos del resultado de la fecha de inicio.": "No se encontraron datos del resultado de la fecha de inicio.",
+                "No se encontraron datos del resultado de la fecha de fin.": "No se encontraron datos del resultado de la fecha de fin.",
+                "No se encontraron datos del resultado del estado.": "No se encontraron datos del resultado del estado.",
+                "No se encontraron datos del resultado de la fecha actual.": "No se encontraron datos del resultado de la fecha actual.",
+                "No se encontraron datos del resultado del conteo.": "No se encontraron datos del resultado del conteo."
+            },
+            en: {
+                "Santamartabeachfront": "Santamartabeachfront",
+                "Iniciar sesión": "Login",
+                "Registrarse": "Register",
+                "Menú": "Menu",
+                "Idioma": "Language",
+                "Español": "Spanish",
+                "English": "English",
+                "Compartir": "Share",
+                "Sin reseñas": "No reviews",
+                "reseñas": "reviews",
+                "Descripción": "Description",
+                "Servicios": "Amenities",
+                "Disponibilidad": "Availability",
+                "Reseñas": "Reviews",
+                "Precio por noche": "Price per night",
+                "Reservar ahora": "Book now",
+                "Selecciona fechas": "Select dates",
+                "Fecha de llegada": "Check-in date",
+                "Fecha de salida": "Check-out date",
+                "Número de huéspedes": "Number of guests",
+                "Adultos": "Adults",
+                "Niños": "Children",
+                "Bebés": "Infants",
+                "Total": "Total",
+                "Impuestos": "Taxes",
+                "Tarifa de servicio": "Service fee",
+                "Noches": "Nights",
+                "No hay reseñas aún.": "No reviews yet.",
+                "Escribe una reseña": "Write a review",
+                "Tu calificación": "Your rating",
+                "Tu reseña": "Your review",
+                "Enviar reseña": "Submit review",
+                "Califica tu experiencia": "Rate your experience",
+                "Escribe tu comentario": "Write your comment",
+                "No se encontraron apartamentos.": "No apartments found.",
+                "No se encontraron videos.": "No videos found.",
+                "No se encontraron imágenes.": "No images found.",
+                "No se encontraron servicios.": "No amenities found.",
+                "No se encontraron reseñas.": "No reviews found.",
+                "No se encontraron rangos ocupados.": "No occupied ranges found.",
+                "No se encontraron galerías.": "No galleries found.",
+                "No se encontraron datos del apartamento.": "No apartment data found.",
+                "No se encontraron datos de la reserva.": "No booking data found.",
+                "No se encontraron datos del usuario.": "No user data found.",
+                "No se encontraron datos de la conexión.": "No connection data found.",
+                "No se encontraron datos de la sesión.": "No session data found.",
+                "No se encontraron datos de la URL.": "No URL data found.",
+                "No se encontraron datos de la base de datos.": "No database data found.",
+                "No se encontraron datos de la consulta.": "No query data found.",
+                "No se encontraron datos del resultado.": "No result data found.",
+                "No se encontraron datos de la fila.": "No row data found.",
+                "No se encontraron datos de la columna.": "No column data found.",
+                "No se encontraron datos de la fecha.": "No date data found.",
+                "No se encontraron datos del ID.": "No ID data found.",
+                "No se encontraron datos del tipo.": "No type data found.",
+                "No se encontraron datos de la ruta.": "No path data found.",
+                "No se encontraron datos del estado.": "No status data found.",
+                "No se encontraron datos del promedio.": "No average data found.",
+                "No se encontraron datos del total.": "No total data found.",
+                "No se encontraron datos del nombre.": "No name data found.",
+                "No se encontraron datos del apellido.": "No last name data found.",
+                "No se encontraron datos de la imagen.": "No image data found.",
+                "No se encontraron datos de la calificación.": "No rating data found.",
+                "No se encontraron datos del comentario.": "No comment data found.",
+                "No se encontraron datos del usuario.": "No user data found.",
+                "No se encontraron datos del apartamento.": "No apartment data found.",
+                "No se encontraron datos de la reserva.": "No booking data found.",
+                "No se encontraron datos de la fecha de inicio.": "No start date data found.",
+                "No se encontraron datos de la fecha de fin.": "No end date data found.",
+                "No se encontraron datos del estado.": "No status data found.",
+                "No se encontraron datos de la fecha actual.": "No current date data found.",
+                "No se encontraron datos del conteo.": "No count data found.",
+                "No se encontraron datos del resultado de la consulta.": "No query result data found.",
+                "No se encontraron datos del resultado de la fila.": "No row result data found.",
+                "No se encontraron datos del resultado de la columna.": "No column result data found.",
+                "No se encontraron datos del resultado de la fecha.": "No date result data found.",
+                "No se encontraron datos del resultado del ID.": "No ID result data found.",
+                "No se encontraron datos del resultado del tipo.": "No type result data found.",
+                "No se encontraron datos del resultado de la ruta.": "No path result data found.",
+                "No se encontraron datos del resultado del estado.": "No status result data found.",
+                "No se encontraron datos del resultado del promedio.": "No average result data found.",
+                "No se encontraron datos del resultado del total.": "No total result data found.",
+                "No se encontraron datos del resultado del nombre.": "No name result data found.",
+                "No se encontraron datos del resultado del apellido.": "No last name result data found.",
+                "No se encontraron datos del resultado de la imagen.": "No image result data found.",
+                "No se encontraron datos del resultado de la calificación.": "No rating result data found.",
+                "No se encontraron datos del resultado del comentario.": "No comment result data found.",
+                "No se encontraron datos del resultado del usuario.": "No user result data found.",
+                "No se encontraron datos del resultado del apartamento.": "No apartment result data found.",
+                "No se encontraron datos del resultado de la reserva.": "No booking result data found.",
+                "No se encontraron datos del resultado de la fecha de inicio.": "No start date result data found.",
+                "No se encontraron datos del resultado de la fecha de fin.": "No end date result data found.",
+                "No se encontraron datos del resultado del estado.": "No status result data found.",
+                "No se encontraron datos del resultado de la fecha actual.": "No current date result data found.",
+                "No se encontraron datos del resultado del conteo.": "No count result data found."
+            }
+        };
     </script>
     <style type="text/tailwindcss">
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -215,25 +413,36 @@ if ($result_videos && $result_videos->num_rows > 0) {
             <div class="flex items-center justify-between max-w-[1280px] mx-auto">
                 <div class="flex items-center h-full">
                     <a href="/" class="flex items-center group logo-container">
-                        <img src="/public/img/logo-definitivo.webp" alt="Logo">
-                        <h1 class="brand-text text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
+                        <img src="/public/img/logo-definitivo.webp" alt="Logo" class="h-8 w-auto">
+                        <h1 class="brand-text text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block ml-2" data-i18n="Santamartabeachfront">
                             Santamarta<span class="text-blue-400">beachfront</span>
                         </h1>
                     </a>
                 </div>
 
                 <div class="hidden md:flex items-center gap-4 lg:gap-6">
-                    <div class="relative group flex items-center gap-2 cursor-pointer px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                        <span class="text-sm font-medium">ES</span>
-                        <span class="material-symbols-outlined text-[18px]">expand_more</span>
+                    <div class="relative">
+                        <button onclick="toggleLangDesktop()" class="flex items-center gap-2 cursor-pointer px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                            <img id="current-lang-flag" src="https://flagcdn.com/co.svg" class="w-5 h-5 rounded-full object-cover" alt="Colombia">
+                            <span id="current-lang-text" class="text-sm font-medium text-slate-700 dark:text-slate-200">ES</span>
+                            <span class="material-symbols-outlined text-[18px] text-slate-400">expand_more</span>
+                        </button>
+
+                        <div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl overflow-hidden z-50">
+                            <button onclick="selectLang('ES', 'https://flagcdn.com/co.svg')" class="w-full flex items-center gap-3 px-4 py-3 text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                <img src="https://flagcdn.com/co.svg" class="w-5 h-5 rounded-full object-cover" alt="ES">
+                                <span class="font-medium text-slate-700 dark:text-slate-200" data-i18n="Español">Español</span>
+                            </button>
+                            <button onclick="selectLang('EN', 'https://flagcdn.com/us.svg')" class="w-full flex items-center gap-3 px-4 py-3 text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                <img src="https://flagcdn.com/us.svg" class="w-5 h-5 rounded-full object-cover" alt="EN">
+                                <span class="font-medium text-slate-700 dark:text-slate-200" data-i18n="English">English</span>
+                            </button>
+                        </div>
                     </div>
+
                     <div class="flex items-center gap-2">
-                        <a href="/auth/login.php" class="px-4 py-2 text-sm font-bold hover:text-primary transition-colors">
-                            Iniciar sesión
-                        </a>
-                        <a href="/auth/registro.php" class="px-5 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all shadow-sm">
-                            Registrarse
-                        </a>
+                        <a href="/auth/login.php" class="px-4 py-2 text-sm font-bold hover:text-primary transition-colors" data-i18n="Iniciar sesión">Iniciar sesión</a>
+                        <a href="/auth/registro.php" class="px-5 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all shadow-sm" data-i18n="Registrarse">Registrarse</a>
                     </div>
                 </div>
 
@@ -244,37 +453,107 @@ if ($result_videos && $result_videos->num_rows > 0) {
 
             <div id="mobile-menu" class="fixed inset-0 bg-white dark:bg-background-dark z-[60] flex flex-col p-6 translate-x-full transition-transform duration-300 ease-in-out md:hidden">
                 <div class="flex justify-between items-center mb-10">
-                    <span class="font-bold text-xl uppercase tracking-tighter">Menú</span>
+                    <span class="font-bold text-xl uppercase tracking-tighter" data-i18n="Menú">Menú</span>
                     <button onclick="toggleMobileMenu()" class="p-2">
                         <span class="material-symbols-outlined text-3xl">close</span>
                     </button>
                 </div>
 
                 <nav class="flex flex-col gap-6">
-                    <div class="flex items-center justify-between py-4 border-b border-slate-100 dark:border-slate-800">
-                        <span class="font-medium">Idioma</span>
-                        <span class="font-bold text-primary">ES</span>
+                    <div class="border-b border-slate-100 dark:border-slate-800">
+                        <button onclick="toggleLangMobile()" class="w-full flex items-center justify-between py-4">
+                            <span class="font-medium" data-i18n="Idioma">Idioma</span>
+                            <span class="font-bold text-primary flex items-center gap-2">
+                                <img id="mobile-current-flag" src="https://flagcdn.com/co.svg" class="w-5 h-5 rounded-full object-cover" alt="CO">
+                                <span id="mobile-current-text">ES</span>
+                                <span class="material-symbols-outlined">expand_more</span>
+                            </span>
+                        </button>
+                        <div id="mobile-lang-options" class="hidden flex flex-col pb-4 pl-4 gap-5">
+                            <button onclick="selectLang('ES', 'https://flagcdn.com/co.svg')" class="flex items-center gap-3 text-lg font-medium text-slate-700 dark:text-slate-200">
+                                <img src="https://flagcdn.com/co.svg" class="w-6 h-6 rounded-full object-cover" alt="ES"> <span data-i18n="Español">Español</span>
+                            </button>
+                            <button onclick="selectLang('EN', 'https://flagcdn.com/us.svg')" class="flex items-center gap-3 text-lg font-medium text-slate-700 dark:text-slate-200">
+                                <img src="https://flagcdn.com/us.svg" class="w-6 h-6 rounded-full object-cover" alt="EN"> <span data-i18n="English">English</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <a href="/auth/login.php" class="text-2xl font-bold py-2">Iniciar sesión</a>
-                    <a href="/auth/registro.php" class="text-2xl font-bold py-2 text-primary">Registrarse</a>
+                    <a href="/auth/login.php" class="text-2xl font-bold py-2" data-i18n="Iniciar sesión">Iniciar sesión</a>
+                    <a href="/auth/registro.php" class="text-2xl font-bold py-2 text-primary" data-i18n="Registrarse">Registrarse</a>
                 </nav>
             </div>
         </header>
 
+
+
         <script>
+            //idioma
+            function applyTranslations(lang) {
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (translations[lang] && translations[lang][key]) {
+                        element.innerText = translations[lang][key];
+                    }
+                });
+            }
+
+            // Función para el menú principal móvil (la que ya tenías)
             function toggleMobileMenu() {
                 const menu = document.getElementById('mobile-menu');
                 const isHidden = menu.classList.contains('translate-x-full');
-
                 if (isHidden) {
                     menu.classList.remove('translate-x-full');
-                    document.body.style.overflow = 'hidden'; // Evita el scroll al estar abierto
+                    document.body.style.overflow = 'hidden';
                 } else {
                     menu.classList.add('translate-x-full');
                     document.body.style.overflow = 'auto';
                 }
             }
+
+            function toggleLangDesktop() {
+                const dropdown = document.getElementById('lang-dropdown');
+                dropdown.classList.toggle('hidden');
+
+                // Cerrar si hacen clic fuera del menú
+                const closeDropdown = (e) => {
+                    if (!e.target.closest('.relative')) {
+                        dropdown.classList.add('hidden');
+                        window.removeEventListener('click', closeDropdown);
+                    }
+                };
+                setTimeout(() => window.addEventListener('click', closeDropdown), 10);
+            }
+
+            function toggleLangMobile() {
+                const options = document.getElementById('mobile-lang-options');
+                options.classList.toggle('hidden');
+            }
+
+            function selectLang(lang, flagUrl) {
+                // Actualizar UI Escritorio
+                document.getElementById('current-lang-text').innerText = lang;
+                document.getElementById('current-lang-flag').src = flagUrl;
+
+                // Actualizar UI Móvil
+                document.getElementById('mobile-current-text').innerText = lang;
+                document.getElementById('mobile-current-flag').src = flagUrl;
+
+                // Cerrar menús
+                document.getElementById('lang-dropdown').classList.add('hidden');
+                if (window.innerWidth < 768) {
+                    // Opcional: cerrar el menú móvil completo tras elegir idioma
+                    // toggleMobileMenu();
+                }
+
+                console.log("Idioma seleccionado: " + lang);
+                applyTranslations(lang.toLowerCase()); // Apply translations
+            }
+
+            // Apply translations on page load
+            document.addEventListener('DOMContentLoaded', () => {
+                applyTranslations('es'); // Default language
+            });
         </script>
 
     <?php endif; ?>
@@ -290,7 +569,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
                 </div>
                 <div class="flex gap-3">
                     <button onclick="shareApartment()" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#111618] text-white border border-[#111618] text-sm font-bold hover:bg-black/90 transition-colors shadow-lg">
-                        <span class="material-symbols-outlined text-[20px]">share</span> Compartir
+                        <span class="material-symbols-outlined text-[20px]">share</span> <span data-i18n="Compartir">Compartir</span>
                     </button>
                 </div>
             </div>
@@ -344,11 +623,11 @@ if ($result_videos && $result_videos->num_rows > 0) {
                             ?>
                                 <div class="absolute bottom-4 right-4 flex flex-col gap-2 z-10">
                                     <button onclick="openGallery()" class="bg-[#111618] px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 border border-[#111618] text-white shadow-xl hover:bg-black/90 transition-all transform active:scale-95">
-                                        <span class="material-symbols-outlined text-[18px]">photo_library</span> <?php echo $total_fotos; ?> Fotos
+                                        <span class="material-symbols-outlined text-[18px]">photo_library</span> <span data-i18n="Fotos"><?php echo $total_fotos; ?> Fotos</span>
                                     </button>
                                     <?php if ($total_videos > 0): ?>
                                         <button onclick="openGallery()" class="bg-[#111618] px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 border border-[#111618] text-white shadow-xl hover:bg-black/90 transition-all transform active:scale-95">
-                                            <span class="material-symbols-outlined text-[18px]">play_circle</span> <?php echo $total_videos; ?> Videos
+                                            <span class="material-symbols-outlined text-[18px]">play_circle</span> <span data-i18n="Videos"><?php echo $total_videos; ?> Videos</span>
                                         </button>
                                     <?php endif; ?>
                                 </div>
@@ -386,18 +665,18 @@ if ($result_videos && $result_videos->num_rows > 0) {
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 py-10">
                 <div class="lg:col-span-2">
                     <div class="border-b border-slate-200 dark:border-slate-800 pb-6 mb-8">
-                        <h2 class="text-2xl font-bold mb-2">Alojamiento Completo: <?php echo $apartamento['titulo']; ?></h2>
-                        <p class="text-[#617c89] dark:text-slate-400"><?php echo $apartamento['capacidad']; ?> Huéspedes · <?php echo $apartamento['habitaciones']; ?> Dormitorios · <?php echo $apartamento['banos']; ?> Baños</p>
+                        <h2 class="text-2xl font-bold mb-2" data-i18n="Alojamiento Completo">Alojamiento Completo: <?php echo $apartamento['titulo']; ?></h2>
+                        <p class="text-[#617c89] dark:text-slate-400"><?php echo $apartamento['capacidad']; ?> <span data-i18n="Huéspedes">Huéspedes</span> · <?php echo $apartamento['habitaciones']; ?> <span data-i18n="Dormitorios">habitaciónes</span> · <?php echo $apartamento['banos']; ?> <span data-i18n="Baños">Baños</span></p>
                     </div>
                     <section class="mb-10">
-                        <h3 class="text-xl font-bold mb-4">Sobre este apartamento</h3>
+                        <h3 class="text-xl font-bold mb-4" data-i18n="Sobre este apartamento">Sobre este apartamento</h3>
                         <p class="text-[#4b5563] dark:text-slate-300 leading-relaxed">
                             <?php echo nl2br($apartamento['descripcion']); ?>
                         </p>
                     </section>
 
                     <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
-                        <h3 class="text-xl font-bold mb-6">Lo que este lugar ofrece</h3>
+                        <h3 class="text-xl font-bold mb-6" data-i18n="Lo que este lugar ofrece">Lo que este lugar ofrece</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <?php
                             if (!empty($apartamento['servicios'])) {
@@ -444,7 +723,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
                             ?>
                                         <div class="flex items-center gap-4 py-2 <?php echo $hiddenClass; ?>">
                                             <span class="material-symbols-outlined text-primary text-2xl"><?php echo $icono; ?></span>
-                                            <span class="text-base font-medium"><?php echo $servicio; ?></span>
+                                            <span class="text-base font-medium" data-i18n="<?php echo $servicio; ?>"><?php echo $servicio; ?></span>
                                         </div>
                                     <?php
                                     }
@@ -452,7 +731,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                     if (count($servicios) > 8) {
                                     ?>
                                         <div class="md:col-span-2 mt-4">
-                                            <button id="toggle-services-btn" onclick="toggleServices()" class="border border-slate-900 dark:border-white text-slate-900 dark:text-white px-6 py-2.5 rounded-lg font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm tracking-wide">
+                                            <button id="toggle-services-btn" onclick="toggleServices()" class="border border-slate-900 dark:border-white text-slate-900 dark:text-white px-6 py-2.5 rounded-lg font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm tracking-wide" data-i18n="Mostrar más">
                                                 Mostrar más
                                             </button>
                                         </div>
@@ -468,13 +747,13 @@ if ($result_videos && $result_videos->num_rows > 0) {
                     <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
                         <div class="flex items-center gap-2 mb-6">
                             <span class="material-symbols-outlined text-primary fill-1">star</span>
-                            <h3 class="text-xl font-bold"><?php echo $apartamento['total_resenas'] > 0 ? number_format($apartamento['promedio_calificacion'], 1) . ' · ' . $apartamento['total_resenas'] . ' reseñas' : 'Sin reseñas'; ?></h3>
+                            <h3 class="text-xl font-bold"><?php echo $apartamento['total_resenas'] > 0 ? number_format($apartamento['promedio_calificacion'], 1) . ' · ' . $apartamento['total_resenas'] . ' <span data-i18n="reseñas">reseñas</span>' : '<span data-i18n="Sin reseñas">Sin reseñas</span>'; ?></h3>
                         </div>
                         <?php if ($puede_resenar): ?>
                             <div class="mb-6">
                                 <button onclick="openReviewModal()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all shadow-sm">
                                     <span class="material-symbols-outlined text-[18px]">rate_review</span>
-                                    Escribir reseña
+                                    <span data-i18n="Escribir reseña">Escribir reseña</span>
                                 </button>
                             </div>
                         <?php endif; ?>
@@ -488,7 +767,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                     $index++;
                                     $hiddenClass = ($index > $max_initial) ? 'hidden review-item-extra' : '';
                                     $nombre = trim(($resena['nombre'] ?? '') . ' ' . ($resena['apellido'] ?? ''));
-                                    if ($nombre === '') $nombre = 'Huésped';
+                                    if ($nombre === '') $nombre = '<span data-i18n="Huésped">Huésped</span>';
 
                                     $img = '';
                                     if (!empty($resena['imagen'])) {
@@ -534,11 +813,11 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                 <?php endforeach; ?>
                             </div>
                             <?php if ($resenas_total > 4): ?>
-                                <button id="toggle-reviews-btn" onclick="toggleReviews()" class="mt-8 text-primary font-bold hover:underline">Mostrar todas las reseñas</button>
+                                <button id="toggle-reviews-btn" onclick="toggleReviews()" class="mt-8 text-primary font-bold hover:underline" data-i18n="Mostrar todas las reseñas">Mostrar todas las reseñas</button>
                             <?php endif; ?>
                         <?php else: ?>
                             <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                                <p class="text-sm text-slate-600 dark:text-slate-400">Aún no hay reseñas para este apartamento.</p>
+                                <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="Aún no hay reseñas para este apartamento.">Aún no hay reseñas para este apartamento.</p>
                             </div>
                         <?php endif; ?>
                     </section>
@@ -548,7 +827,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                 <form id="review-form" onsubmit="submitReview(event)">
                                     <input type="hidden" name="apartamento_id" value="<?php echo (int)$id_apartamento; ?>">
                                     <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-                                        <h3 class="text-xl font-bold text-[#111618] dark:text-white flex items-center gap-2">
+                                        <h3 class="text-xl font-bold text-[#111618] dark:text-white flex items-center gap-2" data-i18n="Escribir Reseña">
                                             <span class="material-symbols-outlined text-primary">rate_review</span>
                                             Escribir Reseña
                                         </h3>
@@ -567,13 +846,13 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                         </div>
 
                                         <div>
-                                            <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Comentario</label>
-                                            <textarea name="comentario" id="review-comentario" rows="4" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-slate-400" placeholder="Comparte tu experiencia..." required></textarea>
+                                            <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2" data-i18n="Comentario">Comentario</label>
+                                            <textarea name="comentario" id="review-comentario" rows="4" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-slate-400" placeholder="Comparte tu experiencia..." data-i18n-placeholder="Comparte tu experiencia..." required></textarea>
                                         </div>
                                     </div>
                                     <div class="p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex justify-end gap-3">
                                         <a class="px-6 py-2.5 text-sm font-bold text-slate-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closeReviewModal()">Cancelar</a>
-                                        <button type="submit" class="px-6 py-2.5 bg-primary hover:bg-primary/90 text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all">Enviar Reseña</button>
+                                        <button type="submit" class="px-6 py-2.5 bg-primary hover:bg-primary/90 text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all" data-i18n="Enviar Reseña">Enviar Reseña</button>
                                     </div>
                                 </form>
                             </div>
@@ -582,7 +861,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
 
                     <!-- inicio del del mapa -->
                     <section class="pt-8 border-t border-slate-200 dark:border-slate-800">
-                        <h3 class="text-xl font-bold mb-6 text-slate-900 dark:text-white">Dónde te quedarás</h3>
+                        <h3 class="text-xl font-bold mb-6 text-slate-900 dark:text-white" data-i18n="Dónde te quedarás">Dónde te quedarás</h3>
 
                         <div class="relative w-full h-80 rounded-2xl overflow-hidden shadow-inner border border-slate-200 dark:border-slate-700">
                             <div id="map" class="w-full h-full z-0"></div>
@@ -591,16 +870,16 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                 target="_blank"
                                 class="absolute bottom-4 right-4 z-[1000] bg-white/90 backdrop-blur-sm dark:bg-slate-900/90 text-slate-800 dark:text-white px-4 py-2 rounded-xl shadow-lg text-xs font-bold flex items-center gap-2 hover:bg-white transition-all border border-slate-100 dark:border-slate-800">
                                 <span class="material-symbols-outlined text-[18px]">directions</span>
-                                Cómo llegar
+                                <span data-i18n="Cómo llegar">Cómo llegar</span>
                             </a>
                         </div>
 
                         <div class="mt-5 flex items-start gap-3">
                             <span class="material-symbols-outlined text-blue-500 mt-1">location_on</span>
                             <div>
-                                <p class="font-bold text-lg text-slate-900 dark:text-white leading-tight">Pozos Colorados, Santa Marta</p>
-                                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                                    Reserva del Mar - Torre 4. Un sector exclusivo y tranquilo.
+                                <p class="font-bold text-lg text-slate-900 dark:text-white leading-tight" data-i18n="Pozos Colorados, Santa Marta">Calle 22 # 1 - 67 Playa Salguero, Santa Marta</p>
+                                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1" data-i18n="Reserva del Mar - Torre 4. Un sector exclusivo y tranquilo.">
+                                    Apartamento 1730 - Torre 4 - Reserva del Mar 1
                                 </p>
                             </div>
                         </div>
@@ -632,7 +911,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
 
                             // Marcador con un estilo azul amigable
                             const marker = L.marker([lat, lng]).addTo(map);
-                            marker.bindPopup("<b style='font-family: sans-serif;'>Reserva del Mar</b><br>Torre 4").openPopup();
+                            marker.bindPopup("<b style='font-family: sans-serif;'>Reserva del Mar 1</b><br>Torre 4").openPopup();
                         });
                     </script>
 
@@ -658,59 +937,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
                     </style>
                     <!-- Fin del mapa -->
 
-                    <section class="pt-12 mt-12 border-t border-slate-200 dark:border-slate-800">
-                        <h3 class="text-xl font-bold mb-6">Restaurantes Recomendados</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
-                                <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
-                                    <span class="material-symbols-outlined">restaurant</span>
-                                </div>
-                                <h4 class="font-bold text-lg mb-2">Mar y Brasa</h4>
-                                <div class="space-y-2 text-sm text-[#617c89] dark:text-slate-400">
-                                    <div class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-base">location_on</span>
-                                        <span>Calle 15 # 4-22, El Rodadero</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-base">call</span>
-                                        <span>+57 (605) 421-1234</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
-                                <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
-                                    <span class="material-symbols-outlined">flatware</span>
-                                </div>
-                                <h4 class="font-bold text-lg mb-2">Bahía Gourmet</h4>
-                                <div class="space-y-2 text-sm text-[#617c89] dark:text-slate-400">
-                                    <div class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-base">location_on</span>
-                                        <span>Carrera 2 # 11-54, Centro Histórico</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-base">call</span>
-                                        <span>+57 (605) 432-5678</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
-                                <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
-                                    <span class="material-symbols-outlined">set_meal</span>
-                                </div>
-                                <h4 class="font-bold text-lg mb-2">El Galeón del Sabor</h4>
-                                <div class="space-y-2 text-sm text-[#617c89] dark:text-slate-400">
-                                    <div class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-base">location_on</span>
-                                        <span>Vía Troncal del Caribe, Km 12</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-base">call</span>
-                                        <span>+57 (605) 438-9012</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+
                 </div>
 
 
@@ -720,7 +947,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
                         <div class="flex justify-between items-baseline mb-6">
                             <div>
                                 <span class="text-2xl font-black">$<?php echo number_format($apartamento['precio'], 0, ',', '.'); ?></span>
-                                <span class="text-[#617c89] text-base"> / noche</span>
+                                <span class="text-[#617c89] text-base" data-i18n="/ noche"> / noche</span>
                             </div>
                             <div class="flex items-center gap-1 text-sm font-semibold">
                                 <span class="material-symbols-outlined text-primary text-[18px] fill-1">star</span> <?php echo $apartamento['total_resenas'] > 0 ? number_format($apartamento['promedio_calificacion'], 1) : '0'; ?>
@@ -729,19 +956,19 @@ if ($result_videos && $result_videos->num_rows > 0) {
                         <div class="rounded-xl border border-slate-300 dark:border-slate-700 mb-4 relative">
                             <div class="grid grid-cols-2 border-b border-slate-300 dark:border-slate-700">
                                 <div class="p-3 border-r border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer relative rounded-tl-xl">
-                                    <p class="text-[10px] font-black uppercase text-[#111618] dark:text-white">Llegada</p>
-                                    <input id="checkin-input" type="text" placeholder="Agrega fecha" class="w-full bg-transparent border-none p-0 text-sm font-medium focus:ring-0 placeholder:text-slate-500" />
+                                    <p class="text-[10px] font-black uppercase text-[#111618] dark:text-white" data-i18n="Llegada">Llegada</p>
+                                    <input id="checkin-input" type="text" placeholder="Agrega fecha" data-i18n-placeholder="Agrega fecha" class="w-full bg-transparent border-none p-0 text-sm font-medium focus:ring-0 placeholder:text-slate-500" />
                                 </div>
                                 <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer relative rounded-tr-xl" id="checkout-container">
-                                    <p class="text-[10px] font-black uppercase text-[#111618] dark:text-white">Salida</p>
-                                    <input id="checkout-input" type="text" placeholder="Agrega fecha" class="w-full bg-transparent border-none p-0 text-sm font-medium focus:ring-0 placeholder:text-slate-500" readonly />
+                                    <p class="text-[10px] font-black uppercase text-[#111618] dark:text-white" data-i18n="Salida">Salida</p>
+                                    <input id="checkout-input" type="text" placeholder="Agrega fecha" data-i18n-placeholder="Agrega fecha" class="w-full bg-transparent border-none p-0 text-sm font-medium focus:ring-0 placeholder:text-slate-500" readonly />
                                 </div>
                             </div>
                             <div class="relative">
                                 <div id="guest-selector-trigger" class="p-3 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer flex justify-between items-center rounded-b-xl">
                                     <div>
-                                        <p class="text-[10px] font-black uppercase text-[#111618] dark:text-white">Huéspedes</p>
-                                        <p id="guest-summary" class="text-sm font-medium text-slate-700 dark:text-slate-300">1 Huésped</p>
+                                        <p class="text-[10px] font-black uppercase text-[#111618] dark:text-white" data-i18n="Huéspedes">Huéspedes</p>
+                                        <p id="guest-summary" class="text-sm font-medium text-slate-700 dark:text-slate-300">1 <span data-i18n="Huésped">Huésped</span></p>
                                     </div>
                                     <span class="material-symbols-outlined text-slate-500">expand_more</span>
                                 </div>
@@ -749,8 +976,8 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                 <div id="guest-dropdown" class="absolute top-full left-0 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl p-4 mt-2 z-20 hidden">
                                     <div class="flex justify-between items-center mb-4">
                                         <div>
-                                            <p class="font-bold text-sm">Adultos</p>
-                                            <p class="text-xs text-slate-500">Edad 13+</p>
+                                            <p class="font-bold text-sm" data-i18n="Adultos">Adultos</p>
+                                            <p class="text-xs text-slate-500" data-i18n="Edad 13+">Edad 13+</p>
                                         </div>
                                         <div class="flex items-center gap-3">
                                             <button id="btn-adults-minus" onclick="updateGuest('adults', -1)" class="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center hover:border-black disabled:opacity-30 disabled:hover:border-slate-300">
@@ -764,8 +991,8 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                     </div>
                                     <div class="flex justify-between items-center mb-4">
                                         <div>
-                                            <p class="font-bold text-sm">Niños</p>
-                                            <p class="text-xs text-slate-500">Edad 2-12</p>
+                                            <p class="font-bold text-sm" data-i18n="Niños">Niños</p>
+                                            <p class="text-xs text-slate-500" data-i18n="Edad 2-12">Edad 2-12</p>
                                         </div>
                                         <div class="flex items-center gap-3">
                                             <button id="btn-children-minus" onclick="updateGuest('children', -1)" class="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center hover:border-black disabled:opacity-30 disabled:hover:border-slate-300" disabled>
@@ -779,8 +1006,8 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                     </div>
                                     <div class="flex justify-between items-center mb-4">
                                         <div>
-                                            <p class="font-bold text-sm">Bebés</p>
-                                            <p class="text-xs text-slate-500">Menos de 2 años</p>
+                                            <p class="font-bold text-sm" data-i18n="Bebés">Bebés</p>
+                                            <p class="text-xs text-slate-500" data-i18n="Menos de 2 años">Menos de 2 años</p>
                                         </div>
                                         <div class="flex items-center gap-3">
                                             <button id="btn-infants-minus" onclick="updateGuest('infants', -1)" class="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center hover:border-black disabled:opacity-30 disabled:hover:border-slate-300" disabled>
@@ -794,8 +1021,8 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                     </div>
                                     <div class="flex justify-between items-center mb-4">
                                         <div>
-                                            <p class="font-bold text-sm">Perro de guía</p>
-                                            <p class="text-xs text-slate-500">¿Tienes un perro de guía?</p>
+                                            <p class="font-bold text-sm" data-i18n="Perro de guía">Perro de guía</p>
+                                            <p class="text-xs text-slate-500" data-i18n="¿Tienes un perro de guía?">¿Tienes un perro de guía?</p>
                                         </div>
                                         <div class="flex items-center gap-3">
                                             <label class="relative inline-flex items-center cursor-pointer">
@@ -805,15 +1032,15 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                         </div>
                                     </div>
                                     <div class="text-right">
-                                        <button onclick="closeGuestDropdown()" class="text-sm font-bold underline hover:text-primary">Cerrar</button>
+                                        <button onclick="closeGuestDropdown()" class="text-sm font-bold underline hover:text-primary" data-i18n="Cerrar">Cerrar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button onclick="goToReservation()" class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 mb-4">
+                        <button onclick="goToReservation()" class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 mb-4" data-i18n="Reservar ahora">
                             Reservar ahora
                         </button>
-                        <p class="text-center text-sm text-[#617c89] mb-6">No se te cobrará nada todavía</p>
+                        <p class="text-center text-sm text-[#617c89] mb-6" data-i18n="No se te cobrará nada todavía">No se te cobrará nada todavía</p>
 
                         <div id="price-breakdown" class="hidden space-y-3 mb-6">
                             <div class="flex justify-between text-base">
@@ -821,7 +1048,7 @@ if ($result_videos && $result_videos->num_rows > 0) {
                                 <span class="font-medium">$<span id="subtotal-display">0</span></span>
                             </div>
                             <div class="flex justify-between text-base">
-                                <span class="underline text-[#4b5563] dark:text-slate-300">Tarifa de limpieza</span>
+                                <span class="underline text-[#4b5563] dark:text-slate-300" data-i18n="Tarifa de limpieza">Tarifa de limpieza</span>
                                 <span class="font-medium">$<span id="cleaning-fee-display">0</span></span>
                             </div>
                             <div class="flex justify-between text-base">
@@ -849,84 +1076,77 @@ if ($result_videos && $result_videos->num_rows > 0) {
 
 
     <?php if ($apartamento): ?>
-        <!-- footer -->
-        <footer class="bg-[#101c22] text-white pt-20 pb-10" id="contacto" itemscope itemtype="https://schema.org/Organization">
-            <hr class="border-t border-gray-800 my-12" aria-hidden="true">
-            <div class="max-w-7xl mx-auto px-6 md:px-10">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 py-16">
 
-                    <section class="space-y-6">
-                        <a href="/" class="flex items-center gap-2 group" aria-label="Ir al inicio">
-                            <div class="size-10 md:size-12 transition-transform group-hover:scale-105">
-                                <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-full h-full object-cover">
+        <!-- footer -->
+        <footer class="bg-[#101c22] text-white pt-10 pb-10 mt-[-2rem]" id="contacto">
+            <div class="max-w-7xl mx-auto px-6 md:px-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-24 py-16 items-start border-t border-white/5">
+                    <section class="flex flex-col items-center md:items-start text-center md:text-left">
+                        <a href="/" class="flex flex-col md:flex-row items-center group w-fit md:-ml-4">
+                            <div class="w-[100px] h-[100px] md:w-[130px] md:h-[130px] shrink-0">
+                                <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-full h-full object-contain">
                             </div>
-                            <span class="text-xl font-bold text-white tracking-tight" itemprop="name">
+                            <span class="text-2xl md:text-3xl font-bold text-white tracking-tighter mt-[-20px] md:mt-0 md:-ml-9 mb-2">
                                 Santamarta<span class="text-blue-400">beachfront</span>
                             </span>
                         </a>
-                        <p class="text-gray-300 text-sm leading-relaxed max-w-xs" itemprop="description" data-i18n="foo_desc">
+                        <p class="text-gray-300 text-sm leading-relaxed max-w-xs md:pl-5 md:border-l md:border-blue-400/20" data-i18n="footer-desc">
                             La plataforma líder en alquileres vacacionales de lujo en Santa Marta. Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
                         </p>
                     </section>
 
-                    <section>
-                        <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_contact_title">Información de Contacto</h2>
+                    <section class="lg:pl-12 flex flex-col items-center md:items-start">
+                        <h2 class="font-bold mb-8 text-white uppercase tracking-widest text-xs" data-i18n="footer-contact-title">Información de Contacto</h2>
                         <address class="not-italic">
-                            <ul class="space-y-4 text-sm text-gray-300">
-                                <li>
-                                    <a href="mailto:17clouds@gmail.com" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="email">
-                                        <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">mail</span>
-                                        <span>17clouds@gmail.com</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://wa.me/573183813381" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 hover:text-white transition-colors group" itemprop="telephone">
-                                        <span class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true">call</span>
-                                        <span>+57 318 3813381</span>
-                                    </a>
-                                </li>
-                                <li class="flex items-start gap-3" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
-                                    <span class="material-symbols-outlined text-blue-400" aria-hidden="true">location_on</span>
-                                    <span class="leading-relaxed">
-                                        <span itemprop="streetAddress" data-i18n="foo_address">Apartamento 1730 - Torre 4 - Reserva del Mar 1
-                                            Calle 22 # 1 - 67 Playa Salguero, Gaira - Santa Marta, Colombia </span><br>
-                                    </span>
+                            <ul class="space-y-5 text-sm text-gray-300 text-center md:text-left">
+                                <li><a href="mailto:17clouds@gmail.com" class="flex items-center justify-center md:justify-start gap-3">
+                                        <span class="material-symbols-outlined text-blue-400">mail</span> 17clouds@gmail.com</a></li>
+                                <li><a href="https://wa.me/573183813381" class="flex items-center justify-center md:justify-start gap-3">
+                                        <span class="material-symbols-outlined text-blue-400">call</span> +57 318 3813381</a></li>
+                                <li class="flex items-start justify-center md:justify-start gap-3">
+                                    <span class="material-symbols-outlined text-blue-400 shrink-0">location_on</span>
+                                    <span>Apartamento 1730 - Torre 4 - Reserva del Mar 1<br> Calle 22 # 1 - 67 Playa Salguero, Santa Marta</span>
                                 </li>
                             </ul>
                         </address>
                     </section>
 
-                    <section>
-                        <h2 class="font-bold mb-6 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Síguenos</h2>
-                        <nav aria-label="Redes sociales">
-                            <ul class="flex gap-4 list-none p-0">
-                                <li>
-                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
-                                        <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
-                                        <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
-                                        <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                    <section class="lg:items-end flex flex-col">
+                        <div class="w-fit lg:text-right">
+                            <h2 class="font-bold mb-8 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Síguenos</h2>
+                            <nav aria-label="Redes sociales">
+                                <ul class="flex gap-4 list-none p-0 lg:justify-end">
+                                    <li>
+                                        <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
+                                            <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
+                                            <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
+                                            <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </section>
                 </div>
-
-                <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-[11px] sm:text-xs text-gray-400 gap-4">
-                    <p>© <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront. <span data-i18n="foo_rights">Todos los derechos reservados.</span></p>
+                <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-xs text-gray-400 text-center gap-4">
+                    <p>
+                        © <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront.
+                        <span data-i18n="foo_rights">Todos los derechos reservados.</span> |
+                        Hecho por <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit; font-weight: bold;">Richard Castiblanco</a>
+                    </p>
 
                     <nav aria-label="Enlaces legales">
                         <ul class="flex gap-8 list-none p-0">
-                            <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_privacy">Políticas de Privacidad</a></li>
-                            <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_terms">Términos y Condiciones</a></li>
+                            <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_privacy">Políticas de Privacidad</a></li>
+                            <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_terms">Términos y Condiciones</a></li>
                         </ul>
                     </nav>
                 </aside>
