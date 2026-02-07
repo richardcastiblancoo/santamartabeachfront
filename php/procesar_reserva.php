@@ -1,4 +1,5 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -30,11 +31,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Configuración del servidor SMTP (Titan/Hostinger)
         $mail->isSMTP();
-        $mail->Host       = 'smtp.titan.email'; 
+        $mail->Host       = 'smtp.titan.email';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'richard_12345@santamartabeachfront.com'; // REEMPLAZA CON TU CORREO
-        $mail->Password   = 'Richardcastiblanco_1234567890';       // REEMPLAZA CON TU CONTRASEÑA
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
+        $mail->Password   = 'TU_CONTRASEÑA_AQUÍ';       // REEMPLAZA CON TU CONTRASEÑA
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
         // Quien envía y quien recibe
@@ -45,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Contenido del correo (Diseño HTML)
         $mail->isHTML(true);
         $mail->Subject = "Nueva Solicitud de Reserva - $nombre $apellido";
-        
+
         $mail->Body = "
             <div style='font-family: sans-serif; border: 1px solid #eee; padding: 20px;'>
                 <h2 style='color: #13a4ec;'>¡Nueva Solicitud de Reserva!</h2>
@@ -61,10 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ";
 
         $mail->send();
-        
-        // Redirigir al usuario a una página de gracias
-        header("Location: gracias.php");
 
+        // Redirigir al usuario a una página de gracias
+        header("Location: ../php/gracias.php");
+        exit;
     } catch (Exception $e) {
         echo "Error al enviar el correo: {$mail->ErrorInfo}";
     }

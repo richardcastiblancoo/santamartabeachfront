@@ -914,7 +914,7 @@ class PHPMailer
             return;
         }
         //Is this a PSR-3 logger?
-        if ($this->Debugoutput instanceof \Psr\Log\LoggerInterface) {
+        if (is_object($this->Debugoutput) && method_exists($this->Debugoutput, 'debug')) {
             $this->Debugoutput->debug(rtrim($str, "\r\n"));
 
             return;
