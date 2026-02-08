@@ -64,7 +64,7 @@ if (isset($_SESSION['id']) && $id_apartamento > 0) {
     $sql_puede = "SELECT COUNT(*) as c FROM reservas
                   WHERE usuario_id = $usuario_id
                   AND apartamento_id = $id_apartamento
-                  AND fecha_fin < '$fecha_actual'";
+                  AND fechafin < '$fecha_actual'";
     $res_puede = $conn->query($sql_puede);
     if ($res_puede) {
         $puede_resenar = ((int)$res_puede->fetch_assoc()['c']) > 0;
