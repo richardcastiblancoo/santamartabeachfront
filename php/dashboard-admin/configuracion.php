@@ -150,7 +150,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                 <div class="flex items-center gap-4 flex-1 justify-end">
                     <button id="start-tour-btn" class="flex items-center justify-center gap-2 bg-white dark:bg-gray-800 border border-[#f0f3f4] dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white px-3 py-1.5 rounded-lg font-semibold transition-all shadow-sm text-sm">
                         <span class="material-symbols-outlined text-lg">help</span>
-                        <span class="hidden sm:inline">Guía</span>
+                        <span class="hidden sm:inline">Ayuda</span>
                     </button>
                 </div>
             </header>

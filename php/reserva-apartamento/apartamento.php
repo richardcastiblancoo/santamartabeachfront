@@ -70,7 +70,7 @@ if (isset($_SESSION['id']) && $id_apartamento > 0) {
 
 $rangos_ocupados = [];
 if ($id_apartamento > 0) {
-    $sql_rangos = "SELECT fecha_inicio, fecha_fin FROM reservas WHERE apartamento_id = $id_apartamento AND estado <> 'Cancelada' AND fecha_fin > CURDATE()";
+    $sql_rangos = "SELECT fecha_checkin, fecha_checkout FROM reservas WHERE apartamento_id = $id_apartamento AND estado <> 'cancelada' AND fecha_checkout > CURDATE()";
     $res_rangos = $conn->query($sql_rangos);
     if ($res_rangos && $res_rangos->num_rows > 0) {
         while ($row = $res_rangos->fetch_assoc()) {

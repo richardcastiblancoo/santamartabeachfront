@@ -175,6 +175,17 @@ if ($conn->query($sql_reservas) !== TRUE) {
     echo "Error creando tabla reservas: " . $conn->error;
 }
 
+// Add usuario_id column to reservas table if it doesn't exist
+try {
+    $check_column = $conn->query("SHOW COLUMNS FROM reservas LIKE 'usuario_id'");
+    if ($check_column->num_rows == 0) {
+        $conn->query("ALTER TABLE reservas ADD COLUMN usuario_id INT(6) UNSIGNED AFTER id");
+        $conn->query("ALTER TABLE reservas ADD CONSTRAINT fk_usuario_id FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE");
+    }
+} catch (Exception $e) {
+    // Ignore error if column or foreign key already exists
+}
+
 /*
 // Insertar datos de prueba en reservas si está vacía
 $check_reservas = "SELECT count(*) as count FROM reservas";

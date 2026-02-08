@@ -18,7 +18,7 @@ $total_usuarios = $conn->query("SELECT COUNT(*) as count FROM usuarios WHERE rol
 $apartamentos_res = $conn->query("SELECT * FROM apartamentos LIMIT 6");
 
 // Obtener reservas recientes
-$reservas_res = $conn->query("SELECT r.*, u.nombre, u.apellido, u.email, a.titulo, a.imagen_principal FROM reservas r JOIN usuarios u ON r.usuario_id = u.id JOIN apartamentos a ON r.apartamento_id = a.id ORDER BY r.fecha_creacion DESC LIMIT 10");
+$reservas_res = $conn->query("SELECT r.*, u.nombre, u.apellido, u.email, a.titulo, a.imagen_principal FROM reservas r JOIN usuarios u ON r.usuario_id = u.id JOIN apartamentos a ON r.apartamento_id = a.id ORDER BY r.creado_en DESC LIMIT 10");
 
 // Obtener PQR recientes
 $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_imagen FROM pqr p JOIN usuarios u ON p.usuario_id = u.id ORDER BY p.fecha_creacion DESC LIMIT 5");
@@ -173,7 +173,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
 
                     <div class="flex items-center gap-2">
                         <button id="start-tour" class="size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
-                            <span class="material-symbols-outlined">help</span>
+                            <span class="hidden sm:inline">Ayuda</span>
                         </button>
                     </div>
                 </div>

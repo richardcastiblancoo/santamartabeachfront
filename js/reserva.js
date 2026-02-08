@@ -1,139 +1,86 @@
-// Inicializar Flatpickr
-document.addEventListener("DOMContentLoaded", function () {
-  flatpickr("#date-range", {
-    mode: "range",
-    dateFormat: "Y-m-d",
-    locale: "es",
-    theme: "dark",
-    onChange: function (selectedDates, dateStr, instance) {
-      // Aquí puedes agregar lógica para filtrar si lo deseas
-      console.log("Fechas seleccionadas:", dateStr);
-    },
-  });
-});
+/**
+ * reservas.js - Gestión de previsualización de reservas
+ */
 
-let currentReservationId = null;
+function verDetalle(reserva) {
+  const modal = document.getElementById("modalReserva");
+  const contenido = document.getElementById("m-contenido");
+  const codigo = document.getElementById("m-codigo");
 
-function openModal(data) {
-  currentReservationId = data.id;
-  const modal = document.getElementById("reservationModal");
+  // Formatear fechas
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const fIn = new Date(reserva.fecha_checkin).toLocaleDateString(
+    "es-ES",
+    options,
+  );
+  const fOut = new Date(reserva.fecha_checkout).toLocaleDateString(
+    "es-ES",
+    options,
+  );
 
-  // Set basic info
-  document.getElementById("modal-id").textContent = data.id;
-  document.getElementById("modal-huesped").textContent = data.huesped;
-  document.getElementById("modal-email").textContent = data.email;
-  document.getElementById("modal-telefono").textContent = data.telefono;
-  document.getElementById("modal-ocupantes").textContent = data.ocupantes;
-  document.getElementById("modal-nombres-huespedes").textContent =
-    data.nombres_huespedes
-      ? "Huéspedes: " + data.nombres_huespedes
-      : "Sin nombres adicionales registrados";
-  document.getElementById("modal-apartamento").textContent = data.apartamento;
-  document.getElementById("modal-checkin").textContent = data.fecha_inicio;
-  document.getElementById("modal-checkout").textContent = data.fecha_fin;
-  document.getElementById("modal-noches").textContent = data.noches;
-  document.getElementById("modal-total").textContent = data.total;
+  codigo.innerText = `Reserva #RS-${reserva.id.toString().padStart(4, "0")}`;
 
-  // Set images
-  document.getElementById("modal-user-img").style.backgroundImage =
-    `url('${data.imagen_usuario}')`;
-  document.getElementById("modal-apt-img").style.backgroundImage =
-    `url('${data.imagen_apartamento}')`;
+  contenido.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="col-span-2 p-3 bg-primary/5 rounded-lg border border-primary/10">
+                <p class="text-[10px] uppercase font-bold text-primary">Apartamento</p>
+                <p class="font-bold text-base">${reserva.apto_nombre}</p>
+            </div>
+            
+            <div>
+                <p class="text-[10px] uppercase font-bold text-text-secondary">Huésped</p>
+                <p class="font-bold">${reserva.nombre_cliente} ${reserva.apellido_cliente}</p>
+                <p class="text-xs text-text-secondary">${reserva.email_cliente}</p>
+                <p class="text-xs text-text-secondary">${reserva.telefono_cliente || "Sin teléfono"}</p>
+            </div>
 
-  // Set Status Select
-  const statusSelect = document.getElementById("modal-estado-select");
-  statusSelect.value = data.estado;
+            <div>
+                <p class="text-[10px] uppercase font-bold text-text-secondary">Estado</p>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-200 dark:bg-gray-700">
+                    ${reserva.estado.toUpperCase()}
+                </span>
+            </div>
 
-  // Aplicar colores iniciales al select según el estado
-  updateSelectColor(statusSelect);
+            <div class="col-span-2 grid grid-cols-2 gap-2 py-2 border-y dark:border-gray-800">
+                <div>
+                    <p class="text-[10px] uppercase font-bold text-text-secondary">Check-In</p>
+                    <p class="text-xs font-medium">${fIn}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] uppercase font-bold text-text-secondary">Check-Out</p>
+                    <p class="text-xs font-medium">${fOut}</p>
+                </div>
+            </div>
 
-  // Show modal
+            <div>
+                <p class="text-[10px] uppercase font-bold text-text-secondary">Ocupación</p>
+                <p class="text-xs font-bold">${reserva.adultos} Adultos, ${reserva.ninos} Niños</p>
+            </div>
+
+            <div class="text-right">
+                <p class="text-[10px] uppercase font-bold text-text-secondary">Total Pagado</p>
+                <p class="text-xl font-black text-primary">$${new Intl.NumberFormat("es-CO").format(reserva.precio_total)}</p>
+            </div>
+        </div>
+    `;
+
+  // Mostrar modal
   modal.classList.remove("hidden");
+  document.body.style.overflow = "hidden"; // Bloquear scroll
 }
 
-function updateSelectColor(select) {
-  const status = select.value;
-  let colorClass = "";
-
-  // Reset classes (manteniendo base)
-  select.className =
-    "bg-transparent border border-gray-300 dark:border-gray-600 rounded-md text-xs font-bold mt-1 py-1 pl-2 pr-8 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white";
-
-  switch (status) {
-    case "Confirmada":
-      select.classList.add(
-        "text-green-700",
-        "dark:text-green-400",
-        "bg-green-50",
-        "dark:bg-green-900/20",
-      );
-      break;
-    case "Pendiente":
-      select.classList.add(
-        "text-yellow-700",
-        "dark:text-yellow-400",
-        "bg-yellow-50",
-        "dark:bg-yellow-900/20",
-      );
-      break;
-    case "Completada":
-      select.classList.add(
-        "text-blue-700",
-        "dark:text-blue-400",
-        "bg-blue-50",
-        "dark:bg-blue-900/20",
-      );
-      break;
-    case "Cancelada":
-      select.classList.add(
-        "text-red-700",
-        "dark:text-red-400",
-        "bg-red-50",
-        "dark:bg-red-900/20",
-      );
-      break;
-  }
-}
-
-function updateStatus(newStatus) {
-  const select = document.getElementById("modal-estado-select");
-  updateSelectColor(select);
-
-  if (!currentReservationId) return;
-
-  // Enviar actualización al servidor via fetch
-  fetch("actualizar_estado_reserva.php", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: `id=${currentReservationId}&estado=${newStatus}`,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        // Opcional: Mostrar notificación de éxito
-        console.log("Estado actualizado correctamente");
-        // Recargar página para reflejar cambios en la tabla principal
-        window.location.reload();
-      } else {
-        alert("Error al actualizar el estado: " + data.message);
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("Hubo un error al conectar con el servidor");
-    });
-}
-
-function closeModal() {
-  const modal = document.getElementById("reservationModal");
+function cerrarModal() {
+  const modal = document.getElementById("modalReserva");
   modal.classList.add("hidden");
+  document.body.style.overflow = "auto"; // Restaurar scroll
 }
 
-// Close on Escape key
-document.addEventListener("keydown", function (event) {
-  if (event.key === "Escape") {
-    closeModal();
-  }
+// Cerrar con la tecla ESC
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") cerrarModal();
 });

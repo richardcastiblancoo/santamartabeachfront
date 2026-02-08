@@ -2,72 +2,20 @@
 session_start();
 include '../../auth/conexion_be.php';
 
-if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
-    echo '<script>alert("Acceso denegado. Por favor, inicia sesión como administrador."); window.location = "../../auth/login.php";</script>';
-    exit;
-}
+// 1. OBTENER ESTADÍSTICAS REALES
+$total_res = $conn->query("SELECT COUNT(*) as total FROM reservas")->fetch_assoc()['total'];
+$pendientes = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'pendiente'")->fetch_assoc()['total'];
+$confirmadas = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'confirmada'")->fetch_assoc()['total'];
+$canceladas = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'cancelada'")->fetch_assoc()['total'];
+$finalizadas = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'finalizada'")->fetch_assoc()['total'];
 
-// Obtener estadísticas
-$stats_query = "SELECT 
-    COUNT(*) as total,
-    SUM(CASE WHEN estado = 'Pendiente' THEN 1 ELSE 0 END) as pendientes,
-    SUM(CASE WHEN estado = 'Confirmada' THEN 1 ELSE 0 END) as confirmadas,
-    SUM(CASE WHEN estado = 'Cancelada' THEN 1 ELSE 0 END) as canceladas,
-    SUM(CASE WHEN estado = 'Completada' THEN 1 ELSE 0 END) as completadas
-    FROM reservas";
-$stats_result = mysqli_query($conn, $stats_query);
-$stats = mysqli_fetch_assoc($stats_result);
-
-// VERIFICAR Y AUTO-GENERAR DATOS DE PRUEBA SI LA TABLA ESTÁ VACÍA
-if ($stats['total'] == 0) {
-    $u_check = mysqli_query($conn, "SELECT id FROM usuarios LIMIT 1");
-    $a_check = mysqli_query($conn, "SELECT id, precio FROM apartamentos LIMIT 1");
-
-    if (mysqli_num_rows($u_check) > 0 && mysqli_num_rows($a_check) > 0) {
-        $u_id = mysqli_fetch_assoc($u_check)['id'];
-        $a_row = mysqli_fetch_assoc($a_check);
-        $a_id = $a_row['id'];
-        $precio = $a_row['precio'];
-
-        $sql_insert = "INSERT INTO reservas (usuario_id, apartamento_id, fecha_inicio, fecha_fin, total, estado) VALUES 
-        ($u_id, $a_id, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 5 DAY), " . ($precio * 5) . ", 'Confirmada'),
-        ($u_id, $a_id, DATE_ADD(CURDATE(), INTERVAL 10 DAY), DATE_ADD(CURDATE(), INTERVAL 13 DAY), " . ($precio * 3) . ", 'Pendiente')";
-        mysqli_query($conn, $sql_insert);
-
-        // Recargar estadísticas
-        $stats_result = mysqli_query($conn, $stats_query);
-        $stats = mysqli_fetch_assoc($stats_result);
-    }
-}
-
-// Obtener término de búsqueda
-$search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
-$where_clause = "";
-if (!empty($search)) {
-    $where_clause = " WHERE (r.id LIKE '%$search%' 
-                        OR r.nombre_cliente LIKE '%$search%' 
-                        OR r.apellido_cliente LIKE '%$search%'
-                        OR u.nombre LIKE '%$search%' 
-                        OR u.apellido LIKE '%$search%' 
-                        OR u.email LIKE '%$search%')";
-}
-
-// Obtener reservas con datos relacionados
-$query = "SELECT r.*, 
-          COALESCE(r.nombre_cliente, u.nombre) as nombre_final,
-          COALESCE(r.apellido_cliente, u.apellido) as apellido_final,
-          COALESCE(r.email_cliente, u.email) as email_final,
-          r.telefono_cliente,
-          u.imagen as usuario_imagen, 
-          a.titulo as apartamento_titulo, a.descripcion as apartamento_descripcion, a.imagen_principal as apartamento_imagen 
-          FROM reservas r 
-          LEFT JOIN usuarios u ON r.usuario_id = u.id 
-          LEFT JOIN apartamentos a ON r.apartamento_id = a.id 
-          $where_clause
-          ORDER BY r.fecha_creacion DESC";
-$result = mysqli_query($conn, $query);
+// 2. CONSULTA DE RESERVAS
+$sql = "SELECT r.*, a.titulo as apto_nombre, a.imagen_principal 
+        FROM reservas r 
+        LEFT JOIN apartamentos a ON r.apartamento_id = a.id 
+        ORDER BY r.creado_en DESC";
+$resultado = $conn->query($sql);
 ?>
-
 <!DOCTYPE html>
 <html class="dark" lang="es">
 
@@ -75,24 +23,22 @@ $result = mysqli_query($conn, $query);
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Gestión de Reservas</title>
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
+
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "primary": "<?php echo isset($_SESSION['tema']) ? $_SESSION['tema'] : '#13a4ec'; ?>",
-                        "primary-hover": "<?php echo isset($_SESSION['tema']) ? $_SESSION['tema'] : '#0e8ac7'; ?>",
+                        "primary": "#13a4ec",
+                        "primary-hover": "#0e8ac7",
                         "background-light": "#f6f7f8",
                         "background-dark": "#101c22",
                         "card-light": "#ffffff",
@@ -102,12 +48,6 @@ $result = mysqli_query($conn, $query);
                     },
                     fontFamily: {
                         "display": ["Plus Jakarta Sans", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
                     },
                 },
             },
@@ -119,28 +59,28 @@ $result = mysqli_query($conn, $query);
             font-size: 24px;
         }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
         .table-fixed-header thead th {
             position: sticky;
             top: 0;
             z-index: 10;
+        }
+
+        @keyframes pulse-red {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .notif-active {
+            animation: pulse-red 2s infinite;
         }
     </style>
 </head>
@@ -149,10 +89,10 @@ $result = mysqli_query($conn, $query);
     <div class="flex h-screen w-full">
         <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden transition-opacity opacity-0"></div>
 
-        <aside class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full hidden md:flex shrink-0 z-20">
+        <aside id="sidebar" class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-50 shrink-0">
             <div class="p-6 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <div class="bg-primary/10 p-3 rounded-lg">
+                    <div class="bg-primary/10 p-3 rounded-lg" id="tour-logo">
                         <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-16 h-16 object-contain">
                     </div>
                     <div>
@@ -160,35 +100,36 @@ $result = mysqli_query($conn, $query);
                         <p class="text-xs text-text-secondary dark:text-gray-400 mt-1">Beachfront Admin</p>
                     </div>
                 </div>
-                <!-- Botón cerrar menú en móvil -->
                 <button onclick="toggleSidebar()" class="md:hidden text-text-secondary hover:text-red-500">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
-            <div class="flex-1 overflow-y-auto px-4 py-2 space-y-1">
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/dashboard.php">
+
+            <div class="flex-1 overflow-y-auto px-4 py-2 space-y-1" id="tour-menu">
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 transition-colors group" href="/php/dashboard-admin/dashboard.php">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
-                    <span class="text-sm font-medium">Dashboard</span>
+                    <span class="text-sm font-semibold">Dashboard</span>
                 </a>
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/apartamentos.php">
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 transition-colors group" href="/php/dashboard-admin/apartamentos.php">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">apartment</span>
                     <span class="text-sm font-medium">Apartamentos</span>
                 </a>
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary" href="#">
-                    <span class="material-symbols-outlined fill-1">calendar_month</span>
-                    <span class="text-sm font-semibold">Reservas</span>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary" href="/php/dashboard-admin/reservas.php">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    <span class="text-sm font-medium">Reservas</span>
                 </a>
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/usuarios.php">
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 transition-colors group" href="/php/dashboard-admin/usuarios.php">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
                     <span class="text-sm font-medium">Usuarios</span>
                 </a>
-                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/pqr.php">
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 transition-colors group" href="/php/dashboard-admin/pqr.php">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">mail</span>
                     <span class="text-sm font-medium">PQR</span>
                 </a>
+
                 <div class="pt-4 mt-4 border-t border-[#f0f3f4] dark:border-gray-800">
                     <p class="px-3 text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Sistema</p>
-                    <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/configuracion.php">
+                    <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 transition-colors group" href="/php/dashboard-admin/configuracion.php">
                         <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
                         <span class="text-sm font-medium">Configuración</span>
                     </a>
@@ -198,407 +139,412 @@ $result = mysqli_query($conn, $query);
                     </a>
                 </div>
             </div>
+
             <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800">
                 <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
-                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://ui-avatars.com/api/?name=' . $_SESSION['nombre'] . '+' . $_SESSION['apellido']; ?>");'></div>
-                    <div class="flex flex-col overflow-hidden">
-                        <span class="text-sm font-bold truncate dark:text-white"><?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
-                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo $_SESSION['email']; ?></span>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://ui-avatars.com/api/?name=' . $_SESSION['nombre']; ?>");'></div>
+                    <div class="flex flex-col overflow-hidden text-xs">
+                        <span class="font-bold truncate dark:text-white"><?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
+                        <span class="text-text-secondary dark:text-gray-400 truncate"><?php echo $_SESSION['email']; ?></span>
                     </div>
                 </div>
             </div>
         </aside>
 
-
         <div class="flex flex-col flex-1 min-w-0">
             <header class="h-16 bg-card-light dark:bg-card-dark border-b border-[#f0f3f4] dark:border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10">
-                <div class="flex items-center gap-4">
-                    <button class="md:hidden text-text-secondary hover:text-primary">
-                        <span class="material-symbols-outlined">menu</span>
-                    </button>
-                    <h2 class="text-lg font-bold text-text-main dark:text-white">Sección de Reservas</h2>
+                <div class="flex items-center gap-4 flex-1">
+                    <button onclick="toggleSidebar()" class="md:hidden text-text-secondary"><span class="material-symbols-outlined">menu</span></button>
+
+                    <div class="relative w-full max-w-md" id="tour-search">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">search</span>
+                        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Buscar por nombre, ID o apartamento..."
+                            class="w-full pl-10 pr-4 py-2 bg-background-light dark:bg-gray-800 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary">
+                    </div>
                 </div>
-                <div class="flex items-center gap-4">
-                    <form method="GET" action="" class="hidden sm:flex items-center bg-background-light dark:bg-gray-800 rounded-lg px-3 py-1.5 border border-transparent focus-within:border-primary/50 transition-all">
-                        <span class="material-symbols-outlined text-text-secondary text-lg">search</span>
-                        <input name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" class="bg-transparent border-none focus:ring-0 text-sm w-48 text-text-main dark:text-white placeholder:text-text-secondary" placeholder="Buscar por ID o huésped..." type="text" />
-                    </form>
-                    <button class="relative size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
-                        <span class="material-symbols-outlined">notifications</span>
-                        <span class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border border-white dark:border-gray-900"></span>
+
+                <div class="flex items-center gap-3">
+                    <div class="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors" id="tour-notif">
+                        <span class="material-symbols-outlined text-text-secondary">notifications</span>
+                        <?php if ($pendientes > 0): ?>
+                            <span class="absolute top-1 right-1 size-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-card-light dark:border-card-dark notif-active">
+                                <?php echo $pendientes; ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+
+                    <button onclick="startTour()" class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Ayuda">
+                        <span class="material-symbols-outlined">help</span>
                     </button>
                 </div>
             </header>
+
             <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                    <!-- Total -->
-                    <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
-                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">calendar_today</span>
-                            </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="tour-stats">
+                    <div class="bg-card-light dark:bg-card-dark p-6 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg"><span class="material-symbols-outlined text-blue-600 dark:text-blue-400">calendar_today</span></div>
                             <div>
                                 <p class="text-text-secondary dark:text-gray-400 text-[10px] font-semibold uppercase tracking-wider">Total</p>
-                                <h3 class="text-xl font-bold text-text-main dark:text-white"><?php echo $stats['total']; ?></h3>
+                                <h3 class="text-xl font-bold"><?php echo $total_res; ?></h3>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Pendientes -->
-                    <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-yellow-100 dark:bg-yellow-900/30 p-2 rounded-lg">
-                                <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400 text-xl">pending_actions</span>
-                            </div>
+                    <div class="bg-orange-50 dark:bg-orange-900/10 p-6 rounded-xl border border-orange-100 dark:border-orange-900/20 shadow-sm ring-1 ring-orange-500/20">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-lg"><span class="material-symbols-outlined text-orange-600 dark:text-orange-400">pending_actions</span></div>
                             <div>
                                 <p class="text-text-secondary dark:text-gray-400 text-[10px] font-semibold uppercase tracking-wider">Pendientes</p>
-                                <h3 class="text-xl font-bold text-text-main dark:text-white"><?php echo $stats['pendientes']; ?></h3>
+                                <h3 class="text-xl font-bold"><?php echo $pendientes; ?></h3>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Confirmadas -->
-                    <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg">
-                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-xl">check_circle</span>
-                            </div>
+                    <div class="bg-card-light dark:bg-card-dark p-6 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-lg"><span class="material-symbols-outlined text-green-600 dark:text-green-400">check_circle</span></div>
                             <div>
                                 <p class="text-text-secondary dark:text-gray-400 text-[10px] font-semibold uppercase tracking-wider">Confirmadas</p>
-                                <h3 class="text-xl font-bold text-text-main dark:text-white"><?php echo $stats['confirmadas']; ?></h3>
+                                <h3 class="text-xl font-bold"><?php echo $confirmadas; ?></h3>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Completadas -->
-                    <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-purple-100 dark:bg-purple-900/30 p-2 rounded-lg">
-                                <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-xl">task_alt</span>
-                            </div>
-                            <div>
-                                <p class="text-text-secondary dark:text-gray-400 text-[10px] font-semibold uppercase tracking-wider">Completadas</p>
-                                <h3 class="text-xl font-bold text-text-main dark:text-white"><?php echo $stats['completadas']; ?></h3>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Canceladas -->
-                    <div class="bg-card-light dark:bg-card-dark p-4 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-red-100 dark:bg-red-900/30 p-2 rounded-lg">
-                                <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-xl">cancel</span>
-                            </div>
+                    <div class="bg-card-light dark:bg-card-dark p-6 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-red-100 dark:bg-red-900/30 p-3 rounded-lg"><span class="material-symbols-outlined text-red-600 dark:text-red-400">cancel</span></div>
                             <div>
                                 <p class="text-text-secondary dark:text-gray-400 text-[10px] font-semibold uppercase tracking-wider">Canceladas</p>
-                                <h3 class="text-xl font-bold text-text-main dark:text-white"><?php echo $stats['canceladas']; ?></h3>
+                                <h3 class="text-xl font-bold"><?php echo $canceladas; ?></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-card-light dark:bg-card-dark p-6 rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"><span class="material-symbols-outlined text-gray-600 dark:text-gray-300">task_alt</span></div>
+                            <div>
+                                <p class="text-text-secondary dark:text-gray-400 text-[10px] font-semibold uppercase tracking-wider">Finalizadas</p>
+                                <h3 class="text-xl font-bold"><?php echo $finalizadas; ?></h3>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm overflow-hidden flex flex-col">
-                    <div class="p-6 border-b border-[#f0f3f4] dark:border-gray-800 bg-background-light/30 dark:bg-gray-800/20">
-                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                            <div class="flex flex-wrap items-center gap-3">
-                                <div class="flex items-center gap-2 bg-white dark:bg-gray-800 px-3 py-2 rounded-lg border border-[#e5e7eb] dark:border-gray-700">
-                                    <span class="material-symbols-outlined text-text-secondary text-sm">calendar_month</span>
-                                    <input id="date-range" class="bg-transparent border-none p-0 text-sm focus:ring-0 text-text-main dark:text-white w-48" placeholder="Seleccionar fechas" type="text" />
-                                </div>
-                                <div class="relative min-w-[160px]">
-                                    <select class="w-full bg-white dark:bg-gray-800 border-[#e5e7eb] dark:border-gray-700 rounded-lg text-sm text-text-main dark:text-white focus:ring-primary focus:border-primary">
-                                        <option value="">Apartamento</option>
-                                        <?php
-                                        // Opcional: Cargar apartamentos dinámicamente para el filtro
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="relative min-w-[140px]">
-                                    <select class="w-full bg-white dark:bg-gray-800 border-[#e5e7eb] dark:border-gray-700 rounded-lg text-sm text-text-main dark:text-white focus:ring-primary focus:border-primary">
-                                        <option value="">Estado</option>
-                                        <option value="Confirmada">Confirmada</option>
-                                        <option value="Pendiente">Pendiente</option>
-                                        <option value="Cancelada">Cancelada</option>
-                                        <option value="Completada">Completada</option>
-                                    </select>
-                                </div>
-                                <button class="bg-white dark:bg-gray-800 border border-[#e5e7eb] dark:border-gray-700 px-4 py-2 rounded-lg text-sm font-medium text-text-main dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-sm">filter_alt_off</span>
-                                    Limpiar
-                                </button>
-                            </div>
-                            <a href="exportar_reservas_csv.php" class="bg-primary hover:bg-primary-hover text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined text-lg">download</span>
-                                Exportar CSV
-                            </a>
-                        </div>
-                    </div>
+
+                <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm overflow-hidden flex flex-col" id="tour-table">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse table-fixed-header">
+                        <table class="w-full text-left border-collapse" id="reservasTable">
                             <thead>
                                 <tr class="bg-background-light dark:bg-gray-800/50 text-text-secondary dark:text-gray-400 text-xs uppercase tracking-wider">
-                                    <th class="px-6 py-4 font-bold w-24">ID Reserva</th>
+                                    <th class="px-6 py-4 font-bold">ID</th>
                                     <th class="px-6 py-4 font-bold">Huésped</th>
-                                    <th class="px-6 py-4 font-bold">Contacto</th>
-                                    <th class="px-6 py-4 font-bold">Ocupantes</th>
                                     <th class="px-6 py-4 font-bold">Apartamento</th>
                                     <th class="px-6 py-4 font-bold">Fechas</th>
                                     <th class="px-6 py-4 font-bold">Total</th>
                                     <th class="px-6 py-4 font-bold">Estado</th>
-                                    <th class="px-6 py-4 font-bold text-center">Acciones</th>
+                                    <th class="px-6 py-4 text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-[#f0f3f4] dark:divide-gray-800 text-sm">
-                                <?php
-                                if (mysqli_num_rows($result) > 0) {
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        // Calcular noches
-                                        $fecha_inicio = new DateTime($row['fecha_inicio']);
-                                        $fecha_fin = new DateTime($row['fecha_fin']);
-                                        $noches = $fecha_inicio->diff($fecha_fin)->days;
-
-                                        // Clases por estado
-                                        $estado_class = '';
-                                        $dot_class = '';
-                                        switch ($row['estado']) {
-                                            case 'Confirmada':
-                                                $estado_class = 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
-                                                $dot_class = 'bg-green-500';
-                                                break;
-                                            case 'Pendiente':
-                                                $estado_class = 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
-                                                $dot_class = 'bg-yellow-500';
-                                                break;
-                                            case 'Completada':
-                                                $estado_class = 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
-                                                $dot_class = 'bg-blue-500';
-                                                break;
-                                            case 'Cancelada':
-                                                $estado_class = 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
-                                                $dot_class = 'bg-red-500';
-                                                break;
-                                            default:
-                                                $estado_class = 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400';
-                                                $dot_class = 'bg-gray-500';
-                                        }
-
-                                        // Imágenes
-                                        $usuario_img = !empty($row['usuario_imagen']) ? '../../assets/img/usuarios/' . $row['usuario_imagen'] : 'https://ui-avatars.com/api/?name=' . $row['nombre_final'] . '+' . $row['apellido_final'];
-                                        $apartamento_img = !empty($row['apartamento_imagen']) ? '../../assets/img/apartamentos/' . $row['apartamento_imagen'] : 'https://placehold.co/400x300?text=No+Image';
-
-                                        // Datos de contacto
-                                        $email_contacto = $row['email_final'];
-                                        $telefono_contacto = !empty($row['telefono_cliente']) ? $row['telefono_cliente'] : 'No registrado';
-
-                                        // Composición de ocupantes
-                                        $ocupantes = [];
-                                        if ($row['adultos'] > 0) $ocupantes[] = $row['adultos'] . ' Adul.';
-                                        if ($row['ninos'] > 0) $ocupantes[] = $row['ninos'] . ' Niñ.';
-                                        if ($row['bebes'] > 0) $ocupantes[] = $row['bebes'] . ' Beb.';
-                                        if ($row['perro_guia'] == 1) $ocupantes[] = '🦮';
-                                        $ocupantes_str = implode(', ', $ocupantes);
+                                <?php while ($row = $resultado->fetch_assoc()):
+                                    $row_json = json_encode($row);
+                                    $status_color = match ($row['estado']) {
+                                        'confirmada' => "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+                                        'cancelada' => "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+                                        'finalizada' => "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+                                        default => "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
+                                    };
+                                    $dot_color = match ($row['estado']) {
+                                        'confirmada' => "bg-green-500",
+                                        'cancelada' => "bg-red-500",
+                                        'finalizada' => "bg-blue-500",
+                                        default => "bg-orange-500",
+                                    };
                                 ?>
-                                        <tr class="group hover:bg-background-light/50 dark:hover:bg-gray-800/50 transition-colors">
-                                            <td class="px-6 py-4 text-text-secondary font-mono">#RS-<?php echo $row['id']; ?></td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex flex-col">
-                                                    <span class="font-bold text-text-main dark:text-white"><?php echo htmlspecialchars($row['nombre_final'] . ' ' . $row['apellido_final']); ?></span>
-                                                    <span class="text-[10px] text-text-secondary">
-                                                        <?php echo !empty($row['usuario_id']) ? '#USR-' . $row['usuario_id'] : 'Invitado'; ?>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex flex-col text-xs text-text-secondary">
-                                                    <div class="flex items-center gap-1" title="<?php echo htmlspecialchars($email_contacto); ?>">
-                                                        <span class="material-symbols-outlined text-[14px]">mail</span>
-                                                        <span class="truncate max-w-[120px]"><?php echo htmlspecialchars($email_contacto); ?></span>
-                                                    </div>
-                                                    <div class="flex items-center gap-1 mt-0.5">
-                                                        <span class="material-symbols-outlined text-[14px]">call</span>
-                                                        <span><?php echo htmlspecialchars($telefono_contacto); ?></span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex flex-col">
-                                                    <span class="text-xs font-semibold text-text-main dark:text-white"><?php echo $ocupantes_str; ?></span>
-                                                    <?php if (!empty($row['nombres_huespedes'])): ?>
-                                                        <span class="text-[10px] text-text-secondary truncate max-w-[100px]" title="<?php echo htmlspecialchars($row['nombres_huespedes']); ?>">
-                                                            <?php echo htmlspecialchars($row['nombres_huespedes']); ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-2">
-                                                    <div class="size-8 rounded bg-cover bg-center shrink-0" style='background-image: url("<?php echo $apartamento_img; ?>");'></div>
-                                                    <span class="font-medium text-text-main dark:text-white truncate max-w-[150px]"><?php echo $row['apartamento_titulo']; ?></span>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-text-main dark:text-white">
-                                                <div class="flex flex-col">
-                                                    <span class="flex items-center gap-1 text-xs"><?php echo $fecha_inicio->format('d M') . ' - ' . $fecha_fin->format('d M'); ?></span>
-                                                    <span class="text-[10px] text-text-secondary"><?php echo $noches; ?> noches</span>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 font-bold text-text-main dark:text-white">$<?php echo number_format($row['total'], 2); ?></td>
-                                            <td class="px-6 py-4">
-                                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold <?php echo $estado_class; ?>">
-                                                    <span class="size-1.5 <?php echo $dot_class; ?> rounded-full mr-1.5"></span>
-                                                    <?php echo $row['estado']; ?>
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 text-center">
-                                                <div class="flex justify-center items-center gap-2">
-                                                    <button onclick='openModal(<?php echo json_encode([
-                                                                                    "id" => $row["id"],
-                                                                                    "huesped" => $row["nombre_final"] . " " . $row["apellido_final"],
-                                                                                    "email" => $email_contacto,
-                                                                                    "telefono" => $telefono_contacto,
-                                                                                    "apartamento" => $row["apartamento_titulo"],
-                                                                                    "fecha_inicio" => $fecha_inicio->format("d M Y"),
-                                                                                    "fecha_fin" => $fecha_fin->format("d M Y"),
-                                                                                    "noches" => $noches,
-                                                                                    "ocupantes" => $ocupantes_str,
-                                                                                    "nombres_huespedes" => $row["nombres_huespedes"],
-                                                                                    "total" => number_format($row["total"], 2),
-                                                                                    "estado" => $row["estado"],
-                                                                                    "imagen_usuario" => $usuario_img,
-                                                                                    "imagen_apartamento" => $apartamento_img
-                                                                                ]); ?>)' class="size-8 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary hover:text-primary transition-colors" title="Ver detalle">
-                                                        <span class="material-symbols-outlined text-lg">visibility</span>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                <?php
-                                    }
-                                } else {
-                                    echo '<tr><td colspan="9" class="px-6 py-4 text-center text-text-secondary">No se encontraron reservas.</td></tr>';
-                                }
-                                ?>
+                                    <tr class="reserva-row group hover:bg-background-light/50 dark:hover:bg-gray-800/50 transition-colors">
+                                        <td class="px-6 py-4 font-mono text-xs">#RS-<?php echo str_pad($row['id'], 4, '0', STR_PAD_LEFT); ?></td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-col">
+                                                <span class="font-bold"><?php echo htmlspecialchars($row['nombre_cliente'] . " " . $row['apellido_cliente']); ?></span>
+                                                <span class="text-xs text-text-secondary"><?php echo htmlspecialchars($row['email_cliente']); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm font-medium"><?php echo htmlspecialchars($row['apto_nombre'] ?? 'No asignado'); ?></td>
+                                        <td class="px-6 py-4 text-xs font-semibold">
+                                            <?php echo date('d M', strtotime($row['fecha_checkin'])); ?> - <?php echo date('d M', strtotime($row['fecha_checkout'])); ?>
+                                        </td>
+                                        <td class="px-6 py-4 font-bold text-sm">$<?php echo number_format($row['precio_total'], 0, ',', '.'); ?></td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase <?php echo $status_color; ?>">
+                                                <span class="size-1.5 <?php echo $dot_color; ?> rounded-full mr-1.5"></span>
+                                                <?php echo $row['estado']; ?>
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <button onclick='verDetalle(<?php echo htmlspecialchars($row_json, ENT_QUOTES, 'UTF-8'); ?>)' class="size-8 inline-flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary hover:text-primary transition-colors">
+                                                <span class="material-symbols-outlined text-lg">visibility</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
                             </tbody>
                         </table>
-                    </div>
-                    <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800 flex items-center justify-between">
-                        <p class="text-xs text-text-secondary">Mostrando <span class="font-bold text-text-main dark:text-white"><?php echo mysqli_num_rows($result); ?></span> reservas</p>
-                        <!-- Paginación estática por ahora -->
-                        <div class="flex items-center gap-2">
-                            <button class="size-8 flex items-center justify-center rounded-lg border border-[#e5e7eb] dark:border-gray-700 text-text-secondary hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                                <span class="material-symbols-outlined text-lg">chevron_left</span>
-                            </button>
-                            <button class="size-8 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-xs">1</button>
-                            <button class="size-8 flex items-center justify-center rounded-lg border border-[#e5e7eb] dark:border-gray-700 text-text-secondary hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                                <span class="material-symbols-outlined text-lg">chevron_right</span>
-                            </button>
-                        </div>
                     </div>
                 </div>
             </main>
         </div>
     </div>
 
-    <!-- Modal de Detalle de Reserva -->
-    <div id="reservationModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <!-- Background backdrop -->
-        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
-
-        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <div class="relative transform overflow-hidden rounded-2xl bg-card-light dark:bg-card-dark text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-[#f0f3f4] dark:border-gray-800">
-
-                    <!-- Header -->
-                    <div class="bg-background-light/50 dark:bg-gray-800/50 px-4 py-3 sm:px-6 flex justify-between items-center border-b border-[#f0f3f4] dark:border-gray-800">
-                        <h3 class="text-base font-semibold leading-6 text-text-main dark:text-white" id="modal-title">Detalle de Reserva #<span id="modal-id"></span></h3>
-                        <button type="button" onclick="closeModal()" class="text-text-secondary hover:text-text-main dark:hover:text-white transition-colors">
-                            <span class="material-symbols-outlined">close</span>
-                        </button>
-                    </div>
-
-                    <!-- Body -->
-                    <div class="px-4 py-5 sm:p-6 space-y-6">
-                        <!-- Huesped Info -->
-                        <div class="flex items-center gap-4">
-                            <div id="modal-user-img" class="size-16 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-700 shadow-sm"></div>
-                            <div>
-                                <h4 class="text-lg font-bold text-text-main dark:text-white" id="modal-huesped"></h4>
-                                <div class="flex flex-col text-sm text-text-secondary">
-                                    <div class="flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-[16px]">mail</span>
-                                        <span id="modal-email"></span>
-                                    </div>
-                                    <div class="flex items-center gap-1 mt-0.5">
-                                        <span class="material-symbols-outlined text-[16px]">call</span>
-                                        <span id="modal-telefono"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Ocupantes Info -->
-                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-100 dark:border-gray-700">
-                            <h5 class="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Detalles de Ocupación</h5>
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-sm font-medium text-text-main dark:text-white" id="modal-ocupantes"></span>
-                            </div>
-                            <p class="text-xs text-text-secondary italic" id="modal-nombres-huespedes"></p>
-                        </div>
-
-                        <!-- Apartamento Info -->
-                        <div class="bg-background-light dark:bg-gray-800 rounded-xl p-4">
-                            <div class="flex gap-4">
-                                <div id="modal-apt-img" class="w-24 h-24 rounded-lg bg-cover bg-center shrink-0"></div>
-                                <div class="flex flex-col justify-center">
-                                    <span class="text-xs font-semibold text-primary uppercase tracking-wider mb-1">Apartamento</span>
-                                    <h4 class="font-bold text-text-main dark:text-white leading-tight mb-2" id="modal-apartamento"></h4>
-                                    <div class="flex items-center gap-1 text-xs text-text-secondary">
-                                        <span class="material-symbols-outlined text-sm">night_shelter</span>
-                                        <span id="modal-noches"></span> noches
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Fechas y Costos -->
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="p-3 rounded-lg border border-[#f0f3f4] dark:border-gray-700">
-                                <span class="text-xs text-text-secondary block mb-1">Check-in</span>
-                                <span class="text-sm font-semibold text-text-main dark:text-white" id="modal-checkin"></span>
-                            </div>
-                            <div class="p-3 rounded-lg border border-[#f0f3f4] dark:border-gray-700">
-                                <span class="text-xs text-text-secondary block mb-1">Check-out</span>
-                                <span class="text-sm font-semibold text-text-main dark:text-white" id="modal-checkout"></span>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-between items-center pt-4 border-t border-[#f0f3f4] dark:border-gray-800">
-                            <div>
-                                <span class="text-xs text-text-secondary block">Estado</span>
-                                <select id="modal-estado-select" onchange="updateStatus(this.value)" class="bg-transparent border border-gray-300 dark:border-gray-600 rounded-md text-xs font-bold mt-1 py-1 pl-2 pr-8 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
-                                    <option value="Pendiente">Pendiente</option>
-                                    <option value="Confirmada">Confirmada</option>
-                                    <option value="Completada">Completada</option>
-                                    <option value="Cancelada">Cancelada</option>
-                                </select>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-xs text-text-secondary block">Total Pagado</span>
-                                <span class="text-2xl font-bold text-text-main dark:text-white">$<span id="modal-total"></span></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Footer -->
-                    <div class="bg-background-light/30 dark:bg-gray-800/30 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-2">
-                        <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-white dark:bg-gray-800 px-3 py-2 text-sm font-semibold text-text-main dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 sm:mt-0 sm:w-auto transition-colors">Cerrar</button>
-                    </div>
-                </div>
+    <div id="modalReserva" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="cerrarModal()"></div>
+        <div class="bg-card-light dark:bg-card-dark w-full max-w-lg rounded-2xl shadow-2xl z-10 overflow-hidden relative border border-gray-200 dark:border-gray-800">
+            <div class="p-6 border-b dark:border-gray-800 flex justify-between items-center">
+                <h3 class="text-lg font-bold" id="m-codigo">Detalle de Reserva</h3>
+                <button onclick="cerrarModal()" class="text-text-secondary hover:text-red-500 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="p-6 space-y-6" id="m-contenido"></div>
+            <div class="p-6 bg-gray-50 dark:bg-gray-800/50 flex justify-end gap-3">
+                <button onclick="cerrarModal()" class="px-4 py-2 text-sm font-bold text-text-secondary hover:text-text-main">Cerrar</button>
             </div>
         </div>
     </div>
 
-    <script src="/js/reserva.js"></script>
+    <script>
+        // 1. TOUR CON DRIVER.JS
+        const driver = window.driver.js.driver;
+        const driverObj = driver({
+            showProgress: true,
+            nextBtnText: 'Siguiente',
+            prevBtnText: 'Anterior',
+            doneBtnText: 'Finalizar',
+            steps: [{
+                    element: '#tour-logo',
+                    popover: {
+                        title: 'Panel de Control',
+                        description: 'Bienvenido al administrador de Santamarta Beachfront.'
+                    }
+                },
+                {
+                    element: '#tour-menu',
+                    popover: {
+                        title: 'Navegación',
+                        description: 'Aquí puedes moverte entre apartamentos, usuarios y PQRs.'
+                    }
+                },
+                {
+                    element: '#tour-search',
+                    popover: {
+                        title: 'Buscador Inteligente',
+                        description: 'Busca cualquier reserva por nombre del huésped, ID de reserva o apartamento.'
+                    }
+                },
+                {
+                    element: '#tour-notif',
+                    popover: {
+                        title: 'Notificaciones',
+                        description: 'Aquí verás las reservas que están pendientes por confirmar.'
+                    }
+                },
+                {
+                    element: '#tour-stats',
+                    popover: {
+                        title: 'Estadísticas Rápidas',
+                        description: 'Resumen en tiempo real de todos los estados de reserva.'
+                    }
+                },
+                {
+                    element: '#tour-table',
+                    popover: {
+                        title: 'Listado Detallado',
+                        description: 'Aquí gestionas cada reserva, ves detalles y cambias estados.'
+                    }
+                },
+            ]
+        });
 
+        function startTour() {
+            driverObj.drive();
+        }
+
+        // Iniciar tour automáticamente la primera vez (opcional)
+        if (!localStorage.getItem('tour_visto')) {
+            startTour();
+            localStorage.setItem('tour_visto', 'true');
+        }
+
+        // 2. BUSCADOR EN TIEMPO REAL
+        function filterTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const rows = document.querySelectorAll('.reserva-row');
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            });
+        }
+
+        // 3. FUNCIONES DE LÓGICA EXISTENTES
+        function verDetalle(reserva) {
+            const modal = document.getElementById('modalReserva');
+            const contenido = document.getElementById('m-contenido');
+            const codigo = document.getElementById('m-codigo');
+
+            const opciones = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            const fIn = new Date(reserva.fecha_checkin).toLocaleDateString('es-ES', opciones);
+            const fOut = new Date(reserva.fecha_checkout).toLocaleDateString('es-ES', opciones);
+            const precio = new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                maximumFractionDigits: 0
+            }).format(reserva.precio_total);
+
+            codigo.innerText = `Reserva #RS-${reserva.id.toString().padStart(4, '0')}`;
+
+            // Lógica para el documento
+            const linkDocumento = reserva.documento_ruta ?
+                `<a href="../../uploads/documentos/${reserva.documento_ruta}" target="_blank" class="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl border border-blue-100 dark:border-blue-800 hover:scale-[1.02] transition-transform">
+            <span class="material-symbols-outlined">visibility</span>
+            <span class="text-xs font-bold uppercase">Ver Documento ID</span>
+           </a>` :
+                `<div class="p-3 bg-gray-100 dark:bg-gray-800 text-gray-400 rounded-xl text-center text-xs font-bold italic">Sin documento cargado</div>`;
+
+            contenido.innerHTML = `
+    <div class="space-y-5 max-h-[70vh] overflow-y-auto pr-2">
+        <div class="flex items-center gap-4 p-4 bg-primary/5 rounded-xl border border-primary/10">
+            <div class="size-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">apartment</span>
+            </div>
+            <div>
+                <p class="text-[10px] uppercase font-bold text-primary tracking-widest">Alojamiento</p>
+                <p class="font-bold text-text-main dark:text-white leading-tight">${reserva.apto_nombre || 'No asignado'}</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 bg-gray-50 dark:bg-gray-800/40 rounded-xl">
+                <p class="text-[10px] uppercase font-bold text-text-secondary mb-1 tracking-tighter">Contacto Principal</p>
+                <p class="font-bold text-sm">${reserva.nombre_cliente} ${reserva.apellido_cliente}</p>
+                <p class="text-[11px] text-text-secondary font-medium">${reserva.email_cliente}</p>
+                <p class="text-[11px] text-primary font-bold mt-1">${reserva.telefono || 'Sin teléfono'}</p>
+            </div>
+            <div class="p-4 bg-gray-50 dark:bg-gray-800/40 rounded-xl">
+                <p class="text-[10px] uppercase font-bold text-text-secondary mb-1 tracking-tighter">Devolución de Depósito</p>
+                <p class="text-xs font-bold text-gray-700 dark:text-gray-300">${reserva.cuenta_devolucion || 'No proporcionada'}</p>
+            </div>
+        </div>
+
+        <div class="space-y-3">
+            <p class="text-[10px] uppercase font-black text-text-secondary tracking-widest">Verificación y Huéspedes</p>
+            ${linkDocumento}
+            
+            <div class="p-4 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
+                <div class="flex items-center gap-2 mb-2 text-primary">
+                    <span class="material-symbols-outlined text-sm">groups</span>
+                    <span class="text-[10px] font-black uppercase">Lista de Acompañantes</span>
+                </div>
+                <p class="text-xs leading-relaxed text-gray-600 dark:text-gray-400 italic">
+                    ${reserva.huespedes_nombres ? reserva.huespedes_nombres : 'Solo el titular registrado.'}
+                </p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 divide-x divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden">
+            <div class="p-4 text-center">
+                <p class="text-[10px] uppercase font-black text-text-secondary mb-1">Entrada</p>
+                <p class="text-xs font-bold text-primary capitalize">${fIn}</p>
+            </div>
+            <div class="p-4 text-center">
+                <p class="text-[10px] uppercase font-black text-text-secondary mb-1">Salida</p>
+                <p class="text-xs font-bold text-red-500 capitalize">${fOut}</p>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px] font-bold">${reserva.adultos} Adultos</span>
+            <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px] font-bold">${reserva.ninos} Niños</span>
+            ${reserva.bebes > 0 ? `<span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 rounded-full text-[10px] font-bold">${reserva.bebes} Bebés</span>` : ''}
+            ${reserva.perro_guia == 1 ? `<span class="px-3 py-1 bg-amber-100 dark:bg-amber-900 text-amber-600 rounded-full text-[10px] font-bold">🐶 Perro Guía</span>` : ''}
+        </div>
+
+        <div class="pt-4 border-t dark:border-gray-800">
+            <p class="text-[10px] uppercase font-bold text-text-secondary mb-3 text-center tracking-widest">Cambiar estado de reserva</p>
+            <div class="grid grid-cols-4 gap-2">
+                <button onclick="actualizarEstado(${reserva.id}, 'pendiente')" class="flex flex-col items-center gap-1 p-2 rounded-xl border dark:border-gray-800 hover:bg-orange-500 hover:text-white transition-all group">
+                    <span class="material-symbols-outlined text-orange-500 group-hover:text-white text-sm">pending_actions</span>
+                    <span class="text-[8px] font-bold uppercase">Espera</span>
+                </button>
+                <button onclick="actualizarEstado(${reserva.id}, 'confirmada')" class="flex flex-col items-center gap-1 p-2 rounded-xl border dark:border-gray-800 hover:bg-green-600 hover:text-white transition-all group">
+                    <span class="material-symbols-outlined text-green-500 group-hover:text-white text-sm">check_circle</span>
+                    <span class="text-[8px] font-bold uppercase">Aceptar</span>
+                </button>
+                <button onclick="actualizarEstado(${reserva.id}, 'cancelada')" class="flex flex-col items-center gap-1 p-2 rounded-xl border dark:border-gray-800 hover:bg-red-600 hover:text-white transition-all group">
+                    <span class="material-symbols-outlined text-red-500 group-hover:text-white text-sm">cancel</span>
+                    <span class="text-[8px] font-bold uppercase">Anular</span>
+                </button>
+                <button onclick="actualizarEstado(${reserva.id}, 'finalizada')" class="flex flex-col items-center gap-1 p-2 rounded-xl border dark:border-gray-800 hover:bg-blue-600 hover:text-white transition-all group">
+                    <span class="material-symbols-outlined text-blue-500 group-hover:text-white text-sm">task_alt</span>
+                    <span class="text-[8px] font-bold uppercase">Cerrar</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center p-4 bg-primary text-white rounded-2xl shadow-lg shadow-primary/20">
+            <p class="text-[10px] uppercase font-bold opacity-80 italic tracking-widest">Monto Total Recaudado</p>
+            <p class="text-2xl font-black">${precio}</p>
+        </div>
+    </div>
+    `;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function actualizarEstado(id, nuevoEstado) {
+            if (confirm(`¿Cambiar estado a ${nuevoEstado.toUpperCase()}?`)) {
+                const formData = new URLSearchParams();
+                formData.append('id', id);
+                formData.append('estado', nuevoEstado);
+                fetch('actualizar_estado_reserva.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: formData.toString()
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert('Error de conexión.');
+                    });
+            }
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalReserva').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+            if (!overlay.classList.contains('hidden')) {
+                overlay.classList.add('opacity-100');
+            }
+        }
+    </script>
 </body>
 
 </html>

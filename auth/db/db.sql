@@ -71,36 +71,104 @@ CREATE TABLE IF NOT EXISTS respuestas_pqr (
     FOREIGN KEY (admin_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );
 
+CREATE DATABASE IF NOT EXISTS santamarta_db;
+USE santamarta_db;
 
--- Esto borra la tabla y todos sus datos si ya existía antes
-DROP TABLE IF EXISTS reservas;
+-- 1. Tabla de Apartamentos
+CREATE TABLE apartamentos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10, 2) NOT NULL, -- Precio por noche
+    imagen_principal VARCHAR(255),
+    capacidad_max INT DEFAULT 4,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
--- Ahora se crea la tabla totalmente vacía
-CREATE TABLE reservas (
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT(6) UNSIGNED NULL,
-    apartamento_id INT(6) UNSIGNED NULL,
-    nombre_cliente VARCHAR(100) NULL,
-    apellido_cliente VARCHAR(100) NULL,
-    email_cliente VARCHAR(100) NULL,
-    telefono_cliente VARCHAR(50) NULL,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL,
-    adultos INT(11) DEFAULT 1,
-    ninos INT(11) DEFAULT 0,
-    bebes INT(11) DEFAULT 0,
-    perro_guia TINYINT(1) DEFAULT 0,
-    nombres_huespedes TEXT NULL,
-    total DECIMAL(10, 2) NOT NULL,
-    estado VARCHAR(20) DEFAULT 'Pendiente', 
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+-- 2. Tabla de Reseñas (Para el promedio de estrellas)
+CREATE TABLE resenas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    apartamento_id INT,
+    calificacion INT CHECK (calificacion BETWEEN 1 AND 5),
+    comentario TEXT,
     FOREIGN KEY (apartamento_id) REFERENCES apartamentos(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+);
 
+-- 3. Tabla de Reservas (Donde se guardará el formulario)
+CREATE TABLE IF NOT EXISTS reservas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    apartamento_id INT NOT NULL,
+    nombre_cliente VARCHAR(100) NOT NULL,
+    apellido_cliente VARCHAR(100) NOT NULL,
+    email_cliente VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20),
+    huespedes_nombres TEXT,            -- Nombres de todos los acompañantes
+    documento_ruta VARCHAR(255),       -- Ruta de la foto de la cédula/pasaporte
+    cuenta_devolucion VARCHAR(255),    -- Información bancaria para el depósito
+    fecha_checkin DATE NOT NULL,
+    fecha_checkout DATE NOT NULL,
+    adultos INT DEFAULT 1,
+    ninos INT DEFAULT 0,
+    bebes INT DEFAULT 0,
+    perro_guia BOOLEAN DEFAULT FALSE,
+    precio_total DECIMAL(12, 2) NOT NULL,
+    estado ENUM('pendiente', 'confirmada', 'cancelada', 'finalizada') DEFAULT 'pendiente',
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (apartamento_id) REFERENCES apartamentos(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE reservas MODIFY COLUMN estado ENUM('pendiente', 'confirmada', 'cancelada', 'finalizada') DEFAULT 'pendiente';
 -- NOTA: El usuario administrador por defecto se crea automáticamente 
 -- desde el archivo php/conexion_be.php con la contraseña encriptada correctamente.
 -- Usuario (Login): admin
 -- Email: admin@santamarta.com
 -- Contraseña: 123456
+-- 1. Asegúrate de que la tabla de apartamentos exista y use INT UNSIGNED para el ID
+CREATE TABLE IF NOT EXISTS apartamentos (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    precio DECIMAL(12, 2) NOT NULL,
+    imagen_principal VARCHAR(255),
+    -- ... otros campos que ya tengas
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- 2. Tabla de Reservas corregida
+CREATE TABLE IF NOT EXISTS reservas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    apartamento_id INT UNSIGNED NOT NULL, -- Debe ser igual al ID de apartamentos
+    nombre_cliente VARCHAR(100) NOT NULL,
+    apellido_cliente VARCHAR(100) NOT NULL,
+    email_cliente VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20),
+    huespedes_nombres TEXT,            -- Nombres de todos los acompañantes
+    documento_ruta VARCHAR(255),       -- Ruta de la foto de la cédula/pasaporte
+    cuenta_devolucion VARCHAR(255),    -- Información bancaria para el depósito
+    fecha_checkin DATE NOT NULL,
+    fecha_checkout DATE NOT NULL,
+    adultos INT DEFAULT 1,
+    ninos INT DEFAULT 0,
+    bebes INT DEFAULT 0,
+    perro_guia BOOLEAN DEFAULT FALSE,
+    precio_total DECIMAL(12, 2) NOT NULL,
+    estado ENUM('pendiente', 'confirmada', 'cancelada', 'finalizada') DEFAULT 'pendiente',
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_reserva_apto 
+    FOREIGN KEY (apartamento_id) REFERENCES apartamentos(id) 
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- notificacion
+ALTER TABLE reservas ADD COLUMN notificacion_vista BOOLEAN DEFAULT FALSE;
+
+
+CREATE TABLE IF NOT EXISTS push_subscriptions (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    user_id INT(11) NOT NULL,
+    endpoint TEXT NOT NULL,
+    p256dh VARCHAR(255) NOT NULL,
+    auth VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
