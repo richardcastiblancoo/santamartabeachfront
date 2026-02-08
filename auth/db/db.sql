@@ -31,6 +31,12 @@ CREATE TABLE IF NOT EXISTS apartamentos (
     fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- 1. Crear la columna
+ALTER TABLE apartamentos ADD COLUMN slug VARCHAR(255) UNIQUE AFTER nombre;
+
+-- 2. Llenar la columna para el ID 1 (Ejemplo)
+UPDATE apartamentos SET slug = 'apartamento-beachfront-santa-marta' WHERE id = 1;
+
 -- 4. Tabla de Galería
 CREATE TABLE IF NOT EXISTS galeria_apartamentos (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -112,7 +118,6 @@ CREATE TABLE IF NOT EXISTS push_subscriptions (
     CONSTRAINT fk_push_user FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS push_subscriptions, respuestas_pqr, pqr, resenas, reservas, galeria_apartamentos, apartamentos, usuarios;
 
 
 

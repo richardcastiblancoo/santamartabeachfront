@@ -628,101 +628,110 @@
     </section>
 
     <!-- apartamento -->
-    <section class="py-20 bg-[#101c22]" id="apartamentos">
+    <section class="py-20 bg-[#101c22] overflow-hidden" id="apartamentos">
         <div class="px-6 md:px-20 mb-10 text-center">
             <h2 class="text-3xl font-bold text-white mb-2">¡Apartamentos Extraordinários!</h2>
             <p class="text-gray-400 text-sm">Nuestras mejores propiedades para una estancia inolvidable</p>
         </div>
 
-        <div class="flex flex-wrap justify-center gap-6 px-6 md:px-20">
-            <?php
-            // Ajustar ruta de conexión dependiendo de dónde se incluya
-            $ruta_conexion = 'auth/conexion_be.php';
-            if (!file_exists($ruta_conexion)) {
-                $ruta_conexion = '../auth/conexion_be.php';
+        <div class="relative max-w-[1600px] mx-auto px-4">
+
+            <div class="hidden 2xl:block absolute -left-20 top-1/2 -translate-y-1/2 w-[450px] opacity-30 pointer-events-none z-0">
+                <img src="/public/img/logo-def-Photoroom.png" alt="Logo Marca" class="w-full h-auto">
+            </div>
+
+            <div class="hidden 2xl:block absolute -right-20 top-1/2 -translate-y-1/2 w-[450px] opacity-30 pointer-events-none z-0">
+                <img src="/public/img/logo-def-Photoroom.png" alt="Logo Marca" class="w-full h-auto">
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-8 relative z-10">
+                <?php
+                $ruta_conexion = 'auth/conexion_be.php';
                 if (!file_exists($ruta_conexion)) {
-                    $ruta_conexion = '../../auth/conexion_be.php';
+                    $ruta_conexion = '../auth/conexion_be.php';
+                    if (!file_exists($ruta_conexion)) {
+                        $ruta_conexion = '../../auth/conexion_be.php';
+                    }
                 }
-            }
 
-            include_once $ruta_conexion;
+                include_once $ruta_conexion;
 
-            $sql = "SELECT a.*, COALESCE(AVG(r.calificacion), 0) as promedio_calificacion 
-                FROM apartamentos a 
-                LEFT JOIN resenas r ON a.id = r.apartamento_id 
-                GROUP BY a.id 
-                ORDER BY a.fecha_creacion DESC LIMIT 6";
-            $result = $conn->query($sql);
+                $sql = "SELECT a.*, COALESCE(AVG(r.calificacion), 0) as promedio_calificacion 
+                    FROM apartamentos a 
+                    LEFT JOIN resenas r ON a.id = r.apartamento_id 
+                    GROUP BY a.id 
+                    ORDER BY a.fecha_creacion DESC LIMIT 6";
+                $result = $conn->query($sql);
 
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-            ?>
-                    <article class="max-w-[360px] w-full bg-[#1e2930]/40 backdrop-blur-md rounded-3xl overflow-hidden shadow-2xl group border border-white/10 transition-all duration-300 hover:border-blue-500/30">
+                if ($result && $result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                ?>
+                        <article class="max-w-[360px] w-full bg-[#1e2930]/60 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl group border border-white/10 transition-all duration-500 hover:border-blue-500/50 hover:-translate-y-2">
 
-                        <div class="relative h-60 overflow-hidden">
-                            <div class="absolute top-3 right-3 z-10 bg-[#101c22]/80 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold text-white flex items-center gap-1 border border-white/5">
-                                <span class="material-symbols-outlined text-yellow-500 text-xs" style="font-variation-settings: 'FILL' 1;">star</span> <?php echo number_format($row['promedio_calificacion'], 1); ?>
-                            </div>
-
-                            <?php
-                            // Usar ruta absoluta desde la raíz del servidor para evitar problemas con includes
-                            $ruta_web_img = '/assets/img/apartamentos/' . $row['imagen_principal'];
-                            ?>
-
-                            <div class="h-full w-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
-                                style="background-image: url('<?php echo $ruta_web_img; ?>');">
-                            </div>
-
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#101c22]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
-                                <button class="w-full bg-blue-600 text-white font-bold py-2 rounded-xl text-xs uppercase tracking-wider shadow-lg">
-                                    Reservar Ahora
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="p-6">
-                            <div class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1"><?php echo $row['ubicacion']; ?></div>
-                            <h3 class="text-xl font-bold text-white mb-2"><?php echo $row['titulo']; ?></h3>
-                            <p class="text-gray-400 text-xs mb-6 leading-relaxed line-clamp-2">
-                                <?php echo $row['descripcion']; ?>
-                            </p>
-
-                            <div class="grid grid-cols-3 gap-2 text-[10px] text-gray-400 mb-6">
-                                <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
-                                    <span class="material-symbols-outlined text-blue-400 text-lg">bed</span>
-                                    <span><?php echo $row['habitaciones']; ?> Hab</span>
+                            <div class="relative h-64 overflow-hidden">
+                                <div class="absolute top-3 right-3 z-10 bg-[#101c22]/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold text-white flex items-center gap-1 border border-white/10">
+                                    <span class="material-symbols-outlined text-yellow-500 text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+                                    <?php echo number_format($row['promedio_calificacion'], 1); ?>
                                 </div>
-                                <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
-                                    <span class="material-symbols-outlined text-blue-400 text-lg">shower</span>
-                                    <span><?php echo $row['banos']; ?> Baños</span>
+
+                                <?php $ruta_web_img = '/assets/img/apartamentos/' . $row['imagen_principal']; ?>
+
+                                <div class="h-full w-full bg-cover bg-center group-hover:scale-110 transition-transform duration-700"
+                                    style="background-image: url('<?php echo $ruta_web_img; ?>');">
                                 </div>
-                                <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-xl">
-                                    <span class="material-symbols-outlined text-blue-400 text-lg">groups</span>
-                                    <span><?php echo $row['capacidad']; ?> Pers</span>
+
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#101c22] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
+                                    <button class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-widest shadow-xl transition-colors">
+                                        Reservar Ahora
+                                    </button>
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between pt-5 border-t border-white/5">
-                                <div>
-                                    <span class="text-xl font-black text-white">$<?php echo number_format($row['precio'], 0, ',', '.'); ?></span>
-                                    <span class="text-gray-400 text-[10px]">/noche</span>
+                            <div class="p-6">
+                                <div class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1"><?php echo $row['ubicacion']; ?></div>
+                                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors"><?php echo $row['titulo']; ?></h3>
+                                <p class="text-gray-400 text-xs mb-6 leading-relaxed line-clamp-2">
+                                    <?php echo $row['descripcion']; ?>
+                                </p>
+
+                                <div class="grid grid-cols-3 gap-3 text-[10px] text-gray-300 mb-6">
+                                    <div class="flex flex-col items-center gap-1 p-3 bg-white/5 rounded-2xl border border-white/5">
+                                        <span class="material-symbols-outlined text-blue-400 text-xl">bed</span>
+                                        <span><?php echo $row['habitaciones']; ?> Hab</span>
+                                    </div>
+                                    <div class="flex flex-col items-center gap-1 p-3 bg-white/5 rounded-2xl border border-white/5">
+                                        <span class="material-symbols-outlined text-blue-400 text-xl">shower</span>
+                                        <span><?php echo $row['banos']; ?> Baños</span>
+                                    </div>
+                                    <div class="flex flex-col items-center gap-1 p-3 bg-white/5 rounded-2xl border border-white/5">
+                                        <span class="material-symbols-outlined text-blue-400 text-xl">groups</span>
+                                        <span><?php echo $row['capacidad']; ?> Pers</span>
+                                    </div>
                                 </div>
-                                <a href="/php/reserva-apartamento/apartamento.php?id=<?php echo $row['id']; ?>"
-                                    class="bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white px-4 py-2 rounded-lg font-bold text-[11px] transition-all">
-                                    Ver Galeria
-                                </a>
+
+                                <div class="flex items-center justify-between pt-5 border-t border-white/10">
+                                    <div>
+                                        <span class="text-2xl font-black text-white">$<?php echo number_format($row['precio'], 0, ',', '.'); ?></span>
+                                        <span class="text-gray-500 text-[10px] block">por noche</span>
+                                    </div>
+                                    <a href="/php/reserva-apartamento/apartamento.php?id=<?php echo $row['id']; ?>"
+                                        class="bg-blue-500 text-white hover:bg-blue-400 px-5 py-2.5 rounded-xl font-bold text-[11px] transition-all shadow-lg shadow-blue-500/20">
+                                        Ver Galería
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    </article>
-            <?php
+                        </article>
+                <?php
+                    }
+                } else {
+                    echo '<div class="w-full text-center py-20"><p class="text-gray-500 text-lg italic">No hay apartamentos disponibles en este momento.</p></div>';
                 }
-            } else {
-                echo '<p class="text-gray-400 w-full text-center">No hay apartamentos disponibles por el momento.</p>';
-            }
-            ?>
+                ?>
+            </div>
         </div>
     </section>
 
+    
     <!-- Testimonios -->
     <?php include 'include/testimonios.php'; ?>
 

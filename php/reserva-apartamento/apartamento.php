@@ -3,114 +3,106 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
+
+// Conexión (Asegúrate de que $conn sea un objeto mysqli)
 include '../../auth/conexion_be.php';
 
 $isEmbed = isset($_GET['embed']) && $_GET['embed'] === '1';
 
-// Obtener el ID del apartamento de la URL
+// Obtener y asegurar el ID del apartamento
 $id_apartamento = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// 1. Consultar la base de datos con promedio de calificaciones
-$sql = "SELECT a.*, 
-        COALESCE(AVG(r.calificacion), 0) as promedio_calificacion, 
-        COUNT(r.id) as total_resenas 
-        FROM apartamentos a 
-        LEFT JOIN resenas r ON a.id = r.apartamento_id 
-        WHERE a.id = $id_apartamento 
-        GROUP BY a.id";
-$result = $conn->query($sql);
-
-if ($result && $result->num_rows > 0) {
-    $apartamento = $result->fetch_assoc();
-} else {
-    $apartamento = null;
-}
-
-// 2. Lógica de Reseñas (Corregido: fecha_resena)
+// Inicialización de variables
+$apartamento = null;
 $resenas = [];
 $resenas_total = 0;
-$resenas_fecha_col = 'fecha_resena'; // Nombre real en tu DB
+$puede_resenar = false;
+$rangos_ocupados = [];
+$imagenes_galeria = [];
+$videos_galeria = [];
 
 if ($id_apartamento > 0) {
-    $orderBy = "r.$resenas_fecha_col DESC";
-    $sql_resenas = "SELECT r.*, u.nombre, u.apellido, u.imagen
-                    FROM resenas r
-                    LEFT JOIN usuarios u ON r.usuario_id = u.id
-                    WHERE r.apartamento_id = $id_apartamento
-                    ORDER BY $orderBy";
-    $result_resenas = $conn->query($sql_resenas);
-    if ($result_resenas && $result_resenas->num_rows > 0) {
+
+    // 1. Consultar datos del apartamento y promedio de calificaciones (Sentencia Preparada)
+    $stmt_apt = $conn->prepare("SELECT a.*, 
+            COALESCE(AVG(r.calificacion), 0) as promedio_calificacion, 
+            COUNT(r.id) as total_resenas 
+            FROM apartamentos a 
+            LEFT JOIN resenas r ON a.id = r.apartamento_id 
+            WHERE a.id = ? 
+            GROUP BY a.id");
+    $stmt_apt->bind_param("i", $id_apartamento);
+    $stmt_apt->execute();
+    $result_apt = $stmt_apt->get_result();
+    $apartamento = $result_apt->fetch_assoc();
+
+    if ($apartamento) {
+        // 2. Consultar Reseñas
+        $stmt_res = $conn->prepare("SELECT r.*, u.nombre, u.apellido, u.imagen
+                                    FROM resenas r
+                                    LEFT JOIN usuarios u ON r.usuario_id = u.id
+                                    WHERE r.apartamento_id = ?
+                                    ORDER BY r.fecha_resena DESC");
+        $stmt_res->bind_param("i", $id_apartamento);
+        $stmt_res->execute();
+        $result_resenas = $stmt_res->get_result();
         while ($row = $result_resenas->fetch_assoc()) {
             $resenas[] = $row;
         }
-    }
-    $resenas_total = count($resenas);
-}
+        $resenas_total = count($resenas);
 
-// 3. ¿Puede reseñar? (Corregido: fecha_checkout)
-// Nota: Tu tabla 'reservas' no tiene 'usuario_id', se valida por email si el usuario está logueado
-$puede_resenar = false;
-if (isset($_SESSION['email']) && $id_apartamento > 0) {
-    $email_usuario = $_SESSION['email'];
-    $fecha_actual = date('Y-m-d');
-    $sql_puede = "SELECT COUNT(*) as c FROM reservas
-                  WHERE email_cliente = '$email_usuario'
-                  AND apartamento_id = $id_apartamento
-                  AND fecha_checkout < '$fecha_actual'
-                  AND estado = 'confirmada'"; 
-    $res_puede = $conn->query($sql_puede);
-    if ($res_puede) {
-        $puede_resenar = ((int)$res_puede->fetch_assoc()['c']) > 0;
-    }
-}
+        // 3. Verificar si el usuario puede reseñar (Seguro contra manipulación de sesión)
+        if (isset($_SESSION['email'])) {
+            $email_usuario = $_SESSION['email'];
+            $fecha_actual = date('Y-m-d');
+            $stmt_p = $conn->prepare("SELECT COUNT(*) as c FROM reservas
+                                      WHERE email_cliente = ?
+                                      AND apartamento_id = ?
+                                      AND fecha_checkout < ?
+                                      AND estado = 'confirmada'");
+            $stmt_p->bind_param("sis", $email_usuario, $id_apartamento, $fecha_actual);
+            $stmt_p->execute();
+            $res_puede = $stmt_p->get_result()->fetch_assoc();
+            $puede_resenar = ($res_puede['c'] > 0);
+        }
 
-// 4. Rangos Ocupados (Corregido: fecha_checkin y fecha_checkout)
-$rangos_ocupados = [];
-if ($id_apartamento > 0) {
-    $sql_rangos = "SELECT fecha_checkin, fecha_checkout 
-                   FROM reservas 
-                   WHERE apartamento_id = $id_apartamento 
-                   AND estado <> 'cancelada' 
-                   AND fecha_checkout > CURDATE()";
-    $res_rangos = $conn->query($sql_rangos);
-    
-    if ($res_rangos && $res_rangos->num_rows > 0) {
+        // 4. Rangos Ocupados para el Calendario
+        $stmt_r = $conn->prepare("SELECT fecha_checkin, fecha_checkout 
+                                  FROM reservas 
+                                  WHERE apartamento_id = ? 
+                                  AND estado <> 'cancelada' 
+                                  AND fecha_checkout > CURDATE()");
+        $stmt_r->bind_param("i", $id_apartamento);
+        $stmt_r->execute();
+        $res_rangos = $stmt_r->get_result();
+        
         while ($row = $res_rangos->fetch_assoc()) {
             $from = $row['fecha_checkin']; 
             $to = $row['fecha_checkout'];
-            
             if (!$from || !$to) continue;
+            
             try {
-                // Se resta un día al checkout para que el calendario 
-                // permita reservar el mismo día que alguien sale
+                // Ajuste para que el día de salida aparezca como disponible
                 $toMinus = (new DateTime($to))->modify('-1 day')->format('Y-m-d');
-            } catch (Exception $e) {
-                continue;
-            }
-            if ($toMinus >= $from) {
-                $rangos_ocupados[] = ['from' => $from, 'to' => $toMinus];
+                if ($toMinus >= $from) {
+                    $rangos_ocupados[] = ['from' => $from, 'to' => $toMinus];
+                }
+            } catch (Exception $e) { continue; }
+        }
+
+        // 5 y 6. Consultar Galería (Imagen y Video en una sola consulta)
+        $stmt_g = $conn->prepare("SELECT ruta, tipo FROM galeria_apartamentos WHERE apartamento_id = ?");
+        $stmt_g->bind_param("i", $id_apartamento);
+        $stmt_g->execute();
+        $res_galeria = $stmt_g->get_result();
+        
+        while ($row = $res_galeria->fetch_assoc()) {
+            if ($row['tipo'] === 'video') {
+                $videos_galeria[] = $row['ruta'];
+            } else {
+                $imagenes_galeria[] = $row['ruta'];
             }
         }
-    }
-}
-
-// 5. Consultar galería de imágenes
-$sql_imagenes = "SELECT * FROM galeria_apartamentos WHERE apartamento_id = $id_apartamento AND tipo = 'imagen'";
-$result_imagenes = $conn->query($sql_imagenes);
-$imagenes_galeria = [];
-if ($result_imagenes && $result_imagenes->num_rows > 0) {
-    while ($row = $result_imagenes->fetch_assoc()) {
-        $imagenes_galeria[] = $row['ruta'];
-    }
-}
-
-// 6. Consultar galería de videos
-$sql_videos = "SELECT * FROM galeria_apartamentos WHERE apartamento_id = $id_apartamento AND tipo = 'video'";
-$result_videos = $conn->query($sql_videos);
-$videos_galeria = [];
-if ($result_videos && $result_videos->num_rows > 0) {
-    while ($row = $result_videos->fetch_assoc()) {
-        $videos_galeria[] = $row['ruta'];
     }
 }
 ?>
