@@ -627,6 +627,7 @@
         </div>
     </section>
 
+
     <!-- apartamento -->
     <section class="py-20 bg-[#101c22] overflow-hidden" id="apartamentos">
         <div class="px-6 md:px-20 mb-10 text-center">
@@ -731,7 +732,7 @@
         </div>
     </section>
 
-    
+
     <!-- Testimonios -->
     <?php include 'include/testimonios.php'; ?>
 

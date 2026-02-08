@@ -549,16 +549,16 @@
     </section>
 
     <!-- solicitardisponibilidad -->
-    <section class="py-16 px-6 md:px-20 bg-[#101c22]" id="disponibilidad">
+    <section class="py-16 px-6 md:px-20 bg-[#101c22]" id="availability">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
 
             <div class="flex-1 space-y-6">
                 <span class="text-blue-400 font-bold uppercase tracking-wider text-sm">Plan your trip</span>
                 <h2 class="text-3xl md:text-5xl font-bold text-white leading-tight">
-                    Check availability in real time
+                    Check Real-Time Availability
                 </h2>
                 <p class="text-gray-400 text-lg">
-                    Our apartments are highly requested. Check the calendar to secure and book your ideal dates.
+                    Our apartments are highly in demand. Check the calendar to secure and book your ideal dates.
                 </p>
 
                 <div class="flex flex-col gap-4 pt-4">
@@ -568,12 +568,12 @@
                     </div>
                     <div class="flex items-center gap-3">
                         <div class="size-3 rounded-full bg-gray-700"></div>
-                        <span class="text-sm font-medium text-gray-300">Not Available / Past</span>
+                        <span class="text-sm font-medium text-gray-300">Unavailable / Past</span>
                     </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-6">
-                    <a href="https://wa.me/573183813381?text=Hi!%20I%20would%20like%20to%20check%20availability%20for%20a%20reservation."
+                    <a href="https://wa.me/573183813381?text=Hello!%20I%20would%20like%20to%20check%20availability%20for%20a%20reservation."
                         target="_blank"
                         class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-600/20 active:scale-95">
                         <span class="material-symbols-outlined">calendar_add_on</span>
@@ -620,6 +620,86 @@
             </div>
         </div>
     </section>
+
+    <script>
+        let currentDate = new Date();
+
+        function renderCalendars() {
+            const month1Name = document.getElementById("month1-name");
+            const month2Name = document.getElementById("month2-name");
+            const gridMonth1 = document.getElementById("grid-month1");
+            const gridMonth2 = document.getElementById("grid-month2");
+
+            gridMonth1.innerHTML = "";
+            gridMonth2.innerHTML = "";
+
+            const date1 = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const date2 = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+
+            const months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            month1Name.innerText = `${months[date1.getMonth()]} ${date1.getFullYear()}`;
+            month2Name.innerText = `${months[date2.getMonth()]} ${date2.getFullYear()}`;
+
+            renderMonth(date1, gridMonth1);
+            renderMonth(date2, gridMonth2);
+        }
+
+        function renderMonth(date, container) {
+            // Updated to English abbreviations
+            const daysOfWeek = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+
+            daysOfWeek.forEach((day) => {
+                const dayEl = document.createElement("div");
+                dayEl.className = "text-gray-500 text-xs font-bold py-2";
+                dayEl.innerText = day;
+                container.appendChild(dayEl);
+            });
+
+            const year = date.getFullYear();
+            const month = date.getMonth();
+
+            let firstDayIndex = new Date(year, month, 1).getDay() - 1;
+            if (firstDayIndex === -1) firstDayIndex = 6;
+
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            for (let x = 0; x < firstDayIndex; x++) {
+                const emptyDiv = document.createElement("div");
+                container.appendChild(emptyDiv);
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayEl = document.createElement("div");
+                dayEl.className = "py-2 text-sm relative";
+
+                // Availability Logic
+                const isAvailable = i % 2 === 0;
+                const statusClass = isAvailable ?
+                    "text-white hover:bg-blue-600/20 cursor-pointer rounded-full" :
+                    "text-gray-600 line-through";
+                const dotClass = isAvailable ? "bg-blue-600" : "bg-gray-700";
+
+                dayEl.innerHTML = `
+                <div class="flex flex-col items-center gap-1 ${statusClass}">
+                    <span>${i}</span>
+                    <div class="size-1 rounded-full ${dotClass}"></div>
+                </div>
+            `;
+                container.appendChild(dayEl);
+            }
+        }
+
+        function changeMonth(offset) {
+            currentDate.setMonth(currentDate.getMonth() + offset);
+            renderCalendars();
+        }
+
+        document.addEventListener("DOMContentLoaded", renderCalendars);
+    </script>
 
     <!-- apartamento -->
     <section class="py-20 bg-[#101c22] overflow-hidden" id="apartamentos">
@@ -1107,8 +1187,6 @@
             </aside>
         </div>
     </footer>
-
-    <script src="/js/main.js"></script>
 
 </body>
 
