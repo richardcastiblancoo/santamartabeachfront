@@ -10,7 +10,7 @@ $isEmbed = isset($_GET['embed']) && $_GET['embed'] === '1';
 // Obtener el ID del apartamento de la URL
 $id_apartamento = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Consultar la base de datos con promedio de calificaciones
+// 1. Consultar la base de datos con promedio de calificaciones
 $sql = "SELECT a.*, 
         COALESCE(AVG(r.calificacion), 0) as promedio_calificacion, 
         COUNT(r.id) as total_resenas 
@@ -23,26 +23,16 @@ $result = $conn->query($sql);
 if ($result && $result->num_rows > 0) {
     $apartamento = $result->fetch_assoc();
 } else {
-    // Redirigir o mostrar mensaje si no se encuentra
     $apartamento = null;
 }
 
+// 2. Lógica de Reseñas (Corregido: fecha_resena)
 $resenas = [];
 $resenas_total = 0;
-$resenas_fecha_col = null;
-
-$fechaColResult = $conn->query("SHOW COLUMNS FROM resenas LIKE 'fecha_creacion'");
-if ($fechaColResult && $fechaColResult->num_rows > 0) {
-    $resenas_fecha_col = 'fecha_creacion';
-} else {
-    $fechaColResult2 = $conn->query("SHOW COLUMNS FROM resenas LIKE 'created_at'");
-    if ($fechaColResult2 && $fechaColResult2->num_rows > 0) {
-        $resenas_fecha_col = 'created_at';
-    }
-}
+$resenas_fecha_col = 'fecha_resena'; // Nombre real en tu DB
 
 if ($id_apartamento > 0) {
-    $orderBy = $resenas_fecha_col ? "r.$resenas_fecha_col DESC" : "r.id DESC";
+    $orderBy = "r.$resenas_fecha_col DESC";
     $sql_resenas = "SELECT r.*, u.nombre, u.apellido, u.imagen
                     FROM resenas r
                     LEFT JOIN usuarios u ON r.usuario_id = u.id
@@ -57,30 +47,42 @@ if ($id_apartamento > 0) {
     $resenas_total = count($resenas);
 }
 
+// 3. ¿Puede reseñar? (Corregido: fecha_checkout)
+// Nota: Tu tabla 'reservas' no tiene 'usuario_id', se valida por email si el usuario está logueado
 $puede_resenar = false;
-if (isset($_SESSION['id']) && $id_apartamento > 0) {
-    $usuario_id = (int)$_SESSION['id'];
+if (isset($_SESSION['email']) && $id_apartamento > 0) {
+    $email_usuario = $_SESSION['email'];
     $fecha_actual = date('Y-m-d');
     $sql_puede = "SELECT COUNT(*) as c FROM reservas
-                  WHERE usuario_id = $usuario_id
+                  WHERE email_cliente = '$email_usuario'
                   AND apartamento_id = $id_apartamento
-                  AND fechafin < '$fecha_actual'";
+                  AND fecha_checkout < '$fecha_actual'
+                  AND estado = 'confirmada'"; 
     $res_puede = $conn->query($sql_puede);
     if ($res_puede) {
         $puede_resenar = ((int)$res_puede->fetch_assoc()['c']) > 0;
     }
 }
 
+// 4. Rangos Ocupados (Corregido: fecha_checkin y fecha_checkout)
 $rangos_ocupados = [];
 if ($id_apartamento > 0) {
-    $sql_rangos = "SELECT fecha_checkin, fecha_checkout FROM reservas WHERE apartamento_id = $id_apartamento AND estado <> 'cancelada' AND fecha_checkout > CURDATE()";
+    $sql_rangos = "SELECT fecha_checkin, fecha_checkout 
+                   FROM reservas 
+                   WHERE apartamento_id = $id_apartamento 
+                   AND estado <> 'cancelada' 
+                   AND fecha_checkout > CURDATE()";
     $res_rangos = $conn->query($sql_rangos);
+    
     if ($res_rangos && $res_rangos->num_rows > 0) {
         while ($row = $res_rangos->fetch_assoc()) {
-            $from = $row['fecha_inicio'] ?? null;
-            $to = $row['fecha_fin'] ?? null;
+            $from = $row['fecha_checkin']; 
+            $to = $row['fecha_checkout'];
+            
             if (!$from || !$to) continue;
             try {
+                // Se resta un día al checkout para que el calendario 
+                // permita reservar el mismo día que alguien sale
                 $toMinus = (new DateTime($to))->modify('-1 day')->format('Y-m-d');
             } catch (Exception $e) {
                 continue;
@@ -92,7 +94,7 @@ if ($id_apartamento > 0) {
     }
 }
 
-// Consultar galería de imágenes
+// 5. Consultar galería de imágenes
 $sql_imagenes = "SELECT * FROM galeria_apartamentos WHERE apartamento_id = $id_apartamento AND tipo = 'imagen'";
 $result_imagenes = $conn->query($sql_imagenes);
 $imagenes_galeria = [];
@@ -102,7 +104,7 @@ if ($result_imagenes && $result_imagenes->num_rows > 0) {
     }
 }
 
-// Consultar galería de videos
+// 6. Consultar galería de videos
 $sql_videos = "SELECT * FROM galeria_apartamentos WHERE apartamento_id = $id_apartamento AND tipo = 'video'";
 $result_videos = $conn->query($sql_videos);
 $videos_galeria = [];
