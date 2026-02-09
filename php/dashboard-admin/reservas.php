@@ -93,13 +93,14 @@ $resultado = $conn->query($sql);
             <div class="p-6 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
                     <div class="bg-primary/10 p-3 rounded-lg" id="tour-logo">
-                        <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-16 h-16 object-contain">
+                        <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="w-16 h-16 object-contain">
                     </div>
                     <div>
                         <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamarta</h1>
                         <p class="text-xs text-text-secondary dark:text-gray-400 mt-1">Beachfront Admin</p>
                     </div>
                 </div>
+
                 <button onclick="toggleSidebar()" class="md:hidden text-text-secondary hover:text-red-500">
                     <span class="material-symbols-outlined">close</span>
                 </button>
@@ -155,7 +156,8 @@ $resultado = $conn->query($sql);
             <header class="h-16 bg-card-light dark:bg-card-dark border-b border-[#f0f3f4] dark:border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10">
                 <div class="flex items-center gap-4 flex-1">
                     <button onclick="toggleSidebar()" class="md:hidden text-text-secondary"><span class="material-symbols-outlined">menu</span></button>
-
+                    <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Gestión de
+                        Reservas</h2>
                     <div class="relative w-full max-w-md" id="tour-search">
                         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">search</span>
                         <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Buscar por nombre, ID o apartamento..."

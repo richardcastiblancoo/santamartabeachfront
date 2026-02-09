@@ -744,7 +744,13 @@ if ($id_apartamento > 0) {
                     <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
                         <div class="flex items-center gap-2 mb-6">
                             <span class="material-symbols-outlined text-primary fill-1">star</span>
-                            <h3 class="text-xl font-bold"><?php echo $apartamento['total_resenas'] > 0 ? number_format($apartamento['promedio_calificacion'], 1) . ' · ' . $apartamento['total_resenas'] . ' <span data-i18n="reseñas">reseñas</span>' : '<span data-i18n="Sin reseñas">Sin reseñas</span>'; ?></h3>
+                            <h3 class="text-xl font-bold" id="resenas-header">
+                                <?php if ($apartamento['total_resenas'] > 0): ?>
+                                    <?php echo number_format($apartamento['promedio_calificacion'], 1); ?> · <?php echo $apartamento['total_resenas']; ?> <span data-i18n="reseñas">reseñas</span>
+                                <?php else: ?>
+                                    <span data-i18n="Sin reseñas">Sin reseñas</span>
+                                <?php endif; ?>
+                            </h3>
                         </div>
                         <?php if ($puede_resenar): ?>
                             <div class="mb-6">
@@ -813,7 +819,7 @@ if ($id_apartamento > 0) {
                                 <button id="toggle-reviews-btn" onclick="toggleReviews()" class="mt-8 text-primary font-bold hover:underline" data-i18n="Mostrar todas las reseñas">Mostrar todas las reseñas</button>
                             <?php endif; ?>
                         <?php else: ?>
-                            <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                            <div id="no-reviews-container" class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                                 <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="Aún no hay reseñas para este apartamento.">Aún no hay reseñas para este apartamento.</p>
                             </div>
                         <?php endif; ?>

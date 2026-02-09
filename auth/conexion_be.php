@@ -35,6 +35,9 @@ $sql = "CREATE TABLE IF NOT EXISTS usuarios (
     password VARCHAR(255) NOT NULL,
     imagen VARCHAR(255) DEFAULT NULL,
     rol VARCHAR(20) NOT NULL,
+    token VARCHAR(100) DEFAULT NULL,
+    google_id VARCHAR(255) DEFAULT NULL,
+    is_verified TINYINT(1) DEFAULT 0,
     reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )";
 
@@ -118,6 +121,27 @@ try {
     // Ignorar error si la columna ya existe
 }
 
+// Intentar añadir la columna 'token' si la tabla ya existía sin ella
+try {
+    $conn->query("ALTER TABLE usuarios ADD COLUMN token VARCHAR(100) DEFAULT NULL AFTER rol");
+} catch (Exception $e) {
+    // Ignorar error si la columna ya existe
+}
+
+// Intentar añadir la columna 'google_id' si la tabla ya existía sin ella
+try {
+    $conn->query("ALTER TABLE usuarios ADD COLUMN google_id VARCHAR(255) DEFAULT NULL AFTER token");
+} catch (Exception $e) {
+    // Ignorar error si la columna ya existe
+}
+
+// Intentar añadir la columna 'is_verified' si la tabla ya existía sin ella
+try {
+    $conn->query("ALTER TABLE usuarios ADD COLUMN is_verified TINYINT(1) DEFAULT 0 AFTER token");
+} catch (Exception $e) {
+    // Ignorar error si la columna ya existe
+}
+
 // Verificar si existe el usuario admin por defecto
 $usuario_admin = "admin";
 $email_admin = "admin@santamarta.com";
@@ -174,6 +198,32 @@ $sql_reservas = "CREATE TABLE IF NOT EXISTS reservas (
 if ($conn->query($sql_reservas) !== TRUE) {
     echo "Error creando tabla reservas: " . $conn->error;
 }
+
+// Intentar añadir columnas a 'reservas' si la tabla ya existía sin ellas
+try {
+    $conn->query("ALTER TABLE reservas ADD COLUMN fecha_inicio DATE NOT NULL AFTER apartamento_id");
+} catch (Exception $e) {}
+
+// Intentar añadir apartamento_id si falta
+try {
+    $check_column = $conn->query("SHOW COLUMNS FROM reservas LIKE 'apartamento_id'");
+    if ($check_column->num_rows == 0) {
+        $conn->query("ALTER TABLE reservas ADD COLUMN apartamento_id INT(6) UNSIGNED AFTER usuario_id");
+        $conn->query("ALTER TABLE reservas ADD CONSTRAINT fk_apartamento_id FOREIGN KEY (apartamento_id) REFERENCES apartamentos(id) ON DELETE CASCADE");
+    }
+} catch (Exception $e) {}
+
+try {
+    $conn->query("ALTER TABLE reservas ADD COLUMN fecha_fin DATE NOT NULL AFTER fecha_inicio");
+} catch (Exception $e) {}
+
+try {
+    $conn->query("ALTER TABLE reservas ADD COLUMN total DECIMAL(10, 2) NOT NULL AFTER fecha_fin");
+} catch (Exception $e) {}
+
+try {
+    $conn->query("ALTER TABLE reservas ADD COLUMN estado VARCHAR(20) DEFAULT 'Pendiente' AFTER total");
+} catch (Exception $e) {}
 
 // Add usuario_id column to reservas table if it doesn't exist
 try {

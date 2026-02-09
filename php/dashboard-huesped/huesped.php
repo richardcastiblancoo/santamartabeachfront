@@ -78,6 +78,7 @@ if (!empty($_SESSION['imagen'])) {
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <title>Panel de Control - Santamartabeachfront</title>
     <link rel="shortcut icon" href="/public/img/logo_santamartabeachfront-removebg-preview.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
@@ -163,7 +164,7 @@ if (!empty($_SESSION['imagen'])) {
     <header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e5e7eb] dark:border-b-gray-800 bg-white dark:bg-[#1a2c35] px-4 md:px-10 py-3 shadow-sm">
         <div class="flex items-center gap-4">
             <div class="size-8 text-primary flex items-center justify-center">
-                <img src="/public/img/logo_santamartabeachfront-removebg-preview.png" alt="logo">
+                <img src="/public/img/logo-def-Photoroom.png" alt="logo">
             </div>
             <h2 class="hidden md:block text-[#111618] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Santamartabeachfront</h2>
         </div>
@@ -251,6 +252,10 @@ if (!empty($_SESSION['imagen'])) {
                         <button onclick="switchTab('apartments')" class="flex items-center justify-center rounded-lg h-12 px-6 bg-white text-[#111618] text-base font-bold transition-all shadow-md hover:shadow-lg">
                             <span class="mr-2 material-symbols-outlined text-primary">add_circle</span>
                             Hacer una reserva
+                        </button>
+                        <button onclick="openReviewModalFromButton()" class="flex items-center justify-center rounded-lg h-12 px-6 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 text-base font-bold transition-all">
+                            <span class="mr-2 material-symbols-outlined text-yellow-400">star</span>
+                            Dejar una reseña
                         </button>
                     </div>
                 </div>
@@ -782,6 +787,36 @@ if (!empty($_SESSION['imagen'])) {
             const modal = document.getElementById('review-modal');
             modal.classList.remove('hidden');
             modal.style.display = 'flex';
+        }
+
+        function openReviewModalFromButton() {
+            // Si el usuario tiene una estancia pasada, usamos el primer apartamento de su historial
+            // Si no, mostramos un selector o simplemente usamos el ID 1 como fallback (o pedimos seleccionar)
+            // Para cumplir con el requerimiento de "Hacer una reserva" -> "reseña",
+            // vamos a intentar obtener el ID del primer apartamento disponible en el historial.
+            <?php
+            $first_past_apt_id = 0;
+            $first_past_apt_title = '';
+            if ($result_reservas_pasadas && $result_reservas_pasadas->num_rows > 0) {
+                $temp_res = $result_reservas_pasadas->fetch_assoc();
+                $first_past_apt_id = $temp_res['apartamento_id'];
+                $first_past_apt_title = addslashes($temp_res['titulo']);
+                // Reset pointer for the loop in HTML
+                $result_reservas_pasadas->data_seek(0);
+            }
+            ?>
+            
+            const pastAptId = <?php echo $first_past_apt_id; ?>;
+            const pastAptTitle = "<?php echo $first_past_apt_title; ?>";
+            
+            if (pastAptId > 0) {
+                openReviewModal(pastAptId, pastAptTitle);
+            } else {
+                // Si no hay estancias pasadas, podemos redirigir a apartamentos para que elija uno y lo vea
+                if (confirm("Aún no tienes estancias completadas para reseñar. ¿Deseas ver nuestros apartamentos?")) {
+                    switchTab('apartments');
+                }
+            }
         }
 
         function closeReviewModal() {
