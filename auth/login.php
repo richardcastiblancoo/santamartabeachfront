@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Login</title>
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -29,15 +29,20 @@
 
     <style>
         .side-logo img {
-            height: 140px;
+            height: 120px;
             width: auto;
             object-fit: contain;
             transform: translateY(15px);
         }
 
         .side-brand-text {
-            margin-left: -35px;
+            margin-left: -15px;
             margin-top: 10px;
+        }
+
+        /* Clase para suavizar la transición de los botones de idioma */
+        .lang-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
@@ -46,13 +51,14 @@
 
     <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-end px-6 py-4 md:px-10">
         <div class="hidden md:flex items-center gap-4 bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-lg">
-            <button onclick="changeLanguage('es')" id="btn-es" class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all">
+            <button onclick="changeLanguage('es')" class="btn-es lang-transition flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg">
                 <img src="https://flagcdn.com/w40/co.png" class="w-4 h-4 rounded-full object-cover" alt="ES"> ES
             </button>
-            <button onclick="changeLanguage('en')" id="btn-en" class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all">
+            <button onclick="changeLanguage('en')" class="btn-en lang-transition flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg">
                 <img src="https://flagcdn.com/w40/us.png" class="w-4 h-4 rounded-full object-cover" alt="EN"> EN
             </button>
         </div>
+
         <button id="menuBtn" class="md:hidden p-2 text-primary bg-white dark:bg-gray-800 rounded-lg shadow-md z-[60]">
             <span id="menuIcon" class="material-symbols-outlined text-2xl">menu</span>
         </button>
@@ -60,7 +66,23 @@
 
     <div id="mobileMenu" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col items-center justify-center gap-8 text-white md:hidden backdrop-blur-lg">
         <a href="/" data-key="nav-home" class="text-2xl font-bold hover:text-primary transition">Inicio</a>
-        <button onclick="toggleMenu()" class="mt-8 px-8 py-2 border border-white/30 rounded-full text-sm font-bold"><span data-key="btn-close">Cerrar</span></button>
+
+        <div class="flex flex-col items-center gap-4 w-full px-10">
+            <hr class="w-full border-white/10 mb-4">
+            <p class="text-xs font-bold tracking-widest text-white/50 uppercase">Seleccionar Idioma</p>
+            <div class="flex gap-4">
+                <button onclick="changeLanguage('es')" class="btn-es lang-transition flex items-center gap-3 px-6 py-3 rounded-2xl border border-white/20 bg-white/5">
+                    <img src="https://flagcdn.com/w40/co.png" class="w-6 h-6 rounded-full object-cover" alt="ES"> <span class="text-lg font-bold">ES</span>
+                </button>
+                <button onclick="changeLanguage('en')" class="btn-en lang-transition flex items-center gap-3 px-6 py-3 rounded-2xl border border-white/20 bg-white/5">
+                    <img src="https://flagcdn.com/w40/us.png" class="w-6 h-6 rounded-full object-cover" alt="EN"> <span class="text-lg font-bold">EN</span>
+                </button>
+            </div>
+        </div>
+
+        <button onclick="toggleMenu()" class="mt-8 px-8 py-2 border border-white/30 rounded-full text-sm font-bold">
+            <span data-key="btn-close">Cerrar</span>
+        </button>
     </div>
 
     <div class="flex flex-1 w-full min-h-screen">
@@ -69,7 +91,7 @@
             <div class="absolute inset-0 bg-gradient-to-t from-[#101c22] via-[#101c22]/20 to-transparent"></div>
 
             <div class="absolute top-10 left-10 z-20 flex items-center side-logo">
-                <img src="/public/img/logo-definitivo.webp" alt="Logo">
+                <img src="/public/img/logo-def-Photoroom.png" alt="Logo">
                 <h1 class="side-brand-text text-white text-xl font-black tracking-tighter uppercase">
                     Santamarta<span class="text-[#0369a1]">beachfront</span>
                 </h1>
@@ -111,17 +133,16 @@
                         <p data-key="label-user" class="text-sm font-bold text-[#111618] dark:text-white">Usuario</p>
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#617c89] material-symbols-outlined">person</span>
-                            <input name="usuario" data-key="placeholder-user" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="Ej: JuanPerez" type="text" required />
+                            <input name="usuario" data-key="placeholder-user" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary dark:text-white" placeholder="Ej: JuanPerez" type="text" required />
                         </div>
                     </label>
                     <label class="flex flex-col gap-2">
                         <div class="flex justify-between">
                             <p data-key="label-pass" class="text-sm font-bold text-[#111618] dark:text-white">Contraseña</p>
-                           <!-- <a data-key="forgot-pass" class="text-primary text-xs font-bold hover:underline" href="#">¿Olvidaste tu contraseña?</a> -->
                         </div>
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#617c89] material-symbols-outlined">lock</span>
-                            <input name="password" data-key="placeholder-pass" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="••••••••" type="password" required />
+                            <input name="password" data-key="placeholder-pass" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary dark:text-white" placeholder="••••••••" type="password" required />
                         </div>
                     </label>
                     <button type="submit" class="w-full rounded-xl h-12 bg-primary text-white font-bold shadow-md hover:shadow-lg hover:bg-[#0f8bc7] transition-all">
@@ -137,91 +158,7 @@
         </div>
     </div>
 
-    <script>
-        const translations = {
-            es: {
-                "nav-home": "Inicio",
-                "btn-close": "Cerrar",
-                "hero-title": "Bienvenido al paraíso",
-                "hero-desc": "Gestiona tus reservas, planifica tus vacaciones o administra tus propiedades frente al mar en Santa Marta de forma segura.",
-                "social-proof": "+100 Usuarios confían en nosotros",
-                "form-title": "Acceso a la plataforma",
-                "form-subtitle": "Ingresa tus datos para continuar explorando.",
-                "tab-login": "Iniciar Sesión",
-                "tab-register": "Registrarse",
-                "label-user": "Usuario",
-                "placeholder-user": "Ej: JuanPerez",
-                "label-pass": "Contraseña",
-                "placeholder-pass": "••••••••",
-                "forgot-pass": "¿Olvidaste tu contraseña?",
-                "btn-enter": "Entrar",
-                "no-account": "¿No tienes una cuenta?",
-                "link-register": "Regístrate aquí",
-            },
-            en: {
-                "nav-home": "Home",
-                "btn-close": "Close",
-                "hero-title": "Welcome to Paradise",
-                "hero-desc": "Manage your reservations, plan your vacations, or manage your beachfront properties in Santa Marta securely.",
-                "social-proof": "+100 Users trust us",
-                "form-title": "Platform Access",
-                "form-subtitle": "Enter your details to continue exploring.",
-                "tab-login": "Login",
-                "tab-register": "Register",
-                "label-user": "Username",
-                "placeholder-user": "Ex: JohnDoe",
-                "label-pass": "Password",
-                "placeholder-pass": "••••••••",
-                "forgot-pass": "Forgot password?",
-                "btn-enter": "Sign In",
-                "no-account": "Don't have an account?",
-                "link-register": "Register here",
-            }
-        };
-
-        function changeLanguage(lang) {
-            localStorage.setItem("selectedLang", lang);
-            document.querySelectorAll("[data-key]").forEach((el) => {
-                const key = el.getAttribute("data-key");
-                const translation = translations[lang][key];
-                if (translation) {
-                    if (el.tagName === "INPUT") el.placeholder = translation;
-                    else el.innerText = translation;
-                }
-            });
-
-            const btnEs = document.getElementById("btn-es");
-            const btnEn = document.getElementById("btn-en");
-            if (lang === "es") {
-                btnEs.className = "flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-primary text-white";
-                btnEn.className = "flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all text-gray-500 hover:bg-white/10";
-            } else {
-                btnEn.className = "flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-primary text-white";
-                btnEs.className = "flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all text-gray-500 hover:bg-white/10";
-            }
-        }
-
-        function toggleMenu() {
-            const menu = document.getElementById("mobileMenu");
-            const icon = document.getElementById("menuIcon");
-            if (menu.classList.contains("hidden")) {
-                menu.classList.remove("hidden");
-                icon.textContent = "close";
-                document.body.style.overflow = "hidden";
-            } else {
-                menu.classList.add("hidden");
-                icon.textContent = "menu";
-                document.body.style.overflow = "";
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const savedLang = localStorage.getItem("selectedLang") || (navigator.language.startsWith("es") ? "es" : "en");
-            changeLanguage(savedLang);
-            const menuBtn = document.getElementById("menuBtn");
-            if (menuBtn) menuBtn.addEventListener("click", toggleMenu);
-        });
-    </script>
+    <script src="/js/login.js"></script>
 </body>
 
 </html>

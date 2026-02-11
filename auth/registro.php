@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Santamartabeachfront - Registro de Usuario</title>
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
+    <title>Santamartabeachfront - Registro</title>
+    <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -28,17 +28,20 @@
     </script>
 
     <style>
-        /* Ajuste para que el logo se vea bien sobre la imagen */
         .side-logo img {
-            height: 140px;
+            height: 120px;
             width: auto;
             object-fit: contain;
             transform: translateY(15px);
         }
 
         .side-brand-text {
-            margin-left: -35px;
+            margin-left: -15px;
             margin-top: 10px;
+        }
+
+        .lang-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
@@ -47,10 +50,10 @@
 
     <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-end px-6 py-4 md:px-10">
         <div class="hidden md:flex items-center gap-4 bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-lg">
-            <button onclick="changeLanguage('es')" id="btn-es" class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all">
+            <button onclick="changeLanguage('es')" class="btn-es lang-transition flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg">
                 <img src="https://flagcdn.com/w40/co.png" class="w-4 h-4 rounded-full object-cover" alt="ES"> ES
             </button>
-            <button onclick="changeLanguage('en')" id="btn-en" class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all">
+            <button onclick="changeLanguage('en')" class="btn-en lang-transition flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg">
                 <img src="https://flagcdn.com/w40/us.png" class="w-4 h-4 rounded-full object-cover" alt="EN"> EN
             </button>
         </div>
@@ -60,14 +63,34 @@
         </button>
     </header>
 
+    <div id="mobileMenu" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col items-center justify-center gap-8 text-white md:hidden backdrop-blur-lg">
+        <a href="/" data-key="nav-home" class="text-2xl font-bold hover:text-primary transition">Inicio</a>
+
+        <div class="flex flex-col items-center gap-4 w-full px-10">
+            <hr class="w-full border-white/10 mb-4">
+            <p class="text-xs font-bold tracking-widest text-white/50 uppercase">Seleccionar Idioma</p>
+            <div class="flex gap-4">
+                <button onclick="changeLanguage('es')" class="btn-es lang-transition flex items-center gap-3 px-6 py-3 rounded-2xl border border-white/20 bg-white/5">
+                    <img src="https://flagcdn.com/w40/co.png" class="w-6 h-6 rounded-full object-cover" alt="ES"> <span class="text-lg font-bold">ES</span>
+                </button>
+                <button onclick="changeLanguage('en')" class="btn-en lang-transition flex items-center gap-3 px-6 py-3 rounded-2xl border border-white/20 bg-white/5">
+                    <img src="https://flagcdn.com/w40/us.png" class="w-6 h-6 rounded-full object-cover" alt="EN"> <span class="text-lg font-bold">EN</span>
+                </button>
+            </div>
+        </div>
+
+        <button onclick="toggleMenu()" class="mt-8 px-8 py-2 border border-white/30 rounded-full text-sm font-bold">
+            <span data-key="btn-close">Cerrar</span>
+        </button>
+    </div>
+
     <div class="flex flex-1 w-full min-h-screen">
         <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gray-900">
             <img src="/public/img/portada-reserva.webp" alt="Santamartabeachfront" class="absolute inset-0 w-full h-full object-cover opacity-60">
-
             <div class="absolute inset-0 bg-gradient-to-t from-[#101c22] via-[#101c22]/30 to-transparent"></div>
 
             <div class="absolute top-10 left-10 z-20 flex items-center side-logo">
-                <img src="/public/img/logo-definitivo.webp" alt="Logo">
+                <img src="/public/img/logo-def-Photoroom.png" alt="Logo">
                 <h1 class="side-brand-text text-white text-xl font-black tracking-tighter uppercase">
                     Santamarta<span class="text-[#0369a1]">beachfront</span>
                 </h1>
@@ -76,11 +99,13 @@
             <div class="relative z-10 flex flex-col justify-end p-16 h-full w-full max-w-[720px] mx-auto">
                 <div class="mb-8">
                     <h1 data-key="hero-title" class="text-white text-5xl font-black leading-tight tracking-[-0.033em] mb-4">Bienvenido al paraíso</h1>
-                    <p data-key="hero-desc" class="text-white/90 text-lg font-medium leading-relaxed max-w-md">
-                        Gestiona tus reservas, planifica tus vacaciones o administra tus propiedades frente al mar en Santa Marta de forma segura.
-                    </p>
+                    <p data-key="hero-desc" class="text-white/90 text-lg font-medium leading-relaxed max-w-md">Gestiona tus reservas, planifica tus vacaciones o administra tus propiedades frente al mar en Santa Marta de forma segura.</p>
                 </div>
                 <div class="flex items-center gap-4 py-4 px-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 w-fit text-white">
+                    <div class="flex -space-x-2">
+                        <div class="size-8 rounded-full bg-primary/40 border-2 border-white flex items-center justify-center text-[10px]">SB</div>
+                        <div class="size-8 rounded-full bg-blue-400 border-2 border-white flex items-center justify-center text-[10px]">ST</div>
+                    </div>
                     <span data-key="social-proof" class="text-sm font-bold">+100 Usuarios confían en nosotros</span>
                 </div>
             </div>
@@ -106,24 +131,24 @@
                     <div class="flex flex-col sm:flex-row gap-4">
                         <label class="flex flex-col flex-1 gap-2">
                             <p data-key="label-name" class="text-sm font-bold text-[#111618] dark:text-white">Nombre</p>
-                            <input name="nombre" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 px-4 focus:ring-primary" placeholder="Juan" type="text" required />
+                            <input name="nombre" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 px-4 focus:ring-primary dark:text-white" placeholder="Juan" type="text" required />
                         </label>
                         <label class="flex flex-col flex-1 gap-2">
                             <p data-key="label-lastname" class="text-sm font-bold text-[#111618] dark:text-white">Apellido</p>
-                            <input name="apellido" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 px-4 focus:ring-primary" placeholder="Pérez" type="text" required />
+                            <input name="apellido" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 px-4 focus:ring-primary dark:text-white" placeholder="Pérez" type="text" required />
                         </label>
                     </div>
 
                     <label class="flex flex-col gap-2">
                         <p data-key="label-username" class="text-sm font-bold text-[#111618] dark:text-white">Nombre de usuario</p>
-                        <input name="usuario" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 px-4 focus:ring-primary" placeholder="Ej: Juan77" type="text" required />
+                        <input name="usuario" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 px-4 focus:ring-primary dark:text-white" placeholder="Ej: Juan77" type="text" required />
                     </label>
 
                     <label class="flex flex-col gap-2">
                         <p data-key="label-email" class="text-sm font-bold text-[#111618] dark:text-white">Correo electrónico</p>
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#617c89] material-symbols-outlined">mail</span>
-                            <input name="email" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="correo@ejemplo.com" type="email" required />
+                            <input name="email" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary dark:text-white" placeholder="correo@ejemplo.com" type="email" required />
                         </div>
                     </label>
 
@@ -131,7 +156,7 @@
                         <p data-key="label-pass" class="text-sm font-bold text-[#111618] dark:text-white">Contraseña</p>
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#617c89] material-symbols-outlined">lock</span>
-                            <input name="password" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary" placeholder="••••••••" type="password" required />
+                            <input name="password" class="form-input w-full rounded-xl border-[#dbe2e6] dark:border-gray-600 dark:bg-[#1a2c34] h-12 pl-11 focus:ring-primary dark:text-white" placeholder="••••••••" type="password" required />
                         </div>
                     </label>
 
@@ -148,6 +173,7 @@
     </div>
 
     <script src="/js/registro.js"></script>
+    
 </body>
 
 </html>

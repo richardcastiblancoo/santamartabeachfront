@@ -156,15 +156,15 @@
 
         /* --- LOGO & TEXT --- */
         .logo-container img {
-            height: 160px;
+            height: 120px;
             width: auto;
             object-fit: contain;
             transform: translateY(20px);
         }
 
         .brand-text {
-            margin-left: -50px;
-            margin-top: 10px;
+            margin-left: -25px;
+            margin-top: 20px;
         }
 
         /* --- MENU --- */
@@ -256,7 +256,7 @@
     <header id="main-header" class="left-0 w-full z-50 justify-between px-0 md:pr-10">
         <div class="flex items-center h-full">
             <a href="/" class="flex items-center group logo-container">
-                <img src="/public/img/logo-definitivo.webp" alt="Logo" class="h-8 w-auto mr-2">
+                <img src="/public/img/logo-def-Photoroom.png" alt="Logo" class="h-8 w-auto mr-2">
                 <h1 class="brand-text text-white text-lg md:text-xl font-black tracking-tighter uppercase hidden md:inline-block">
                     Santamarta<span class="bg-gradient-to-r from-blue-800 to-indigo-900 bg-clip-text text-transparent">beachfront</span>
                 </h1>

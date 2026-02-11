@@ -1,9 +1,11 @@
 const translations = {
   es: {
+    "nav-home": "Inicio",
+    "btn-close": "Cerrar",
     "hero-title": "Bienvenido al paraíso",
     "hero-desc":
       "Gestiona tus reservas, planifica tus vacaciones o administra tus propiedades frente al mar en Santa Marta de forma segura.",
-    "social-proof": "+1k Usuarios confían en nosotros",
+    "social-proof": "+100 Usuarios confían en nosotros",
     "reg-title": "Crea tu cuenta",
     "reg-subtitle": "Únete a nuestra comunidad para empezar.",
     "tab-login": "Iniciar Sesión",
@@ -18,6 +20,8 @@ const translations = {
     "link-login": "Inicia sesión aquí",
   },
   en: {
+    "nav-home": "Home",
+    "btn-close": "Close",
     "hero-title": "Welcome to Paradise",
     "hero-desc":
       "Manage your reservations, plan your vacations, or manage your beachfront properties in Santa Marta securely.",
@@ -38,33 +42,57 @@ const translations = {
 };
 
 function changeLanguage(lang) {
+  localStorage.setItem("selectedLang", lang);
+
+  // Traducir todos los elementos marcados con data-key
   document.querySelectorAll("[data-key]").forEach((el) => {
     const key = el.getAttribute("data-key");
-    if (translations[lang][key]) el.innerText = translations[lang][key];
+    const translation = translations[lang][key];
+    if (translation) {
+      if (el.tagName === "INPUT") el.placeholder = translation;
+      else el.innerText = translation;
+    }
   });
 
-  const btnEs = document.getElementById("btn-es");
-  const btnEn = document.getElementById("btn-en");
+  // Actualizar estilos de los botones (Escritorio + Móvil)
+  const allBtnEs = document.querySelectorAll(".btn-es");
+  const allBtnEn = document.querySelectorAll(".btn-en");
+
+  const activeClasses = ["bg-primary", "text-white", "shadow-md"];
+  const inactiveClasses = ["text-gray-500", "bg-transparent"];
+
   if (lang === "es") {
-    btnEs.className =
-      "flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-primary text-white";
-    btnEn.className =
-      "flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all text-gray-500 hover:bg-white/10";
+    allBtnEs.forEach((btn) => {
+      btn.classList.add(...activeClasses);
+      btn.classList.remove(...inactiveClasses);
+    });
+    allBtnEn.forEach((btn) => {
+      btn.classList.remove(...activeClasses);
+      btn.classList.add(...inactiveClasses);
+    });
   } else {
-    btnEn.className =
-      "flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-primary text-white";
-    btnEs.className =
-      "flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all text-gray-500 hover:bg-white/10";
+    allBtnEn.forEach((btn) => {
+      btn.classList.add(...activeClasses);
+      btn.classList.remove(...inactiveClasses);
+    });
+    allBtnEs.forEach((btn) => {
+      btn.classList.remove(...activeClasses);
+      btn.classList.add(...inactiveClasses);
+    });
   }
 
-  if (!document.getElementById("mobileMenu").classList.contains("hidden"))
-    toggleMenu();
+  // Cerrar el menú móvil si está abierto
+  const menu = document.getElementById("mobileMenu");
+  if (!menu.classList.contains("hidden")) {
+    setTimeout(toggleMenu, 300);
+  }
 }
 
 function toggleMenu() {
   const menu = document.getElementById("mobileMenu");
   const icon = document.getElementById("menuIcon");
   const isOpen = !menu.classList.contains("hidden");
+
   if (isOpen) {
     menu.classList.add("hidden");
     icon.textContent = "menu";
@@ -76,4 +104,13 @@ function toggleMenu() {
   }
 }
 
-document.getElementById("menuBtn").addEventListener("click", toggleMenu);
+document.addEventListener("DOMContentLoaded", () => {
+  // Escuchar el clic del botón menú
+  document.getElementById("menuBtn").addEventListener("click", toggleMenu);
+
+  // Cargar idioma guardado o por defecto
+  const savedLang =
+    localStorage.getItem("selectedLang") ||
+    (navigator.language.startsWith("es") ? "es" : "en");
+  changeLanguage(savedLang);
+});
