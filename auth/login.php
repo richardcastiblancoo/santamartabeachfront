@@ -90,12 +90,12 @@
             <img src="/public/img/portada-reserva.webp" alt="Santamartabeachfront View" class="absolute inset-0 w-full h-full object-cover opacity-60">
             <div class="absolute inset-0 bg-gradient-to-t from-[#101c22] via-[#101c22]/20 to-transparent"></div>
 
-            <div class="absolute top-10 left-10 z-20 flex items-center side-logo">
+            <a href="/" class="absolute top-10 left-10 z-20 flex items-center side-logo">
                 <img src="/public/img/logo-def-Photoroom.png" alt="Logo">
                 <h1 class="side-brand-text text-white text-xl font-black tracking-tighter uppercase">
                     Santamarta<span class="text-[#0369a1]">beachfront</span>
                 </h1>
-            </div>
+            </a>
 
             <div class="relative z-10 flex flex-col justify-end p-16 h-full w-full max-w-[720px] mx-auto">
                 <div class="mb-8">

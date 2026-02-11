@@ -75,19 +75,21 @@ if ($id_apartamento > 0) {
         $stmt_r->bind_param("i", $id_apartamento);
         $stmt_r->execute();
         $res_rangos = $stmt_r->get_result();
-        
+
         while ($row = $res_rangos->fetch_assoc()) {
-            $from = $row['fecha_checkin']; 
+            $from = $row['fecha_checkin'];
             $to = $row['fecha_checkout'];
             if (!$from || !$to) continue;
-            
+
             try {
                 // Ajuste para que el día de salida aparezca como disponible
                 $toMinus = (new DateTime($to))->modify('-1 day')->format('Y-m-d');
                 if ($toMinus >= $from) {
                     $rangos_ocupados[] = ['from' => $from, 'to' => $toMinus];
                 }
-            } catch (Exception $e) { continue; }
+            } catch (Exception $e) {
+                continue;
+            }
         }
 
         // 5 y 6. Consultar Galería (Imagen y Video en una sola consulta)
@@ -95,7 +97,7 @@ if ($id_apartamento > 0) {
         $stmt_g->bind_param("i", $id_apartamento);
         $stmt_g->execute();
         $res_galeria = $stmt_g->get_result();
-        
+
         while ($row = $res_galeria->fetch_assoc()) {
             if ($row['tipo'] === 'video') {
                 $videos_galeria[] = $row['ruta'];
@@ -390,15 +392,61 @@ if ($id_apartamento > 0) {
         }
         /* --- LOGO 150PX Y TEXTO PEGADO --- */
         .logo-container img {
-            height: 140px;
+            height: 120px;
             width: auto;
             object-fit: contain;
             transform: translateY(20px);
         }
 
         .brand-text {
-            margin-left: -40px;
-            margin-top: 10px;
+            margin-left: -20px;
+            margin-top: 20px;
+        }
+
+        /* ---------------------------------- */
+        .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+        }
+
+        .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+        width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+        background: #13a4ec; /* Blue primary color */
+        border-radius: 0px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+        background: #0f8bc7;
+        }
+
+        /* Animación de sacudida */
+        .shake-horizontal {
+        animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        /* Animación de menu */
+        .lang-dropdown:hover .lang-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        }
+        .lang-menu {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.2s ease;
         }
     </style>
 </head>
@@ -410,7 +458,7 @@ if ($id_apartamento > 0) {
             <div class="flex items-center justify-between max-w-[1280px] mx-auto">
                 <div class="flex items-center h-full">
                     <a href="/" class="flex items-center group logo-container">
-                        <img src="/public/img/logo-definitivo.webp" alt="Logo" class="h-8 w-auto">
+                        <img src="/public/img/logo-def-Photoroom.png" alt="Logo" class="h-8 w-auto">
                         <h1 class="brand-text text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block ml-2" data-i18n="Santamartabeachfront">
                             Santamarta<span class="text-blue-400">beachfront</span>
                         </h1>
@@ -1084,12 +1132,13 @@ if ($id_apartamento > 0) {
         <footer class="bg-[#101c22] text-white pt-10 pb-10 mt-[-2rem]" id="contacto">
             <div class="max-w-7xl mx-auto px-6 md:px-10">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-24 py-16 items-start border-t border-white/5">
+
                     <section class="flex flex-col items-center md:items-start text-center md:text-left">
-                        <a href="/" class="flex flex-col md:flex-row items-center group w-fit md:-ml-4">
-                            <div class="w-[100px] h-[100px] md:w-[130px] md:h-[130px] shrink-0">
-                                <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-full h-full object-contain">
+                        <a href="/" class="flex items-center gap-4 group w-fit mb-6">
+                            <div class="w-16 h-16 md:w-20 md:h-20 shrink-0">
+                                <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="w-full h-full object-contain">
                             </div>
-                            <span class="text-2xl md:text-3xl font-bold text-white tracking-tighter mt-[-20px] md:mt-0 md:-ml-9 mb-2">
+                            <span class="text-xl md:text-2xl font-bold text-white tracking-tighter">
                                 Santamarta<span class="text-blue-400">beachfront</span>
                             </span>
                         </a>
@@ -1102,13 +1151,23 @@ if ($id_apartamento > 0) {
                         <h2 class="font-bold mb-8 text-white uppercase tracking-widest text-xs" data-i18n="footer-contact-title">Información de Contacto</h2>
                         <address class="not-italic">
                             <ul class="space-y-5 text-sm text-gray-300 text-center md:text-left">
-                                <li><a href="mailto:17clouds@gmail.com" class="flex items-center justify-center md:justify-start gap-3">
-                                        <span class="material-symbols-outlined text-blue-400">mail</span> 17clouds@gmail.com</a></li>
-                                <li><a href="https://wa.me/573183813381" class="flex items-center justify-center md:justify-start gap-3">
-                                        <span class="material-symbols-outlined text-blue-400">call</span> +57 318 3813381</a></li>
+                                <li>
+                                    <a href="mailto:17clouds@gmail.com" class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
+                                        <span class="material-symbols-outlined text-blue-400">mail</span> 17clouds@gmail.com
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://wa.me/573183813381" class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
+                                        <span class="material-symbols-outlined text-blue-400">call</span> +57 318 3813381
+                                    </a>
+                                </li>
                                 <li class="flex items-start justify-center md:justify-start gap-3">
                                     <span class="material-symbols-outlined text-blue-400 shrink-0">location_on</span>
-                                    <span>Apartamento 1730 - Torre 4 - Reserva del Mar 1<br> Calle 22 # 1 - 67 Playa Salguero, Santa Marta</span>
+                                    <span>
+                                        Apartamento 1730 - Torre 4 - Reserva del Mar 1<br>
+                                        Calle 22 # 1 - 67 Playa Salguero,<br>
+                                        Santa Marta, Colombia
+                                    </span>
                                 </li>
                             </ul>
                         </address>
@@ -1139,11 +1198,12 @@ if ($id_apartamento > 0) {
                         </div>
                     </section>
                 </div>
+
                 <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-xs text-gray-400 text-center gap-4">
                     <p>
                         © <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront.
                         <span data-i18n="foo_rights">Todos los derechos reservados.</span> |
-                        Hecho por <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit; font-weight: bold;">Richard Castiblanco</a>
+                        Hecho por <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" class="font-bold hover:text-white">Richard Castiblanco</a>
                     </p>
 
                     <nav aria-label="Enlaces legales">
@@ -1155,6 +1215,13 @@ if ($id_apartamento > 0) {
                 </aside>
             </div>
         </footer>
+
+        <script>
+            const yearElement = document.getElementById('current-year');
+            const currentYear = new Date().getFullYear();
+            yearElement.textContent = currentYear;
+            yearElement.setAttribute('datetime', currentYear);
+        </script>
 
         <div id="gallery-modal" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl hidden flex-col transition-all duration-300">
             <div class="p-4 flex justify-between items-center text-white border-b border-white/10 bg-black/20 sticky top-0 w-full z-20">

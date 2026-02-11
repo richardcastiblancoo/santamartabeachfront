@@ -52,7 +52,6 @@
         }
     }
 
-    /* FIX: Header estático arriba en modo responsivo */
     @media (max-width: 768px) {
         #main-header {
             position: fixed;
@@ -63,7 +62,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Compensación de espacio para que el hero no se oculte */
         main {
             padding-top: 80px;
         }
@@ -78,7 +76,7 @@
         }
     }
 
-    /* --- LOGO 150PX Y TEXTO PEGADO --- */
+    /* --- LOGO Y MARCA --- */
     .logo-container img {
         height: 120px;
         width: auto;
@@ -91,7 +89,6 @@
         margin-top: 20px;
     }
 
-    /* --- MENÚ FULL BLANCO --- */
     .nav-link {
         color: #FFFFFF !important;
         font-size: 11px;
@@ -105,7 +102,6 @@
         opacity: 0.8;
     }
 
-    /* --- HERO Y OTROS --- */
     .hero-title {
         font-size: clamp(2rem, 5vw, 4rem);
         line-height: 1.1;
@@ -142,11 +138,6 @@
         display: block;
     }
 
-    /* ACCESIBILIDAD: Mejora de contraste para textos en gris */
-    .text-slate-400-custom {
-        color: #cbd5e1 !important;
-    }
-
     .btn-login-premium {
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.1);
@@ -154,11 +145,113 @@
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .btn-login-premium:hover {
-        background: rgba(59, 130, 246, 0.1);
-        border-color: rgba(59, 130, 246, 0.5);
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px -10px rgba(59, 130, 246, 0.3);
+    /* --- ANIMACIÓN FLUIDA PARA EL TEXTO --- */
+    @keyframes pulseFade {
+
+        0%,
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: 0.3;
+            transform: scale(0.98);
+        }
+    }
+
+    .pulse-slow {
+        animation: pulseFade 4s ease-in-out infinite;
+    }
+
+    /* --- MEGA CALENDARIO PERSONALIZADO --- */
+    .flatpickr-calendar {
+        background: rgba(15, 23, 42, 0.98) !important;
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(59, 130, 246, 0.5) !important;
+        border-radius: 24px !important;
+        box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8) !important;
+        width: 350px !important;
+        padding: 10px;
+    }
+
+    @media (min-width: 900px) {
+        .flatpickr-calendar.multiMonth {
+            width: 700px !important;
+        }
+    }
+
+    .cal-instruction {
+        text-align: center;
+        padding: 15px 0;
+        color: #fbbf24;
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 10px;
+    }
+
+    .flatpickr-months .flatpickr-month {
+        color: white !important;
+        fill: white !important;
+        height: 50px !important;
+    }
+
+    .flatpickr-current-month .flatpickr-monthDropdown-months {
+        font-weight: 800 !important;
+        font-size: 1.1rem !important;
+    }
+
+    span.flatpickr-weekday {
+        color: #60a5fa !important;
+        font-weight: 800 !important;
+        font-size: 13px !important;
+    }
+
+    .flatpickr-day {
+        color: white !important;
+        font-weight: 500 !important;
+        font-size: 16px !important;
+        height: 45px !important;
+        line-height: 45px !important;
+        max-width: 45px !important;
+        border-radius: 12px !important;
+        border: none !important;
+    }
+
+    .flatpickr-day:hover {
+        background: rgba(59, 130, 246, 0.3) !important;
+    }
+
+    .flatpickr-day.selected,
+    .flatpickr-day.startRange,
+    .flatpickr-day.endRange {
+        background: #2563eb !important;
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.6) !important;
+        color: white !important;
+    }
+
+    .flatpickr-day.inRange {
+        background: rgba(37, 99, 235, 0.2) !important;
+        box-shadow: none !important;
+    }
+
+    .flatpickr-day.prevMonthDay,
+    .flatpickr-day.nextMonthDay {
+        color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .flatpickr-day.flatpickr-disabled {
+        color: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .flatpickr-months .flatpickr-prev-month,
+    .flatpickr-months .flatpickr-next-month {
+        padding: 15px !important;
+        color: white !important;
+        fill: white !important;
     }
 </style>
 
@@ -303,7 +396,6 @@
 <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 
 <script>
-    // Flatpickr init con soporte de contraste
     flatpickr("#date-range", {
         mode: "range",
         minDate: "today",
@@ -313,15 +405,30 @@
         animate: true,
         disableMobile: "true",
         onReady: function(selectedDates, dateStr, instance) {
-            // Corrección de contraste para los nombres de los días en el calendario
-            const dayNames = instance.calendarContainer.querySelectorAll('.flatpickr-weekday');
-            dayNames.forEach(day => {
-                day.style.color = "#ffffff"; // Blanco para contraste total
-            });
+            const header = document.createElement('div');
+            header.className = 'cal-instruction pulse-slow';
+            header.id = 'cal-status-text';
+            header.innerHTML = '<span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle; margin-right:8px;">person_pin_circle</span> Elige tu llegada';
+            instance.calendarContainer.prepend(header);
+        },
+        onChange: function(selectedDates, dateStr, instance) {
+            const statusText = document.getElementById('cal-status-text');
+            if (selectedDates.length === 1) {
+                statusText.innerHTML = '<span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle; margin-right:8px;">person_pin_circle</span> Elige tu salida';
+                statusText.style.color = "#60a5fa";
+            } else if (selectedDates.length === 2) {
+                statusText.innerHTML = '<span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle; margin-right:8px;">check_circle</span> ¡Todo listo!';
+                statusText.style.color = "#4ade80";
+                statusText.classList.remove('pulse-slow');
+            } else {
+                statusText.innerHTML = '<span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle; margin-right:8px;">person_pin_circle</span> Elige tu llegada';
+                statusText.style.color = "#fbbf24";
+                statusText.classList.add('pulse-slow');
+            }
         }
     });
 
-    // Language toggles
+    // Language & Menu Toggles
     function toggleLang(event) {
         event.stopPropagation();
         document.getElementById('langMenu').classList.toggle('active');
@@ -345,7 +452,6 @@
         else menu.classList.remove('active');
     }
 
-    // Form handler
     document.getElementById('reservaForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const nombre = document.getElementById('full-name').value;
