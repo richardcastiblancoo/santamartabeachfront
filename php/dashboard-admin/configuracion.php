@@ -148,9 +148,9 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Ajustes de Cuenta</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
-                    <button id="start-tour-btn" class="flex items-center justify-center gap-2 bg-white dark:bg-gray-800 border border-[#f0f3f4] dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white px-3 py-1.5 rounded-lg font-semibold transition-all shadow-sm text-sm">
+                    <button id="start-tour-btn" class="flex items-center justify-center gap-2 bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-full font-semibold transition-all shadow-sm text-sm">
                         <span class="material-symbols-outlined text-lg">help</span>
-                        <span class="hidden sm:inline">Ayuda</span>
+                        <span class="hidden sm:inline">Guía del Panel</span>
                     </button>
                 </div>
             </header>
@@ -286,6 +286,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
     </div>
 
     <script src="/js/configuracion.js"></script>
-    
+
 </body>
+
 </html>

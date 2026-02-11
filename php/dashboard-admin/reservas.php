@@ -165,6 +165,7 @@ $resultado = $conn->query($sql);
                 </div>
 
                 <div class="flex items-center gap-3">
+                    <!-- Notificaciones 
                     <div class="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors" id="tour-notif">
                         <span class="material-symbols-outlined text-text-secondary">notifications</span>
                         <?php if ($pendientes > 0): ?>
@@ -173,9 +174,13 @@ $resultado = $conn->query($sql);
                             </span>
                         <?php endif; ?>
                     </div>
+                    -->
 
-                    <button onclick="startTour()" class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Ayuda">
-                        <span class="material-symbols-outlined">help</span>
+                    <button onclick="startTour()"
+                        class="group flex items-center gap-2 bg-[#4a4a4a] hover:bg-[#333333] text-white px-4 py-2 rounded-full transition-all duration-300 ease-in-out shadow-[0_4px_12px_rgba(0,0,0,0.2)] hover:shadow-[0_6px_18px_rgba(0,0,0,0.3)] active:scale-95 border border-white/10"
+                        title="Ayuda">
+                        <span class="material-symbols-outlined text-[20px] transition-transform group-hover:scale-110">help</span>
+                        <span class="text-sm font-medium tracking-wide">Centro de Ayuda</span>
                     </button>
                 </div>
             </header>
@@ -547,4 +552,5 @@ $resultado = $conn->query($sql);
         }
     </script>
 </body>
+
 </html>

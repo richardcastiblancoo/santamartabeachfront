@@ -35,7 +35,7 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Santamartabeachfront - Panel Admin. (Gestión de PQR Simplificada)</title>
+    <title>Santamartabeachfront - Panel Admin. (Gestión de PQR)</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -170,15 +170,17 @@ $resueltas_pqr = mysqli_fetch_assoc($resueltas_res)['count'];
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Gestión de PQR</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
-                    <button id="start-tour-btn" class="flex items-center justify-center gap-2 bg-white dark:bg-gray-800 border border-[#f0f3f4] dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white px-3 py-1.5 rounded-lg font-semibold transition-all shadow-sm text-sm">
-                        <span class="material-symbols-outlined text-lg">help</span>
-                        <span class="hidden sm:inline">Ayuda</span>
+                    <button id="start-tour-btn" class="group flex items-center justify-center gap-2 bg-[#4a4a4a] hover:bg-[#333333] text-white px-5 py-2 rounded-full font-medium transition-all duration-300 ease-in-out shadow-[0_4px_14px_0_rgba(0,0,0,0.25)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.3)] active:scale-95 text-sm tracking-wide">
+                        <span class="material-symbols-outlined text-[19px] transition-transform group-hover:rotate-12">help</span>
+                        <span class="hidden sm:inline">Guía del Panel</span>
                     </button>
                     <div class="flex items-center gap-2 relative">
+                        <!-- Dropdown de Notificaciones 
                         <button id="notification-btn" class="relative size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors" onclick="toggleNotifications()">
                             <span class="material-symbols-outlined">notifications</span>
                             <span id="notification-badge" class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border border-white dark:border-gray-900 hidden"></span>
                         </button>
+                        -->
                         <!-- Dropdown de Notificaciones -->
                         <div id="notification-dropdown" class="absolute top-12 right-0 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-[#f0f3f4] dark:border-gray-700 hidden z-50 overflow-hidden">
                             <div class="p-3 border-b border-[#f0f3f4] dark:border-gray-700 flex justify-between items-center">

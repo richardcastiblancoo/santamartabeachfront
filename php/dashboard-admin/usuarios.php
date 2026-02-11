@@ -191,9 +191,9 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Gestión de Usuarios</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
-                    <button id="start-tour-btn" class="flex items-center justify-center gap-2 bg-white dark:bg-gray-800 border border-[#f0f3f4] dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white px-3 py-1.5 rounded-lg font-semibold transition-all shadow-sm text-sm">
-                        <span class="material-symbols-outlined text-lg">help</span>
-                        <span class="hidden sm:inline">Ayuda</span>
+                    <button id="start-tour-btn" class="group flex items-center justify-center gap-2 bg-[#4a4a4a] hover:bg-[#333333] text-white px-5 py-2 rounded-full font-medium transition-all duration-300 ease-in-out shadow-[0_4px_14px_0_rgba(0,0,0,0.25)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.3)] active:scale-95 text-sm tracking-wide">
+                        <span class="material-symbols-outlined text-[19px] transition-transform group-hover:rotate-12">help</span>
+                        <span class="hidden sm:inline">Guía del Panel</span>
                     </button>
                 </div>
             </header>

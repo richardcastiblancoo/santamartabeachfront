@@ -182,7 +182,8 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                                 <line x1="12" y1="17" x2="12.01" y2="17"></line>
                             </svg>
 
-                            <span class="font-medium text-sm">Ayuda</span>
+                            <span class="font-medium text-sm">
+                                Guía del Panel</span>
                         </button>
                     </div>
                 </div>

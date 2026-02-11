@@ -23,7 +23,7 @@ include '../../auth/conexion_be.php';
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css" />
     <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.js"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -226,8 +226,8 @@ include '../../auth/conexion_be.php';
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Apartamentos</h2>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button id="start-tour" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-sm font-medium">
-                        <span class="material-symbols-outlined text-sm">help</span>
+                    <button id="start-tour" class="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-600 text-white hover:bg-gray-700 transition-colors text-sm font-medium shadow-sm">
+                        <span class="material-symbols-outlined text-[20px]">help</span>
                         <span>Guía del Panel</span>
                     </button>
                 </div>
@@ -539,60 +539,59 @@ include '../../auth/conexion_be.php';
             nextBtnText: 'Siguiente',
             prevBtnText: 'Anterior',
             progressText: 'Paso {{current}} de {{total}}',
-            steps: [
-                { 
-                    element: '#start-tour', 
-                    popover: { 
-                        title: '¡Bienvenido!', 
-                        description: 'Esta guía te ayudará a conocer las funciones del panel de apartamentos.', 
-                        side: "bottom", 
-                        align: 'start' 
-                    } 
+            steps: [{
+                    element: '#start-tour',
+                    popover: {
+                        title: '¡Bienvenido!',
+                        description: 'Esta guía te ayudará a conocer las funciones del panel de apartamentos.',
+                        side: "bottom",
+                        align: 'start'
+                    }
                 },
-                { 
-                    element: '#sidebar-nav', 
-                    popover: { 
-                        title: 'Menú de Navegación', 
-                        description: 'Desde aquí puedes acceder a las diferentes secciones del administrador.', 
-                        side: "right", 
-                        align: 'start' 
-                    } 
+                {
+                    element: '#sidebar-nav',
+                    popover: {
+                        title: 'Menú de Navegación',
+                        description: 'Desde aquí puedes acceder a las diferentes secciones del administrador.',
+                        side: "right",
+                        align: 'start'
+                    }
                 },
-                { 
-                    element: '#inventory-header', 
-                    popover: { 
-                        title: 'Inventario', 
-                        description: 'Aquí puedes ver un resumen de todas tus propiedades registradas.', 
-                        side: "bottom", 
-                        align: 'start' 
-                    } 
+                {
+                    element: '#inventory-header',
+                    popover: {
+                        title: 'Inventario',
+                        description: 'Aquí puedes ver un resumen de todas tus propiedades registradas.',
+                        side: "bottom",
+                        align: 'start'
+                    }
                 },
-                { 
-                    element: '.apartment-card', 
-                    popover: { 
-                        title: 'Tarjeta de Propiedad', 
-                        description: 'Muestra información clave como precio, ubicación y características del apartamento.', 
-                        side: "top", 
-                        align: 'start' 
-                    } 
+                {
+                    element: '.apartment-card',
+                    popover: {
+                        title: 'Tarjeta de Propiedad',
+                        description: 'Muestra información clave como precio, ubicación y características del apartamento.',
+                        side: "top",
+                        align: 'start'
+                    }
                 },
-                { 
-                    element: '#apartment-actions', 
-                    popover: { 
-                        title: 'Acciones Rápidas', 
-                        description: 'Puedes ver una vista previa del apartamento o editar sus detalles directamente.', 
-                        side: "left", 
-                        align: 'center' 
-                    } 
+                {
+                    element: '#apartment-actions',
+                    popover: {
+                        title: 'Acciones Rápidas',
+                        description: 'Puedes ver una vista previa del apartamento o editar sus detalles directamente.',
+                        side: "left",
+                        align: 'center'
+                    }
                 },
-                { 
-                    element: '#start-tour', 
-                    popover: { 
-                        title: '¿Necesitas ayuda?', 
-                        description: 'Puedes volver a iniciar esta guía en cualquier momento haciendo clic aquí.', 
-                        side: "bottom", 
-                        align: 'end' 
-                    } 
+                {
+                    element: '#start-tour',
+                    popover: {
+                        title: '¿Necesitas ayuda?',
+                        description: 'Puedes volver a iniciar esta guía en cualquier momento haciendo clic aquí.',
+                        side: "bottom",
+                        align: 'end'
+                    }
                 },
             ]
         });
