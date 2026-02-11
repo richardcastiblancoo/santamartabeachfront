@@ -24,14 +24,12 @@
 
     ::-webkit-scrollbar-thumb {
         background: #13a4ec;
-        /* Blue primary color */
         border-radius: 0px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
         background: #0f8bc7;
     }
-
 
     /* --- COMPORTAMIENTO HEADER --- */
     #main-header {
@@ -41,6 +39,9 @@
         align-items: center;
         padding-top: 0 !important;
         padding-bottom: 0 !important;
+        width: 100%;
+        left: 0;
+        z-index: 50;
     }
 
     @media (min-width: 769px) {
@@ -51,17 +52,29 @@
         }
     }
 
+    /* FIX: Header estático arriba en modo responsivo */
     @media (max-width: 768px) {
         #main-header {
             position: fixed;
             height: 80px;
             top: 0;
-        }
-
-        .header-scrolled-mobile {
             background: rgba(15, 23, 42, 0.98) !important;
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Compensación de espacio para que el hero no se oculte */
+        main {
+            padding-top: 80px;
+        }
+
+        .logo-container img {
+            transform: translateY(0) !important;
+            height: 70px !important;
+        }
+
+        .brand-text {
+            margin-top: 0 !important;
         }
     }
 
@@ -100,26 +113,6 @@
         min-height: 2.2em;
     }
 
-    .cursor {
-        display: inline-block;
-        width: 3px;
-        background-color: #3b82f6;
-        margin-left: 4px;
-        animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-
-        0%,
-        100% {
-            opacity: 1;
-        }
-
-        50% {
-            opacity: 0;
-        }
-    }
-
     .glass-booking {
         background: rgba(15, 23, 42, 0.85);
         backdrop-filter: blur(20px);
@@ -149,7 +142,11 @@
         display: block;
     }
 
-    /* NUEVO DISEÑO BOTÓN LOGIN (PARA EL INCLUDE) */
+    /* ACCESIBILIDAD: Mejora de contraste para textos en gris */
+    .text-slate-400-custom {
+        color: #cbd5e1 !important;
+    }
+
     .btn-login-premium {
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.1);
@@ -165,10 +162,10 @@
     }
 </style>
 
-<header id="main-header" class="left-0 w-full z-50 justify-between px-0 md:pr-10">
+<header id="main-header" class="justify-between px-0 md:pr-10">
     <div class="flex items-center h-full">
         <a href="/" class="flex items-center group logo-container">
-            <img src="/public/img/logo-def-Photoroom.png" alt="Logo" class="h-8 w-auto mr-2">
+            <img src="/public/img/logo-def-Photoroom.png" alt="Logo Santamarta Beachfront" class="h-8 w-auto mr-2">
             <h1 class="brand-text text-white text-lg md:text-xl font-black tracking-tighter uppercase hidden md:inline-block">
                 Santamarta<span class="bg-gradient-to-r from-blue-800 to-indigo-900 bg-clip-text text-transparent">
                     beachfront
@@ -188,7 +185,7 @@
         <div class="flex items-center gap-4 border-l border-white/20 pl-6">
             <div class="relative">
                 <button id="langBtn" onclick="toggleLang(event)" class="flex items-center gap-2 text-white text-[11px] font-bold uppercase tracking-widest h-9 px-3 rounded-lg hover:bg-white/10 transition-colors">
-                    <img class="w-4 h-4 rounded-full object-cover" src="https://flagcdn.com/w40/co.png" alt="ES">
+                    <img class="w-4 h-4 rounded-full object-cover" src="https://flagcdn.com/w40/co.png" alt="Idioma Español">
                     <span>ES</span>
                     <span class="material-symbols-outlined text-sm">expand_more</span>
                 </button>
@@ -200,7 +197,7 @@
         </div>
     </nav>
 
-    <button onclick="toggleMobileMenu(true)" class="md:hidden text-white p-6">
+    <button onclick="toggleMobileMenu(true)" class="md:hidden text-white p-6" aria-label="Abrir menú">
         <span class="material-symbols-outlined text-3xl">menu</span>
     </button>
 </header>
@@ -208,7 +205,7 @@
 <div id="mobile-menu" class="fixed inset-0 bg-slate-950/98 backdrop-blur-xl z-[100] flex flex-col md:hidden">
     <div class="flex justify-between items-center p-6 border-b border-white/10">
         <div class="relative">
-            <button onclick="toggleLangMobile(event)" class="flex items-center gap-2 text-white text-[11px] font-bold">
+            <button onclick="toggleLangMobile(event)" id="langBtnMobile" class="flex items-center gap-2 text-white text-[11px] font-bold">
                 <img class="w-4 h-4 rounded-full" src="https://flagcdn.com/w40/co.png" alt="ES"> ES
             </button>
             <ul id="langMenuMobile" class="lang-dropdown absolute left-0 mt-2 w-32 bg-slate-900 border border-white/10 rounded-xl py-2">
@@ -259,27 +256,27 @@
                     </h3>
                     <form id="reservaForm" class="space-y-4">
                         <div class="space-y-1">
-                            <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Nombre Completo</label>
+                            <label for="full-name" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Nombre Completo</label>
                             <input id="full-name" type="text" placeholder="Tu nombre" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="space-y-1">
-                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">WhatsApp</label>
+                                <label for="whatsapp" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">WhatsApp</label>
                                 <input id="whatsapp" type="tel" placeholder="+57..." class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Correo</label>
+                                <label for="email" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Correo</label>
                                 <input id="email" type="email" placeholder="tu@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                             </div>
                         </div>
                         <div class="space-y-1">
-                            <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Alojamiento</label>
-                            <select id="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm bg-slate-800">
+                            <label for="accommodation" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Alojamiento</label>
+                            <select id="accommodation" name="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm bg-slate-800">
                                 <option value="Reserva del Mar - Apartamento 1730">Apartamentos 1730 - Torre 4 - Reserva del Mar 1</option>
                             </select>
                         </div>
                         <div class="space-y-1">
-                            <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Llegada | Salida</label>
+                            <label for="date-range" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Llegada | Salida</label>
                             <div class="relative">
                                 <input id="date-range" type="text" placeholder="Selecciona las fechas" class="glass-input w-full rounded-xl px-4 py-3 text-sm cursor-pointer" readonly required>
                                 <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none">calendar_month</span>
@@ -306,19 +303,7 @@
 <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 
 <script>
-    // Scroll Header effect
-    window.addEventListener('scroll', function() {
-        const header = document.getElementById('main-header');
-        if (window.innerWidth <= 768) {
-            if (window.scrollY > 40) {
-                header.classList.add('header-scrolled-mobile');
-            } else {
-                header.classList.remove('header-scrolled-mobile');
-            }
-        }
-    });
-
-    // Datepicker init
+    // Flatpickr init con soporte de contraste
     flatpickr("#date-range", {
         mode: "range",
         minDate: "today",
@@ -326,7 +311,14 @@
         locale: "es",
         showMonths: window.innerWidth > 900 ? 2 : 1,
         animate: true,
-        disableMobile: "true"
+        disableMobile: "true",
+        onReady: function(selectedDates, dateStr, instance) {
+            // Corrección de contraste para los nombres de los días en el calendario
+            const dayNames = instance.calendarContainer.querySelectorAll('.flatpickr-weekday');
+            dayNames.forEach(day => {
+                day.style.color = "#ffffff"; // Blanco para contraste total
+            });
+        }
     });
 
     // Language toggles
@@ -344,7 +336,7 @@
         const menu = document.getElementById('langMenu');
         const menuMobile = document.getElementById('langMenuMobile');
         if (menu && !e.target.closest('#langBtn')) menu.classList.remove('active');
-        if (menuMobile && !e.target.closest('#langMenuMobile')) menuMobile.classList.remove('active');
+        if (menuMobile && !e.target.closest('#langBtnMobile')) menuMobile.classList.remove('active');
     });
 
     function toggleMobileMenu(open) {
