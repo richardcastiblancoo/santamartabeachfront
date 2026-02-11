@@ -284,6 +284,8 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
             </main>
         </div>
     </div>
+
     <script src="/js/configuracion.js"></script>
+    
 </body>
 </html>

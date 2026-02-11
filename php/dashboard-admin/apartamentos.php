@@ -23,6 +23,8 @@ include '../../auth/conexion_be.php';
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.js"></script>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -82,6 +84,73 @@ include '../../auth/conexion_be.php';
         #apartment-modal:target {
             display: flex;
         }
+
+        /* Ajustes para Driver.js en Modo Oscuro */
+        .driver-popover {
+            background-color: #ffffff !important;
+            color: #111618 !important;
+            border-radius: 12px !important;
+            padding: 20px !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .dark .driver-popover {
+            background-color: #1a2c35 !important;
+            color: #ffffff !important;
+            border: 1px solid #374151 !important;
+        }
+
+        .driver-popover-title {
+            font-weight: 800 !important;
+            font-size: 18px !important;
+            margin-bottom: 8px !important;
+            color: inherit !important;
+        }
+
+        .driver-popover-description {
+            font-size: 14px !important;
+            color: inherit !important;
+            opacity: 0.9;
+        }
+
+        .driver-popover-btn {
+            background-color: #f3f4f6 !important;
+            color: #111618 !important;
+            border: none !important;
+            text-shadow: none !important;
+            font-weight: 600 !important;
+            padding: 6px 12px !important;
+            border-radius: 6px !important;
+        }
+
+        .dark .driver-popover-btn {
+            background-color: #374151 !important;
+            color: #ffffff !important;
+        }
+
+        .driver-popover-btn:hover {
+            background-color: #e5e7eb !important;
+        }
+
+        .dark .driver-popover-btn:hover {
+            background-color: #4b5563 !important;
+        }
+
+        .driver-popover-progress-text {
+            color: #6b7280 !important;
+        }
+
+        .dark .driver-popover-progress-text {
+            color: #9ca3af !important;
+        }
+
+        .driver-popover-arrow {
+            border-color: #ffffff !important;
+        }
+
+        .dark .driver-popover-arrow {
+            border-color: #1a2c35 !important;
+        }
     </style>
 </head>
 
@@ -89,7 +158,7 @@ include '../../auth/conexion_be.php';
     <div class="flex h-screen w-full">
         <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden transition-opacity opacity-0"></div>
 
-        <aside class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full hidden md:flex shrink-0 z-20">
+        <aside id="sidebar-nav" class="w-72 bg-card-light dark:bg-card-dark border-r border-[#f0f3f4] dark:border-gray-800 flex flex-col h-full hidden md:flex shrink-0 z-20">
             <div class="p-6 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
                     <div class="bg-primary/10 p-3 rounded-lg">
@@ -156,11 +225,16 @@ include '../../auth/conexion_be.php';
                     </button>
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Apartamentos</h2>
                 </div>
-
+                <div class="flex items-center gap-4">
+                    <button id="start-tour" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-sm font-medium">
+                        <span class="material-symbols-outlined text-sm">help</span>
+                        <span>Guía del Panel</span>
+                    </button>
+                </div>
             </header>
             <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth">
                 <section class="space-y-6" id="apartments-section">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div id="inventory-header" class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
                             <h2 class="text-2xl font-bold text-text-main dark:text-white">Inventario de Propiedades</h2>
                             <p class="text-text-secondary text-sm mt-1">Gestiona los detalles, precios, multimedia y disponibilidad.</p>
@@ -178,12 +252,13 @@ include '../../auth/conexion_be.php';
                         <?php
                         $sql = "SELECT * FROM apartamentos ORDER BY fecha_creacion DESC";
                         $result = $conn->query($sql);
+                        $isFirst = true;
 
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 $row_json = htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8');
                         ?>
-                                <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm p-4 hover:shadow-md transition-shadow">
+                                <div class="apartment-card bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm p-4 hover:shadow-md transition-shadow">
                                     <div class="flex flex-col md:flex-row gap-4">
                                         <div class="w-full md:w-48 h-32 rounded-lg bg-cover bg-center shrink-0 relative" style='background-image: url("../../assets/img/apartamentos/<?php echo $row["imagen_principal"]; ?>");'>
                                             <div class="m-2 absolute bottom-0 left-0 bg-black/50 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded">
@@ -207,18 +282,13 @@ include '../../auth/conexion_be.php';
                                                         <span class="flex items-center gap-1 bg-background-light dark:bg-gray-800 px-2 py-1 rounded"><span class="material-symbols-outlined text-sm">group</span> <?php echo $row['capacidad']; ?> Pax</span>
                                                     </div>
                                                 </div>
-                                                <div class="flex items-center gap-2">
+                                                <div <?php echo $isFirst ? 'id="apartment-actions"' : ''; ?> class="flex items-center gap-2">
                                                     <a class="p-2 text-text-secondary hover:text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer" onclick='verApartamento(<?php echo $row_json; ?>)' title="Vista Previa">
                                                         <span class="material-symbols-outlined">visibility</span>
                                                     </a>
                                                     <a class="p-2 text-text-secondary hover:text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer" onclick='editarApartamento(<?php echo $row_json; ?>)' href="#apartment-modal" title="Editar">
                                                         <span class="material-symbols-outlined">edit</span>
                                                     </a>
-                                                    <!-- boton de la papelera temporalmente eliminada 
-                                                    <button class="p-2 text-text-secondary hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" onclick="eliminarApartamento(<?php echo $row['id']; ?>)" title="Eliminar">
-                                                        <span class="material-symbols-outlined">delete</span>
-                                                    </button>
-                                                    -->
                                                 </div>
                                             </div>
                                             <div class="mt-4 pt-4 border-t border-[#f0f3f4] dark:border-gray-800 flex justify-between items-center">
@@ -230,6 +300,7 @@ include '../../auth/conexion_be.php';
                                     </div>
                                 </div>
                         <?php
+                                $isFirst = false;
                             }
                         } else {
                             echo '<p class="text-center text-text-secondary">No hay apartamentos registrados aún.</p>';
@@ -458,7 +529,78 @@ include '../../auth/conexion_be.php';
     </div>
 
     <script src="/js/apartamento-noche.js"></script>
+    <script>
+        const driver = window.driver.js.driver;
 
+        const driverObj = driver({
+            showProgress: true,
+            animate: true,
+            doneBtnText: 'Finalizar',
+            nextBtnText: 'Siguiente',
+            prevBtnText: 'Anterior',
+            progressText: 'Paso {{current}} de {{total}}',
+            steps: [
+                { 
+                    element: '#start-tour', 
+                    popover: { 
+                        title: '¡Bienvenido!', 
+                        description: 'Esta guía te ayudará a conocer las funciones del panel de apartamentos.', 
+                        side: "bottom", 
+                        align: 'start' 
+                    } 
+                },
+                { 
+                    element: '#sidebar-nav', 
+                    popover: { 
+                        title: 'Menú de Navegación', 
+                        description: 'Desde aquí puedes acceder a las diferentes secciones del administrador.', 
+                        side: "right", 
+                        align: 'start' 
+                    } 
+                },
+                { 
+                    element: '#inventory-header', 
+                    popover: { 
+                        title: 'Inventario', 
+                        description: 'Aquí puedes ver un resumen de todas tus propiedades registradas.', 
+                        side: "bottom", 
+                        align: 'start' 
+                    } 
+                },
+                { 
+                    element: '.apartment-card', 
+                    popover: { 
+                        title: 'Tarjeta de Propiedad', 
+                        description: 'Muestra información clave como precio, ubicación y características del apartamento.', 
+                        side: "top", 
+                        align: 'start' 
+                    } 
+                },
+                { 
+                    element: '#apartment-actions', 
+                    popover: { 
+                        title: 'Acciones Rápidas', 
+                        description: 'Puedes ver una vista previa del apartamento o editar sus detalles directamente.', 
+                        side: "left", 
+                        align: 'center' 
+                    } 
+                },
+                { 
+                    element: '#start-tour', 
+                    popover: { 
+                        title: '¿Necesitas ayuda?', 
+                        description: 'Puedes volver a iniciar esta guía en cualquier momento haciendo clic aquí.', 
+                        side: "bottom", 
+                        align: 'end' 
+                    } 
+                },
+            ]
+        });
+
+        document.getElementById('start-tour').addEventListener('click', () => {
+            driverObj.drive();
+        });
+    </script>
 </body>
 
 </html>

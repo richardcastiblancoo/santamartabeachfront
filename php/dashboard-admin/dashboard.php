@@ -32,11 +32,13 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Santamartabeachfront - Panel de Administrador</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -106,7 +108,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
             <div class="p-6 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
                     <div class="bg-primary/10 p-3 rounded-lg">
-                        <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-16 h-16 object-contain">
+                        <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="w-16 h-16 object-contain">
                     </div>
                     <div>
                         <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamarta</h1>
@@ -170,10 +172,17 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Panel de Control</h2>
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end">
-
                     <div class="flex items-center gap-2">
-                        <button id="start-tour" class="size-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-gray-800 text-text-secondary transition-colors">
-                            <span class="hidden sm:inline">Ayuda</span>
+                        <button
+                            id="start-tour"
+                            class="flex items-center justify-center gap-2 h-10 px-4 rounded-full bg-gray-600 text-white hover:bg-gray-700 transition-colors shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+
+                            <span class="font-medium text-sm">Ayuda</span>
                         </button>
                     </div>
                 </div>
@@ -256,94 +265,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                         <?php endwhile; ?>
                     </div>
                 </section>
-                <section class="pt-8 border-t border-[#f0f3f4] dark:border-gray-800" id="bookings-section">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-xl font-bold text-text-main dark:text-white flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary">calendar_month</span>
-                            Control de Reservas
-                        </h2>
-                        <div class="relative">
-                            <select class="pl-4 pr-10 py-2 text-xs border-none bg-white dark:bg-gray-800 rounded-lg focus:ring-1 focus:ring-primary shadow-sm appearance-none">
-                                <option>Todas las reservas</option>
-                                <option>Confirmadas</option>
-                                <option>Pendientes</option>
-                            </select>
-                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary text-base pointer-events-none">expand_more</span>
-                        </div>
-                    </div>
-                    <div class="bg-card-light dark:bg-card-dark rounded-xl border border-[#f0f3f4] dark:border-gray-800 shadow-sm overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-background-light dark:bg-gray-800/50 text-text-secondary dark:text-gray-400 text-[10px] uppercase tracking-wider">
-                                        <th class="px-6 py-3 font-semibold">Propiedad</th>
-                                        <th class="px-6 py-3 font-semibold">Huésped</th>
-                                        <th class="px-6 py-3 font-semibold">Fechas</th>
-                                        <th class="px-6 py-3 font-semibold">Estado</th>
-                                        <th class="px-6 py-3 font-semibold text-right">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-[#f0f3f4] dark:divide-gray-800 text-sm">
-                                    <?php if ($reservas_res->num_rows > 0): ?>
-                                        <?php while ($reserva = $reservas_res->fetch_assoc()): ?>
-                                            <tr class="group hover:bg-background-light dark:hover:bg-gray-800 transition-colors">
-                                                <td class="px-6 py-3">
-                                                    <div class="flex items-center gap-2">
-                                                        <div class="w-8 h-8 rounded bg-cover bg-center shrink-0" style='background-image: url("<?php echo !empty($reserva['imagen_principal']) ? '../../assets/img/apartamentos/' . $reserva['imagen_principal'] : 'https://placehold.co/100'; ?>");'></div>
-                                                        <span class="font-bold text-xs text-text-main dark:text-white"><?php echo $reserva['titulo']; ?></span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-3">
-                                                    <div class="flex flex-col">
-                                                        <span class="font-bold text-xs text-text-main dark:text-white"><?php echo $reserva['nombre'] . ' ' . $reserva['apellido']; ?></span>
-                                                        <span class="text-[10px] text-text-secondary"><?php echo $reserva['email']; ?></span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-3 text-text-main dark:text-white font-medium text-xs">
-                                                    <?php echo date('d M', strtotime($reserva['fecha_inicio'])) . ' - ' . date('d M', strtotime($reserva['fecha_fin'])); ?>
-                                                </td>
-                                                <td class="px-6 py-3">
-                                                    <?php
-                                                    $estadoClass = '';
-                                                    switch ($reserva['estado']) {
-                                                        case 'Confirmada':
-                                                            $estadoClass = 'bg-green-100 text-green-800';
-                                                            break;
-                                                        case 'Pendiente':
-                                                            $estadoClass = 'bg-yellow-100 text-yellow-800';
-                                                            break;
-                                                        case 'Cancelada':
-                                                            $estadoClass = 'bg-red-100 text-red-800';
-                                                            break;
-                                                        case 'Completada':
-                                                            $estadoClass = 'bg-blue-100 text-blue-800';
-                                                            break;
-                                                        default:
-                                                            $estadoClass = 'bg-gray-100 text-gray-800';
-                                                    }
-                                                    ?>
-                                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold <?php echo $estadoClass; ?>"><?php echo $reserva['estado']; ?></span>
-                                                </td>
-                                                <td class="px-6 py-3 text-right">
-                                                    <button class="bg-primary/10 text-primary hover:bg-primary/20 px-2.5 py-1 rounded text-[10px] font-bold transition-colors">Detalles</button>
-                                                </td>
-                                            </tr>
-                                        <?php endwhile; ?>
-                                    <?php else: ?>
-                                        <tr>
-                                            <td colspan="5" class="px-6 py-8 text-center text-text-secondary dark:text-gray-400">
-                                                <div class="flex flex-col items-center gap-2">
-                                                    <span class="material-symbols-outlined text-4xl opacity-20">calendar_month</span>
-                                                    <span class="text-sm">No hay reservas recientes</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
+
                 <section class="pt-8 border-t border-[#f0f3f4] dark:border-gray-800 pb-16" id="pqr-section">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-xl font-bold text-text-main dark:text-white flex items-center gap-3">
@@ -535,258 +457,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
-    <script>
-        function openResponseModal(id, subject, name) {
-            document.getElementById('modal_pqr_id').value = id;
-            document.getElementById('modal_subject').textContent = subject;
-            document.getElementById('modal_user_name').textContent = name;
-            document.getElementById('responseModal').classList.remove('hidden');
-        }
-
-        function closeResponseModal() {
-            document.getElementById('responseModal').classList.add('hidden');
-            document.getElementById('responseForm').reset();
-        }
-
-        // Edit Modal Functions
-        function openEditModal(id) {
-            fetch(`get_apartamento.php?id=${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                    } else {
-                        document.getElementById('edit_id').value = data.id;
-                        document.getElementById('edit_titulo').value = data.titulo;
-                        document.getElementById('edit_ubicacion').value = data.ubicacion;
-                        document.getElementById('edit_precio').value = data.precio;
-                        document.getElementById('edit_habitaciones').value = data.habitaciones;
-                        document.getElementById('edit_banos').value = data.banos;
-                        document.getElementById('edit_capacidad').value = data.capacidad;
-                        document.getElementById('edit_descripcion').value = data.descripcion;
-                        document.getElementById('editModal').classList.remove('hidden');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').classList.add('hidden');
-        }
-
-        // View Modal Functions
-        let currentGalleryIndex = 0;
-        let currentGalleryItems = [];
-
-        function openViewModal(id) {
-            // Reset state
-            currentGalleryIndex = 0;
-            currentGalleryItems = [];
-
-            fetch(`get_apartamento.php?id=${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                    } else {
-                        document.getElementById('view_titulo').textContent = data.titulo;
-                        document.getElementById('view_ubicacion').textContent = data.ubicacion;
-                        document.getElementById('view_precio').textContent = '$' + new Intl.NumberFormat().format(data.precio) + ' / noche';
-                        document.getElementById('view_habitaciones').textContent = data.habitaciones;
-                        document.getElementById('view_banos').textContent = data.banos;
-                        document.getElementById('view_capacidad').textContent = data.capacidad;
-                        document.getElementById('view_descripcion').textContent = data.descripcion;
-
-                        // Add main image first
-                        if (data.imagen_principal) {
-                            currentGalleryItems.push({
-                                type: 'imagen',
-                                fullPath: `../../assets/img/apartamentos/${data.imagen_principal}`
-                            });
-                        } else {
-                            currentGalleryItems.push({
-                                type: 'imagen',
-                                fullPath: "https://placehold.co/600x400"
-                            });
-                        }
-
-                        // Fetch gallery items
-                        return fetch(`obtener_galeria_be.php?id=${id}`);
-                    }
-                })
-                .then(response => {
-                    if (response) return response.json();
-                })
-                .then(galleryData => {
-                    if (galleryData && Array.isArray(galleryData)) {
-                        galleryData.forEach(item => {
-                            let path = '';
-                            if (item.tipo === 'imagen') path = `../../assets/img/apartamentos/${item.ruta}`;
-                            else if (item.tipo === 'video') path = `../../assets/video/apartamentos/${item.ruta}`;
-
-                            currentGalleryItems.push({
-                                type: item.tipo,
-                                fullPath: path
-                            });
-                        });
-                    }
-
-                    updateCarousel();
-                    document.getElementById('viewModal').classList.remove('hidden');
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        function updateCarousel() {
-            if (currentGalleryItems.length === 0) return;
-
-            const item = currentGalleryItems[currentGalleryIndex];
-            const imgContainer = document.getElementById('view_image_container');
-            const vidContainer = document.getElementById('view_video_container');
-            const counter = document.getElementById('slide-counter');
-            const prevBtn = document.getElementById('prev-slide');
-            const nextBtn = document.getElementById('next-slide');
-
-            // Update counter
-            counter.textContent = `${currentGalleryIndex + 1}/${currentGalleryItems.length}`;
-
-            // Toggle buttons visibility
-            if (currentGalleryItems.length > 1) {
-                prevBtn.classList.remove('hidden');
-                nextBtn.classList.remove('hidden');
-            } else {
-                prevBtn.classList.add('hidden');
-                nextBtn.classList.add('hidden');
-            }
-
-            if (item.type === 'imagen') {
-                imgContainer.style.backgroundImage = `url('${item.fullPath}')`;
-                imgContainer.classList.remove('hidden');
-                vidContainer.classList.add('hidden');
-                vidContainer.innerHTML = ''; // Stop any playing video
-            } else {
-                imgContainer.classList.add('hidden');
-                vidContainer.classList.remove('hidden');
-                vidContainer.innerHTML = `<video src="${item.fullPath}" controls class="h-full w-full object-contain" autoplay></video>`;
-            }
-        }
-
-        function nextSlide() {
-            if (currentGalleryItems.length <= 1) return;
-            currentGalleryIndex = (currentGalleryIndex + 1) % currentGalleryItems.length;
-            updateCarousel();
-        }
-
-        function prevSlide() {
-            if (currentGalleryItems.length <= 1) return;
-            currentGalleryIndex = (currentGalleryIndex - 1 + currentGalleryItems.length) % currentGalleryItems.length;
-            updateCarousel();
-        }
-
-        function closeViewModal() {
-            document.getElementById('viewModal').classList.add('hidden');
-            // Stop any video playing
-            document.getElementById('view_video_container').innerHTML = '';
-        }
-
-        // Sidebar Toggle Function
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-
-            if (sidebar.classList.contains('-translate-x-full')) {
-                // Open sidebar
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-                setTimeout(() => {
-                    overlay.classList.remove('opacity-0');
-                }, 10);
-            } else {
-                // Close sidebar
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('opacity-0');
-                setTimeout(() => {
-                    overlay.classList.add('hidden');
-                }, 300);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const driver = window.driver.js.driver;
-
-            const driverObj = driver({
-                showProgress: true,
-                animate: true,
-                nextBtnText: 'Siguiente',
-                prevBtnText: 'Anterior',
-                doneBtnText: 'Finalizar',
-                steps: [{
-                        element: 'body',
-                        popover: {
-                            title: 'Bienvenido al Panel de Administrador',
-                            description: 'Este es un recorrido rápido para familiarizarte con las funcionalidades principales del dashboard.'
-                        }
-                    },
-                    {
-                        element: 'aside',
-                        popover: {
-                            title: 'Menú de Navegación',
-                            description: 'Desde aquí puedes acceder a todas las secciones del sistema: Apartamentos, Reservas, Usuarios y Configuración.'
-                        }
-                    },
-                    {
-                        element: '#dashboard-section',
-                        popover: {
-                            title: 'Resumen Administrativo',
-                            description: 'Visualiza rápidamente los indicadores clave como el total de reservas y PQR pendientes.'
-                        }
-                    },
-                    {
-                        element: '#apartments-section',
-                        popover: {
-                            title: 'Gestión de Apartamentos',
-                            description: 'Administra tus propiedades. Puedes ver el listado, filtrar, agregar nuevos apartamentos o editar los existentes.'
-                        }
-                    },
-                    {
-                        element: '#bookings-section',
-                        popover: {
-                            title: 'Control de Reservas',
-                            description: 'Gestiona las reservas. Revisa el estado (Confirmada, Pendiente, etc.), detalles del huésped y fechas.'
-                        }
-                    },
-                    {
-                        element: '#pqr-section',
-                        popover: {
-                            title: 'Bandeja de PQR',
-                            description: 'Atiende las Peticiones, Quejas y Reclamos de los usuarios. Puedes ver el detalle y responder directamente.'
-                        }
-                    },
-                    {
-                        element: '#start-tour',
-                        popover: {
-                            title: 'Ayuda y Recorrido',
-                            description: 'Si necesitas ver este recorrido nuevamente, puedes hacer clic en este botón de ayuda.'
-                        }
-                    }
-                ]
-            });
-
-            const startTourBtn = document.getElementById('start-tour');
-            if (startTourBtn) {
-                startTourBtn.addEventListener('click', function() {
-                    driverObj.drive();
-                });
-            }
-
-            // Opcional: Iniciar automáticamente si es la primera vez (puedes usar localStorage)
-            // if (!localStorage.getItem('tour_visto')) {
-            //     driverObj.drive();
-            //     localStorage.setItem('tour_visto', 'true');
-            // }
-        });
-    </script>
+    <script src="/js/dashboard-admin.js"></script>
 </body>
 
 </html>
