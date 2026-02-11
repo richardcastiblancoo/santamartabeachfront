@@ -130,6 +130,9 @@
             align-items: center;
             padding-top: 0 !important;
             padding-bottom: 0 !important;
+            width: 100%;
+            left: 0;
+            z-index: 50;
         }
 
         @media (min-width: 769px) {
@@ -140,21 +143,33 @@
             }
         }
 
+        /* FIX: Static header on top in responsive mode */
         @media (max-width: 768px) {
             #main-header {
                 position: fixed;
                 height: 80px;
                 top: 0;
-            }
-
-            .header-scrolled-mobile {
                 background: rgba(15, 23, 42, 0.98) !important;
                 backdrop-filter: blur(12px);
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
+
+            /* Space compensation for hero section */
+            main {
+                padding-top: 80px;
+            }
+
+            .logo-container img {
+                transform: translateY(0) !important;
+                height: 70px !important;
+            }
+
+            .brand-text {
+                margin-top: 0 !important;
+            }
         }
 
-        /* --- LOGO & TEXT --- */
+        /* --- LOGO 150PX AND TEXT --- */
         .logo-container img {
             height: 120px;
             width: auto;
@@ -167,7 +182,7 @@
             margin-top: 20px;
         }
 
-        /* --- MENU --- */
+        /* --- FULL WHITE MENU --- */
         .nav-link {
             color: #FFFFFF !important;
             font-size: 11px;
@@ -181,32 +196,12 @@
             opacity: 0.8;
         }
 
-        /* --- HERO --- */
+        /* --- HERO & OTHERS --- */
         .hero-title {
             font-size: clamp(2rem, 5vw, 4rem);
             line-height: 1.1;
             letter-spacing: -0.05em;
             min-height: 2.2em;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 3px;
-            background-color: #3b82f6;
-            margin-left: 4px;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0;
-            }
         }
 
         .glass-booking {
@@ -238,6 +233,11 @@
             display: block;
         }
 
+        /* ACCESSIBILITY: Contrast improvement for slate text */
+        .text-slate-400-custom {
+            color: #cbd5e1 !important;
+        }
+
         .btn-login-premium {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -253,12 +253,14 @@
         }
     </style>
 
-    <header id="main-header" class="left-0 w-full z-50 justify-between px-0 md:pr-10">
+    <header id="main-header" class="justify-between px-0 md:pr-10">
         <div class="flex items-center h-full">
             <a href="/" class="flex items-center group logo-container">
-                <img src="/public/img/logo-def-Photoroom.png" alt="Logo" class="h-8 w-auto mr-2">
+                <img src="/public/img/logo-def-Photoroom.png" alt="Santamarta Beachfront Logo" class="h-8 w-auto mr-2">
                 <h1 class="brand-text text-white text-lg md:text-xl font-black tracking-tighter uppercase hidden md:inline-block">
-                    Santamarta<span class="bg-gradient-to-r from-blue-800 to-indigo-900 bg-clip-text text-transparent">beachfront</span>
+                    Santamarta<span class="bg-gradient-to-r from-blue-800 to-indigo-900 bg-clip-text text-transparent">
+                        beachfront
+                    </span>
                 </h1>
             </a>
         </div>
@@ -266,27 +268,27 @@
         <nav class="hidden md:flex items-center gap-8 h-full">
             <ul class="flex items-center gap-6 list-none">
                 <li><a class="nav-link" href="/php/bienvenidosantamarta.php">Welcome to Santa Marta!</a></li>
-                <li><a class="nav-link" href="#apartments">Apartments</a></li>
-                <li><a class="nav-link" href="#location">Location</a></li>
+                <li><a class="nav-link" href="#apartamentos">Apartment</a></li>
+                <li><a class="nav-link" href="#ubicacion">Location</a></li>
                 <li><a class="nav-link" href="/php/gastronomia.php">Dining Guide</a></li>
             </ul>
 
             <div class="flex items-center gap-4 border-l border-white/20 pl-6">
                 <div class="relative">
                     <button id="langBtn" onclick="toggleLang(event)" class="flex items-center gap-2 text-white text-[11px] font-bold uppercase tracking-widest h-9 px-3 rounded-lg hover:bg-white/10 transition-colors">
-                        <img class="w-4 h-4 rounded-full object-cover" src="https://flagcdn.com/w40/us.png" alt="EN">
+                        <img class="w-4 h-4 rounded-full object-cover" src="https://flagcdn.com/w40/us.png" alt="English Language">
                         <span>EN</span>
                         <span class="material-symbols-outlined text-sm">expand_more</span>
                     </button>
                     <ul id="langMenu" class="lang-dropdown absolute top-full right-0 mt-1 w-32 bg-slate-900 border border-white/10 rounded-xl py-2 shadow-2xl">
-                        <li><a href="/index.php" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ESPAÑOL</a></li>
+                        <li><a href="/" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">SPANISH</a></li>
                         <li><a href="/lang/en/index.php" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <button onclick="toggleMobileMenu(true)" class="md:hidden text-white p-6">
+        <button onclick="toggleMobileMenu(true)" class="md:hidden text-white p-6" aria-label="Open menu">
             <span class="material-symbols-outlined text-3xl">menu</span>
         </button>
     </header>
@@ -294,11 +296,11 @@
     <div id="mobile-menu" class="fixed inset-0 bg-slate-950/98 backdrop-blur-xl z-[100] flex flex-col md:hidden">
         <div class="flex justify-between items-center p-6 border-b border-white/10">
             <div class="relative">
-                <button onclick="toggleLangMobile(event)" class="flex items-center gap-2 text-white text-[11px] font-bold">
+                <button onclick="toggleLangMobile(event)" id="langBtnMobile" class="flex items-center gap-2 text-white text-[11px] font-bold">
                     <img class="w-4 h-4 rounded-full" src="https://flagcdn.com/w40/us.png" alt="EN"> EN
                 </button>
                 <ul id="langMenuMobile" class="lang-dropdown absolute left-0 mt-2 w-32 bg-slate-900 border border-white/10 rounded-xl py-2">
-                    <li><a href="/index.php" class="block px-4 py-2 text-white text-[11px]">ESPAÑOL</a></li>
+                    <li><a href="/" class="block px-4 py-2 text-white text-[11px]">SPANISH</a></li>
                     <li><a href="/lang/en/index.php" class="block px-4 py-2 text-white text-[11px]">ENGLISH</a></li>
                 </ul>
             </div>
@@ -308,8 +310,8 @@
         </div>
         <nav class="flex flex-col items-center justify-center flex-grow gap-8 text-center">
             <a href="/php/bienvenidosantamarta.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Welcome to Santa Marta!</a>
-            <a href="#apartments" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartments</a>
-            <a href="#location" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Location</a>
+            <a href="#apartamentos" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Apartment</a>
+            <a href="#ubicacion" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Location</a>
             <a href="/php/gastronomia.php" onclick="toggleMobileMenu(false)" class="text-white text-2xl font-black uppercase tracking-widest">Dining Guide</a>
             <a href="/auth/login.php" class="mt-4 px-12 py-4 bg-blue-600 text-white rounded-full font-black uppercase tracking-widest">Login</a>
         </nav>
@@ -327,13 +329,13 @@
             <div class="relative z-20 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center pt-24 pb-12">
                 <div class="text-left">
                     <h2 class="hero-title font-black text-white drop-shadow-xl text-3xl md:text-5xl">
-                        Live&nbsp;&nbsp;&&nbsp;&nbsp;<span class="text-amber-400">Enjoy</span> the experience in<br>
+                        Live&nbsp;&nbsp;and&nbsp;&nbsp;<span class="text-amber-400">Enjoy</span> the experience in<br>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800">
-                            Beachfront Santa Marta
+                            Santa Marta Beachfront
                         </span>
                     </h2>
                     <p class="text-white text-sm md:text-base mt-6 max-w-sm leading-relaxed drop-shadow-lg">
-                        Exclusivity and Comfort in the Finest Apartments of the Colombian Caribbean Coast.
+                        Exclusivity and Comfort in the Best Apartments of the Colombian Caribbean Coast.
                     </p>
                 </div>
 
@@ -341,33 +343,33 @@
                     <div class="glass-booking w-full max-w-md p-8 rounded-3xl shadow-2xl">
                         <h3 class="text-white text-lg font-bold mb-6 flex items-center gap-2">
                             <span class="material-symbols-outlined text-blue-400">event_available</span>
-                            Book Your Stay
+                            Book your stay
                         </h3>
                         <form id="reservaForm" class="space-y-4">
                             <div class="space-y-1">
-                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Full Name</label>
+                                <label for="full-name" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Full Name</label>
                                 <input id="full-name" type="text" placeholder="Your name" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-1">
-                                    <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">WhatsApp</label>
+                                    <label for="whatsapp" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">WhatsApp</label>
                                     <input id="whatsapp" type="tel" placeholder="+57..." class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Email</label>
+                                    <label for="email" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Email</label>
                                     <input id="email" type="email" placeholder="your@email.com" class="glass-input w-full rounded-xl px-4 py-3 text-sm" required>
                                 </div>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Accommodation</label>
-                                <select id="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm bg-slate-800">
+                                <label for="accommodation" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Accommodation</label>
+                                <select id="accommodation" name="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm bg-slate-800">
                                     <option value="Reserva del Mar - Apartamento 1730">Apartment 1730 - Tower 4 - Reserva del Mar 1</option>
                                 </select>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Check-in | Check-out</label>
+                                <label for="date-range" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Check-in | Check-out</label>
                                 <div class="relative">
-                                    <input id="date-range" type="text" placeholder="Select your dates" class="glass-input w-full rounded-xl px-4 py-3 text-sm cursor-pointer" readonly required>
+                                    <input id="date-range" type="text" placeholder="Select dates" class="glass-input w-full rounded-xl px-4 py-3 text-sm cursor-pointer" readonly required>
                                     <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none">calendar_month</span>
                                 </div>
                             </div>
@@ -389,27 +391,25 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        // Scroll Header effect
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('main-header');
-            if (window.innerWidth <= 768) {
-                if (window.scrollY > 40) {
-                    header.classList.add('header-scrolled-mobile');
-                } else {
-                    header.classList.remove('header-scrolled-mobile');
-                }
-            }
-        });
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 
-        // Datepicker init (Default is English)
+    <script>
+        // Flatpickr init with contrast support (keep locale if you want dates in Spanish, or change to 'en' for English)
         flatpickr("#date-range", {
             mode: "range",
             minDate: "today",
             dateFormat: "Y-m-d",
+            locale: "en",
             showMonths: window.innerWidth > 900 ? 2 : 1,
             animate: true,
-            disableMobile: "true"
+            disableMobile: "true",
+            onReady: function(selectedDates, dateStr, instance) {
+                // Contrast correction for day names in calendar
+                const dayNames = instance.calendarContainer.querySelectorAll('.flatpickr-weekday');
+                dayNames.forEach(day => {
+                    day.style.color = "#ffffff";
+                });
+            }
         });
 
         // Language toggles
@@ -427,7 +427,7 @@
             const menu = document.getElementById('langMenu');
             const menuMobile = document.getElementById('langMenuMobile');
             if (menu && !e.target.closest('#langBtn')) menu.classList.remove('active');
-            if (menuMobile && !e.target.closest('#langMenuMobile')) menuMobile.classList.remove('active');
+            if (menuMobile && !e.target.closest('#langBtnMobile')) menuMobile.classList.remove('active');
         });
 
         function toggleMobileMenu(open) {
@@ -436,7 +436,7 @@
             else menu.classList.remove('active');
         }
 
-        // Form handler (Updated Message)
+        // Form handler
         document.getElementById('reservaForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const nombre = document.getElementById('full-name').value;
@@ -445,7 +445,7 @@
             const alojamiento = document.getElementById('accommodation').value;
             const fechas = document.getElementById('date-range').value;
             const telefonoVentas = "573183813381";
-            const mensaje = `*New Reservation Request*%0A---------------------------------%0A*Name:* ${nombre}%0A*WhatsApp:* ${tel}%0A*Email:* ${email}%0A*Accommodation:* ${alojamiento}%0A*Dates:* ${fechas}%0A---------------------------------%0AHello! I would like to check availability for my stay.`;
+            const mensaje = `*New Booking Request*%0A---------------------------------%0A*Name:* ${nombre}%0A*WhatsApp:* ${tel}%0A*Email:* ${email}%0A*Accommodation:* ${alojamiento}%0A*Dates:* ${fechas}%0A---------------------------------%0AHello! I would like to check availability.`;
             window.open(`https://wa.me/${telefonoVentas}?text=${mensaje}`, '_blank');
         });
     </script>
@@ -1105,26 +1105,26 @@
     </script>
 
     <!-- footer -->
-    <footer class="bg-[#101c22] text-white pt-10 pb-10 mt-[-2rem]" id="contact">
+    <footer class="bg-[#101c22] text-white pt-10 pb-10 mt-[-2rem]" id="contacto">
         <div class="max-w-7xl mx-auto px-6 md:px-10">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-24 py-16 items-start border-t border-white/5">
 
                 <section class="flex flex-col items-center md:items-start text-center md:text-left">
-                    <a href="/" class="flex flex-col md:flex-row items-center group w-fit md:-ml-4">
-                        <div class="w-[100px] h-[100px] md:w-[130px] md:h-[130px] shrink-0">
-                            <img src="/public/img/logo-definitivo.webp" alt="Santamarta Beachfront logo" class="w-full h-full object-contain">
+                    <a href="/" class="flex items-center gap-4 group w-fit mb-6">
+                        <div class="w-16 h-16 md:w-20 md:h-20 shrink-0">
+                            <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="w-full h-full object-contain">
                         </div>
-                        <span class="text-2xl md:text-3xl font-bold text-white tracking-tighter mt-[-20px] md:mt-0 md:-ml-9 mb-2">
+                        <span class="text-xl md:text-2xl font-bold text-white tracking-tighter">
                             Santamarta<span class="text-blue-400">beachfront</span>
                         </span>
                     </a>
-                    <p class="text-gray-300 text-sm leading-relaxed max-w-xs md:pl-5 md:border-l md:border-blue-400/20">
+                    <p class="text-gray-300 text-sm leading-relaxed max-w-xs md:pl-5 md:border-l md:border-blue-400/20" data-i18n="footer-desc">
                         The leading platform for luxury vacation rentals in Santa Marta. Unique experiences, superior comfort, and the best views of the Colombian Caribbean.
                     </p>
                 </section>
 
                 <section class="lg:pl-12 flex flex-col items-center md:items-start">
-                    <h2 class="font-bold mb-8 text-white uppercase tracking-widest text-xs">Contact Information</h2>
+                    <h2 class="font-bold mb-8 text-white uppercase tracking-widest text-xs" data-i18n="footer-contact-title">Contact Information</h2>
                     <address class="not-italic">
                         <ul class="space-y-5 text-sm text-gray-300 text-center md:text-left">
                             <li>
@@ -1139,7 +1139,11 @@
                             </li>
                             <li class="flex items-start justify-center md:justify-start gap-3">
                                 <span class="material-symbols-outlined text-blue-400 shrink-0">location_on</span>
-                                <span>Apartment 1730 - Tower 4 - Reserva del Mar 1<br> Calle 22 # 1 - 67 Playa Salguero, Santa Marta</span>
+                                <span>
+                                    Apartment 1730 - Tower 4 - Reserva del Mar 1<br>
+                                    Calle 22 # 1 - 67 Playa Salguero,<br>
+                                    Santa Marta, Colombia
+                                </span>
                             </li>
                         </ul>
                     </address>
@@ -1147,8 +1151,8 @@
 
                 <section class="lg:items-end flex flex-col">
                     <div class="w-fit lg:text-right">
-                        <h2 class="font-bold mb-8 text-white uppercase tracking-wider text-xs">Follow Us</h2>
-                        <nav aria-label="Social media links">
+                        <h2 class="font-bold mb-8 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Follow Us</h2>
+                        <nav aria-label="Social media">
                             <ul class="flex gap-4 list-none p-0 lg:justify-end">
                                 <li>
                                     <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
@@ -1174,14 +1178,14 @@
             <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-xs text-gray-400 text-center gap-4">
                 <p>
                     © <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront.
-                    <span>All rights reserved.</span> |
-                    Made by <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" class="font-bold hover:text-white transition-colors">Richard Castiblanco</a>
+                    <span data-i18n="foo_rights">All rights reserved.</span> |
+                    Made by <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" class="font-bold hover:text-white">Richard Castiblanco</a>
                 </p>
 
                 <nav aria-label="Legal links">
                     <ul class="flex gap-8 list-none p-0">
-                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php">Privacy Policy</a></li>
-                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php">Terms & Conditions</a></li>
+                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_privacy">Privacy Policy</a></li>
+                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_terms">Terms & Conditions</a></li>
                     </ul>
                 </nav>
             </aside>

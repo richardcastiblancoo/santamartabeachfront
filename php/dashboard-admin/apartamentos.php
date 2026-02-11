@@ -18,7 +18,7 @@ include '../../auth/conexion_be.php';
     <title>Santamartabeachfront - Panel de Administrador</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link rel="shortcut icon" href="/public/img/logo-definitivo.webp" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -93,7 +93,7 @@ include '../../auth/conexion_be.php';
             <div class="p-6 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
                     <div class="bg-primary/10 p-3 rounded-lg">
-                        <img src="/public/img/logo-definitivo.webp" alt="logo" class="w-16 h-16 object-contain">
+                        <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="w-16 h-16 object-contain">
                     </div>
                     <div>
                         <h1 class="text-base font-bold text-text-main dark:text-white leading-none">Santamarta</h1>
@@ -166,10 +166,12 @@ include '../../auth/conexion_be.php';
                             <p class="text-text-secondary text-sm mt-1">Gestiona los detalles, precios, multimedia y disponibilidad.</p>
                         </div>
                         <div class="flex gap-3">
+                            <!-- boton de agregar apartamento eliminado temporalmente
                             <a class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-primary/30" href="#apartment-modal" onclick="limpiarFormulario()">
                                 <span class="material-symbols-outlined text-xl">add</span>
                                 <span>Añadir Nuevo</span>
                             </a>
+                            -->
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-4">
@@ -212,9 +214,11 @@ include '../../auth/conexion_be.php';
                                                     <a class="p-2 text-text-secondary hover:text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer" onclick='editarApartamento(<?php echo $row_json; ?>)' href="#apartment-modal" title="Editar">
                                                         <span class="material-symbols-outlined">edit</span>
                                                     </a>
+                                                    <!-- boton de la papelera temporalmente eliminada 
                                                     <button class="p-2 text-text-secondary hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" onclick="eliminarApartamento(<?php echo $row['id']; ?>)" title="Eliminar">
                                                         <span class="material-symbols-outlined">delete</span>
                                                     </button>
+                                                    -->
                                                 </div>
                                             </div>
                                             <div class="mt-4 pt-4 border-t border-[#f0f3f4] dark:border-gray-800 flex justify-between items-center">
@@ -234,6 +238,7 @@ include '../../auth/conexion_be.php';
                     </div>
                 </section>
             </main>
+
             <div class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm justify-end transition-opacity" id="apartment-modal">
                 <div class="w-full max-w-2xl h-full bg-card-light dark:bg-card-dark shadow-2xl overflow-y-auto border-l border-[#f0f3f4] dark:border-gray-800 flex flex-col">
                     <form action="guardar_apartamento_be.php" method="POST" enctype="multipart/form-data" class="flex flex-col h-full" id="form-apartamento">
