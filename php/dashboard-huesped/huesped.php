@@ -225,38 +225,29 @@ if (!empty($_SESSION['imagen'])) {
 
         <section class="relative overflow-hidden rounded-2xl shadow-lg group">
             <div class="flex min-h-[400px] flex-col gap-6 bg-cover bg-center bg-no-repeat items-start justify-end px-6 pb-10 md:px-10 md:pb-12 transition-transform duration-700 hover:scale-[1.01]" style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%), url("https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?q=80&w=1964&auto=format&fit=crop");'>
-                <div class="absolute top-6 right-6 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md flex items-center gap-2">
-                    <span class="material-symbols-outlined text-primary">schedule</span>
-                    <span data-key="checkin-days" class="text-xs font-bold uppercase tracking-wider text-gray-800 dark:text-white">Check-in: 3 Días</span>
-                </div>
                 <div class="flex flex-col gap-2 text-left max-w-2xl">
                     <h1 data-key="hero-title" class="text-white text-3xl md:text-5xl font-black leading-tight tracking-[-0.033em] drop-shadow-md">
                         Tu escapada a Santa Marta
                     </h1>
-                    <h2 data-key="hero-sub" class="text-gray-100 text-base md:text-lg font-medium leading-normal drop-shadow-sm mb-4">
-                        Apartamento Vista al Mar - Edificio El Rodadero. Todo está listo para tu llegada.
-                    </h2>
+                    <h2 data-key="hero-sub" class="text-gray-100 text-base md:text-lg font-medium leading-normal drop-shadow-sm mb-4">Apartamento Reserva del Mar 1 - Edificio Torre 4. Todo está listo para tu llegada.</h2>
                     <div class="flex flex-wrap gap-3">
                         <button onclick="startTour()" class="flex items-center justify-center rounded-lg h-12 px-6 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 text-base font-bold transition-all" title="Ver tutorial">
                             <span class="mr-2 material-symbols-outlined">help</span>
                             Ayuda
                         </button>
-                        <button class="flex items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-sky-500 text-white text-base font-bold transition-all shadow-md hover:shadow-lg">
-                            <span class="mr-2 material-symbols-outlined">key</span>
-                            <span data-key="btn-arrival">Ver detalles de llegada</span>
-                        </button>
-                        <button class="flex items-center justify-center rounded-lg h-12 px-6 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/40 text-base font-bold transition-all">
-                            <span class="mr-2 material-symbols-outlined">menu_book</span>
-                            <span data-key="btn-guide">Guía de la casa</span>
-                        </button>
-                        <button onclick="switchTab('apartments')" class="flex items-center justify-center rounded-lg h-12 px-6 bg-white text-[#111618] text-base font-bold transition-all shadow-md hover:shadow-lg">
-                            <span class="mr-2 material-symbols-outlined text-primary">add_circle</span>
-                            Hacer una reserva
-                        </button>
-                        <button onclick="openReviewModalFromButton()" class="flex items-center justify-center rounded-lg h-12 px-6 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 text-base font-bold transition-all">
+
+                        <!-- Botón para dejar reseña -->
+                        <button type="button"
+                            <?php if (isset($reserva['apartamento_id'])): ?>
+                            onclick="prepararYAbrirModal(<?php echo intval($reserva['apartamento_id']); ?>)"
+                            <?php else: ?>
+                            onclick="prepararYAbrirModal(1)"
+                            <?php endif; ?>
+                            class="flex items-center justify-center rounded-lg h-12 px-6 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 text-base font-bold transition-all">
                             <span class="mr-2 material-symbols-outlined text-yellow-400">star</span>
                             Dejar una reseña
                         </button>
+
                     </div>
                 </div>
             </div>
@@ -387,9 +378,9 @@ if (!empty($_SESSION['imagen'])) {
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-end gap-3 pt-2 border-t border-gray-100 dark:border-gray-700 mt-1">
-                                        <button onclick="openReviewModal(<?php echo $reserva['apartamento_id']; ?>, '<?php echo htmlspecialchars($reserva['titulo'], ENT_QUOTES); ?>')" class="flex items-center gap-1 text-primary hover:text-sky-600 text-sm font-bold px-3 py-2 rounded transition-colors">
-                                            <span class="material-symbols-outlined text-[18px]">edit_note</span>
-                                            <span>Escribir reseña</span>
+                                        <button onclick="prepararYAbrirModal(<?php echo $reserva['apartamento_id']; ?>)" class="flex items-center justify-center rounded-lg h-9 px-4 bg-yellow-500 text-white text-sm font-medium shadow-sm hover:bg-yellow-600 transition-colors">
+                                            <span class="mr-1 material-symbols-outlined text-sm">star</span>
+                                            Dejar reseña
                                         </button>
                                         <button onclick="openApartmentModal(<?php echo $reserva['apartamento_id']; ?>, '<?php echo htmlspecialchars($reserva['titulo'], ENT_QUOTES); ?>')" class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-medium shadow-sm hover:bg-sky-500 transition-colors">
                                             Reservar de nuevo
@@ -654,46 +645,7 @@ if (!empty($_SESSION['imagen'])) {
         </div>
     </div>
 
-    <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="review-modal">
-        <div class="bg-white dark:bg-[#1a2c35] w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-            <form id="review-form" onsubmit="submitReview(event)">
-                <input type="hidden" name="apartamento_id" id="review-apartamento-id">
-                <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
-                    <h3 class="text-xl font-bold text-[#111618] dark:text-white flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary">rate_review</span>
-                        Escribir Reseña
-                    </h3>
-                    <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closeReviewModal()">
-                        <span class="material-symbols-outlined">close</span>
-                    </a>
-                </div>
-                <div class="p-8 space-y-6">
-                    <div class="text-center">
-                        <h4 id="review-apartamento-titulo" class="font-bold text-lg text-[#111618] dark:text-white mb-2"></h4>
-                        <p class="text-sm text-gray-500">¿Cómo estuvo tu estancia?</p>
-                    </div>
 
-                    <div class="flex justify-center gap-2" id="star-rating">
-                        <input type="hidden" name="calificacion" id="review-calificacion" required>
-                        <button type="button" class="material-symbols-outlined text-4xl text-gray-300 hover:text-yellow-400 transition-colors" onclick="setRating(1)">star</button>
-                        <button type="button" class="material-symbols-outlined text-4xl text-gray-300 hover:text-yellow-400 transition-colors" onclick="setRating(2)">star</button>
-                        <button type="button" class="material-symbols-outlined text-4xl text-gray-300 hover:text-yellow-400 transition-colors" onclick="setRating(3)">star</button>
-                        <button type="button" class="material-symbols-outlined text-4xl text-gray-300 hover:text-yellow-400 transition-colors" onclick="setRating(4)">star</button>
-                        <button type="button" class="material-symbols-outlined text-4xl text-gray-300 hover:text-yellow-400 transition-colors" onclick="setRating(5)">star</button>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Comentario</label>
-                        <textarea name="comentario" id="review-comentario" rows="4" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-gray-400" placeholder="Comparte tu experiencia con otros huéspedes..." required></textarea>
-                    </div>
-                </div>
-                <div class="p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3">
-                    <a class="px-6 py-2.5 text-sm font-bold text-gray-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closeReviewModal()">Cancelar</a>
-                    <button type="submit" class="px-6 py-2.5 bg-primary hover:bg-sky-600 text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all">Enviar Reseña</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <div class="hidden fixed inset-0 z-50 bg-black/60 items-center justify-center p-4 backdrop-blur-sm" id="apartment-modal">
         <div class="bg-white dark:bg-[#1a2c35] w-full max-w-6xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
@@ -722,6 +674,8 @@ if (!empty($_SESSION['imagen'])) {
                 window.location.reload();
             }
         });
+
+
 
         function switchTab(tab) {
             const upcomingContent = document.getElementById('upcoming-bookings');
@@ -778,98 +732,7 @@ if (!empty($_SESSION['imagen'])) {
             modal.style.display = 'none';
         }
 
-        function openReviewModal(apartamentoId, titulo) {
-            document.getElementById('review-apartamento-id').value = apartamentoId;
-            document.getElementById('review-apartamento-titulo').innerText = titulo;
-            setRating(0); // Reset rating
-            document.getElementById('review-comentario').value = '';
 
-            const modal = document.getElementById('review-modal');
-            modal.classList.remove('hidden');
-            modal.style.display = 'flex';
-        }
-
-        function openReviewModalFromButton() {
-            // Si el usuario tiene una estancia pasada, usamos el primer apartamento de su historial
-            // Si no, mostramos un selector o simplemente usamos el ID 1 como fallback (o pedimos seleccionar)
-            // Para cumplir con el requerimiento de "Hacer una reserva" -> "reseña",
-            // vamos a intentar obtener el ID del primer apartamento disponible en el historial.
-            <?php
-            $first_past_apt_id = 0;
-            $first_past_apt_title = '';
-            if ($result_reservas_pasadas && $result_reservas_pasadas->num_rows > 0) {
-                $temp_res = $result_reservas_pasadas->fetch_assoc();
-                $first_past_apt_id = $temp_res['apartamento_id'];
-                $first_past_apt_title = addslashes($temp_res['titulo']);
-                // Reset pointer for the loop in HTML
-                $result_reservas_pasadas->data_seek(0);
-            }
-            ?>
-            
-            const pastAptId = <?php echo $first_past_apt_id; ?>;
-            const pastAptTitle = "<?php echo $first_past_apt_title; ?>";
-            
-            if (pastAptId > 0) {
-                openReviewModal(pastAptId, pastAptTitle);
-            } else {
-                // Si no hay estancias pasadas, podemos redirigir a apartamentos para que elija uno y lo vea
-                if (confirm("Aún no tienes estancias completadas para reseñar. ¿Deseas ver nuestros apartamentos?")) {
-                    switchTab('apartments');
-                }
-            }
-        }
-
-        function closeReviewModal() {
-            const modal = document.getElementById('review-modal');
-            modal.classList.add('hidden');
-            modal.style.display = 'none';
-        }
-
-        function setRating(rating) {
-            document.getElementById('review-calificacion').value = rating;
-            const stars = document.getElementById('star-rating').children;
-
-            for (let i = 1; i < stars.length; i++) { // Skip hidden input
-                if (i <= rating) {
-                    stars[i].classList.add('text-yellow-400');
-                    stars[i].classList.remove('text-gray-300');
-                    stars[i].innerText = 'star'; // filled
-                } else {
-                    stars[i].classList.remove('text-yellow-400');
-                    stars[i].classList.add('text-gray-300');
-                    stars[i].innerText = 'star'; // outline handled by font but here we just color change
-                }
-            }
-        }
-
-        function submitReview(e) {
-            e.preventDefault();
-            const form = document.getElementById('review-form');
-            const formData = new FormData(form);
-
-            if (!formData.get('calificacion') || formData.get('calificacion') == 0) {
-                alert('Por favor selecciona una calificación');
-                return;
-            }
-
-            fetch('guardar_resena_be.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('¡Gracias por tu reseña!');
-                        closeReviewModal();
-                    } else {
-                        alert('Error: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Ocurrió un error al enviar la reseña');
-                });
-        }
 
         function openPQRModal() {
             const modal = document.getElementById('new-pqr-modal');
@@ -1098,14 +961,14 @@ if (!empty($_SESSION['imagen'])) {
         }
 
         function enviarVerificacion() {
-            if(!confirm("¿Deseas enviar un correo de verificación a tu dirección de email actual?")) return;
+            if (!confirm("¿Deseas enviar un correo de verificación a tu dirección de email actual?")) return;
 
             fetch('enviar_verificacion_be.php')
                 .then(response => response.json())
                 .then(data => {
-                    if(data.success) {
+                    if (data.success) {
                         // En localhost, mostramos el link directamente para facilitar
-                        if(data.debug_link) {
+                        if (data.debug_link) {
                             let link = data.debug_link;
                             // Crear un modal o prompt temporal
                             let mensaje = "Correo 'enviado'.\n\nComo estás en un entorno de pruebas (Localhost), es probable que el correo no llegue realmente.\n\nCopia y pega este enlace en tu navegador para verificar:";
@@ -1325,6 +1188,70 @@ if (!empty($_SESSION['imagen'])) {
 
             driverObj.drive();
         }
+    </script>
+    <!-- Modal de Reseña -->
+    <div id="contenedorModalResena" style="display: none;" class="fixed inset-0 z-[9999] items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+        <div class="bg-white dark:bg-[#1a2c35] rounded-2xl p-6 w-full max-w-md shadow-2xl border border-gray-100 dark:border-gray-800">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-[#111618] dark:text-white">Calificar estadía</h3>
+                <button type="button" onclick="cerrarLaModal()" class="text-gray-400 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form action="guardar_resena_be.php" method="POST">
+                <input type="hidden" name="id_apartamento" id="modal_id_apartamento">
+                <div class="flex flex-col items-center mb-6">
+                    <div class="flex gap-1 mb-2">
+                        <span onclick="marcarEstrellas(1)" class="js-estrella cursor-pointer text-4xl text-gray-300 material-symbols-outlined">star</span>
+                        <span onclick="marcarEstrellas(2)" class="js-estrella cursor-pointer text-4xl text-gray-300 material-symbols-outlined">star</span>
+                        <span onclick="marcarEstrellas(3)" class="js-estrella cursor-pointer text-4xl text-gray-300 material-symbols-outlined">star</span>
+                        <span onclick="marcarEstrellas(4)" class="js-estrella cursor-pointer text-4xl text-gray-300 material-symbols-outlined">star</span>
+                        <span onclick="marcarEstrellas(5)" class="js-estrella cursor-pointer text-4xl text-gray-300 material-symbols-outlined">star</span>
+                    </div>
+                    <input type="hidden" name="calificacion" id="input_estrellas_valor" required>
+                </div>
+                <textarea name="comentario" rows="4" required class="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111618] dark:text-white mb-4 placeholder:text-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Escribe tu opinión sobre tu estancia..."></textarea>
+                <button type="submit" class="w-full py-3 bg-yellow-500 text-white rounded-xl font-bold hover:bg-yellow-600 shadow-lg shadow-yellow-500/20 transition-all">Enviar reseña</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Funciones para la Modal de Reseña
+        window.prepararYAbrirModal = function(id) {
+            console.log("Abriendo modal para ID:", id);
+            var modal = document.getElementById('contenedorModalResena');
+            var inputId = document.getElementById('modal_id_apartamento');
+
+            if (modal && inputId) {
+                inputId.value = id;
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                console.error("No se encontró la modal.");
+            }
+        };
+
+        window.cerrarLaModal = function() {
+            var modal = document.getElementById('contenedorModalResena');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        };
+
+        window.marcarEstrellas = function(n) {
+            var stars = document.querySelectorAll('.js-estrella');
+            document.getElementById('input_estrellas_valor').value = n;
+            stars.forEach((s, i) => {
+                s.style.color = (i < n) ? '#facc15' : '#d1d5db';
+                if (i < n) {
+                    s.classList.add('fill-1');
+                } else {
+                    s.classList.remove('fill-1');
+                }
+            });
+        };
     </script>
 </body>
 

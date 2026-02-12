@@ -16,11 +16,11 @@ $id_apartamento = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $apartamento = null;
 $resenas = [];
 $resenas_total = 0;
+$resenas_fecha_col = 'fecha_resena';
 $puede_resenar = false;
 $rangos_ocupados = [];
 $imagenes_galeria = [];
 $videos_galeria = [];
-
 if ($id_apartamento > 0) {
 
     // 1. Consultar datos del apartamento y promedio de calificaciones / Query apartment data and average ratings (Sentencia Preparada / Prepared Statement)
@@ -232,8 +232,7 @@ if ($id_apartamento > 0) {
                         </div>
                     </div>
                 </div>
-
-                <?php
+                 <?php
                 $media_items = [];
                 foreach ($imagenes_galeria as $img) {
                     $media_items[] = ['type' => 'image', 'src' => '/assets/img/apartamentos/' . $img];
@@ -461,8 +460,7 @@ if ($id_apartamento > 0) {
                             }
                         }
                     </script>
-
-                    <!-- reseñas -->
+                     <!-- reseñas -->
                     <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
                         <div class="flex items-center gap-2 mb-6">
                             <span class="material-symbols-outlined text-primary fill-1">star</span>
@@ -474,15 +472,7 @@ if ($id_apartamento > 0) {
                                 <?php endif; ?>
                             </h3>
                         </div>
-                        <?php if ($puede_resenar): ?>
-                            <div class="mb-6">
-                                <button onclick="openReviewModal()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all shadow-sm">
-                                    <span class="material-symbols-outlined text-[18px]">rate_review</span>
-                                    <span data-i18n="Escribir reseña">Escribir reseña</span>
-                                </button>
-                            </div>
-                        <?php endif; ?>
-
+                        
                         <?php if ($resenas_total > 0): ?>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="reviews-grid">
                                 <?php
@@ -546,43 +536,7 @@ if ($id_apartamento > 0) {
                             </div>
                         <?php endif; ?>
                     </section>
-                    <?php if ($puede_resenar): ?>
-                        <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="review-modal">
-                            <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
-                                <form id="review-form" onsubmit="submitReview(event)">
-                                    <input type="hidden" name="apartamento_id" value="<?php echo (int)$id_apartamento; ?>">
-                                    <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-                                        <h3 class="text-xl font-bold text-[#111618] dark:text-white flex items-center gap-2" data-i18n="Escribir Reseña">
-                                            <span class="material-symbols-outlined text-primary">rate_review</span>
-                                            Escribir Reseña
-                                        </h3>
-                                        <a class="text-slate-500 hover:text-primary transition-colors cursor-pointer" onclick="closeReviewModal()">
-                                            <span class="material-symbols-outlined">close</span>
-                                        </a>
-                                    </div>
-                                    <div class="p-8 space-y-6">
-                                        <div class="flex justify-center gap-2" id="star-rating">
-                                            <input type="hidden" name="calificacion" id="review-calificacion" required>
-                                            <button type="button" class="material-symbols-outlined text-4xl text-slate-300 hover:text-yellow-400 transition-colors" onclick="setRating(1)">star</button>
-                                            <button type="button" class="material-symbols-outlined text-4xl text-slate-300 hover:text-yellow-400 transition-colors" onclick="setRating(2)">star</button>
-                                            <button type="button" class="material-symbols-outlined text-4xl text-slate-300 hover:text-yellow-400 transition-colors" onclick="setRating(3)">star</button>
-                                            <button type="button" class="material-symbols-outlined text-4xl text-slate-300 hover:text-yellow-400 transition-colors" onclick="setRating(4)">star</button>
-                                            <button type="button" class="material-symbols-outlined text-4xl text-slate-300 hover:text-yellow-400 transition-colors" onclick="setRating(5)">star</button>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2" data-i18n="Comentario">Comentario</label>
-                                            <textarea name="comentario" id="review-comentario" rows="4" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-slate-400" placeholder="Comparte tu experiencia..." data-i18n-placeholder="Comparte tu experiencia..." required></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex justify-end gap-3">
-                                        <a class="px-6 py-2.5 text-sm font-bold text-slate-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closeReviewModal()" data-i18n="Cancelar">Cancelar</a>
-                                        <button type="submit" class="px-6 py-2.5 bg-primary hover:bg-primary/90 text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all" data-i18n="Enviar Reseña">Enviar Reseña</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    <?php endif; ?>
+                   
 
                     <!-- inicio del del mapa -->
                     <section class="pt-8 border-t border-slate-200 dark:border-slate-800">
