@@ -175,11 +175,11 @@
 
         <div class="relative max-w-[1600px] mx-auto px-4">
 
-            <div class="hidden 2xl:block absolute -left-20 top-1/2 -translate-y-1/2 w-[450px] opacity-30 pointer-events-none z-0">
+            <div class="hidden 2xl:block absolute -left-20 top-1/2 -translate-y-1/2 w-[450px] pointer-events-none z-0">
                 <img src="/public/img/logo-def-Photoroom.png" alt="Logo Marca" class="w-full h-auto">
             </div>
 
-            <div class="hidden 2xl:block absolute -right-20 top-1/2 -translate-y-1/2 w-[450px] opacity-30 pointer-events-none z-0">
+            <div class="hidden 2xl:block absolute -right-20 top-1/2 -translate-y-1/2 w-[450px] pointer-events-none z-0">
                 <img src="/public/img/logo-def-Photoroom.png" alt="Logo Marca" class="w-full h-auto">
             </div>
 

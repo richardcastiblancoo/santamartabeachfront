@@ -289,7 +289,7 @@ if ($id_apartamento > 0) {
                             <span data-i18n="Alojamiento entero">Alojamiento entero</span>: <span data-i18n="vivienda rentada en Playa Salguero, Colombia">vivienda rentada en Playa Salguero, Colombia</span>
                         </h2>
                         <p class="text-[#617c89] dark:text-slate-400">
-                            8 <span data-i18n="huéspedes">huéspedes</span> · 3 <span data-i18n="habitaciones">habitaciones</span> · 4 <span data-i18n="camas">camas</span> · 2 <span data-i18n="baños">baños</span>
+                            8 <span data-i18n="huéspedes">huéspedes</span> · 3 <span data-i18n="habitaciones">habitaciones</span> · 6 <span data-i18n="camas">camas</span> · 2 <span data-i18n="baños">baños</span>
                         </p>
                     </div>
 
