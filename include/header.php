@@ -185,7 +185,7 @@
         text-align: center;
         padding: 15px 0;
         color: #fbbf24;
-        font-size: 11px;
+        font-size: 15px;
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 2px;
