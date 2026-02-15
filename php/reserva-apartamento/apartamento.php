@@ -232,7 +232,7 @@ if ($id_apartamento > 0) {
                         </div>
                     </div>
                 </div>
-                 <?php
+                <?php
                 $media_items = [];
                 foreach ($imagenes_galeria as $img) {
                     $media_items[] = ['type' => 'image', 'src' => '/assets/img/apartamentos/' . $img];
@@ -460,7 +460,7 @@ if ($id_apartamento > 0) {
                             }
                         }
                     </script>
-                     <!-- reseñas -->
+                    <!-- reseñas -->
                     <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
                         <div class="flex items-center gap-2 mb-6">
                             <span class="material-symbols-outlined text-primary fill-1">star</span>
@@ -472,7 +472,7 @@ if ($id_apartamento > 0) {
                                 <?php endif; ?>
                             </h3>
                         </div>
-                        
+
                         <?php if ($resenas_total > 0): ?>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="reviews-grid">
                                 <?php
@@ -536,7 +536,7 @@ if ($id_apartamento > 0) {
                             </div>
                         <?php endif; ?>
                     </section>
-                   
+
 
                     <!-- inicio del del mapa -->
                     <section class="pt-8 border-t border-slate-200 dark:border-slate-800">
@@ -735,14 +735,17 @@ if ($id_apartamento > 0) {
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-24 py-16 items-start border-t border-white/5">
 
                     <section class="flex flex-col items-center md:items-start text-center md:text-left">
-                        <a href="/" class="flex items-center gap-4 group w-fit mb-6">
-                            <div class="w-16 h-16 md:w-20 md:h-20 shrink-0">
+                        <a href="/" class="flex items-center gap-1 group w-fit mb-6">
+
+                            <div class="w-24 h-24 md:w-32 md:h-32 shrink-0">
                                 <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="w-full h-full object-contain">
                             </div>
-                            <span class="text-xl md:text-2xl font-bold text-white tracking-tighter">
+
+                            <span class="text-xl md:text-2xl font-bold text-white tracking-tighter -ml-2 md:-ml-4">
                                 Santamarta<span class="text-blue-400">beachfront</span>
                             </span>
                         </a>
+
                         <p class="text-gray-300 text-sm leading-relaxed max-w-xs md:pl-5 md:border-l md:border-blue-400/20" data-i18n="footer-desc">
                             La plataforma líder en alquileres vacacionales de lujo en Santa Marta. Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
                         </p>
@@ -1129,15 +1132,15 @@ if ($id_apartamento > 0) {
                 document.getElementById('count-infants').textContent = guests.infants;
 
                 let totalGuests = guests.adults + guests.children;
-                let guestText = totalGuests > 1 ? 
-                    (translations[lang] && translations[lang]['Huéspedes'] || 'Huéspedes') : 
+                let guestText = totalGuests > 1 ?
+                    (translations[lang] && translations[lang]['Huéspedes'] || 'Huéspedes') :
                     (translations[lang] && translations[lang]['Huésped'] || 'Huésped');
-                
+
                 let summary = `${totalGuests} ${guestText}`;
 
                 if (guests.infants > 0) {
-                    let infantText = guests.infants > 1 ? 
-                        (translations[lang] && translations[lang]['Bebés'] || 'Bebés') : 
+                    let infantText = guests.infants > 1 ?
+                        (translations[lang] && translations[lang]['Bebés'] || 'Bebés') :
                         (translations[lang] && translations[lang]['Bebé'] || 'Bebé');
                     summary += `, ${guests.infants} ${infantText}`;
                 }

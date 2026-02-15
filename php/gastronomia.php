@@ -159,15 +159,19 @@
         <div class="max-w-7xl mx-auto px-6 md:px-10">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-24 py-16 items-start border-t border-white/5">
 
+
                 <section class="flex flex-col items-center md:items-start text-center md:text-left">
-                    <a href="/" class="flex items-center gap-4 group w-fit mb-6">
-                        <div class="w-16 h-16 md:w-20 md:h-20 shrink-0">
+                    <a href="/" class="flex items-center gap-1 group w-fit mb-6">
+
+                        <div class="w-24 h-24 md:w-32 md:h-32 shrink-0">
                             <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="w-full h-full object-contain">
                         </div>
-                        <span class="text-xl md:text-2xl font-bold text-white tracking-tighter">
+
+                        <span class="text-xl md:text-2xl font-bold text-white tracking-tighter -ml-2 md:-ml-4">
                             Santamarta<span class="text-blue-400">beachfront</span>
                         </span>
                     </a>
+
                     <p class="text-gray-300 text-sm leading-relaxed max-w-xs md:pl-5 md:border-l md:border-blue-400/20" data-i18n="footer-desc">
                         La plataforma líder en alquileres vacacionales de lujo en Santa Marta. Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
                     </p>
