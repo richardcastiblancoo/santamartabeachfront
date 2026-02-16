@@ -365,7 +365,7 @@
                         <div class="space-y-1">
                             <label for="accommodation" class="text-blue-300 text-[9px] font-black uppercase tracking-widest ml-1">Alojamiento</label>
                             <select id="accommodation" name="accommodation" class="glass-input w-full rounded-xl px-4 py-3 text-sm bg-slate-800">
-                                <option value="Reserva del Mar - Apartamento 1730">Apartamentos 1730 - Torre 4 - Reserva del Mar 1</option>
+                                <option value="Reserva del Mar 1 - Torre 4 - Apartamento 1730">Apartamentos 1730 - Torre 4 - Reserva del Mar 1</option>
                             </select>
                         </div>
                         <div class="space-y-1">
