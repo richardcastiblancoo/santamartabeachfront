@@ -107,19 +107,16 @@ CREATE TABLE IF NOT EXISTS respuestas_pqr (
     CONSTRAINT fk_resp_admin FOREIGN KEY (admin_id) REFERENCES usuarios(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 9. Tabla Push Subscriptions
-CREATE TABLE IF NOT EXISTS push_subscriptions (
-    id INT(11) AUTO_INCREMENT PRIMARY KEY,
-    user_id INT(6) UNSIGNED NOT NULL,
-    endpoint TEXT NOT NULL,
-    p256dh VARCHAR(255) NOT NULL,
-    auth VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_push_user FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
-
+CREATE TABLE sugerencias (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT UNSIGNED NOT NULL, -- Agregamos UNSIGNED para que coincida
+    mensaje TEXT NOT NULL,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_usuario_sugerencia 
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) 
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
 
 

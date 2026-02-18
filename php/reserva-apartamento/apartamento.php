@@ -460,6 +460,9 @@ if ($id_apartamento > 0) {
                             }
                         }
                     </script>
+
+
+
                     <!-- reseñas -->
                     <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
                         <div class="flex items-center gap-2 mb-6">
@@ -556,9 +559,9 @@ if ($id_apartamento > 0) {
                         <div class="mt-5 flex items-start gap-3">
                             <span class="material-symbols-outlined text-blue-500 mt-1">location_on</span>
                             <div>
-                                <p class="font-bold text-lg text-slate-900 dark:text-white leading-tight" data-i18n="Pozos Colorados, Santa Marta">Calle 22 # 1 - 67 Playa Salguero, Santa Marta</p>
-                                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1" data-i18n="Reserva del Mar - Torre 4. Un sector exclusivo y tranquilo.">
-                                    Apartamento 1730 - Torre 4 - Reserva del Mar 1
+                                <p class="font-bold text-lg text-slate-900 dark:text-white leading-tight" data-i18n="">Apartamento 1730 - Torre 4 - Reserva del Mar 1</p>
+                                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1" data-i18n="">
+                                    Calle 22 # 1 - 67 Playa Salguero, Santa Marta
                                 </p>
                             </div>
                         </div>
@@ -906,417 +909,394 @@ if ($id_apartamento > 0) {
             </button>
         </div>
 
-        <script>
-            function shareApartment() {
-                const lang = localStorage.getItem('preferredLang') || 'es';
-                const shareText = (translations[lang] && translations[lang]['Mira este increíble apartamento en Santa Marta']) || 'Mira este increíble apartamento en Santa Marta';
-                const copyText = (translations[lang] && translations[lang]['¡Enlace copiado al portapapeles!']) || '¡Enlace copiado al portapapeles!';
-
-                if (navigator.share) {
-                    navigator.share({
-                        title: <?php echo json_encode($apartamento['titulo'] ?? 'Apartamento'); ?>,
-                        text: shareText,
-                        url: window.location.href
-                    }).catch(console.error);
-                } else {
-                    navigator.clipboard.writeText(window.location.href).then(() => {
-                        alert(copyText);
-                    });
-                }
-            }
-
-            function toggleServices() {
-                const extras = document.querySelectorAll('.service-item-extra');
-                const btn = document.getElementById('toggle-services-btn');
-                const lang = localStorage.getItem('preferredLang') || 'es';
-                let isHidden = true;
-
-                extras.forEach(item => {
-                    if (item.classList.contains('hidden')) {
-                        item.classList.remove('hidden');
-                        isHidden = false;
-                    } else {
-                        item.classList.add('hidden');
-                        isHidden = true;
-                    }
-                });
-
-                if (isHidden) {
-                    btn.setAttribute('data-i18n', 'Mostrar más');
-                } else {
-                    btn.setAttribute('data-i18n', 'Mostrar menos');
-                }
-
-                if (typeof applyTranslations === 'function') {
-                    applyTranslations(lang);
-                }
-            }
-
-            const galleryItems = [
-                <?php if ($apartamento['imagen_principal']): ?> {
-                        type: 'image',
-                        src: <?php echo json_encode($ruta_img); ?>
-                    },
-                <?php endif; ?>
-                <?php foreach ($imagenes_galeria as $img): ?> {
-                        type: 'image',
-                        src: <?php echo json_encode('/assets/img/apartamentos/' . $img); ?>
-                    },
-                <?php endforeach; ?>
-                <?php foreach ($videos_galeria as $vid): ?> {
-                        type: 'video',
-                        src: <?php echo json_encode('/assets/video/apartamentos/' . $vid); ?>
-                    },
-                <?php endforeach; ?>
-            ];
-
-            let currentIndex = 0;
-
-            function openGallery() {
-                document.getElementById('gallery-modal').classList.remove('hidden');
-                document.getElementById('gallery-modal').classList.add('flex');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeGallery() {
-                document.getElementById('gallery-modal').classList.add('hidden');
-                document.getElementById('gallery-modal').classList.remove('flex');
-                document.body.style.overflow = '';
-            }
-
-            function openLightbox(index) {
-                currentIndex = index;
-                updateLightboxContent();
-                document.getElementById('lightbox-modal').classList.remove('hidden');
-            }
-
-            function updateLightboxContent() {
-                const item = galleryItems[currentIndex];
-                const content = document.getElementById('lightbox-content');
-
-                // Detener videos anteriores si existen
-                const oldVideo = content.querySelector('video');
-                if (oldVideo) oldVideo.pause();
-
-                if (item.type === 'image') {
-                    content.innerHTML = `<img src="${item.src}" class="max-w-full max-h-full object-contain shadow-2xl rounded-lg">`;
-                } else {
-                    content.innerHTML = `<video src="${item.src}" controls autoplay class="max-w-full max-h-full shadow-2xl rounded-lg"></video>`;
-                }
-            }
-
-            function changeSlide(direction) {
-                currentIndex += direction;
-                if (currentIndex < 0) currentIndex = galleryItems.length - 1;
-                if (currentIndex >= galleryItems.length) currentIndex = 0;
-                updateLightboxContent();
-            }
-
-            function closeLightbox() {
-                document.getElementById('lightbox-modal').classList.add('hidden');
-                const content = document.getElementById('lightbox-content');
-                // Detener video al cerrar
-                const video = content.querySelector('video');
-                if (video) video.pause();
-                content.innerHTML = '';
-            }
-
-            // Teclado
-            document.addEventListener('keydown', function(e) {
-                if (document.getElementById('lightbox-modal').classList.contains('hidden')) return;
-                if (e.key === 'ArrowLeft') changeSlide(-1);
-                if (e.key === 'ArrowRight') changeSlide(1);
-                if (e.key === 'Escape') closeLightbox();
-            });
-
-            // --- Nueva Lógica de Reserva ---
-            const basePrice = <?php echo $apartamento['precio']; ?>;
-            // Se define un límite de 8 personas como máximo, pero no puede exceder la capacidad real del apartamento si esta es menor,
-            // a menos que se desee permitir sobrecupo explícito.
-            // Asumiendo que el usuario quiere ver "hasta 8" incluso si la capacidad es menor para probar, o limitarlo al max real.
-            // Usaremos 8 como límite duro si la capacidad de la base de datos es menor, para cumplir el requerimiento del usuario "hasta 8".
-            // O mejor: Math.max(<?php echo $apartamento['capacidad']; ?>, 8);
-            const maxCapacity = 8;
-            const cleaningFee = 80000;
-            const serviceFeeBase = 0.10; // 10% comisión
-
-            let guests = {
-                adults: 1,
-                children: 0,
-                infants: 0,
-                guideDog: false
-            };
-
-            let selectedDates = {
-                checkin: null,
-                checkout: null
-            };
-
-            const bookedRanges = <?php echo json_encode($rangos_ocupados, JSON_UNESCAPED_SLASHES); ?>;
-
-            // Inicializar Flatpickr
-            const fp = flatpickr("#checkin-input", {
-                locale: "es",
-                minDate: "today",
-                dateFormat: "Y-m-d",
-                altInput: true,
-                altFormat: "d/m/Y",
-                mode: "range",
-                disable: bookedRanges,
-                onChange: function(dates) {
-                    if (dates.length === 2) {
-                        selectedDates.checkin = dates[0];
-                        selectedDates.checkout = dates[1];
-                        document.getElementById('checkout-input').value = fp.formatDate(dates[1], "d/m/Y");
-                        calculatePrice();
-                    } else {
-                        selectedDates.checkin = dates[0] || null;
-                        selectedDates.checkout = null;
-                        document.getElementById('checkout-input').value = "";
-                        document.getElementById('price-breakdown').classList.add('hidden');
-                    }
-                }
-            });
-
-            // Sincronizar el segundo input con el mismo flatpickr
-            document.getElementById('checkout-container').addEventListener('click', () => fp.open());
-
-            // Manejo de Huéspedes
-            const guestTrigger = document.getElementById('guest-selector-trigger');
-            const guestDropdown = document.getElementById('guest-dropdown');
-
-            guestTrigger.addEventListener('click', (e) => {
-                e.stopPropagation();
-                guestDropdown.classList.toggle('hidden');
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!guestDropdown.contains(e.target) && e.target !== guestTrigger) {
-                    guestDropdown.classList.add('hidden');
-                }
-            });
-
-            function updateGuest(type, change) {
-                const newValue = guests[type] + change;
-
-                // Lógica específica por tipo
-                if (type === 'adults') {
-                    // Adultos: mínimo 1, y la suma con niños no puede exceder capacidad
-                    if (newValue >= 1 && (newValue + guests.children) <= maxCapacity) {
-                        guests.adults = newValue;
-                    }
-                } else if (type === 'children') {
-                    // Niños: mínimo 0, y la suma con adultos no puede exceder capacidad
-                    if (newValue >= 0 && (guests.adults + newValue) <= maxCapacity) {
-                        guests.children = newValue;
-                    }
-                } else if (type === 'infants') {
-                    // Bebés: mínimo 0, máximo 5 (por poner un límite razonable), no cuentan para capacidad principal
-                    if (newValue >= 0 && newValue <= 5) {
-                        guests.infants = newValue;
-                    }
-                }
-
-                updateGuestUI();
-            }
-
-            function toggleGuideDog(checked) {
-                guests.guideDog = checked;
-                updateGuestUI();
-            }
-
-            function updateGuestUI() {
-                const lang = localStorage.getItem('preferredLang') || 'es';
-                document.getElementById('count-adults').textContent = guests.adults;
-                document.getElementById('count-children').textContent = guests.children;
-                document.getElementById('count-infants').textContent = guests.infants;
-
-                let totalGuests = guests.adults + guests.children;
-                let guestText = totalGuests > 1 ?
-                    (translations[lang] && translations[lang]['Huéspedes'] || 'Huéspedes') :
-                    (translations[lang] && translations[lang]['Huésped'] || 'Huésped');
-
-                let summary = `${totalGuests} ${guestText}`;
-
-                if (guests.infants > 0) {
-                    let infantText = guests.infants > 1 ?
-                        (translations[lang] && translations[lang]['Bebés'] || 'Bebés') :
-                        (translations[lang] && translations[lang]['Bebé'] || 'Bebé');
-                    summary += `, ${guests.infants} ${infantText}`;
-                }
-                if (guests.guideDog) {
-                    let guideDogText = (translations[lang] && translations[lang]['Perro de guía'] || 'Perro de guía');
-                    summary += `, ${guideDogText}`;
-                }
-
-                document.getElementById('guest-summary').textContent = summary;
-
-                // Bloquear/Desbloquear botones
-                document.getElementById('btn-adults-minus').disabled = guests.adults <= 1;
-                document.getElementById('btn-children-minus').disabled = guests.children <= 0;
-                document.getElementById('btn-infants-minus').disabled = guests.infants <= 0;
-
-                const atMax = (guests.adults + guests.children) >= maxCapacity;
-                document.getElementById('btn-adults-plus').disabled = atMax;
-                document.getElementById('btn-children-plus').disabled = atMax;
-
-                // Bebés tienen sus propios límites
-                document.getElementById('btn-infants-plus').disabled = guests.infants >= 5;
-            }
-
-            function closeGuestDropdown() {
-                guestDropdown.classList.add('hidden');
-            }
-
-            function calculatePrice() {
-                if (!selectedDates.checkin || !selectedDates.checkout) return;
-
-                const timeDiff = Math.abs(selectedDates.checkout.getTime() - selectedDates.checkin.getTime());
-                const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-                if (nights > 0) {
-                    const subtotal = basePrice * nights;
-                    const serviceFee = Math.round(subtotal * serviceFeeBase);
-                    const total = subtotal + cleaningFee + serviceFee;
-
-                    document.getElementById('base-price-display').textContent = basePrice.toLocaleString('es-CO');
-                    document.getElementById('nights-display').textContent = nights;
-                    document.getElementById('subtotal-display').textContent = subtotal.toLocaleString('es-CO');
-                    document.getElementById('cleaning-fee-display').textContent = cleaningFee.toLocaleString('es-CO');
-                    document.getElementById('service-fee-display').textContent = serviceFee.toLocaleString('es-CO');
-                    document.getElementById('total-display').textContent = total.toLocaleString('es-CO');
-
-                    const nightsText = document.getElementById('nights-text');
-                    if (nightsText) {
-                        nightsText.setAttribute('data-i18n', nights > 1 ? 'noches' : 'noche');
-                        const lang = localStorage.getItem('preferredLang') || 'es';
-                        if (typeof applyTranslations === 'function') {
-                            applyTranslations(lang);
-                        }
-                    }
-
-                    document.getElementById('price-breakdown').classList.remove('hidden');
-                }
-            }
-
-            function goToReservation() {
-                if (!selectedDates.checkin || !selectedDates.checkout) {
-                    const lang = localStorage.getItem('preferredLang') || 'es';
-                    const alertMsg = (translations[lang] && translations[lang]['Por favor, selecciona las fechas de llegada y salida.']) || 'Por favor, selecciona las fechas de llegada y salida.';
-                    alert(alertMsg);
-                    // Abrir calendario automáticamente si falta fecha
-                    fp.open();
-                    return;
-                }
-
-                const checkinStr = fp.formatDate(selectedDates.checkin, "Y-m-d");
-                const checkoutStr = fp.formatDate(selectedDates.checkout, "Y-m-d");
-
-                const params = new URLSearchParams({
-                    id: <?php echo $id_apartamento; ?>,
-                    checkin: checkinStr,
-                    checkout: checkoutStr,
-                    adults: guests.adults,
-                    children: guests.children,
-                    infants: guests.infants,
-                    guideDog: guests.guideDog
-                });
-
-                <?php if ($isEmbed): ?>
-                    params.set('embed', '1');
-                <?php endif; ?>
-
-                window.location.href = 'reservar.php?' + params.toString();
-            }
-
-            function toggleReviews() {
-                const extra = document.querySelectorAll('.review-item-extra');
-                const btn = document.getElementById('toggle-reviews-btn');
-                const lang = localStorage.getItem('preferredLang') || 'es';
-                if (!btn) return;
-
-                const isHidden = extra.length > 0 && extra[0].classList.contains('hidden');
-                extra.forEach(el => el.classList.toggle('hidden'));
-
-                if (isHidden) {
-                    btn.setAttribute('data-i18n', 'Mostrar menos');
-                } else {
-                    btn.setAttribute('data-i18n', 'Mostrar todas las reseñas');
-                }
-
-                if (typeof applyTranslations === 'function') {
-                    applyTranslations(lang);
-                }
-            }
-
-            function openReviewModal() {
-                const modal = document.getElementById('review-modal');
-                if (!modal) return;
-                setRating(0);
-                const comment = document.getElementById('review-comentario');
-                if (comment) comment.value = '';
-                modal.classList.remove('hidden');
-                modal.style.display = 'flex';
-            }
-
-            function closeReviewModal() {
-                const modal = document.getElementById('review-modal');
-                if (!modal) return;
-                modal.classList.add('hidden');
-                modal.style.display = 'none';
-            }
-
-            function setRating(rating) {
-                const input = document.getElementById('review-calificacion');
-                if (input) input.value = rating;
-                const starsWrap = document.getElementById('star-rating');
-                if (!starsWrap) return;
-                const stars = starsWrap.children;
-                for (let i = 1; i < stars.length; i++) {
-                    if (i <= rating) {
-                        stars[i].classList.add('text-yellow-400');
-                        stars[i].classList.remove('text-slate-300');
-                    } else {
-                        stars[i].classList.remove('text-yellow-400');
-                        stars[i].classList.add('text-slate-300');
-                    }
-                }
-            }
-
-            function submitReview(e) {
-                e.preventDefault();
-                const form = document.getElementById('review-form');
-                const lang = localStorage.getItem('preferredLang') || 'es';
-                if (!form) return;
-                const formData = new FormData(form);
-                const rating = formData.get('calificacion');
-                if (!rating || rating === '0') {
-                    alert((translations[lang] && translations[lang]['Por favor selecciona una calificación']) || 'Por favor selecciona una calificación');
-                    return;
-                }
-
-                fetch('../dashboard-huesped/guardar_resena_be.php', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(r => r.json())
-                    .then(data => {
-                        if (data.success) {
-                            closeReviewModal();
-                            window.location.reload();
-                        } else {
-                            const errorMsg = (translations[lang] && translations[lang]['Error: No se pudo guardar la reseña']) || 'Error: No se pudo guardar la reseña';
-                            alert(errorMsg + (data.message ? ': ' + data.message : ''));
-                        }
-                    })
-                    .catch(() => {
-                        const errorMsg = (translations[lang] && translations[lang]['Ocurrió un error al enviar la reseña']) || 'Ocurrió un error al enviar la reseña';
-                        alert(errorMsg);
-                    });
-            }
-        </script>
 
     <?php endif; ?>
+
+
+    <script>
+        // --- 1. UTILIDADES Y COMPARTIR ---
+        function shareApartment() {
+            const lang = localStorage.getItem('preferredLang') || 'es';
+            const shareText = (translations[lang] && translations[lang]['Mira este increíble apartamento en Santa Marta']) || 'Mira este increíble apartamento en Santa Marta';
+            const copyText = (translations[lang] && translations[lang]['¡Enlace copiado al portapapeles!']) || '¡Enlace copiado al portapapeles!';
+
+            if (navigator.share) {
+                navigator.share({
+                    title: <?php echo json_encode($apartamento['titulo'] ?? 'Apartamento'); ?>,
+                    text: shareText,
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert(copyText);
+                });
+            }
+        }
+
+        function toggleServices() {
+            const extras = document.querySelectorAll('.service-item-extra');
+            const btn = document.getElementById('toggle-services-btn');
+            const lang = localStorage.getItem('preferredLang') || 'es';
+            let isHidden = true;
+
+            extras.forEach(item => {
+                if (item.classList.contains('hidden')) {
+                    item.classList.remove('hidden');
+                    isHidden = false;
+                } else {
+                    item.classList.add('hidden');
+                    isHidden = true;
+                }
+            });
+
+            btn.setAttribute('data-i18n', isHidden ? 'Mostrar más' : 'Mostrar menos');
+
+            if (typeof applyTranslations === 'function') {
+                applyTranslations(lang);
+            }
+        }
+
+        // --- 2. GALERÍA Y LIGHTBOX ---
+        const galleryItems = [
+            <?php if ($apartamento['imagen_principal']): ?> {
+                    type: 'image',
+                    src: <?php echo json_encode($ruta_img); ?>
+                },
+            <?php endif; ?>
+            <?php foreach ($imagenes_galeria as $img): ?> {
+                    type: 'image',
+                    src: <?php echo json_encode('/assets/img/apartamentos/' . $img); ?>
+                },
+            <?php endforeach; ?>
+            <?php foreach ($videos_galeria as $vid): ?> {
+                    type: 'video',
+                    src: <?php echo json_encode('/assets/video/apartamentos/' . $vid); ?>
+                },
+            <?php endforeach; ?>
+        ];
+
+        let currentIndex = 0;
+
+        function openGallery() {
+            const modal = document.getElementById('gallery-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGallery() {
+            const modal = document.getElementById('gallery-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightboxContent();
+            document.getElementById('lightbox-modal').classList.remove('hidden');
+        }
+
+        function updateLightboxContent() {
+            const item = galleryItems[currentIndex];
+            const content = document.getElementById('lightbox-content');
+
+            // Detener videos anteriores
+            const oldVideo = content.querySelector('video');
+            if (oldVideo) oldVideo.pause();
+
+            if (item.type === 'image') {
+                content.innerHTML = `<img src="${item.src}" class="max-w-full max-h-full object-contain shadow-2xl rounded-lg">`;
+            } else {
+                content.innerHTML = `<video src="${item.src}" controls autoplay class="max-w-full max-h-full shadow-2xl rounded-lg"></video>`;
+            }
+        }
+
+        function changeSlide(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = galleryItems.length - 1;
+            if (currentIndex >= galleryItems.length) currentIndex = 0;
+            updateLightboxContent();
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox-modal').classList.add('hidden');
+            const content = document.getElementById('lightbox-content');
+            const video = content.querySelector('video');
+            if (video) video.pause();
+            content.innerHTML = '';
+        }
+
+        // Navegación por teclado
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('lightbox-modal').classList.contains('hidden')) return;
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // --- 3. LÓGICA DE RESERVA Y PRECIOS ---
+        const basePrice = <?php echo $apartamento['precio']; ?>;
+        const maxCapacity = 8;
+        const cleaningFee = 80000;
+        const serviceFeeBase = 0.10;
+
+        let guests = {
+            adults: 1,
+            children: 0,
+            infants: 0,
+            guideDog: false
+        };
+
+        let selectedDates = {
+            checkin: null,
+            checkout: null
+        };
+
+        const bookedRanges = <?php echo json_encode($rangos_ocupados, JSON_UNESCAPED_SLASHES); ?>;
+
+        const fp = flatpickr("#checkin-input", {
+            locale: "es",
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "d/m/Y",
+            mode: "range",
+            disable: bookedRanges,
+            onChange: function(dates) {
+                if (dates.length === 2) {
+                    selectedDates.checkin = dates[0];
+                    selectedDates.checkout = dates[1];
+                    document.getElementById('checkout-input').value = fp.formatDate(dates[1], "d/m/Y");
+                    calculatePrice();
+                } else {
+                    selectedDates.checkin = dates[0] || null;
+                    selectedDates.checkout = null;
+                    document.getElementById('checkout-input').value = "";
+                    document.getElementById('price-breakdown').classList.add('hidden');
+                }
+            }
+        });
+
+        document.getElementById('checkout-container').addEventListener('click', () => fp.open());
+
+        // Manejo de desplegable de huéspedes
+        const guestTrigger = document.getElementById('guest-selector-trigger');
+        const guestDropdown = document.getElementById('guest-dropdown');
+
+        guestTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            guestDropdown.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!guestDropdown.contains(e.target) && e.target !== guestTrigger) {
+                guestDropdown.classList.add('hidden');
+            }
+        });
+
+        function updateGuest(type, change) {
+            const newValue = guests[type] + change;
+
+            if (type === 'adults') {
+                if (newValue >= 1 && (newValue + guests.children) <= maxCapacity) {
+                    guests.adults = newValue;
+                }
+            } else if (type === 'children') {
+                if (newValue >= 0 && (guests.adults + newValue) <= maxCapacity) {
+                    guests.children = newValue;
+                }
+            } else if (type === 'infants') {
+                if (newValue >= 0 && newValue <= 5) {
+                    guests.infants = newValue;
+                }
+            }
+            updateGuestUI();
+        }
+
+        function toggleGuideDog(checked) {
+            guests.guideDog = checked;
+            updateGuestUI();
+        }
+
+        function updateGuestUI() {
+            const lang = localStorage.getItem('preferredLang') || 'es';
+            document.getElementById('count-adults').textContent = guests.adults;
+            document.getElementById('count-children').textContent = guests.children;
+            document.getElementById('count-infants').textContent = guests.infants;
+
+            let totalGuests = guests.adults + guests.children;
+            let guestText = totalGuests > 1 ?
+                (translations[lang] && translations[lang]['Huéspedes'] || 'Huéspedes') :
+                (translations[lang] && translations[lang]['Huésped'] || 'Huésped');
+
+            let summary = `${totalGuests} ${guestText}`;
+
+            if (guests.infants > 0) {
+                let infantText = guests.infants > 1 ?
+                    (translations[lang] && translations[lang]['Bebés'] || 'Bebés') :
+                    (translations[lang] && translations[lang]['Bebé'] || 'Bebé');
+                summary += `, ${guests.infants} ${infantText}`;
+            }
+            if (guests.guideDog) {
+                let guideDogText = (translations[lang] && translations[lang]['Perro de guía'] || 'Perro de guía');
+                summary += `, ${guideDogText}`;
+            }
+
+            document.getElementById('guest-summary').textContent = summary;
+
+            // Estado de botones
+            document.getElementById('btn-adults-minus').disabled = guests.adults <= 1;
+            document.getElementById('btn-children-minus').disabled = guests.children <= 0;
+            document.getElementById('btn-infants-minus').disabled = guests.infants <= 0;
+
+            const atMax = (guests.adults + guests.children) >= maxCapacity;
+            document.getElementById('btn-adults-plus').disabled = atMax;
+            document.getElementById('btn-children-plus').disabled = atMax;
+            document.getElementById('btn-infants-plus').disabled = guests.infants >= 5;
+        }
+
+        function calculatePrice() {
+            if (!selectedDates.checkin || !selectedDates.checkout) return;
+
+            const timeDiff = Math.abs(selectedDates.checkout.getTime() - selectedDates.checkin.getTime());
+            const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+            if (nights > 0) {
+                const subtotal = basePrice * nights;
+                const serviceFee = Math.round(subtotal * serviceFeeBase);
+                const total = subtotal + cleaningFee + serviceFee;
+
+                document.getElementById('base-price-display').textContent = basePrice.toLocaleString('es-CO');
+                document.getElementById('nights-display').textContent = nights;
+                document.getElementById('subtotal-display').textContent = subtotal.toLocaleString('es-CO');
+                document.getElementById('cleaning-fee-display').textContent = cleaningFee.toLocaleString('es-CO');
+                document.getElementById('service-fee-display').textContent = serviceFee.toLocaleString('es-CO');
+                document.getElementById('total-display').textContent = total.toLocaleString('es-CO');
+
+                const nightsText = document.getElementById('nights-text');
+                if (nightsText) {
+                    nightsText.setAttribute('data-i18n', nights > 1 ? 'noches' : 'noche');
+                    const lang = localStorage.getItem('preferredLang') || 'es';
+                    if (typeof applyTranslations === 'function') {
+                        applyTranslations(lang);
+                    }
+                }
+                document.getElementById('price-breakdown').classList.remove('hidden');
+            }
+        }
+
+        function goToReservation() {
+            if (!selectedDates.checkin || !selectedDates.checkout) {
+                const lang = localStorage.getItem('preferredLang') || 'es';
+                const alertMsg = (translations[lang] && translations[lang]['Por favor, selecciona las fechas de llegada y salida.']) || 'Por favor, selecciona las fechas de llegada y salida.';
+                alert(alertMsg);
+                fp.open();
+                return;
+            }
+
+            const params = new URLSearchParams({
+                id: <?php echo $id_apartamento; ?>,
+                checkin: fp.formatDate(selectedDates.checkin, "Y-m-d"),
+                checkout: fp.formatDate(selectedDates.checkout, "Y-m-d"),
+                adults: guests.adults,
+                children: guests.children,
+                infants: guests.infants,
+                guideDog: guests.guideDog
+            });
+
+            <?php if ($isEmbed): ?>
+                params.set('embed', '1');
+            <?php endif; ?>
+
+            window.location.href = 'reservar.php?' + params.toString();
+        }
+
+        // --- 4. SISTEMA DE RESEÑAS ---
+        function toggleReviews() {
+            const extra = document.querySelectorAll('.review-item-extra');
+            const btn = document.getElementById('toggle-reviews-btn');
+            const lang = localStorage.getItem('preferredLang') || 'es';
+            if (!btn) return;
+
+            const isHidden = extra.length > 0 && extra[0].classList.contains('hidden');
+            extra.forEach(el => el.classList.toggle('hidden'));
+
+            btn.setAttribute('data-i18n', isHidden ? 'Mostrar menos' : 'Mostrar todas las reseñas');
+
+            if (typeof applyTranslations === 'function') {
+                applyTranslations(lang);
+            }
+        }
+
+        function openReviewModal() {
+            const modal = document.getElementById('review-modal');
+            if (!modal) return;
+            setRating(0);
+            const comment = document.getElementById('review-comentario');
+            if (comment) comment.value = '';
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+        }
+
+        function closeReviewModal() {
+            const modal = document.getElementById('review-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+
+        function setRating(rating) {
+            const input = document.getElementById('review-calificacion');
+            if (input) input.value = rating;
+            const starsWrap = document.getElementById('star-rating');
+            if (!starsWrap) return;
+            const stars = starsWrap.children;
+            for (let i = 1; i < stars.length; i++) {
+                if (i <= rating) {
+                    stars[i].classList.add('text-yellow-400');
+                    stars[i].classList.remove('text-slate-300');
+                } else {
+                    stars[i].classList.remove('text-yellow-400');
+                    stars[i].classList.add('text-slate-300');
+                }
+            }
+        }
+
+        function submitReview(e) {
+            e.preventDefault();
+            const form = document.getElementById('review-form');
+            const lang = localStorage.getItem('preferredLang') || 'es';
+            if (!form) return;
+
+            const formData = new FormData(form);
+            const rating = formData.get('calificacion');
+
+            if (!rating || rating === '0') {
+                alert((translations[lang] && translations[lang]['Por favor selecciona una calificación']) || 'Por favor selecciona una calificación');
+                return;
+            }
+
+            fetch('../dashboard-huesped/guardar_resena_be.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        closeReviewModal();
+                        window.location.reload();
+                    } else {
+                        const errorMsg = (translations[lang] && translations[lang]['Error: No se pudo guardar la reseña']) || 'Error: No se pudo guardar la reseña';
+                        alert(errorMsg + (data.message ? ': ' + data.message : ''));
+                    }
+                })
+                .catch(() => {
+                    const errorMsg = (translations[lang] && translations[lang]['Ocurrió un error al enviar la reseña']) || 'Ocurrió un error al enviar la reseña';
+                    alert(errorMsg);
+                });
+        }
+    </script>
 
 </body>
 

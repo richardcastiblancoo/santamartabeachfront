@@ -155,52 +155,183 @@ if (!empty($_SESSION['imagen'])) {
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+
+        /* ---------------------------------- */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #13a4ec;
+            /* Blue primary color */
+            border-radius: 0px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0f8bc7;
+        }
+
+        /* Animación de sacudida */
+        .shake-horizontal {
+            animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        /* Animación de menu */
+        .lang-dropdown:hover .lang-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .lang-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.2s ease;
+        }
+
+        /* ---------------------------------- */
     </style>
     <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css" />
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white flex flex-col min-h-screen overflow-x-hidden">
-    <header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e5e7eb] dark:border-b-gray-800 bg-white dark:bg-[#1a2c35] px-4 md:px-10 py-3 shadow-sm">
-        <div class="flex items-center gap-4">
-            <div class="size-8 text-primary flex items-center justify-center">
-                <img src="/public/img/logo-def-Photoroom.png" alt="logo">
+    <header class="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1a2c35] shadow-sm">
+        <div class="flex items-center justify-between px-4 md:px-10 py-4">
+
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-auto flex items-center justify-center overflow-hidden">
+                    <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="h-full w-auto object-contain">
+                </div>
+                <h2 class="hidden lg:block text-[#111618] dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">
+                    Santamartabeachfront
+                </h2>
             </div>
-            <h2 class="hidden md:block text-[#111618] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Santamartabeachfront</h2>
+
+            <div class="hidden md:flex flex-1 justify-end gap-6 items-center">
+
+                <div class="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+                    <button onclick="changeLanguage('es')" id="btn-es" class="px-3 py-1 text-xs font-bold rounded-md transition-all bg-primary text-white">ES</button>
+                    <button onclick="changeLanguage('en')" id="btn-en" class="px-3 py-1 text-xs font-bold rounded-md transition-all text-gray-500 hover:text-primary">EN</button>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button id="notification-btn" class="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-[#111618] dark:text-white transition-colors" onclick="toggleNotifications()">
+                        <span class="material-symbols-outlined text-2xl">notifications</span>
+                        <span id="notification-badge" class="absolute top-2 right-2 size-2.5 bg-red-500 rounded-full border border-white dark:border-[#1a2c35] hidden"></span>
+                    </button>
+
+                    <div onclick="openConfigModal()" class="size-10 rounded-full border-2 border-gray-200 dark:border-gray-600 hover:border-primary cursor-pointer overflow-hidden transition-all">
+                        <img src="<?php echo $profile_image; ?>" class="w-full h-full object-cover" referrerpolicy="no-referrer" alt="Perfil">
+                    </div>
+
+                    <a href="../../auth/cerrar_sesion.php" class="flex items-center justify-center size-10 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-500 hover:text-red-600 transition-colors" title="Cerrar Sesión">
+                        <span class="material-symbols-outlined">logout</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="flex md:hidden items-center">
+                <button onclick="toggleMobileMenu()" class="p-2 text-[#111618] dark:text-white focus:outline-none">
+                    <span class="material-symbols-outlined text-4xl" id="menu-icon">menu</span>
+                </button>
+            </div>
         </div>
 
-        <div class="flex flex-1 justify-end gap-4 md:gap-8 items-center">
-            <div class="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
-                <button onclick="changeLanguage('es')" id="btn-es" class="px-3 py-1 text-xs font-bold rounded-md transition-all bg-primary text-white">ES</button>
-                <button onclick="changeLanguage('en')" id="btn-en" class="px-3 py-1 text-xs font-bold rounded-md transition-all text-gray-500 hover:text-primary">EN</button>
-            </div>
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white dark:bg-[#1a2c35] border-t border-gray-100 dark:border-gray-700 shadow-xl z-40 transition-all duration-300 ease-in-out">
+            <div class="flex flex-col p-6 space-y-6">
 
-            <div class="flex items-center gap-3 relative">
-                <button id="notification-btn" class="flex items-center justify-center rounded-full size-10 hover:bg-gray-100 dark:hover:bg-gray-800 text-[#111618] dark:text-white transition-colors relative" onclick="toggleNotifications()">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <span id="notification-badge" class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-[#1a2c35] hidden"></span>
-                </button>
-
-                <!-- Dropdown de Notificaciones -->
-                <div id="notification-dropdown" class="absolute top-12 right-0 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 hidden z-50 overflow-hidden">
-                    <div class="p-3 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
-                        <h3 class="font-bold text-sm text-[#111618] dark:text-white">Notificaciones</h3>
-                        <span class="text-xs text-primary font-medium cursor-pointer hover:underline" onclick="markAllRead()">Marcar leídas</span>
+                <div class="flex items-center gap-4 pb-4 border-b border-gray-100 dark:border-gray-700" onclick="openConfigModal()">
+                    <div class="size-14 rounded-full border-2 border-primary overflow-hidden">
+                        <img src="<?php echo $profile_image; ?>" class="w-full h-full object-cover" alt="Perfil">
                     </div>
-                    <div id="notification-list" class="max-h-[300px] overflow-y-auto">
-                        <!-- Items insertados vía JS -->
+                    <div>
+                        <p class="text-lg font-bold text-[#111618] dark:text-white">Mi Perfil</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Ver configuración</p>
                     </div>
                 </div>
 
-                <div onclick="openConfigModal()" class="rounded-full size-10 border-2 border-white dark:border-gray-700 shadow-sm cursor-pointer transition-transform hover:scale-105 overflow-hidden relative">
-                    <img src="<?php echo $profile_image; ?>" class="w-full h-full object-cover" referrerpolicy="no-referrer" alt="Perfil">
+                <div class="grid gap-4">
+                    <button onclick="toggleNotifications()" class="flex items-center justify-between w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <div class="flex items-center gap-3 text-[#111618] dark:text-white">
+                            <span class="material-symbols-outlined text-primary">notifications</span>
+                            <span class="font-medium">Notificaciones</span>
+                        </div>
+                        <span id="notification-badge-mobile" class="hidden px-2 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full">New</span>
+                    </button>
+
+                    <div class="flex items-center justify-between w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                        <div class="flex items-center gap-3 text-[#111618] dark:text-white">
+                            <span class="material-symbols-outlined text-primary">language</span>
+                            <span class="font-medium">Idioma</span>
+                        </div>
+                        <div class="flex bg-white dark:bg-gray-700 rounded-lg p-1 shadow-sm">
+                            <button onclick="changeLanguage('es')" class="px-4 py-1 text-xs font-bold rounded bg-primary text-white">ES</button>
+                            <button onclick="changeLanguage('en')" class="px-4 py-1 text-xs font-bold rounded text-gray-500 dark:text-gray-300">EN</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="../../auth/cerrar_sesion.php" class="flex items-center justify-center rounded-full size-10 hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-500 hover:text-red-600 transition-colors" title="Cerrar Sesión">
+
+                <a href="../../auth/cerrar_sesion.php" class="flex items-center justify-center w-full gap-2 p-3 text-red-600 bg-red-50 dark:bg-red-900/10 dark:text-red-400 font-bold rounded-xl transition-colors hover:bg-red-100 dark:hover:bg-red-900/30">
                     <span class="material-symbols-outlined">logout</span>
+                    <span>Cerrar Sesión</span>
                 </a>
             </div>
         </div>
     </header>
+
+    <div id="notification-dropdown" class="absolute top-20 right-4 md:right-10 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 hidden z-50 overflow-hidden">
+        <div class="p-3 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+            <h3 class="font-bold text-sm text-[#111618] dark:text-white">Notificaciones</h3>
+            <span class="text-xs text-primary font-medium cursor-pointer hover:underline" onclick="markAllRead()">Marcar leídas</span>
+        </div>
+        <div id="notification-list" class="max-h-[300px] overflow-y-auto">
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+
+            if (menu.classList.contains('hidden')) {
+                // Abrir menú
+                menu.classList.remove('hidden');
+                icon.textContent = 'close'; // Cambia ícono a X
+                // Bloquear scroll del body si quieres que no se mueva el fondo
+                // document.body.style.overflow = 'hidden'; 
+            } else {
+                // Cerrar menú
+                menu.classList.add('hidden');
+                icon.textContent = 'menu'; // Cambia ícono a hamburguesa
+                // document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Cerrar el menú si la pantalla cambia de tamaño (rotación de móvil a tablet, etc)
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                document.getElementById('mobile-menu').classList.add('hidden');
+                document.getElementById('menu-icon').textContent = 'menu';
+            }
+        });
+    </script>
+
 
     <main class="flex-1 w-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 py-8 space-y-8">
         <section id="welcome-section" class="flex flex-col gap-2">
@@ -248,15 +379,95 @@ if (!empty($_SESSION['imagen'])) {
                             Dejar una reseña
                         </button>
 
+                        <button type="button" onclick="toggleSugerenciaModal()"
+                            class="flex items-center justify-center rounded-lg h-12 px-6 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 text-base font-bold transition-all shadow-lg group">
+                            <span class="material-symbols-outlined group-hover:text-primary transition-colors">lightbulb</span>
+                            Dejar Sugerencia
+                        </button>
+
+                        <div id="modalSugerencia"
+                            class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-0 transition-all duration-300"
+                            role="dialog" aria-modal="true">
+
+                            <div id="modalBackdrop"
+                                class="fixed inset-0 bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+                                onclick="toggleSugerenciaModal()"></div>
+
+                            <div id="modalContent"
+                                class="relative transform scale-95 opacity-0 transition-all duration-300 w-full max-w-lg rounded-2xl bg-[#1a2c35] border border-white/10 shadow-2xl overflow-hidden">
+
+                                <form action="guardar_sugerencia.php" method="POST" class="m-0">
+                                    <div class="p-6">
+                                        <div class="sm:flex sm:items-start">
+                                            <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-yellow-400/10 sm:mx-0 sm:h-10 sm:w-10">
+                                                <span class="material-symbols-outlined text-yellow-400">lightbulb</span>
+                                            </div>
+                                            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                                                <h3 class="text-xl font-bold text-white">Tu opinión nos importa</h3>
+                                                <p class="text-sm text-gray-400 mt-1 mb-4">Ayúdanos a mejorar Santamarta Beachfront.</p>
+
+                                                <textarea name="mensaje" rows="4" required
+                                                    class="w-full rounded-xl bg-black/30 border border-white/10 text-white placeholder-gray-500 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 p-4 text-sm resize-none outline-none transition-all"
+                                                    placeholder="Escribe aquí tu sugerencia..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-black/40 px-6 py-4 flex flex-col-reverse sm:flex-row justify-end gap-3">
+                                        <button type="button" onclick="toggleSugerenciaModal()"
+                                            class="px-5 py-2.5 text-sm font-semibold text-white bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all">
+                                            Cancelar
+                                        </button>
+                                        <button type="submit"
+                                            class="px-5 py-2.5 text-sm font-bold text-black bg-yellow-400 rounded-lg hover:bg-yellow-300 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                                            Enviar Sugerencia
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <script>
+                            function toggleSugerenciaModal() {
+                                const modal = document.getElementById('modalSugerencia');
+                                const backdrop = document.getElementById('modalBackdrop');
+                                const content = document.getElementById('modalContent');
+
+                                if (modal.classList.contains('hidden')) {
+                                    // 1. Mostrar el contenedor (está invisible pero ocupa espacio)
+                                    modal.classList.remove('hidden');
+                                    modal.classList.add('flex');
+
+                                    // Evitar scroll en el fondo
+                                    document.body.style.overflow = 'hidden';
+
+                                    // 2. Pequeña pausa para activar la animación de entrada
+                                    setTimeout(() => {
+                                        backdrop.classList.replace('opacity-0', 'opacity-100');
+                                        content.classList.replace('opacity-0', 'opacity-100');
+                                        content.classList.replace('scale-95', 'scale-100');
+                                    }, 10);
+                                } else {
+                                    // 1. Iniciar animación de salida
+                                    backdrop.classList.replace('opacity-100', 'opacity-0');
+                                    content.classList.replace('opacity-100', 'opacity-0');
+                                    content.classList.replace('scale-100', 'scale-95');
+
+                                    // 2. Esperar a que termine la animación (300ms) antes de ocultar
+                                    setTimeout(() => {
+                                        modal.classList.replace('flex', 'hidden');
+                                        document.body.style.overflow = 'auto';
+                                    }, 300);
+                                }
+                            }
+                        </script>
+
                     </div>
                 </div>
             </div>
         </section>
 
-
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-
             <div class="lg:col-span-2 flex flex-col gap-6">
                 <div class="border-b border-[#dbe2e6] dark:border-gray-700">
                     <div class="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar">
@@ -674,8 +885,6 @@ if (!empty($_SESSION['imagen'])) {
                 window.location.reload();
             }
         });
-
-
 
         function switchTab(tab) {
             const upcomingContent = document.getElementById('upcoming-bookings');

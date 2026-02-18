@@ -160,6 +160,10 @@ $total_admins = mysqli_fetch_assoc($total_admins_res)['count'];
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">mail</span>
                     <span class="text-sm font-medium">PQR</span>
                 </a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/sugerencia.php">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">lightbulb</span>
+                    <span class="text-sm font-medium">Sugerencias</span>
+                </a>
                 <div class="pt-4 mt-4 border-t border-[#f0f3f4] dark:border-gray-800">
                     <p class="px-3 text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Sistema</p>
                     <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/configuracion.php">

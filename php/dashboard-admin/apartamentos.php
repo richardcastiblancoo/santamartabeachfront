@@ -195,6 +195,10 @@ include '../../auth/conexion_be.php';
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">mail</span>
                     <span class="text-sm font-medium">PQR</span>
                 </a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/sugerencia.php">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">lightbulb</span>
+                    <span class="text-sm font-medium">Sugerencias</span>
+                </a>
                 <div class="pt-4 mt-4 border-t border-[#f0f3f4] dark:border-gray-800">
                     <p class="px-3 text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Sistema</p>
                     <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/configuracion.php">
@@ -379,7 +383,7 @@ include '../../auth/conexion_be.php';
                                         <label class="text-xs font-semibold text-text-secondary">Descripción</label>
                                         <textarea class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white h-24 resize-none" placeholder="Describe las características principales..." name="descripcion" required></textarea>
                                     </div>
-                                    
+
                                     <div class="space-y-2 md:col-span-2">
                                         <label class="text-xs font-semibold text-text-secondary">Servicios y Amenidades</label>
                                         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 bg-background-light dark:bg-gray-800 p-4 rounded-lg h-64 overflow-y-auto">
