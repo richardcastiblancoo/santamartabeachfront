@@ -119,7 +119,15 @@ CREATE TABLE IF NOT EXISTS push_subscriptions (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-
+CREATE TABLE sugerencias (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT UNSIGNED NOT NULL, -- Agregamos UNSIGNED para que coincida
+    mensaje TEXT NOT NULL,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_usuario_sugerencia 
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) 
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
 
 

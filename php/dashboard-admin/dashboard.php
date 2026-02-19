@@ -141,6 +141,11 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">mail</span>
                     <span class="text-sm font-medium">PQR</span>
                 </a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/sugerencia.php">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">lightbulb</span>
+                    <span class="text-sm font-medium">Sugerencias</span>
+                </a>
+
                 <div class="pt-4 mt-4 border-t border-[#f0f3f4] dark:border-gray-800">
                     <p class="px-3 text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Sistema</p>
                     <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/configuracion.php">
@@ -153,6 +158,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                     </a>
                 </div>
             </div>
+            
             <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800">
                 <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
                     <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM'; ?>");'></div>
@@ -163,6 +169,7 @@ $pqr_res = $conn->query("SELECT p.*, u.nombre, u.apellido, u.imagen AS usuario_i
                 </div>
             </div>
         </aside>
+
         <div class="flex flex-col flex-1 min-w-0">
             <header class="h-16 bg-card-light dark:bg-card-dark border-b border-[#f0f3f4] dark:border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10">
                 <div class="flex items-center gap-4">

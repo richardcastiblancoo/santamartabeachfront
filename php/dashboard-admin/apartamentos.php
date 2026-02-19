@@ -195,6 +195,10 @@ include '../../auth/conexion_be.php';
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">mail</span>
                     <span class="text-sm font-medium">PQR</span>
                 </a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/sugerencia.php">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">lightbulb</span>
+                    <span class="text-sm font-medium">Sugerencias</span>
+                </a>
                 <div class="pt-4 mt-4 border-t border-[#f0f3f4] dark:border-gray-800">
                     <p class="px-3 text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Sistema</p>
                     <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-secondary hover:bg-background-light dark:hover:bg-gray-800 dark:text-gray-400 hover:text-text-main transition-colors group" href="/php/dashboard-admin/configuracion.php">
@@ -220,7 +224,7 @@ include '../../auth/conexion_be.php';
         <div class="flex flex-col flex-1 min-w-0 relative">
             <header class="h-16 bg-card-light dark:bg-card-dark border-b border-[#f0f3f4] dark:border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10">
                 <div class="flex items-center gap-4">
-                    <button class="md:hidden text-text-secondary hover:text-primary">
+                    <button onclick="toggleSidebar()" class="md:hidden text-text-secondary hover:text-primary">
                         <span class="material-symbols-outlined">menu</span>
                     </button>
                     <h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Apartamentos</h2>
@@ -379,7 +383,7 @@ include '../../auth/conexion_be.php';
                                         <label class="text-xs font-semibold text-text-secondary">Descripción</label>
                                         <textarea class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white h-24 resize-none" placeholder="Describe las características principales..." name="descripcion" required></textarea>
                                     </div>
-                                    
+
                                     <div class="space-y-2 md:col-span-2">
                                         <label class="text-xs font-semibold text-text-secondary">Servicios y Amenidades</label>
                                         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 bg-background-light dark:bg-gray-800 p-4 rounded-lg h-64 overflow-y-auto">
@@ -602,6 +606,33 @@ include '../../auth/conexion_be.php';
         document.getElementById('start-tour').addEventListener('click', () => {
             driverObj.drive();
         });
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('aside');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            // Si el sidebar tiene la clase 'hidden', lo mostramos
+            if (sidebar.classList.contains('hidden')) {
+                sidebar.classList.remove('hidden');
+                sidebar.classList.add('fixed', 'inset-y-0', 'left-0', 'z-50');
+
+                overlay.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                    overlay.classList.add('opacity-100');
+                }, 10);
+            } else {
+                // Si ya está visible, lo ocultamos
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('fixed', 'inset-y-0', 'left-0', 'z-50');
+
+                overlay.classList.add('opacity-0');
+                overlay.classList.remove('opacity-100');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+            }
+        }
     </script>
 </body>
 

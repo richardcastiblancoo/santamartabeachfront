@@ -139,3 +139,32 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+//-------------------------menu
+
+function toggleSidebar() {
+  const sidebar = document.querySelector("aside");
+  const overlay = document.getElementById("sidebar-overlay");
+
+  // Si el sidebar tiene la clase 'hidden', lo mostramos
+  if (sidebar.classList.contains("hidden")) {
+    sidebar.classList.remove("hidden");
+    sidebar.classList.add("fixed", "inset-y-0", "left-0", "z-50");
+
+    overlay.classList.remove("hidden");
+    setTimeout(() => {
+      overlay.classList.remove("opacity-0");
+      overlay.classList.add("opacity-100");
+    }, 10);
+  } else {
+    // Si ya está visible, lo ocultamos
+    sidebar.classList.add("hidden");
+    sidebar.classList.remove("fixed", "inset-y-0", "left-0", "z-50");
+
+    overlay.classList.add("opacity-0");
+    overlay.classList.remove("opacity-100");
+    setTimeout(() => {
+      overlay.classList.add("hidden");
+    }, 300);
+  }
+}
