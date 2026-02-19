@@ -1,24 +1,26 @@
 <?php
+
+/**
+ * Procesamiento de Reserva - Santamartabeachfront
+ * Maneja la subida de múltiples documentos, validación de fechas y envío de correos duales.
+ */
+
 session_start();
 include '../../auth/conexion_be.php';
 
-// --- NUEVA ADICIÓN PARA EL EMAIL ---
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Sube un nivel (sale de reserva-apartamento) y entra a PHPMailer
 require '../PHPMailer/Exception.php';
 require '../PHPMailer/PHPMailer.php';
 require '../PHPMailer/SMTP.php';
-// -----------------------------------
 
-// 1. Validar método de envío
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: /');
     exit;
 }
 
-// 2. Recibir y limpiar datos básicos
+// 1. Recibir y limpiar datos del formulario
 $id_apartamento = intval($_POST['id_apartamento']);
 $checkin         = $_POST['checkin'];
 $checkout        = $_POST['checkout'];
@@ -27,6 +29,7 @@ $children        = intval($_POST['children']);
 $infants         = intval($_POST['infants']);
 $guideDog        = intval($_POST['guideDog']);
 $total_price     = floatval($_POST['total_price']);
+$metodo_pago     = $_POST['metodo_pago'] ?? 'No especificado';
 $isEmbed         = isset($_POST['embed']) && $_POST['embed'] === '1';
 
 $nombre          = trim($_POST['nombre'] ?? '');
@@ -35,38 +38,36 @@ $email           = trim($_POST['email'] ?? '');
 $telefono        = trim($_POST['telefono'] ?? '');
 $cuenta_banco    = trim($_POST['cuenta_devolucion'] ?? '');
 
-// 3. Procesar Array de Huéspedes (Convertir lista a texto)
+// 2. Procesar Array de Huéspedes
 $lista_huespedes = isset($_POST['huespedes']) ? $_POST['huespedes'] : [];
 $huespedes_nombres = implode(", ", array_map('trim', $lista_huespedes));
 
-// 4. Manejo de la subida del Documento (ID/Pasaporte)
-$documento_ruta = "";
-$dir_subida = "../../uploads/documentos/"; 
-if (isset($_FILES['documento_id']) && $_FILES['documento_id']['error'] === UPLOAD_ERR_OK) {
-    
+// 3. Manejo de Múltiples Documentos (Fotos o PDFs)
+$documentos_subidos = [];
+$dir_subida = "../../uploads/documentos/";
+
+if (!empty($_FILES['documento_id']['name'][0])) {
     if (!file_exists($dir_subida)) {
         mkdir($dir_subida, 0777, true);
     }
 
-    $extension = pathinfo($_FILES['documento_id']['name'], PATHINFO_EXTENSION);
-    $nombre_archivo = "doc_" . time() . "_" . uniqid() . "." . $extension;
-    $ruta_final = $dir_subida . $nombre_archivo;
+    foreach ($_FILES['documento_id']['tmp_name'] as $key => $tmp_name) {
+        if ($_FILES['documento_id']['error'][$key] === UPLOAD_ERR_OK) {
+            $nombre_original = $_FILES['documento_id']['name'][$key];
+            $extension = pathinfo($nombre_original, PATHINFO_EXTENSION);
+            $nuevo_nombre = "reserva_" . time() . "_" . uniqid() . "." . $extension;
+            $ruta_dest = $dir_subida . $nuevo_nombre;
 
-    if (move_uploaded_file($_FILES['documento_id']['tmp_name'], $ruta_final)) {
-        $documento_ruta = $nombre_archivo;
+            if (move_uploaded_file($tmp_name, $ruta_dest)) {
+                $documentos_subidos[] = $nuevo_nombre;
+            }
+        }
     }
 }
+// Guardamos los nombres de archivos en la BD separados por comas
+$documento_ruta_db = implode(",", $documentos_subidos);
 
-// 5. Validación de fechas
-$checkin_dt = DateTime::createFromFormat('Y-m-d', $checkin);
-$checkout_dt = DateTime::createFromFormat('Y-m-d', $checkout);
-
-if (!$checkin_dt || !$checkout_dt || $checkout_dt <= $checkin_dt) {
-    header('Location: /?error=fechas_invalidas');
-    exit;
-}
-
-// 6. Validar disponibilidad real (Evitar Overbooking)
+// 4. Validación de disponibilidad (Evitar Overlap)
 $overlapStmt = $conn->prepare("SELECT COUNT(*) FROM reservas WHERE apartamento_id = ? AND estado <> 'cancelada' AND fecha_checkin < ? AND fecha_checkout > ?");
 $overlapStmt->bind_param('iss', $id_apartamento, $checkout, $checkin);
 $overlapStmt->execute();
@@ -80,40 +81,22 @@ if ($overlapCount > 0) {
     exit;
 }
 
-// 7. Insertar en la Base de Datos
+// 5. Insertar Registro en Base de Datos
 $estado = 'pendiente';
-
-$insertSql = "INSERT INTO reservas (
-        apartamento_id, 
-        nombre_cliente, 
-        apellido_cliente, 
-        email_cliente, 
-        telefono, 
-        huespedes_nombres, 
-        documento_ruta, 
-        cuenta_devolucion, 
-        fecha_checkin, 
-        fecha_checkout, 
-        adultos, 
-        ninos, 
-        bebes, 
-        perro_guia, 
-        precio_total, 
-        estado
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$insertSql = "INSERT INTO reservas (apartamento_id, nombre_cliente, apellido_cliente, email_cliente, telefono, huespedes_nombres, documento_ruta, cuenta_devolucion, fecha_checkin, fecha_checkout, adultos, ninos, bebes, perro_guia, precio_total, estado, metodo_pago) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $insertStmt = $conn->prepare($insertSql);
 
 if ($insertStmt) {
     $insertStmt->bind_param(
-        'isssssssssiiiids',
+        'isssssssssiiiidss',
         $id_apartamento,
         $nombre,
         $apellido,
         $email,
         $telefono,
         $huespedes_nombres,
-        $documento_ruta,
+        $documento_ruta_db,
         $cuenta_banco,
         $checkin,
         $checkout,
@@ -122,88 +105,99 @@ if ($insertStmt) {
         $infants,
         $guideDog,
         $total_price,
-        $estado
+        $estado,
+        $metodo_pago
     );
 
     if ($insertStmt->execute()) {
         $id_reserva = $conn->insert_id;
 
-        // --- BLOQUE DE ENVÍO DE EMAIL ACTUALIZADO ---
-        $mail = new PHPMailer(true);
+        // --- BLOQUE DE ENVÍO DE EMAIL ---
         try {
+            $mail = new PHPMailer(true);
             $mail->isSMTP();
             $mail->Host       = 'smtp.hostinger.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'richard_12345@santamartabeachfront.com'; 
-            $mail->Password   = 'Richardcastiblanco_1234567890';           
+            $mail->Username   = 'richard_12345@santamartabeachfront.com';
+            $mail->Password   = 'Richardcastiblanco_1234567890';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
             $mail->CharSet    = 'UTF-8';
 
-            $mail->setFrom('richard_12345@santamartabeachfront.com', 'Santa Marta Beachfront');
-            $mail->addAddress($email, "$nombre $apellido"); 
-            $mail->addAddress('richardcastiblanco4@gmail.com'); 
-
-            if (!empty($documento_ruta)) {
-                $mail->addAttachment($dir_subida . $documento_ruta, "ID_$apellido.jpg");
-            }
-
+            $mail->setFrom('richard_12345@santamartabeachfront.com', 'Santamartabeachfront');
             $mail->isHTML(true);
-            $mail->Subject = "Solicitud de Reserva #$id_reserva recibida - Santa Marta Beachfront";
-            
-            // Cuerpo del correo estilizado con toda la información solicitada
-            $mail->Body    = "
-            <div style='background-color: #f4f7f9; padding: 20px; font-family: Arial, sans-serif;'>
-                <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);'>
-                    <div style='background-color: #13a4ec; padding: 20px; text-align: center;'>
-                        <img src='https://santamartabeachfront.com/public/img/logo-def-Photoroom.png' alt='Santa Marta Beachfront' style='width: 150px;'>
+
+            // --- CORREO PARA EL HUÉSPED ---
+            $mail->addAddress($email, "$nombre $apellido");
+            $mail->Subject = "Solicitud Recibida - Apartamento 1730 Santamartabeachfront";
+            $mail->Body = "
+            <div style='background-color: #f4f7f9; padding: 20px; font-family: sans-serif;'>
+                <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 15px; border: 1px solid #e1e8ed;'>
+                    <div style='background-color: #0a2f42; padding: 25px; text-align: center;'>
+                        <img src='https://santamartabeachfront.com/public/img/logo-def-Photoroom.png' alt='Logo Santamartabeachfront' style='width: 140px;'>
                     </div>
                     <div style='padding: 30px;'>
-                        <h2 style='color: #333;'>¡Hola $nombre!</h2>
-                        <p style='color: #555;'>Hemos recibido tu solicitud para el <strong>Apartamento #$id_apartamento</strong>. Aquí tienes el resumen de la información proporcionada:</p>
+                        <h2 style='color: #0a2f42;'>¡Hola $nombre!</h2>
+                        <p>Gracias por elegir <strong>Santamartabeachfront</strong>. Hemos recibido tu solicitud para el <strong>Apartamento 1730</strong>.</p>
                         
-                        <div style='background-color: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;'>
-                            <h3 style='margin-top: 0; font-size: 16px; color: #13a4ec;'>Detalles de la Estadía</h3>
-                            <p style='margin: 5px 0; font-size: 14px;'><strong>Entrada:</strong> $checkin</p>
-                            <p style='margin: 5px 0; font-size: 14px;'><strong>Salida:</strong> $checkout</p>
-                            <p style='margin: 5px 0; font-size: 14px;'><strong>Total estimado:</strong> $" . number_format($total_price, 0, ',', '.') . "</p>
+                        <div style='background: #f8fafc; padding: 20px; border-radius: 10px; margin: 20px 0;'>
+                            <h3 style='margin-top:0; color: #13a4ec;'>Resumen de tu estancia:</h3>
+                            <p style='margin: 5px 0;'>📅 <strong>Check-in:</strong> $checkin</p>
+                            <p style='margin: 5px 0;'>📅 <strong>Check-out:</strong> $checkout</p>
+                            <p style='margin: 5px 0;'>👥 <strong>Huéspedes:</strong> " . ($adults + $children) . " personas</p>
+                            <p style='margin: 5px 0;'>💳 <strong>Método elegido:</strong> " . ucfirst($metodo_pago) . "</p>
+                            <p style='font-size: 18px; color: #0a2f42; font-weight: bold;'>Total: $" . number_format($total_price, 0, ',', '.') . "</p>
                         </div>
 
-                        <div style='margin-bottom: 20px;'>
-                            <h3 style='font-size: 16px; color: #13a4ec; border-bottom: 1px solid #eee; padding-bottom: 5px;'>Información de Contacto</h3>
-                            <p style='margin: 5px 0; font-size: 14px;'><strong>Email:</strong> $email</p>
-                            <p style='margin: 5px 0; font-size: 14px;'><strong>Teléfono:</strong> $telefono</p>
-                            <p style='margin: 5px 0; font-size: 14px;'><strong>Cuenta para Devolución:</strong> " . ($cuenta_banco ? $cuenta_banco : 'No especificada') . "</p>
-                        </div>
-
-                        <div style='margin-bottom: 20px;'>
-                            <h3 style='font-size: 16px; color: #13a4ec; border-bottom: 1px solid #eee; padding-bottom: 5px;'>Lista de Acompañantes</h3>
-                            <p style='margin: 5px 0; font-size: 14px; color: #555; line-height: 1.5;'>$huespedes_nombres</p>
-                        </div>
-
-                        <p style='color: #777; font-size: 13px; text-align: center;'>Revisaremos la información y nos contactaremos contigo pronto para confirmar la disponibilidad y el pago.</p>
-                    </div>
-                    <div style='background-color: #eee; padding: 10px; text-align: center; font-size: 11px; color: #999;'>
-                        Este es un correo automático, por favor no respondas a este mensaje.
+                        <p style='color: #4a5568;'><strong>¿Qué sigue?</strong> Nuestro equipo revisará la información y te contactará vía WhatsApp o correo para proporcionarte los datos de pago y confirmar tu reserva.</p>
+                        
+                        <p style='font-size: 12px; color: #94a3b8; margin-top: 30px;'>📍 Calle 22 # 1 - 67 Playa Salguero, Santa Marta, Colombia.</p>
                     </div>
                 </div>
             </div>";
+            $mail->send();
 
+            // --- CORREO PARA EL ADMINISTRADOR ---
+            $mail->clearAddresses();
+            $mail->addAddress('richard_12345@santamartabeachfront.com');
+            $mail->Subject = "NUEVA SOLICITUD #$id_reserva - Santamartabeachfront";
+
+            // Adjuntar todos los archivos subidos
+            foreach ($documentos_subidos as $doc) {
+                $mail->addAttachment($dir_subida . $doc);
+            }
+
+            $mail->Body = "
+            <div style='background-color: #fff5f5; padding: 20px; font-family: sans-serif;'>
+                <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 15px; border: 1px solid #feb2b2;'>
+                    <div style='background-color: #c53030; padding: 20px; text-align: center; color: white;'>
+                        <h1 style='margin:0; font-size: 18px;'>NUEVA RESERVA PENDIENTE</h1>
+                    </div>
+                    <div style='padding: 30px;'>
+                        <p><strong>Cliente:</strong> $nombre $apellido</p>
+                        <p><strong>Teléfono:</strong> $telefono</p>
+                        <p><strong>Método de Pago:</strong> <span style='color: #c53030; font-weight: bold;'>" . strtoupper($metodo_pago) . "</span></p>
+                        <p><strong>Acompañantes:</strong> $huespedes_nombres</p>
+                        <p><strong>Cuenta Reembolso:</strong> $cuenta_banco</p>
+                        <hr>
+                        <p><strong>Fechas:</strong> $checkin al $checkout</p>
+                        <p><strong>Total a cobrar:</strong> $" . number_format($total_price, 0, ',', '.') . "</p>
+                        
+                        <div style='text-align: center; margin-top: 25px;'>
+                            <a href='https://wa.me/57$telefono' style='background-color: #25d366; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;'>Hablar con Cliente por WhatsApp</a>
+                        </div>
+                    </div>
+                </div>
+            </div>";
             $mail->send();
         } catch (Exception $e) {
-            error_log("Error enviando correo: " . $mail->ErrorInfo);
+            error_log("Error de PHPMailer: " . $mail->ErrorInfo);
         }
-        // --- FIN BLOQUE DE EMAIL ---
 
         $embedParam = $isEmbed ? '&embed=1' : '';
         header("Location: reserva_exitosa.php?id=$id_reserva$embedParam");
         exit;
-    } else {
-        die("Error al guardar: " . $insertStmt->error);
     }
-} else {
-    die("Error en SQL: " . $conn->error);
 }
-
 $conn->close();
 ?>

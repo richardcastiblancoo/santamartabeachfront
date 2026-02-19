@@ -41,7 +41,7 @@ $noches = $fecha_inicio->diff($fecha_fin)->days;
 
 $basePrice = $apartamento['precio'];
 $subtotal = $basePrice * $noches;
-$cleaningFee = 80000; // La tarifa que mencionas
+$cleaningFee = 80000;
 $total = $subtotal + $cleaningFee;
 ?>
 
@@ -51,7 +51,7 @@ $total = $subtotal + $cleaningFee;
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reserva Segura - Santamartabeachfront</title>
+    <title>Reserva Segura - Apartamento 1730 reserva del mar 1</title>
     <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -116,10 +116,10 @@ $total = $subtotal + $cleaningFee;
             </button>
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2 bg-white dark:bg-slate-800 p-1.5 rounded-full shadow-sm border border-slate-100 dark:border-slate-700">
-                    <img src="https://flagcdn.com/w40/co.png" onclick="setLanguage('es')" id="btn-es" class="lang-btn active w-6 h-4 object-cover rounded-sm" title="Español">
-                    <img src="https://flagcdn.com/w40/us.png" onclick="setLanguage('en')" id="btn-en" class="lang-btn w-6 h-4 object-cover rounded-sm" title="English">
+                    <img src="https://flagcdn.com/w40/co.png" onclick="setLanguage('es')" id="btn-es" class="lang-btn active w-6 h-4 object-cover rounded-sm">
+                    <img src="https://flagcdn.com/w40/us.png" onclick="setLanguage('en')" id="btn-en" class="lang-btn w-6 h-4 object-cover rounded-sm">
                 </div>
-                <span class="text-xs font-black uppercase tracking-widest opacity-50" data-key="title_main">Solicitud de Reserva</span>
+                <span class="text-xs font-black uppercase tracking-widest opacity-50">Apartamento 1730 reserva del mar 1</span>
             </div>
         </div>
 
@@ -158,22 +158,22 @@ $total = $subtotal + $cleaningFee;
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div class="space-y-2">
                                     <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_name">Nombre</label>
-                                    <input type="text" name="nombre" required class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="...">
+                                    <input type="text" name="nombre" required class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4">
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_lastname">Apellido</label>
-                                    <input type="text" name="apellido" required class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="...">
+                                    <input type="text" name="apellido" required class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4">
                                 </div>
                             </div>
                             <div class="space-y-2">
                                 <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_email">Correo Electrónico</label>
-                                <input type="email" name="email" required class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="...">
+                                <input type="email" name="email" required class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_phone">Teléfono</label>
                                 <div class="flex">
                                     <span class="inline-flex items-center px-4 rounded-l-2xl border border-r-0 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-500 font-bold">+57</span>
-                                    <input type="tel" name="telefono" required class="w-full rounded-r-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="300 123 4567">
+                                    <input type="tel" name="telefono" required class="w-full rounded-r-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4">
                                 </div>
                             </div>
                             <button type="button" onclick="nextStep(2)" class="w-full py-5 bg-primary text-white rounded-2xl font-black shadow-lg" data-key="btn_next">Siguiente Paso</button>
@@ -199,27 +199,46 @@ $total = $subtotal + $cleaningFee;
 
                     <div class="tab-content" id="step3">
                         <div class="bg-white dark:bg-slate-900 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-xl space-y-8">
-                            <h2 class="text-2xl font-black" data-key="h2_security">Garantía y Seguridad</h2>
+                            <h2 class="text-2xl font-black" data-key="h2_security">Garantía y Pago</h2>
+
+                            <div class="space-y-4">
+                                <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_payment_method">¿Cómo prefieres pagar tu reserva?</label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <label class="flex items-center gap-3 p-4 border rounded-2xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700">
+                                        <input type="radio" name="metodo_pago" value="efectivo" required class="text-primary focus:ring-primary">
+                                        <span class="text-sm font-bold" data-key="pay_cash_only">Efectivo</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 p-4 border rounded-2xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700">
+                                        <input type="radio" name="metodo_pago" value="transferencia" class="text-primary focus:ring-primary">
+                                        <span class="text-sm font-bold" data-key="pay_transfer">Transferencia</span>
+                                    </label>
+                                </div>
+                            </div>
+
                             <div class="space-y-6">
                                 <div class="bg-blue-50 dark:bg-blue-900/10 p-5 rounded-2xl border border-blue-100 dark:border-blue-800 flex gap-4">
                                     <span class="material-symbols-outlined text-primary">info</span>
-                                    <p class="text-[11px] text-blue-700 dark:text-blue-300 leading-relaxed">
-                                        <strong data-key="notice_bold">AVISO DE NO PAGO:</strong> <span data-key="notice_text">Tu reserva se enviará como una solicitud. Coordinaremos el pago directamente.</span>
+                                    <p class="text-[11px] text-blue-700 dark:text-blue-300">
+                                        <strong data-key="notice_bold">IMPORTANTE:</strong> <span data-key="notice_text">Al enviar esta solicitud, nos comunicaremos contigo para enviarte los datos según tu método de pago elegido.</span>
                                     </p>
                                 </div>
+
                                 <div class="space-y-3">
-                                    <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_id_photo">Foto Cédula o Pasaporte</label>
-                                    <div class="relative border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl p-8 text-center hover:border-primary">
-                                        <input type="file" name="documento_id" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                    <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_id_photo">Foto Cédula o Pasaporte (puedes subir varios archivos o PDF)</label>
+                                    <div class="relative border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl p-8 text-center hover:border-primary transition-colors">
+                                        <input type="file" name="documento_id[]" required multiple accept="image/*,.pdf" onchange="updateFileList(this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                                         <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">cloud_upload</span>
-                                        <p class="text-xs text-slate-400 font-bold" data-key="file_upload_text">Sube tu documento aquí</p>
+                                        <p class="text-xs text-slate-400 font-bold" id="file-label" data-key="file_upload_text">Sube tus documentos aquí</p>
+                                        <div id="file-list" class="mt-2 text-[10px] text-primary font-bold"></div>
                                     </div>
                                 </div>
+
                                 <div class="space-y-2">
                                     <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_bank">Cuenta para devolución de depósito</label>
-                                    <input type="text" name="cuenta_devolucion" class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="...">
+                                    <input type="text" name="cuenta_devolucion" class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="Ej: Ahorros Bancolombia #...">
                                 </div>
                             </div>
+
                             <div class="flex gap-4">
                                 <button type="button" onclick="nextStep(2)" class="flex-1 py-5 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold" data-key="btn_back_2">Atrás</button>
                                 <button type="submit" class="flex-[2] py-5 bg-green-600 text-white rounded-2xl font-black shadow-lg" data-key="btn_submit">Enviar Mi Reserva</button>
@@ -231,10 +250,10 @@ $total = $subtotal + $cleaningFee;
 
             <div class="lg:col-span-1">
                 <div class="sticky top-10 space-y-6">
-                    <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-xl overflow-hidden">
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-xl">
                         <img src="/assets/img/apartamentos/<?php echo $apartamento['imagen_principal']; ?>" class="w-full h-44 object-cover rounded-2xl mb-6">
                         <div class="space-y-4">
-                            <h3 class="font-black text-lg leading-tight"><?php echo $apartamento['titulo']; ?></h3>
+                            <h3 class="font-black text-lg leading-tight">Apartamento 1730 reserva del mar 1</h3>
                             <div class="py-4 border-y border-slate-50 dark:border-slate-800 space-y-3">
                                 <div class="flex justify-between text-xs font-bold">
                                     <span class="text-slate-400" data-key="summary_arrival">Llegada</span>
@@ -244,23 +263,16 @@ $total = $subtotal + $cleaningFee;
                                     <span class="text-slate-400" data-key="summary_departure">Salida</span>
                                     <span><?php echo date('d M, Y', strtotime($checkout)); ?></span>
                                 </div>
-                                <div class="flex justify-between text-xs font-bold">
-                                    <span class="text-slate-400" data-key="summary_guests">Huéspedes</span>
-                                    <span><?php echo ($adults + $children); ?> pers.</span>
-                                </div>
                             </div>
-
                             <div class="space-y-3">
                                 <div class="flex justify-between text-sm">
                                     <span class="text-slate-400">$<?php echo number_format($basePrice, 0, ',', '.'); ?> x <?php echo $noches; ?> <span data-key="summary_nights">noches</span></span>
                                     <span class="font-bold">$<?php echo number_format($subtotal, 0, ',', '.'); ?></span>
                                 </div>
-
                                 <div class="flex justify-between text-sm">
                                     <span class="text-slate-400" data-key="summary_cleaning">Tarifa de limpieza</span>
                                     <span class="font-bold">$<?php echo number_format($cleaningFee, 0, ',', '.'); ?></span>
                                 </div>
-
                                 <div class="flex justify-between pt-4 font-black text-2xl text-primary border-t border-slate-50 dark:border-slate-800">
                                     <span data-key="summary_total">Total</span>
                                     <span>$<?php echo number_format($total, 0, ',', '.'); ?></span>
@@ -277,7 +289,6 @@ $total = $subtotal + $cleaningFee;
         const translations = {
             es: {
                 btn_back_nav: "Regresar",
-                title_main: "Solicitud de Reserva",
                 step_1: "Contacto",
                 step_2: "Acompañantes",
                 step_3: "Garantía",
@@ -291,17 +302,19 @@ $total = $subtotal + $cleaningFee;
                 p_guests_desc: "Escribe el nombre completo de cada persona.",
                 btn_back: "Atrás",
                 btn_continue: "Continuar",
-                h2_security: "Garantía y Seguridad",
-                notice_bold: "AVISO DE NO PAGO:",
-                notice_text: "Tu reserva se enviará como una solicitud. Coordinaremos el pago directamente.",
-                label_id_photo: "Foto Cédula o Pasaporte",
-                file_upload_text: "Sube tu documento aquí",
+                h2_security: "Garantía y Pago",
+                label_payment_method: "¿Cómo prefieres pagar tu reserva?",
+                pay_cash_only: "Efectivo",
+                pay_transfer: "Transferencia Bancaria",
+                notice_bold: "IMPORTANTE:",
+                notice_text: "Al enviar esta solicitud, nos comunicaremos contigo para enviarte los datos según tu método de pago elegido.",
+                label_id_photo: "Foto Cédula o Pasaporte (múltiple o PDF)",
+                file_upload_text: "Sube tus documentos aquí",
                 label_bank: "Cuenta para devolución de depósito",
                 btn_back_2: "Atrás",
                 btn_submit: "Enviar Mi Reserva",
                 summary_arrival: "Llegada",
                 summary_departure: "Salida",
-                summary_guests: "Huéspedes",
                 summary_nights: "noches",
                 summary_cleaning: "Tarifa de limpieza",
                 summary_total: "Total",
@@ -309,7 +322,6 @@ $total = $subtotal + $cleaningFee;
             },
             en: {
                 btn_back_nav: "Back",
-                title_main: "Booking Request",
                 step_1: "Contact",
                 step_2: "Guests",
                 step_3: "Guarantee",
@@ -323,17 +335,19 @@ $total = $subtotal + $cleaningFee;
                 p_guests_desc: "Write the full name of each person.",
                 btn_back: "Back",
                 btn_continue: "Continue",
-                h2_security: "Security & Guarantee",
-                notice_bold: "NO PAYMENT NOTICE:",
-                notice_text: "Your reservation is a request. We will coordinate payment directly.",
-                label_id_photo: "ID or Passport Photo",
-                file_upload_text: "Upload your document here",
+                h2_security: "Payment & Guarantee",
+                label_payment_method: "How would you like to pay?",
+                pay_cash_only: "Cash",
+                pay_transfer: "Bank Transfer",
+                notice_bold: "IMPORTANT:",
+                notice_text: "After sending this request, we will contact you with the payment details based on your selection.",
+                label_id_photo: "ID or Passport Photo (Multiple or PDF)",
+                file_upload_text: "Upload your documents here",
                 label_bank: "Account for deposit refund",
                 btn_back_2: "Back",
                 btn_submit: "Send My Booking",
                 summary_arrival: "Arrival",
                 summary_departure: "Departure",
-                summary_guests: "Guests",
                 summary_nights: "nights",
                 summary_cleaning: "Cleaning fee",
                 summary_total: "Total",
@@ -377,6 +391,18 @@ $total = $subtotal + $cleaningFee;
                 </button>
             `;
             container.appendChild(newRow);
+        }
+
+        function updateFileList(input) {
+            const list = document.getElementById('file-list');
+            const label = document.getElementById('file-label');
+            if (input.files.length > 0) {
+                label.innerText = input.files.length + " archivo(s) seleccionado(s)";
+                list.innerHTML = Array.from(input.files).map(f => `<div>• ${f.name}</div>`).join('');
+            } else {
+                label.innerText = translations[localStorage.getItem('preferredLang') || 'es'].file_upload_text;
+                list.innerHTML = "";
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => setLanguage(localStorage.getItem('preferredLang') || 'es'));
