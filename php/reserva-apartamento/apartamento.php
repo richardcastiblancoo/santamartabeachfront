@@ -39,10 +39,10 @@ if ($id_apartamento > 0) {
     if ($apartamento) {
         // 2. Consultar Reseñas / Query Reviews
         $stmt_res = $conn->prepare("SELECT r.*, u.nombre, u.apellido, u.imagen
-                                    FROM resenas r
-                                    LEFT JOIN usuarios u ON r.usuario_id = u.id
-                                    WHERE r.apartamento_id = ?
-                                    ORDER BY r.fecha_creacion DESC");
+                            FROM resenas r
+                            LEFT JOIN usuarios u ON r.usuario_id = u.id
+                            WHERE r.apartamento_id = ?
+                            ORDER BY r.id DESC"); // Ordena por el ID de la reseña
         $stmt_res->bind_param("i", $id_apartamento);
         $stmt_res->execute();
         $result_resenas = $stmt_res->get_result();
