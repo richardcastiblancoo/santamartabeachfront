@@ -6,9 +6,10 @@ include '../../auth/conexion_be.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require '../../libs/PHPMailer/src/Exception.php';
-require '../../libs/PHPMailer/src/PHPMailer.php';
-require '../../libs/PHPMailer/src/SMTP.php';
+// Sube un nivel (sale de reserva-apartamento) y entra a PHPMailer
+require '../PHPMailer/Exception.php';
+require '../PHPMailer/PHPMailer.php';
+require '../PHPMailer/SMTP.php';
 // -----------------------------------
 
 // 1. Validar método de envío
@@ -42,7 +43,7 @@ $huespedes_nombres = implode(", ", array_map('trim', $lista_huespedes));
 $documento_ruta = "";
 if (isset($_FILES['documento_id']) && $_FILES['documento_id']['error'] === UPLOAD_ERR_OK) {
     $dir_subida = "../../uploads/documentos/";
-    
+
     if (!file_exists($dir_subida)) {
         mkdir($dir_subida, 0777, true);
     }
@@ -52,7 +53,7 @@ if (isset($_FILES['documento_id']) && $_FILES['documento_id']['error'] === UPLOA
     $ruta_final = $dir_subida . $nombre_archivo;
 
     if (move_uploaded_file($_FILES['documento_id']['tmp_name'], $ruta_final)) {
-        $documento_ruta = $nombre_archivo; 
+        $documento_ruta = $nombre_archivo;
     }
 }
 
@@ -105,7 +106,7 @@ $insertStmt = $conn->prepare($insertSql);
 
 if ($insertStmt) {
     $insertStmt->bind_param(
-        'isssssssssiiiids', 
+        'isssssssssiiiids',
         $id_apartamento,
         $nombre,
         $apellido,
@@ -176,4 +177,3 @@ if ($insertStmt) {
 }
 
 $conn->close();
-?>
