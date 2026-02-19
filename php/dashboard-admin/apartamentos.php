@@ -244,12 +244,12 @@ include '../../auth/conexion_be.php';
                             <p class="text-text-secondary text-sm mt-1">Gestiona los detalles, precios, multimedia y disponibilidad.</p>
                         </div>
                         <div class="flex gap-3">
-                            <!-- boton de agregar apartamento eliminado temporalmente
+                           
                             <a class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-primary/30" href="#apartment-modal" onclick="limpiarFormulario()">
                                 <span class="material-symbols-outlined text-xl">add</span>
                                 <span>Añadir Nuevo</span>
                             </a>
-                            -->
+                          
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-4">
@@ -370,7 +370,7 @@ include '../../auth/conexion_be.php';
                                         <label class="text-xs font-semibold text-text-secondary">Precio por Noche</label>
                                         <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Ej: 450000" type="number" name="precio" required />
                                     </div>
-                                    <!-- 
+                                    
                                     <div class="space-y-2 md:col-span-2">
                                         <label class="text-xs font-semibold text-text-secondary">Ubicación</label>
                                         <div class="relative">
@@ -378,7 +378,7 @@ include '../../auth/conexion_be.php';
                                             <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Ej: Edificio Rodadero Real, Piso 12" type="text" name="ubicacion" required />
                                         </div>
                                     </div>
-                                    -->
+                                   
                                     <div class="space-y-2 md:col-span-2">
                                         <label class="text-xs font-semibold text-text-secondary">Descripción</label>
                                         <textarea class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white h-24 resize-none" placeholder="Describe las características principales..." name="descripcion" required></textarea>

@@ -144,7 +144,7 @@
                     </video>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                     <div class="absolute bottom-8 left-8">
-                        <h3 class="text-3xl font-bold text-white tracking-tighter">Reserva del Mar <span class="text-blue-400">Torre 4</span></h3>
+                        <h3 class="text-3xl font-bold text-white tracking-tighter">Reserva del Mar 1 <span class="text-blue-400">Torre 4</span></h3>
                         <p class="text-white/60 text-xs font-bold uppercase tracking-widest mt-2" data-i18n="click-expand">Click para ampliar video</p>
                     </div>
                 </div>

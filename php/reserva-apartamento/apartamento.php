@@ -125,7 +125,6 @@ if ($id_apartamento > 0) {
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
-
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="/js/apartamento-main.js"></script>
@@ -285,183 +284,85 @@ if ($id_apartamento > 0) {
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 py-10">
                 <div class="lg:col-span-2">
                     <div class="border-b border-slate-200 dark:border-slate-800 pb-6 mb-8">
-                        <h2 class="text-2xl font-bold mb-2">
-                            <span data-i18n="Alojamiento entero">Alojamiento entero</span>: <span data-i18n="vivienda rentada en Playa Salguero, Colombia">vivienda rentada en Playa Salguero, Colombia</span>
-                        </h2>
-                        <p class="text-[#617c89] dark:text-slate-400">
-                            8 <span data-i18n="huéspedes">huéspedes</span> · 3 <span data-i18n="habitaciones">habitaciones</span> · 6 <span data-i18n="camas">camas</span> · 2 <span data-i18n="baños">baños</span>
-                        </p>
+                        <h2 class="text-2xl font-bold mb-2">Alojamiento Completo: <?php echo $apartamento['titulo']; ?></h2>
+                        <p class="text-[#617c89] dark:text-slate-400"><?php echo $apartamento['capacidad']; ?> Huéspedes · <?php echo $apartamento['habitaciones']; ?> habitaciones · 6 camas <?php echo $apartamento['banos']; ?> Baños</p>
                     </div>
-
                     <section class="mb-10">
-                        <h3 class="text-xl font-bold mb-4" data-i18n="Sobre este apartamento">Sobre este apartamento</h3>
+                        <h3 class="text-xl font-bold mb-4">Sobre este apartamento</h3>
                         <p class="text-[#4b5563] dark:text-slate-300 leading-relaxed">
-                            <span data-i18n="Nueva torre residencial privada frente a la playa que alberga un hermoso y espacioso apartamento con 3 dormitorios, 2 baños completos, un balcón con vistas a la playa y a la montaña en el piso 17, en una tranquila, acogedora y agradable Playa Salguero en Santa Marta - Zona Sur Rodadero. ¡Trae a toda la familia, amigos o invitados especiales y disfruta de muchas actividades divertidas! Puede alojar cómodamente a 6 (seis) huéspedes y hasta 8 (ocho) personas. Tiene camas nido o camas deslizantes en cada dormitorio más un sofá cama. ¡Bienvenido!">
-                                Nueva torre residencial privada frente a la playa que alberga un hermoso y espacioso apartamento con 3 dormitorios, 2 baños completos, un balcón con vistas a la playa y a la montaña en el piso 17, en una tranquila, acogedora y agradable Playa Salguero en Santa Marta - Zona Sur Rodadero. ¡Trae a toda la familia, amigos o invitados especiales y disfruta de muchas actividades divertidas! Puede alojar cómodamente a 6 (seis) huéspedes y hasta 8 (ocho) personas. Tiene camas nido o camas deslizantes en cada dormitorio más un sofá cama. ¡Bienvenido!
-                            </span>
-                            <br>
-                            <span data-i18n="El espacio">El espacio</span>
-                            <br>
-                            <span data-i18n="Ideal para una familia de 6 a 8 personas, grupos y parejas.">Ideal para una familia de 6 a 8 personas, grupos y parejas.</span>
-                            <br>
-                            <span data-i18n="¡Totalmente equipado con todo lo que necesitas y esperas en un entorno moderno en cualquier parte del mundo! Este es un complejo de condominios privado frente a la playa. La torre 4 es la más nueva y está más cerca de la playa. ¡Bienvenido y disfruta de tu visita a Santa Marta!">
-                                ¡Totalmente equipado con todo lo que necesitas y esperas en un entorno moderno en cualquier parte del mundo! Este es un complejo de condominios privado frente a la playa. La torre 4 es la más nueva y está más cerca de la playa. ¡Bienvenido y disfruta de tu visita a Santa Marta!
-                            </span>
+                            <?php echo nl2br($apartamento['descripcion']); ?>
                         </p>
                     </section>
 
                     <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
-                        <h3 class="text-xl font-bold mb-6" data-i18n="Lo que este lugar ofrece">Lo que este lugar ofrece</h3>
+                        <h3 class="text-xl font-bold mb-6">Lo que este lugar ofrece</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <?php
+                            if (!empty($apartamento['servicios'])) {
+                                $servicios = json_decode($apartamento['servicios'], true);
 
-                        <div id="amenities-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                                $iconMap = [
+                                    "Acomodación y dormitorios" => "bed",
+                                    "Entretenimiento" => "theater_comedy",
+                                    "Aire acondicionado" => "ac_unit",
+                                    "Vistas panorámicas" => "panorama",
+                                    "Agua caliente" => "water_drop",
+                                    "Amenities" => "soap",
+                                    "Lavadora y Secadora" => "local_laundry_service",
+                                    "Atención 24/7" => "support_agent",
+                                    "Seguridad 24/7" => "local_police",
+                                    "Coworking" => "work",
+                                    "Wifi" => "wifi",
+                                    "Televisión" => "tv",
+                                    "Gimnasio" => "fitness_center",
+                                    "Piscinas" => "pool",
+                                    "Vista a la bahía" => "water",
+                                    "Vista a la playa" => "beach_access",
+                                    "Vista a las montañas" => "landscape",
+                                    "Vista al mar" => "sailing",
+                                    "Beneficios para huéspedes" => "loyalty",
+                                    "Admitimos mascotas" => "pets",
+                                    "Estadías largas" => "calendar_month",
+                                    "Limpieza (cargo adicional)" => "cleaning_services",
+                                    "Estacionamiento gratuito" => "local_parking",
+                                    "Cafe · Bar Piso 1" => "coffee",
+                                    "Cafetería Piso 18" => "coffee_maker",
+                                    "Servicio de restaurantes" => "restaurant",
+                                    "Check in 15:00 - 18:00 Hr" => "login",
+                                    "Check out 11:00 Hr" => "logout",
+                                    "Horas de silencio 23:00 - 7:00 Hr" => "volume_off"
+                                ];
 
-                            <div class="flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">bed</span>
-                                <span class="text-base" data-i18n="Acomodación y dormitorios">Acomodación y dormitorios</span>
-                            </div>
-                            <div class="flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">theater_comedy</span>
-                                <span class="text-base" data-i18n="Entretenimiento">Entretenimiento</span>
-                            </div>
-                            <div class="flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">ac_unit</span>
-                                <span class="text-base" data-i18n="Aire acondicionado">Aire acondicionado</span>
-                            </div>
-                            <div class="flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">panorama</span>
-                                <span class="text-base" data-i18n="Vistas panorámicas">Vistas panorámicas</span>
-                            </div>
-                            <div class="flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">water_drop</span>
-                                <span class="text-base" data-i18n="Agua caliente">Agua caliente</span>
-                            </div>
-                            <div class="flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">soap</span>
-                                <span class="text-base" data-i18n="Amenities">Amenities</span>
-                            </div>
-                            <div class="flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">local_laundry_service</span>
-                                <span class="text-base" data-i18n="Lavadora y Secadora">Lavadora y Secadora</span>
-                            </div>
-                            <div class="flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">support_agent</span>
-                                <span class="text-base" data-i18n="Atención 24/7">Atención 24/7</span>
-                            </div>
-                            <div class="flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">local_police</span>
-                                <span class="text-base" data-i18n="Seguridad 24/7">Seguridad 24/7</span>
-                            </div>
-                            <div class="flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">work</span>
-                                <span class="text-base" data-i18n="Coworking">Coworking</span>
-                            </div>
+                                if (is_array($servicios)) {
+                                    $count = 0;
+                                    foreach ($servicios as $servicio) {
+                                        $count++;
+                                        $hiddenClass = ($count > 8) ? 'hidden service-item-extra' : '';
+                                        $icono = isset($iconMap[$servicio]) ? $iconMap[$servicio] : 'check_circle';
+                            ?>
+                                        <div class="flex items-center gap-4 py-2 <?php echo $hiddenClass; ?>">
+                                            <span class="material-symbols-outlined text-primary text-2xl"><?php echo $icono; ?></span>
+                                            <span class="text-base font-medium"><?php echo $servicio; ?></span>
+                                        </div>
+                                    <?php
+                                    }
 
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">wifi</span>
-                                <span class="text-base" data-i18n="Wifi">Wifi</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">tv</span>
-                                <span class="text-base" data-i18n="Televisión">Televisión</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">fitness_center</span>
-                                <span class="text-base" data-i18n="Gimnasio">Gimnasio</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">pool</span>
-                                <span class="text-base" data-i18n="Piscinas">Piscinas</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">water</span>
-                                <span class="text-base" data-i18n="Vista a la bahía">Vista a la bahía</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">beach_access</span>
-                                <span class="text-base" data-i18n="Vista a la playa">Vista a la playa</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">landscape</span>
-                                <span class="text-base" data-i18n="Vista a las montañas">Vista a las montañas</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">sailing</span>
-                                <span class="text-base" data-i18n="Vista al mar">Vista al mar</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">loyalty</span>
-                                <span class="text-base" data-i18n="Beneficios para huéspedes">Beneficios para huéspedes</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">pets</span>
-                                <span class="text-base" data-i18n="Admitimos mascotas">Admitimos mascotas</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">calendar_month</span>
-                                <span class="text-base" data-i18n="Estadías largas">Estadías largas</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">cleaning_services</span>
-                                <span class="text-base" data-i18n="Limpieza (cargo adicional)">Limpieza (cargo adicional)</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">local_parking</span>
-                                <span class="text-base" data-i18n="Estacionamiento gratuito">Estacionamiento gratuito</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">coffee</span>
-                                <span class="text-base" data-i18n="Cafe · Bar Piso 1">Cafe · Bar Piso 1</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">coffee_maker</span>
-                                <span class="text-base" data-i18n="Cafetería Piso 18">Cafetería Piso 18</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">restaurant</span>
-                                <span class="text-base" data-i18n="Servicio de restaurantes">Servicio de restaurantes</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">login</span>
-                                <span class="text-base" data-i18n="Check in 15:00 - 18:00 Hr">Check in 15:00 - 18:00 Hr</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">logout</span>
-                                <span class="text-base" data-i18n="Check out 11:00 Hr">Check out 11:00 Hr</span>
-                            </div>
-                            <div class="hidden-amenity hidden flex items-center gap-4 py-1">
-                                <span class="material-symbols-outlined text-2xl">volume_off</span>
-                                <span class="text-base" data-i18n="Horas de silencio 23:00 - 7:00 Hr">Horas de silencio 23:00 - 7:00 Hr</span>
-                            </div>
-                        </div>
-
-                        <button id="btn-show-more" onclick="toggleAmenities()" class="px-6 py-3 border border-black dark:border-white rounded-lg font-semibold hover:bg-gray-100 dark:hover:bg-slate-800 transition-all" data-i18n="Mostrar más">
-                            Mostrar más
-                        </button>
-                    </section>
-
-                    <script>
-                        function toggleAmenities() {
-                            const hiddenItems = document.querySelectorAll('.hidden-amenity');
-                            const btn = document.getElementById('btn-show-more');
-                            const lang = localStorage.getItem('preferredLang') || 'es';
-
-                            hiddenItems.forEach(item => {
-                                item.classList.toggle('hidden');
-                            });
-
-                            if (btn.getAttribute('data-i18n') === 'Mostrar más') {
-                                btn.setAttribute('data-i18n', 'Mostrar menos');
+                                    if (count($servicios) > 8) {
+                                    ?>
+                                        <div class="md:col-span-2 mt-4">
+                                            <button id="toggle-services-btn" onclick="toggleServices()" class="border border-slate-900 dark:border-white text-slate-900 dark:text-white px-6 py-2.5 rounded-lg font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm tracking-wide">
+                                                Mostrar más
+                                            </button>
+                                        </div>
+                            <?php
+                                    }
+                                }
                             } else {
-                                btn.setAttribute('data-i18n', 'Mostrar más');
+                                echo '<p class="text-slate-500">No hay servicios especificados.</p>';
                             }
-                            // Re-aplicar traducciones para actualizar el texto del botón
-                            if (typeof applyTranslations === 'function') {
-                                applyTranslations(lang);
-                            }
-                        }
-                    </script>
-
-
+                            ?>
+                        </div>
+                    </section>
 
                     <!-- reseñas -->
                     <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
@@ -539,7 +440,6 @@ if ($id_apartamento > 0) {
                             </div>
                         <?php endif; ?>
                     </section>
-
 
                     <!-- inicio del del mapa -->
                     <section class="pt-8 border-t border-slate-200 dark:border-slate-800">
