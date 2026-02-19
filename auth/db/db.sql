@@ -70,6 +70,8 @@ CREATE TABLE IF NOT EXISTS reservas (
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_reserva_apto FOREIGN KEY (apartamento_id) REFERENCES apartamentos(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ALTER TABLE reservas ADD COLUMN metodo_pago VARCHAR(50) DEFAULT 'No especificado';
+
 
 -- 6. Tabla de Reseñas
 CREATE TABLE IF NOT EXISTS resenas (
