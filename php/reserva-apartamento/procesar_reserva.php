@@ -41,9 +41,9 @@ $huespedes_nombres = implode(", ", array_map('trim', $lista_huespedes));
 
 // 4. Manejo de la subida del Documento (ID/Pasaporte)
 $documento_ruta = "";
+$dir_subida = "../../uploads/documentos/"; 
 if (isset($_FILES['documento_id']) && $_FILES['documento_id']['error'] === UPLOAD_ERR_OK) {
-    $dir_subida = "../../uploads/documentos/";
-
+    
     if (!file_exists($dir_subida)) {
         mkdir($dir_subida, 0777, true);
     }
@@ -128,40 +128,69 @@ if ($insertStmt) {
     if ($insertStmt->execute()) {
         $id_reserva = $conn->insert_id;
 
-        // --- BLOQUE DE ENVÍO DE EMAIL (AÑADIDO) ---
+        // --- BLOQUE DE ENVÍO DE EMAIL ACTUALIZADO ---
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
             $mail->Host       = 'smtp.hostinger.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'richard_12345@santamartabeachfront.com'; // USA TU EMAIL REAL AQUÍ
-            $mail->Password   = 'Richardcastiblanco_1234567890';           // USA TU CONTRASEÑA REAL AQUÍ
+            $mail->Username   = 'richard_12345@santamartabeachfront.com'; 
+            $mail->Password   = 'Richardcastiblanco_1234567890';           
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
             $mail->CharSet    = 'UTF-8';
 
             $mail->setFrom('richard_12345@santamartabeachfront.com', 'Santa Marta Beachfront');
-            $mail->addAddress($email, "$nombre $apellido"); // Al cliente
-            $mail->addAddress('richardcastiblanco4@gmail.com'); // Copia para ti
+            $mail->addAddress($email, "$nombre $apellido"); 
+            $mail->addAddress('richardcastiblanco4@gmail.com'); 
 
-            // Adjuntamos la cédula que se acaba de subir
             if (!empty($documento_ruta)) {
                 $mail->addAttachment($dir_subida . $documento_ruta, "ID_$apellido.jpg");
             }
 
             $mail->isHTML(true);
-            $mail->Subject = "Solicitud de Reserva #$id_reserva recibida";
-            $mail->Body    = "<h2>¡Hola $nombre!</h2>
-                              <p>Hemos recibido tu solicitud para el apartamento #$id_apartamento.</p>
-                              <p><strong>Detalles:</strong><br>
-                              Entrada: $checkin<br>
-                              Salida: $checkout<br>
-                              Total: $" . number_format($total_price, 0, ',', '.') . "</p>
-                              <p>Revisaremos la información y nos contactaremos contigo pronto.</p>";
+            $mail->Subject = "Solicitud de Reserva #$id_reserva recibida - Santa Marta Beachfront";
+            
+            // Cuerpo del correo estilizado con toda la información solicitada
+            $mail->Body    = "
+            <div style='background-color: #f4f7f9; padding: 20px; font-family: Arial, sans-serif;'>
+                <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);'>
+                    <div style='background-color: #13a4ec; padding: 20px; text-align: center;'>
+                        <img src='https://santamartabeachfront.com/public/img/logo-def-Photoroom.png' alt='Santa Marta Beachfront' style='width: 150px;'>
+                    </div>
+                    <div style='padding: 30px;'>
+                        <h2 style='color: #333;'>¡Hola $nombre!</h2>
+                        <p style='color: #555;'>Hemos recibido tu solicitud para el <strong>Apartamento #$id_apartamento</strong>. Aquí tienes el resumen de la información proporcionada:</p>
+                        
+                        <div style='background-color: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;'>
+                            <h3 style='margin-top: 0; font-size: 16px; color: #13a4ec;'>Detalles de la Estadía</h3>
+                            <p style='margin: 5px 0; font-size: 14px;'><strong>Entrada:</strong> $checkin</p>
+                            <p style='margin: 5px 0; font-size: 14px;'><strong>Salida:</strong> $checkout</p>
+                            <p style='margin: 5px 0; font-size: 14px;'><strong>Total estimado:</strong> $" . number_format($total_price, 0, ',', '.') . "</p>
+                        </div>
+
+                        <div style='margin-bottom: 20px;'>
+                            <h3 style='font-size: 16px; color: #13a4ec; border-bottom: 1px solid #eee; padding-bottom: 5px;'>Información de Contacto</h3>
+                            <p style='margin: 5px 0; font-size: 14px;'><strong>Email:</strong> $email</p>
+                            <p style='margin: 5px 0; font-size: 14px;'><strong>Teléfono:</strong> $telefono</p>
+                            <p style='margin: 5px 0; font-size: 14px;'><strong>Cuenta para Devolución:</strong> " . ($cuenta_banco ? $cuenta_banco : 'No especificada') . "</p>
+                        </div>
+
+                        <div style='margin-bottom: 20px;'>
+                            <h3 style='font-size: 16px; color: #13a4ec; border-bottom: 1px solid #eee; padding-bottom: 5px;'>Lista de Acompañantes</h3>
+                            <p style='margin: 5px 0; font-size: 14px; color: #555; line-height: 1.5;'>$huespedes_nombres</p>
+                        </div>
+
+                        <p style='color: #777; font-size: 13px; text-align: center;'>Revisaremos la información y nos contactaremos contigo pronto para confirmar la disponibilidad y el pago.</p>
+                    </div>
+                    <div style='background-color: #eee; padding: 10px; text-align: center; font-size: 11px; color: #999;'>
+                        Este es un correo automático, por favor no respondas a este mensaje.
+                    </div>
+                </div>
+            </div>";
 
             $mail->send();
         } catch (Exception $e) {
-            // Si el correo falla, la reserva ya está guardada, así que solo registramos el error
             error_log("Error enviando correo: " . $mail->ErrorInfo);
         }
         // --- FIN BLOQUE DE EMAIL ---
@@ -177,3 +206,4 @@ if ($insertStmt) {
 }
 
 $conn->close();
+?>
