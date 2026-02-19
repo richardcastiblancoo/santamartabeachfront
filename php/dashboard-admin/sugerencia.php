@@ -7,29 +7,17 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
 
 include '../../auth/conexion_be.php';
 
-// --- LÓGICA DE PAGINACIÓN ---
-$sugerencias_por_pagina = 20;
-$pagina_actual = isset($_GET['p']) ? (int)$_GET['p'] : 1;
-if ($pagina_actual < 1) $pagina_actual = 1;
-$offset = ($pagina_actual - 1) * $sugerencias_por_pagina;
-
-// Contar total de sugerencias para calcular páginas
-$total_sugerencias_query = $conn->query("SELECT COUNT(*) as total FROM sugerencias");
-$total_sugerencias = $total_sugerencias_query->fetch_assoc()['total'];
-$total_paginas = ceil($total_sugerencias / $sugerencias_por_pagina);
-
 // Consultas de contadores (Información valiosa conservada)
 $total_reservas = $conn->query("SELECT COUNT(*) as count FROM reservas")->fetch_assoc()['count'];
 $total_pqr = $conn->query("SELECT COUNT(*) as count FROM pqr")->fetch_assoc()['count'];
 $pqr_pendientes = $conn->query("SELECT COUNT(*) as count FROM pqr WHERE estado = 'Pendiente'")->fetch_assoc()['count'];
 $total_usuarios = $conn->query("SELECT COUNT(*) as count FROM usuarios WHERE rol != 'Admin'")->fetch_assoc()['count'];
 
-// Obtener sugerencias con LIMIT para paginación
+// Obtener sugerencias
 $sugerencias_query = "SELECT s.*, u.nombre, u.apellido, u.imagen as usuario_imagen 
                       FROM sugerencias s 
                       JOIN usuarios u ON s.usuario_id = u.id 
-                      ORDER BY s.fecha_creacion DESC 
-                      LIMIT $offset, $sugerencias_por_pagina";
+                      ORDER BY s.fecha_creacion DESC";
 $sugerencias_res = $conn->query($sugerencias_query);
 ?>
 <!DOCTYPE html>
@@ -80,6 +68,7 @@ $sugerencias_res = $conn->query($sugerencias_query);
             transition: transform 0.3s ease-in-out;
         }
 
+        /* Clase para ocultar scrollbar si es necesario */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -169,13 +158,13 @@ $sugerencias_res = $conn->query($sugerencias_query);
                     <button onclick="toggleSidebar()" class="md:hidden text-white p-2 hover:bg-gray-800 rounded-lg">
                         <span class="material-symbols-outlined">menu</span>
                     </button>
-                    <h1 class="text-lg font-bold text-white hidden sm:block">Sugerencias de huéspedes</h1>
-                </div>
+                    <h1 class="text-lg font-bold text-white hidden sm:block">Sugerencias del Sistema</h1>
 
-                <button id="btn-guide" class="flex items-center gap-2 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-xs font-bold transition-all border border-gray-600">
-                    <span class="material-symbols-outlined text-[16px]">help</span>
-                    Guía del Panel
-                </button>
+                    <button id="btn-guide" class="flex items-center gap-2 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-xs font-bold transition-all border border-gray-600 ml-4">
+                        <span class="material-symbols-outlined text-[16px]">help</span>
+                        Guía
+                    </button>
+                </div>
             </header>
 
             <div class="flex-1 overflow-y-auto p-4 md:p-8">
@@ -235,29 +224,6 @@ $sugerencias_res = $conn->query($sugerencias_query);
                             </tbody>
                         </table>
                     </div>
-
-                    <?php if ($total_paginas > 1): ?>
-                        <div class="p-5 border-t border-gray-800 bg-gray-900/20 flex justify-center items-center gap-2">
-                            <?php if ($pagina_actual > 1): ?>
-                                <a href="?p=<?php echo $pagina_actual - 1; ?>" class="px-3 py-2 bg-gray-800 text-gray-400 rounded-lg hover:text-white transition-colors">
-                                    <span class="material-symbols-outlined text-sm">chevron_left</span>
-                                </a>
-                            <?php endif; ?>
-
-                            <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
-                                <a href="?p=<?php echo $i; ?>"
-                                    class="px-4 py-2 rounded-lg text-sm font-bold transition-all <?php echo ($i == $pagina_actual) ? 'bg-primary text-white scale-110 shadow-lg' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'; ?>">
-                                    <?php echo $i; ?>
-                                </a>
-                            <?php endfor; ?>
-
-                            <?php if ($pagina_actual < $total_paginas): ?>
-                                <a href="?p=<?php echo $pagina_actual + 1; ?>" class="px-3 py-2 bg-gray-800 text-gray-400 rounded-lg hover:text-white transition-colors">
-                                    <span class="material-symbols-outlined text-sm">chevron_right</span>
-                                </a>
-                            <?php endif; ?>
-                        </div>
-                    <?php endif; ?>
                 </div>
             </div>
         </main>
@@ -290,20 +256,24 @@ $sugerencias_res = $conn->query($sugerencias_query);
         document.addEventListener("DOMContentLoaded", () => {
 
             /* =========================================
-               1. LÓGICA DEL MODAL
+               1. LÓGICA DEL MODAL (Corregida)
                ========================================= */
             const modal = document.getElementById("suggestionModal");
             const modalBackdrop = document.getElementById("modalBackdrop");
             const modalContent = document.getElementById("modalContent");
 
+            // Definimos funciones en window para acceso global desde HTML (onclick)
             window.openModal = function(name, date, message, img) {
+                // 1. Llenar datos
                 document.getElementById("modalName").textContent = name;
                 document.getElementById("modalDate").textContent = 'Enviado: ' + date;
                 document.getElementById("modalText").textContent = message;
                 document.getElementById("modalImg").src = img;
 
+                // 2. Mostrar contenedor principal
                 modal.classList.remove("hidden");
 
+                // 3. Animación de entrada (pequeño delay para aplicar estilos CSS)
                 setTimeout(() => {
                     if (modalBackdrop) modalBackdrop.classList.remove("opacity-0");
                     if (modalContent) {
@@ -314,20 +284,25 @@ $sugerencias_res = $conn->query($sugerencias_query);
             };
 
             window.closeModal = function() {
+                // 1. Animación de salida
                 if (modalBackdrop) modalBackdrop.classList.add("opacity-0");
                 if (modalContent) {
                     modalContent.classList.remove("translate-y-0", "scale-100");
                     modalContent.classList.add("opacity-0", "translate-y-4", "scale-95");
                 }
+
+                // 2. Ocultar contenedor después de la animación
                 setTimeout(() => {
                     modal.classList.add("hidden");
                 }, 300);
             };
 
+            // Event Listener para cerrar al hacer clic fuera
             if (modalBackdrop) {
                 modalBackdrop.addEventListener("click", window.closeModal);
             }
 
+            // Event Listener para tecla Escape
             document.addEventListener("keydown", (e) => {
                 if (e.key === "Escape" && !modal.classList.contains("hidden")) {
                     window.closeModal();
@@ -354,6 +329,7 @@ $sugerencias_res = $conn->query($sugerencias_query);
             /* =========================================
                3. FILTROS Y BUSCADOR
                ========================================= */
+
             const btnAll = document.getElementById("filter-all");
             const btnNew = document.getElementById("filter-new");
 
@@ -402,7 +378,7 @@ $sugerencias_res = $conn->query($sugerencias_query);
                         row.style.display = "";
                         return;
                     }
-                    const dateText = row.querySelector(".date-col").textContent.trim();
+                    const dateText = row.querySelector(".date-col").textContent.trim(); // dd/mm/yyyy
                     const [day, month, year] = dateText.split("/");
                     const rowDate = new Date(year, month - 1, day);
 
