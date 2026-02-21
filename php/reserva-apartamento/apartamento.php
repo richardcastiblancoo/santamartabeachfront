@@ -653,10 +653,7 @@ if ($id_apartamento > 0) {
                                 <span class="underline text-[#4b5563] dark:text-slate-300" data-i18n="Tarifa de limpieza">Tarifa de limpieza</span>
                                 <span class="font-medium">$<span id="cleaning-fee-display">0</span></span>
                             </div>
-                            <div class="flex justify-between text-base">
-                                <span class="underline text-[#4b5563] dark:text-slate-300" data-i18n="Comisión de servicio">Comisión de servicio</span>
-                                <span class="font-medium">$<span id="service-fee-display">0</span></span>
-                            </div>
+                            
                             <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center font-bold text-lg">
                                 <span data-i18n="Total">Total</span>
                                 <span>$<span id="total-display">0</span></span>
