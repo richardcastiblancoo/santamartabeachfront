@@ -149,11 +149,11 @@ if ($insertStmt) {
                         <h3 style='color: #13a4ec; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;'>Resumen de tu estancia:</h3>
                         <table style='width: 100%; border-collapse: collapse; margin-bottom: 30px;'>
                             <tr>
-                                <td style='padding: 12px 0; border-bottom: 1px solid #edf2f7;'><strong>Check-in:</strong></td>
+                                <td style='padding: 12px 0; border-bottom: 1px solid #edf2f7;'><strong>Llegada:</strong></td>
                                 <td style='padding: 12px 0; border-bottom: 1px solid #edf2f7; text-align: right;'>$checkin</td>
                             </tr>
                             <tr>
-                                <td style='padding: 12px 0; border-bottom: 1px solid #edf2f7;'><strong>Check-out:</strong></td>
+                                <td style='padding: 12px 0; border-bottom: 1px solid #edf2f7;'><strong>Salida:</strong></td>
                                 <td style='padding: 12px 0; border-bottom: 1px solid #edf2f7; text-align: right;'>$checkout</td>
                             </tr>
                             <tr>
@@ -167,11 +167,11 @@ if ($insertStmt) {
                         </table>
 
                         <p style='font-size: 15px; line-height: 1.6; color: #4a5568;'>
-                            Nuestro equipo está revisando los detalles. <strong>Nos comunicaremos contigo a la brevedad</strong> para finalizar el proceso de confirmación.
+                            Nuestro equipo está revisando los detalles. <strong>Nos comunicaremos contigo a la brevedad</strong> para finalizar el proceso.
                         </p>
 
                         <div style='margin-top: 40px; padding-top: 25px; border-top: 1px solid #edf2f7; text-align: center;'>
-                            <p style='font-size: 14px; color: #718096; margin-bottom: 10px;'>¿Tienes alguna duda?</p>
+                            <p style='font-size: 14px; color: #718096; margin-bottom: 10px;'>¿Tienes alguna duda o necesitas más información?</p>
                             <a href='mailto:17clouds@gmail.com' style='color: #13a4ec; font-weight: bold; text-decoration: none;'>17clouds@gmail.com</a>
                         </div>
                     </div>
@@ -185,7 +185,7 @@ if ($insertStmt) {
 
             // --- CORREO AL ADMINISTRADOR ---
             $mail->clearAddresses();
-            $mail->addAddress('richardcastiblanco4@gmail.com');
+            $mail->addAddress('richard_12345@santamartabeachfront.com');
             $mail->Subject = "NUEVA RESERVA #$id_reserva - " . strtoupper($metodo_pago);
 
             // Adjuntar todos los archivos
@@ -251,4 +251,3 @@ if ($insertStmt) {
     }
 }
 $conn->close();
-?>
