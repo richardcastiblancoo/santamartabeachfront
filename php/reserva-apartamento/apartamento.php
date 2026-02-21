@@ -158,9 +158,9 @@ if ($id_apartamento > 0) {
         <header class="w-full bg-white dark:bg-background-dark border-b border-solid border-[#f0f3f4] dark:border-slate-800 px-4 md:px-10 lg:px-40 py-3">
             <div class="flex items-center justify-between max-w-[1280px] mx-auto">
                 <div class="flex items-center h-full">
-                    <a href="/" class="flex items-center group logo-container">
-                        <img src="/public/img/logo-def-Photoroom.png" alt="Logo" class="h-8 w-auto">
-                        <h1 class="brand-text text-slate-900 dark:text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block ml-2" data-i18n="Santamartabeachfront">
+                    <a href="/" class="flex items-center gap-2 logo-container">
+                        <img src="/public/img/logo-def-Photoroom.png" alt="Logo" class="h-10 md:h-8 w-auto">
+                        <h1 class="hidden md:block brand-text text-slate-900 dark:text-white text-lg font-black tracking-tighter uppercase" data-i18n="Santamartabeachfront">
                             Santamarta<span class="text-blue-400">beachfront</span>
                         </h1>
                     </a>
@@ -173,7 +173,6 @@ if ($id_apartamento > 0) {
                             <span id="current-lang-text" class="text-sm font-medium text-slate-700 dark:text-slate-200">ES</span>
                             <span class="material-symbols-outlined text-[18px] text-slate-400">expand_more</span>
                         </button>
-
                         <div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl overflow-hidden z-50">
                             <button onclick="selectLang('ES', 'https://flagcdn.com/co.svg')" class="w-full flex items-center gap-3 px-4 py-3 text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-200">
                                 <img src="https://flagcdn.com/co.svg" class="w-5 h-5 rounded-full object-cover" alt="ES">
@@ -197,6 +196,51 @@ if ($id_apartamento > 0) {
                 </button>
             </div>
         </header>
+
+        <div id="mobile-menu" class="fixed inset-0 z-[100] bg-white dark:bg-background-dark transform translate-x-full transition-transform duration-300 md:hidden flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800">
+               
+                <button onclick="toggleMobileMenu()" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-6">
+                <div class="border rounded-xl border-slate-200 dark:border-slate-700 p-4">
+                    <button onclick="toggleLangMobile()" class="w-full flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm font-medium text-slate-500 dark:text-slate-400" data-i18n="Idioma">Idioma</span>
+                            <div class="flex items-center gap-2 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                                <img id="mobile-current-flag" src="https://flagcdn.com/co.svg" class="w-4 h-4 rounded-full object-cover" alt="Flag">
+                                <span id="mobile-current-text" class="text-sm font-bold text-slate-700 dark:text-slate-200">ES</span>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined text-slate-400">expand_more</span>
+                    </button>
+                    <div id="mobile-lang-options" class="hidden mt-4 space-y-2 border-t border-slate-100 dark:border-slate-700 pt-4">
+                        <button onclick="selectLang('ES', 'https://flagcdn.com/co.svg')" class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                            <img src="https://flagcdn.com/co.svg" class="w-5 h-5 rounded-full object-cover" alt="ES">
+                            <span class="text-slate-700 dark:text-slate-200 font-medium" data-i18n="Español">Español</span>
+                        </button>
+                        <button onclick="selectLang('EN', 'https://flagcdn.com/us.svg')" class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                            <img src="https://flagcdn.com/us.svg" class="w-5 h-5 rounded-full object-cover" alt="EN">
+                            <span class="text-slate-700 dark:text-slate-200 font-medium" data-i18n="English">English</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <a href="/auth/login.php" class="flex items-center gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-white font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                        <span class="material-symbols-outlined text-slate-400">login</span>
+                        <span data-i18n="Iniciar sesión">Iniciar sesión</span>
+                    </a>
+                    <a href="/auth/registro.php" class="flex items-center gap-3 p-4 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all">
+                        <span class="material-symbols-outlined">person_add</span>
+                        <span data-i18n="Registrarse">Registrarse</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     <?php endif; ?>
     <main class="max-w-[1280px] mx-auto px-4 md:px-10 lg:px-40 py-6">
         <?php if ($apartamento): ?>

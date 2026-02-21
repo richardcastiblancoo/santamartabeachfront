@@ -76,8 +76,15 @@ body {
 }
 
 .brand-text {
-  margin-left: -30px;
+  margin-left: -20px;
   margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .logo-container img {
+    width: 100px;
+    margin-bottom: 20px;
+  }
 }
 
 /* ---------------------------------- */
