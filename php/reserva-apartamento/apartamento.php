@@ -408,7 +408,63 @@ if ($id_apartamento > 0) {
                         </div>
                     </section>
 
-                    <!-- reseñas -->
+                    <div class="max-w-[600px] mx-auto bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden font-sans text-gray-800">
+
+                        <div class="p-8 pb-6 bg-white">
+                            <h2 id="status-text" class="text-3xl font-bold text-gray-900 transition-all duration-300">Seleccione su llegada</h2>
+                            <p id="helper-text" class="text-gray-500 mt-2">Apartamento 1730 Reserva del Mar 1</p>
+                        </div>
+
+                        <div class="px-8 pb-8">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 id="calendar-month-year" class="font-bold text-lg text-gray-700"></h3>
+                                <div class="flex space-x-2">
+                                    <button id="prev-month" class="p-2 hover:bg-gray-100 rounded-full border border-gray-200 transition">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <button id="next-month" class="p-2 hover:bg-gray-100 rounded-full border border-gray-200 transition">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-7 mb-2 border-b border-gray-50 pb-2">
+                                <?php foreach (['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'] as $d): ?>
+                                    <div class="text-center text-xs font-bold text-gray-400 uppercase tracking-widest"><?= $d ?></div>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="grid grid-cols-7" id="custom-calendar-grid">
+                                <!-- Generado por JS -->
+                            </div>
+
+                            <div class="mt-8 pt-6 border-t border-gray-100 flex flex-col gap-3">
+                                <div class="flex justify-between items-center">
+                                    <button id="custom-reset-btn" class="text-sm font-bold underline text-black hover:bg-gray-50 px-4 py-2 rounded-lg">Borrar fechas</button>
+                                </div>
+                                <p class="text-center text-sm text-gray-500">No se te cobrará nada todavía</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        /* Estilos Airbnb */
+                        .selected-point {
+                            background-color: #222222 !important;
+                            color: white !important;
+                        }
+
+                        .range-bg-active {
+                            background-color: #f7f7f7 !important;
+                            display: block !important;
+                        }
+                    </style>
+
+                    <!-- Reseñas -->
                     <section class="mb-10 pt-8 border-t border-slate-200 dark:border-slate-800">
                         <div class="flex items-center gap-2 mb-6">
                             <span class="material-symbols-outlined text-primary fill-1">star</span>
@@ -995,6 +1051,9 @@ if ($id_apartamento > 0) {
 
         const bookedRanges = <?php echo json_encode($rangos_ocupados, JSON_UNESCAPED_SLASHES); ?>;
 
+        // Variable para controlar si el datepicker está abierto
+        let isDatePickerOpen = false;
+
         const fp = flatpickr("#checkin-input", {
             locale: "es",
             minDate: "today",
@@ -1003,18 +1062,45 @@ if ($id_apartamento > 0) {
             altFormat: "d/m/Y",
             mode: "range",
             disable: bookedRanges,
+            onOpen: function() {
+                isDatePickerOpen = true;
+            },
+            onClose: function() {
+                isDatePickerOpen = false;
+            },
             onChange: function(dates) {
                 if (dates.length === 2) {
                     selectedDates.checkin = dates[0];
                     selectedDates.checkout = dates[1];
                     document.getElementById('checkout-input').value = fp.formatDate(dates[1], "d/m/Y");
                     calculatePrice();
+                    // Cuando se completan las fechas, ya no mostramos advertencia
+                    isDatePickerOpen = false;
+                    
+                    // Actualizar calendario personalizado
+                    if(document.getElementById('status-text')) document.getElementById('status-text').innerText = "¡Listo!";
                 } else {
                     selectedDates.checkin = dates[0] || null;
                     selectedDates.checkout = null;
                     document.getElementById('checkout-input').value = "";
                     document.getElementById('price-breakdown').classList.add('hidden');
+                    
+                    // Actualizar texto estado
+                    if(document.getElementById('status-text')) document.getElementById('status-text').innerText = selectedDates.checkin ? "Seleccione su salida" : "Seleccione su llegada";
                 }
+                // Siempre renderizar el calendario para mostrar selección
+                if (typeof renderCustomCalendar === 'function') {
+                    renderCustomCalendar(currMonth, currYear);
+                }
+            }
+        });
+
+        // Evento para prevenir que el usuario salga mientras selecciona fechas
+        window.addEventListener('beforeunload', function(e) {
+            if (isDatePickerOpen) {
+                e.preventDefault();
+                e.returnValue = '¿Estás seguro de que quieres salir? Los cambios que hayas hecho podrían no guardarse.';
+                return '¿Estás seguro de que quieres salir? Los cambios que hayas hecho podrían no guardarse.';
             }
         });
 
@@ -1166,6 +1252,164 @@ if ($id_apartamento > 0) {
                 applyTranslations(lang);
             }
         }
+
+        // --- 5. LOGICA CALENDARIO PERSONALIZADO (Integrada) ---
+        // Variables globales para el calendario personalizado
+        const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        let currDate = new Date();
+        let currMonth = currDate.getMonth();
+        let currYear = currDate.getFullYear();
+
+        const calendarGrid = document.getElementById('custom-calendar-grid');
+        const monthYearLabel = document.getElementById('calendar-month-year');
+        const statusText = document.getElementById('status-text');
+
+        function formatDateISO(date) {
+            return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+        }
+
+        function initCustomCalendar() {
+            if (!calendarGrid) return;
+            renderCustomCalendar(currMonth, currYear);
+
+            // Event Listeners para navegación
+            const prevBtn = document.getElementById('prev-month');
+            const nextBtn = document.getElementById('next-month');
+            const resetBtn = document.getElementById('custom-reset-btn');
+
+            if (prevBtn) prevBtn.addEventListener('click', () => {
+                currMonth--;
+                if (currMonth < 0) {
+                    currMonth = 11;
+                    currYear--;
+                }
+                renderCustomCalendar(currMonth, currYear);
+            });
+
+            if (nextBtn) nextBtn.addEventListener('click', () => {
+                currMonth++;
+                if (currMonth > 11) {
+                    currMonth = 0;
+                    currYear++;
+                }
+                renderCustomCalendar(currMonth, currYear);
+            });
+
+            if (resetBtn) resetBtn.addEventListener('click', () => {
+                // Limpiar Flatpickr también limpiará el calendario personalizado a través de onChange
+                fp.clear();
+                statusText.innerText = "Seleccione su llegada";
+            });
+        }
+
+        function renderCustomCalendar(month, year) {
+            if (!calendarGrid) return;
+            monthYearLabel.innerText = `${monthNames[month]} ${year}`;
+            calendarGrid.innerHTML = "";
+
+            const firstDay = new Date(year, month, 1).getDay(); // 0 = Sun
+            const adjustedFirstDay = firstDay === 0 ? 7 : firstDay; // 1 = Mon
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Rellenar días vacíos
+            for (let i = 1; i < adjustedFirstDay; i++) {
+                const div = document.createElement('div');
+                calendarGrid.appendChild(div);
+            }
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const date = new Date(year, month, d);
+                const dateStr = formatDateISO(date);
+
+                // Check past
+                const isPast = date < today;
+
+                // Check booked
+                let isBooked = false;
+                bookedRanges.forEach(range => {
+                    if (dateStr >= range.from && dateStr <= range.to) isBooked = true;
+                });
+
+                const cellWrapper = document.createElement('div');
+                cellWrapper.className = 'relative flex justify-center items-center py-4';
+
+                const cell = document.createElement('div');
+                cell.className = 'day-cell z-10 w-12 h-12 flex items-center justify-center rounded-full text-base transition-all';
+                cell.innerText = d;
+
+                const rangeBg = document.createElement('div');
+                rangeBg.className = 'range-bg absolute inset-0 hidden';
+
+                // Styles
+                if (isPast || isBooked) {
+                    cell.className += " text-gray-300 cursor-not-allowed line-through";
+                } else {
+                    cell.className += " text-gray-700 hover:ring-2 hover:ring-black cursor-pointer bg-white";
+                    cell.onclick = () => handleCustomDateClick(date);
+                }
+
+                // Selection styles from Global State (selectedDates)
+                const sCheckin = selectedDates.checkin;
+                const sCheckout = selectedDates.checkout;
+
+                // Comparar fechas ignorando hora
+                const dateTime = date.getTime();
+                const checkinTime = sCheckin ? new Date(sCheckin.getFullYear(), sCheckin.getMonth(), sCheckin.getDate()).getTime() : null;
+                const checkoutTime = sCheckout ? new Date(sCheckout.getFullYear(), sCheckout.getMonth(), sCheckout.getDate()).getTime() : null;
+
+                if (checkinTime && dateTime === checkinTime) {
+                    cell.classList.add('selected-point');
+                }
+                if (checkoutTime && dateTime === checkoutTime) {
+                    cell.classList.add('selected-point');
+                }
+
+                // Range style
+                if (checkinTime && checkoutTime) {
+                    if (dateTime > checkinTime && dateTime < checkoutTime) {
+                        rangeBg.classList.add('range-bg-active');
+                    }
+                }
+
+                cellWrapper.appendChild(rangeBg);
+                cellWrapper.appendChild(cell);
+                calendarGrid.appendChild(cellWrapper);
+            }
+        }
+
+        function handleCustomDateClick(date) {
+            // Lógica para actualizar Flatpickr
+            // Flatpickr se encargará de validar rangos ocupados a través de su config 'disable'
+            
+            let newCheckin = selectedDates.checkin;
+            let newCheckout = selectedDates.checkout;
+
+            if (!newCheckin || (newCheckin && newCheckout)) {
+                // Nueva selección
+                newCheckin = date;
+                newCheckout = null;
+                statusText.innerText = "Seleccione su salida";
+                fp.setDate([date], true); // true dispara onChange
+            } else if (date > newCheckin) {
+                // Completar rango
+                // Validar si hay reservas en medio (Flatpickr lo hace, pero validamos aquí para UX inmediata)
+                // Simplemente intentamos setear en fp, si falla o recorta, fp se encarga
+                fp.setDate([newCheckin, date], true);
+                statusText.innerText = "¡Listo!";
+            } else {
+                // Reiniciar con nueva fecha si es anterior
+                newCheckin = date;
+                newCheckout = null;
+                statusText.innerText = "Seleccione su salida";
+                fp.setDate([date], true);
+            }
+        }
+
+        // Inicializar calendario al cargar
+        initCustomCalendar();
 
         function openReviewModal() {
             const modal = document.getElementById('review-modal');

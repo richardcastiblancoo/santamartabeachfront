@@ -186,7 +186,7 @@ $total = $subtotal + $cleaningFee;
                             <p class="text-slate-500 text-sm" data-key="p_guests_desc">Escribe el nombre completo de cada persona.</p>
                             <div id="huespedes-container" class="space-y-4">
                                 <div class="flex gap-3">
-                                    <input type="text" name="huespedes[]" required class="flex-1 rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="...">
+                                    <input type="text" name="huespedes[]" class="flex-1 rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="...">
                                     <button type="button" onclick="addHuesped()" class="size-14 rounded-2xl bg-primary text-white flex items-center justify-center shadow-lg"><span class="material-symbols-outlined">person_add</span></button>
                                 </div>
                             </div>
@@ -385,7 +385,7 @@ $total = $subtotal + $cleaningFee;
             const newRow = document.createElement('div');
             newRow.className = 'flex gap-3 animate-fadeIn';
             newRow.innerHTML = `
-                <input type="text" name="huespedes[]" required class="flex-1 rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="${translations[lang].placeholder_guest}">
+                <input type="text" name="huespedes[]" class="flex-1 rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="${translations[lang].placeholder_guest}">
                 <button type="button" onclick="this.parentElement.remove()" class="size-14 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center">
                     <span class="material-symbols-outlined">delete</span>
                 </button>
