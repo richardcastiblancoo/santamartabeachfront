@@ -329,7 +329,7 @@ if ($id_apartamento > 0) {
                 <div class="lg:col-span-2">
                     <div class="border-b border-slate-200 dark:border-slate-800 pb-6 mb-8">
                         <h2 class="text-2xl font-bold mb-2">Alojamiento Completo: <?php echo $apartamento['titulo']; ?></h2>
-                        <p class="text-[#617c89] dark:text-slate-400"><?php echo $apartamento['capacidad']; ?> Huéspedes · <?php echo $apartamento['habitaciones']; ?> habitaciones · 6 camas <?php echo $apartamento['banos']; ?> Baños</p>
+                        <p class="text-[#617c89] dark:text-slate-400"><?php echo $apartamento['capacidad']; ?> Huéspedes · <?php echo $apartamento['habitaciones']; ?> habitaciones · 6 camas . <?php echo $apartamento['banos']; ?> Baños</p>
                     </div>
                     <section class="mb-10">
                         <h3 class="text-xl font-bold mb-4">Sobre este apartamento</h3>
@@ -653,7 +653,7 @@ if ($id_apartamento > 0) {
                                 <span class="underline text-[#4b5563] dark:text-slate-300" data-i18n="Tarifa de limpieza">Tarifa de limpieza</span>
                                 <span class="font-medium">$<span id="cleaning-fee-display">0</span></span>
                             </div>
-                            
+                           
                             <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center font-bold text-lg">
                                 <span data-i18n="Total">Total</span>
                                 <span>$<span id="total-display">0</span></span>

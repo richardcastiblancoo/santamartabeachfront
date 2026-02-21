@@ -185,7 +185,7 @@ if ($insertStmt) {
 
             // --- CORREO AL ADMINISTRADOR ---
             $mail->clearAddresses();
-            $mail->addAddress('richard_12345@santamartabeachfront.com');
+            $mail->addAddress('17clouds@gmail.com');
             $mail->Subject = "NUEVA RESERVA #$id_reserva - " . strtoupper($metodo_pago);
 
             // Adjuntar todos los archivos
@@ -208,11 +208,11 @@ if ($insertStmt) {
                         <table style='width: 100%; margin-bottom: 25px; border-collapse: collapse;'>
                             <tr>
                                 <td style='padding: 8px 0; width: 50%;'>
-                                    <span style='font-size: 12px; color: #718096; text-transform: uppercase; font-weight: bold;'>Llegada (Check-in)</span><br>
+                                    <span style='font-size: 12px; color: #718096; text-transform: uppercase; font-weight: bold;'>Llegada</span><br>
                                     <strong style='font-size: 15px;'>$checkin</strong>
                                 </td>
                                 <td style='padding: 8px 0; width: 50%;'>
-                                    <span style='font-size: 12px; color: #718096; text-transform: uppercase; font-weight: bold;'>Salida (Check-out)</span><br>
+                                    <span style='font-size: 12px; color: #718096; text-transform: uppercase; font-weight: bold;'>Salida</span><br>
                                     <strong style='font-size: 15px;'>$checkout</strong>
                                 </td>
                             </tr>
