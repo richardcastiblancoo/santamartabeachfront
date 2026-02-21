@@ -446,7 +446,6 @@ if ($id_apartamento > 0) {
                                 <div class="flex justify-between items-center">
                                     <button id="custom-reset-btn" class="text-sm font-bold underline text-black hover:bg-gray-50 px-4 py-2 rounded-lg">Borrar fechas</button>
                                 </div>
-                                <p class="text-center text-sm text-gray-500">No se te cobrará nada todavía</p>
                             </div>
                         </div>
                     </div>
