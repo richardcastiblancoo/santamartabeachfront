@@ -72,8 +72,11 @@ $overlapStmt->fetch();
 $overlapStmt->close();
 
 if ($overlapCount > 0) {
-    $embedParam = $isEmbed ? '&embed=1' : '';
-    header("Location: reservar.php?id=$id_apartamento&error=fechas$embedParam");
+    if ($isEmbed) {
+        header("Location: ../dashboard-huesped/vista_reserva_express.php?id=$id_apartamento&error=fechas");
+    } else {
+        header("Location: reservar.php?id=$id_apartamento&error=fechas");
+    }
     exit;
 }
 

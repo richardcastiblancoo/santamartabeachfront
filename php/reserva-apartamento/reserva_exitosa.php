@@ -23,6 +23,7 @@ if ($id_reserva > 0) {
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <title>Reserva Exitosa - Santamartabeachfront</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -90,8 +91,8 @@ if ($id_reserva > 0) {
             <?php endif; ?>
         </div>
 
-        <p class="text-sm text-slate-500 mb-8 italic" data-key="footer_note">
-            El administrador revisará la disponibilidad y te contactará al correo proporcionado.
+        <p class="text-sm text-slate-500 mb-8 italic">
+            en tu correo electrónico llegara tu confirmación de la reserva ¿Tienes alguna duda o necesitas más información? 17clouds@gmail.com | +57 318 3813381.
         </p>
 
         <?php if ($isEmbed): ?>

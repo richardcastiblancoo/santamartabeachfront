@@ -41,13 +41,13 @@ if ($result_pqr && $result_pqr->num_rows > 0) {
     }
 }
 
-// Obtener próximas reservas
+// Obtener próximas reservas (activas o futuras)
 $fecha_actual = date('Y-m-d');
 $sql_reservas = "SELECT r.*, a.titulo, a.ubicacion, a.imagen_principal 
                  FROM reservas r 
                  JOIN apartamentos a ON r.apartamento_id = a.id 
                  WHERE r.usuario_id = '$usuario_id' 
-                 AND r.fecha_inicio >= '$fecha_actual' 
+                 AND r.fecha_fin >= '$fecha_actual' 
                  ORDER BY r.fecha_inicio ASC";
 $result_reservas = $conn->query($sql_reservas);
 
@@ -214,13 +214,13 @@ if (!empty($_SESSION['imagen'])) {
     <header class="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1a2c35] shadow-sm">
         <div class="flex items-center justify-between px-4 md:px-10 py-4">
 
-            <div class="flex items-center gap-4">
-                <div class="h-12 w-auto flex items-center justify-center overflow-hidden">
-                    <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="h-full w-auto object-contain">
-                </div>
-                <h2 class="hidden lg:block text-[#111618] dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">
-                    Santamartabeachfront
-                </h2>
+            <div class="flex items-center h-full">
+                <a href="/" class="flex items-center gap-2 logo-container">
+                    <img src="/public/img/logo-def-Photoroom.png" alt="Logo" class="h-10 md:h-8 w-auto">
+                    <h1 class="hidden md:block brand-text text-slate-900 dark:text-white text-lg font-black tracking-tighter uppercase" data-i18n="Santamartabeachfront">
+                        Santamarta<span class="text-blue-400">beachfront</span>
+                    </h1>
+                </a>
             </div>
 
             <div class="hidden md:flex flex-1 justify-end gap-6 items-center">
@@ -335,19 +335,6 @@ if (!empty($_SESSION['imagen'])) {
 
     <main class="flex-1 w-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 py-8 space-y-8">
         <section id="welcome-section" class="flex flex-col gap-2">
-            <?php if (isset($_SESSION['show_verify_alert']) && $_SESSION['show_verify_alert']): ?>
-                <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 rounded shadow-sm flex justify-between items-center" role="alert">
-                    <div>
-                        <p class="font-bold">Cuenta no verificada</p>
-                        <p>Por favor verifica tu correo electrónico para acceder a todas las funciones. Revisa tu Configuración.</p>
-                    </div>
-                    <button onclick="openConfigModal()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm transition-colors">
-                        Verificar ahora
-                    </button>
-                </div>
-                <?php unset($_SESSION['show_verify_alert']); ?>
-            <?php endif; ?>
-
             <p class="text-[#111618] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">
                 <span data-key="welcome-user">Hola, <?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
             </p>
@@ -355,7 +342,7 @@ if (!empty($_SESSION['imagen'])) {
         </section>
 
         <section class="relative overflow-hidden rounded-2xl shadow-lg group">
-            <div class="flex min-h-[400px] flex-col gap-6 bg-cover bg-center bg-no-repeat items-start justify-end px-6 pb-10 md:px-10 md:pb-12 transition-transform duration-700 hover:scale-[1.01]" style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%), url("https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?q=80&w=1964&auto=format&fit=crop");'>
+            <div class="flex min-h-[400px] flex-col gap-6 bg-cover bg-center bg-no-repeat items-start justify-end px-6 pb-10 md:px-10 md:pb-12 transition-transform duration-700 hover:scale-[1.01]" style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%), url("/public/img/portada_2.avif");'>
                 <div class="flex flex-col gap-2 text-left max-w-2xl">
                     <h1 data-key="hero-title" class="text-white text-3xl md:text-5xl font-black leading-tight tracking-[-0.033em] drop-shadow-md">
                         Tu escapada a Santa Marta
@@ -472,16 +459,13 @@ if (!empty($_SESSION['imagen'])) {
                 <div class="border-b border-[#dbe2e6] dark:border-gray-700">
                     <div class="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar">
                         <a onclick="switchTab('upcoming')" id="tab-upcoming" class="group flex items-center gap-2 border-b-[3px] border-b-primary pb-3 pt-2 cursor-pointer shrink-0" href="javascript:void(0)">
-                            <span class="material-symbols-outlined text-primary text-[20px]">calendar_month</span>
-                            <p data-key="tab-upcoming" class="text-[#111618] dark:text-white text-sm font-bold tracking-[0.015em]">Próximas reservas</p>
+                            <p data-key="tab-upcoming" class="text-[#111618] dark:text-white text-sm font-bold tracking-[0.015em]">Mi reserva actual</p>
                         </a>
-                        <a onclick="switchTab('past')" id="tab-past" class="group flex items-center gap-2 border-b-[3px] border-b-transparent hover:border-b-gray-300 pb-3 pt-2 cursor-pointer transition-colors shrink-0" href="javascript:void(0)">
-                            <span class="material-symbols-outlined text-[#617c89] group-hover:text-gray-600 dark:text-gray-500 text-[20px]">history</span>
-                            <p data-key="tab-past" class="text-[#617c89] group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-gray-300 text-sm font-bold tracking-[0.015em]">Estancias pasadas</p>
+                        <a onclick="switchTab('past')" id="tab-past" class="group flex items-center gap-2 border-b-[3px] border-transparent pb-3 pt-2 cursor-pointer shrink-0 hover:border-gray-200 dark:hover:border-gray-700 transition-colors" href="javascript:void(0)">
+                            <p data-key="tab-past" class="text-gray-500 dark:text-gray-400 text-sm font-bold tracking-[0.015em]"></p>
                         </a>
-                        <a onclick="switchTab('apartments')" id="tab-apartments" class="group flex items-center gap-2 border-b-[3px] border-b-transparent hover:border-b-gray-300 pb-3 pt-2 cursor-pointer transition-colors shrink-0" href="javascript:void(0)">
-                            <span class="material-symbols-outlined text-[#617c89] group-hover:text-gray-600 dark:text-gray-500 text-[20px]">apartment</span>
-                            <p data-key="tab-apartments" class="text-[#617c89] group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-gray-300 text-sm font-bold tracking-[0.015em]">Apartamentos</p>
+                        <a onclick="switchTab('apartments')" id="tab-apartments" class="group flex items-center gap-2 border-b-[3px] border-transparent pb-3 pt-2 cursor-pointer shrink-0 hover:border-gray-200 dark:hover:border-gray-700 transition-colors" href="javascript:void(0)">
+                            <p data-key="tab-apartments" class="text-gray-500 dark:text-gray-400 text-sm font-bold tracking-[0.015em]">Apartamentos</p>
                         </a>
                     </div>
                 </div>
@@ -538,8 +522,11 @@ if (!empty($_SESSION['imagen'])) {
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-end gap-3 pt-2 border-t border-gray-100 dark:border-gray-700 mt-1">
-                                        <button onclick="openApartmentModal(<?php echo $reserva['apartamento_id']; ?>, '<?php echo htmlspecialchars($reserva['titulo'], ENT_QUOTES); ?>')" class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-medium shadow-sm hover:bg-sky-500 transition-colors">
-                                            Ver y reservar
+                                        <button onclick="this.innerHTML = '<span class=\'material-symbols-outlined text-sm mr-1\'>tag</span>#<?php echo $reserva['id']; ?>'; this.classList.add('text-primary', 'bg-blue-50', 'dark:bg-blue-900/20', 'border-primary');" class="flex items-center justify-center rounded-lg h-9 px-4 border border-gray-200 dark:border-gray-600 text-gray-500 hover:text-primary hover:border-primary transition-all text-xs font-bold">
+                                            Ver Nº Reserva
+                                        </button>
+                                        <button onclick="openBookingModal(<?php echo $reserva['apartamento_id']; ?>, '<?php echo htmlspecialchars($reserva['titulo'], ENT_QUOTES); ?>')" class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-sky-600 hover:shadow-lg transition-all transform active:scale-95">
+                                            Ver detalles
                                         </button>
                                     </div>
                                 </div>
@@ -593,7 +580,7 @@ if (!empty($_SESSION['imagen'])) {
                                             <span class="mr-1 material-symbols-outlined text-sm">star</span>
                                             Dejar reseña
                                         </button>
-                                        <button onclick="openApartmentModal(<?php echo $reserva['apartamento_id']; ?>, '<?php echo htmlspecialchars($reserva['titulo'], ENT_QUOTES); ?>')" class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-medium shadow-sm hover:bg-sky-500 transition-colors">
+                                        <button onclick="openBookingModal(<?php echo $reserva['apartamento_id']; ?>, '<?php echo htmlspecialchars($reserva['titulo'], ENT_QUOTES); ?>')" class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-sky-600 hover:shadow-lg transition-all transform active:scale-95">
                                             Reservar de nuevo
                                         </button>
                                     </div>
@@ -645,8 +632,8 @@ if (!empty($_SESSION['imagen'])) {
                                                 <span class="font-bold text-[#111618] dark:text-white">$<?php echo number_format($apt_precio, 0, ',', '.'); ?></span>
                                                 <span class=""> / noche</span>
                                             </div>
-                                            <button onclick="openApartmentModal(<?php echo $apt_id; ?>, '<?php echo $apt_titulo_js; ?>')" class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-medium shadow-sm hover:bg-sky-500 transition-colors">
-                                                Ver y reservar
+                                            <button onclick="openBookingModal(<?php echo $apt_id; ?>, '<?php echo $apt_titulo_js; ?>')" class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-sky-600 hover:shadow-lg transition-all transform active:scale-95">
+                                                Quiero reservar
                                             </button>
                                         </div>
                                     </div>
@@ -825,20 +812,6 @@ if (!empty($_SESSION['imagen'])) {
                     <div>
                         <label class="block text-xs font-bold text-[#111618] dark:text-white mb-1.5">Correo (Gmail)</label>
                         <input name="email" value="<?php echo $_SESSION['email']; ?>" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white <?php echo $is_google_user ? 'opacity-70 cursor-not-allowed' : ''; ?>" type="email" required <?php echo $is_google_user ? 'readonly' : ''; ?> />
-
-                        <div class="mt-2">
-                            <?php if ($is_verified): ?>
-                                <div class="w-full flex items-center justify-center gap-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 px-3 py-2 rounded-lg border border-green-100 dark:border-green-800" title="Cuenta verificada">
-                                    <span class="material-symbols-outlined text-base">verified</span>
-                                    <span class="text-xs font-bold">Correo verificado</span>
-                                </div>
-                            <?php else: ?>
-                                <button type="button" onclick="enviarVerificacion()" class="w-full bg-yellow-100 hover:bg-yellow-200 text-yellow-800 text-xs font-bold px-3 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 border border-yellow-200" title="Haz clic para verificar tu correo">
-                                    <span class="material-symbols-outlined text-base">mark_email_unread</span>
-                                    Enviar correo de verificación
-                                </button>
-                            <?php endif; ?>
-                        </div>
                     </div>
 
                     <?php if (!$is_google_user): ?>
@@ -857,6 +830,35 @@ if (!empty($_SESSION['imagen'])) {
     </div>
 
 
+
+    <div class="hidden fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 backdrop-blur-sm" id="service-modal">
+        <div class="bg-white dark:bg-[#1a2c35] w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <form action="solicitar_servicio.php" method="POST">
+                <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-[#111618] dark:text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary" id="service-icon">room_service</span>
+                        <span id="service-title">Solicitar Servicio</span>
+                    </h3>
+                    <a class="text-gray-500 hover:text-primary transition-colors cursor-pointer" onclick="closeServiceModal()">
+                        <span class="material-symbols-outlined">close</span>
+                    </a>
+                </div>
+                <div class="p-6 space-y-4">
+                    <input type="hidden" name="servicio" id="service-input">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Estás solicitando: <strong id="service-name-display" class="text-[#111618] dark:text-white"></strong></p>
+                    
+                    <div>
+                        <label class="block text-sm font-bold text-[#111618] dark:text-white mb-2">Detalles adicionales</label>
+                        <textarea name="mensaje" rows="4" class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary text-[#111618] dark:text-white placeholder:text-gray-400" placeholder="Ej: Necesito limpieza para mañana a las 10am..." required></textarea>
+                    </div>
+                </div>
+                <div class="p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3">
+                    <a class="px-6 py-2.5 text-sm font-bold text-gray-500 hover:text-[#111618] dark:hover:text-white transition-colors cursor-pointer" onclick="closeServiceModal()">Cancelar</a>
+                    <button type="submit" class="px-6 py-2.5 bg-primary hover:bg-sky-600 text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/30 transition-all">Enviar Solicitud</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="hidden fixed inset-0 z-50 bg-black/60 items-center justify-center p-4 backdrop-blur-sm" id="apartment-modal">
         <div class="bg-white dark:bg-[#1a2c35] w-full max-w-6xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
@@ -922,13 +924,18 @@ if (!empty($_SESSION['imagen'])) {
             }
         }
 
-        function openApartmentModal(apartmentId, title) {
+        function openBookingModal(apartmentId, title) {
             const modal = document.getElementById('apartment-modal');
             const iframe = document.getElementById('apartment-modal-iframe');
             const modalTitleText = document.getElementById('apartment-modal-title-text');
+            const modalIcon = modal.querySelector('.material-symbols-outlined.text-primary');
 
-            modalTitleText.textContent = title ? title : 'Apartamento';
-            iframe.src = `../reserva-apartamento/apartamento.php?id=${apartmentId}&embed=1`;
+            modalTitleText.textContent = 'Solicitud de Reserva: ' + title;
+            modalIcon.textContent = 'calendar_month';
+
+            // Usamos la nueva vista express para huéspedes logueados
+            iframe.src = `vista_reserva_express.php?id=${apartmentId}`;
+
             modal.classList.remove('hidden');
             modal.style.display = 'flex';
         }
@@ -1062,14 +1069,14 @@ if (!empty($_SESSION['imagen'])) {
 
         const translations = {
             es: {
-                "welcome-user": "Hola, Daniel",
+                "welcome-user": "Hola, <?php echo htmlspecialchars($_SESSION['nombre']); ?>",
                 "welcome-sub": "Bienvenido a tu panel de control. Tu próxima aventura te espera.",
                 "checkin-days": "Check-in: 3 Días",
                 "hero-title": "Tu escapada a Santa Marta",
                 "hero-sub": "Apartamento Vista al Mar - Edificio El Rodadero. Todo está listo para tu llegada.",
                 "btn-arrival": "Ver detalles de llegada",
                 "btn-guide": "Guía de la casa",
-                "tab-upcoming": "Próximas reservas",
+                "tab-upcoming": "Mi reserva actual",
                 "tab-past": "Estancias pasadas",
                 "tab-apartments": "Apartamentos",
                 "status-confirmed": "Confirmada",
@@ -1088,14 +1095,14 @@ if (!empty($_SESSION['imagen'])) {
                 "no-apartments": "No hay apartamentos disponibles"
             },
             en: {
-                "welcome-user": "Hello, Daniel",
+                "welcome-user": "Hello, <?php echo htmlspecialchars($_SESSION['nombre']); ?>",
                 "welcome-sub": "Welcome to your dashboard. Your next adventure awaits.",
                 "checkin-days": "Check-in: 3 Days",
                 "hero-title": "Your Santa Marta Getaway",
                 "hero-sub": "Ocean View Apartment - El Rodadero Building. Everything is ready for you.",
                 "btn-arrival": "View Arrival Details",
                 "btn-guide": "House Guide",
-                "tab-upcoming": "Upcoming Bookings",
+                "tab-upcoming": "My Current Booking",
                 "tab-past": "Past Stays",
                 "tab-apartments": "Apartments",
                 "status-confirmed": "Confirmed",
@@ -1167,33 +1174,6 @@ if (!empty($_SESSION['imagen'])) {
             const modal = document.getElementById('config-modal');
             modal.classList.add('hidden');
             modal.style.display = 'none';
-        }
-
-        function enviarVerificacion() {
-            if (!confirm("¿Deseas enviar un correo de verificación a tu dirección de email actual?")) return;
-
-            fetch('enviar_verificacion_be.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // En localhost, mostramos el link directamente para facilitar
-                        if (data.debug_link) {
-                            let link = data.debug_link;
-                            // Crear un modal o prompt temporal
-                            let mensaje = "Correo 'enviado'.\n\nComo estás en un entorno de pruebas (Localhost), es probable que el correo no llegue realmente.\n\nCopia y pega este enlace en tu navegador para verificar:";
-                            prompt(mensaje, link);
-                            console.log("LINK DE VERIFICACIÓN: " + link);
-                        } else {
-                            alert(data.message);
-                        }
-                    } else {
-                        alert("Error: " + data.message);
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert("Ocurrió un error al intentar enviar la verificación.");
-                });
         }
 
         function previewImage(input) {
@@ -1323,9 +1303,10 @@ if (!empty($_SESSION['imagen'])) {
             checkNotificationsHuesped();
             setInterval(checkNotificationsHuesped, 10000); // Polling cada 10s
 
-            // Iniciar tour si no se ha visto
-            if (!localStorage.getItem('huesped_tour_v1')) {
-                setTimeout(startTour, 1000);
+            // Iniciar tour si no se ha visto (versión 2)
+            if (!localStorage.getItem('huesped_tour_v2')) {
+                // Pequeño retraso para asegurar que la UI esté lista y evitar sensación de "precarga" bloqueante
+                setTimeout(startTour, 1500);
             }
         });
 
@@ -1388,10 +1369,19 @@ if (!empty($_SESSION['imagen'])) {
                             side: "top",
                             align: 'start'
                         }
+                    },
+                    {
+                        element: '#pqr-section',
+                        popover: {
+                            title: 'Contacto Directo',
+                            description: 'Si tienes dificultad o necesitas comunicarte, contáctanos:<br><strong>Email:</strong> 17clouds@gmail.com<br><strong>Tel:</strong> +57 318 3813381',
+                            side: "top",
+                            align: 'start'
+                        }
                     }
                 ],
                 onDestroyed: () => {
-                    localStorage.setItem('huesped_tour_v1', 'true');
+                    localStorage.setItem('huesped_tour_v2', 'true');
                 }
             });
 
