@@ -185,7 +185,7 @@ if ($insertStmt) {
 
             // --- CORREO AL ADMINISTRADOR ---
             $mail->clearAddresses();
-            $mail->addAddress('17clouds@gmail.com');
+            $mail->addAddress('Richardcastiblanco4@gmail.com');
             $mail->Subject = "NUEVA RESERVA #$id_reserva - " . strtoupper($metodo_pago);
 
             // Adjuntar todos los archivos
