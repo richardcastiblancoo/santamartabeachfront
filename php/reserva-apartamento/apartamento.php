@@ -199,7 +199,7 @@ if ($id_apartamento > 0) {
 
         <div id="mobile-menu" class="fixed inset-0 z-[100] bg-white dark:bg-background-dark transform translate-x-full transition-transform duration-300 md:hidden flex flex-col">
             <div class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800">
-               
+
                 <button onclick="toggleMobileMenu()" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                     <span class="material-symbols-outlined text-2xl">close</span>
                 </button>
@@ -653,7 +653,7 @@ if ($id_apartamento > 0) {
                                 <span class="underline text-[#4b5563] dark:text-slate-300" data-i18n="Tarifa de limpieza">Tarifa de limpieza</span>
                                 <span class="font-medium">$<span id="cleaning-fee-display">0</span></span>
                             </div>
-                           
+
                             <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center font-bold text-lg">
                                 <span data-i18n="Total">Total</span>
                                 <span>$<span id="total-display">0</span></span>
@@ -980,7 +980,6 @@ if ($id_apartamento > 0) {
         const basePrice = <?php echo $apartamento['precio']; ?>;
         const maxCapacity = 8;
         const cleaningFee = 80000;
-        const serviceFeeBase = 0.10;
 
         let guests = {
             adults: 1,
@@ -1105,14 +1104,12 @@ if ($id_apartamento > 0) {
 
             if (nights > 0) {
                 const subtotal = basePrice * nights;
-                const serviceFee = Math.round(subtotal * serviceFeeBase);
-                const total = subtotal + cleaningFee + serviceFee;
+                const total = subtotal + cleaningFee;
 
                 document.getElementById('base-price-display').textContent = basePrice.toLocaleString('es-CO');
                 document.getElementById('nights-display').textContent = nights;
                 document.getElementById('subtotal-display').textContent = subtotal.toLocaleString('es-CO');
                 document.getElementById('cleaning-fee-display').textContent = cleaningFee.toLocaleString('es-CO');
-                document.getElementById('service-fee-display').textContent = serviceFee.toLocaleString('es-CO');
                 document.getElementById('total-display').textContent = total.toLocaleString('es-CO');
 
                 const nightsText = document.getElementById('nights-text');
