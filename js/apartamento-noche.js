@@ -22,6 +22,8 @@ function verApartamento(apartamento) {
     apartamento.banos + " Baños";
   document.getElementById("preview-capacidad").innerText =
     apartamento.capacidad + " Huéspedes";
+  document.getElementById("preview-cama").innerText =
+    (apartamento.cama || 0) + " Camas";
 
   // Cargar servicios en preview
   const servicesContainer = document.getElementById(
@@ -205,6 +207,20 @@ function editarApartamento(apartamento) {
   document.querySelector('input[name="banos"]').value = apartamento.banos;
   document.querySelector('input[name="capacidad"]').value =
     apartamento.capacidad;
+  document.querySelector('input[name="cama"]').value = apartamento.cama || 0;
+
+  // PDF
+  const pdfContainer = document.getElementById("pdf-existente");
+  if (apartamento.pdf) {
+    pdfContainer.innerHTML = `<div class="flex items-center gap-2 p-2 bg-background-light dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <span class="material-symbols-outlined text-red-500">picture_as_pdf</span>
+        <a href="../../assets/pdf/${apartamento.pdf}" target="_blank" class="text-sm text-primary hover:underline truncate flex-1">Ver documento actual</a>
+        <span class="text-xs text-text-secondary">(Subir otro archivo reemplazará este)</span>
+    </div>`;
+  } else {
+    pdfContainer.innerHTML = '<span class="text-xs text-text-secondary italic">No hay documento PDF asociado.</span>';
+  }
+
   // document.querySelector('input[name="video"]').value = apartamento.video || ''; // Ya no se usa URL de video
 
   // Marcar servicios seleccionados
@@ -392,6 +408,7 @@ document
       // Limpiar galería visual
       document.getElementById("galeria-imagenes-existentes").innerHTML = "";
       document.getElementById("galeria-videos-existentes").innerHTML = "";
+      document.getElementById("pdf-existente").innerHTML = "";
 
       // Resetear checkboxes de servicios
       document

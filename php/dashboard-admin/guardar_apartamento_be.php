@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $habitaciones = $_POST['habitaciones'];
     $banos = $_POST['banos'];
     $capacidad = $_POST['capacidad'];
+    $cama = isset($_POST['cama']) ? $_POST['cama'] : 0;
     
     // Procesar servicios (convertir array a JSON)
     $servicios = isset($_POST['servicios']) ? json_encode($_POST['servicios'], JSON_UNESCAPED_UNICODE) : null;
@@ -44,17 +45,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
+    // Procesamiento del PDF
+    $nombre_pdf = null;
+    if (isset($_FILES['pdf']) && $_FILES['pdf']['error'] == 0) {
+        $pdf_file = $_FILES['pdf'];
+        $nombre_temp_pdf = time() . '_doc_' . $pdf_file['name'];
+        $dir_pdf = '../../assets/pdf/';
+        if (!file_exists($dir_pdf)) {
+            mkdir($dir_pdf, 0777, true);
+        }
+        $ruta_temp_pdf = $dir_pdf . $nombre_temp_pdf;
+        $tipo_pdf = strtolower(pathinfo($ruta_temp_pdf, PATHINFO_EXTENSION));
+
+        if ($tipo_pdf == 'pdf') {
+            if (move_uploaded_file($pdf_file['tmp_name'], $ruta_temp_pdf)) {
+                $nombre_pdf = $nombre_temp_pdf;
+            }
+        } else {
+             echo '<script>alert("Solo se permiten archivos PDF."); window.location = "apartamentos.php";</script>';
+             exit;
+        }
+    }
+
     $apartamento_id = $id;
 
     if ($id) {
         // UPDATE
-        if ($nombre_imagen) {
-            $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, imagen_principal=?, servicios=? WHERE id=?");
-            $stmt->bind_param("ssdsiiissi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $nombre_imagen, $servicios, $id);
+        if ($nombre_imagen && $nombre_pdf) {
+             $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, cama=?, servicios=?, imagen_principal=?, pdf=? WHERE id=?");
+             $stmt->bind_param("ssdsiiissssi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $cama, $servicios, $nombre_imagen, $nombre_pdf, $id);
+        } elseif ($nombre_imagen) {
+             $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, cama=?, servicios=?, imagen_principal=? WHERE id=?");
+             $stmt->bind_param("ssdsiiisssi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $cama, $servicios, $nombre_imagen, $id);
+        } elseif ($nombre_pdf) {
+             $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, cama=?, servicios=?, pdf=? WHERE id=?");
+             $stmt->bind_param("ssdsiiisssi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $cama, $servicios, $nombre_pdf, $id);
         } else {
-            $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, servicios=? WHERE id=?");
-            $stmt->bind_param("ssdsiiisi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $servicios, $id);
+             $stmt = $conn->prepare("UPDATE apartamentos SET titulo=?, descripcion=?, precio=?, ubicacion=?, habitaciones=?, banos=?, capacidad=?, cama=?, servicios=? WHERE id=?");
+             $stmt->bind_param("ssdsiiissi", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $cama, $servicios, $id);
         }
+
         $mensaje_exito = "Apartamento actualizado exitosamente.";
         $mensaje_error = "Error al actualizar el apartamento.";
     } else {
@@ -63,8 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo '<script>alert("Por favor selecciona una imagen principal para el nuevo apartamento."); window.location = "apartamentos.php";</script>';
             exit;
         }
-        $stmt = $conn->prepare("INSERT INTO apartamentos (titulo, descripcion, precio, ubicacion, habitaciones, banos, capacidad, imagen_principal, servicios) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssdsiiiss", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $nombre_imagen, $servicios);
+        $stmt = $conn->prepare("INSERT INTO apartamentos (titulo, descripcion, precio, ubicacion, habitaciones, banos, capacidad, cama, imagen_principal, servicios, pdf) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssdsiiissss", $titulo, $descripcion, $precio, $ubicacion, $habitaciones, $banos, $capacidad, $cama, $nombre_imagen, $servicios, $nombre_pdf);
         
         $mensaje_exito = "Apartamento publicado exitosamente.";
         $mensaje_error = "Error al guardar en la base de datos.";

@@ -176,6 +176,10 @@ $total = $subtotal + $cleaningFee;
                                     <input type="tel" name="telefono" required class="w-full rounded-r-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4">
                                 </div>
                             </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_id_passport">Número de Cédula o Pasaporte</label>
+                                <input type="text" name="identificacion" required class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="Ingresa tu número de documento">
+                            </div>
                             <button type="button" onclick="nextStep(2)" class="w-full py-5 bg-primary text-white rounded-2xl font-black shadow-lg" data-key="btn_next">Siguiente Paso</button>
                         </div>
                     </div>
@@ -209,9 +213,13 @@ $total = $subtotal + $cleaningFee;
                                         <span class="text-sm font-bold" data-key="pay_cash_only">Efectivo</span>
                                     </label>
                                     <label class="flex items-center gap-3 p-4 border rounded-2xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700">
-                                        <input type="radio" name="metodo_pago" value="transferencia" class="text-primary focus:ring-primary">
+                                        <input type="radio" name="metodo_pago" value="transferencia" class="text-primary focus:ring-primary" onchange="toggleBankInput(this)">
                                         <span class="text-sm font-bold" data-key="pay_transfer">Transferencia</span>
                                     </label>
+                                </div>
+                                <div id="bank-input-container" class="hidden mt-3 animate-fadeIn">
+                                    <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_bank_details">Detalles del Banco (Nombre del banco / Tarjeta)</label>
+                                    <input type="text" name="banco_detalle" class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="Ej: Bancolombia, Davivienda, Visa, Mastercard...">
                                 </div>
                             </div>
 
@@ -306,6 +314,7 @@ $total = $subtotal + $cleaningFee;
                 label_payment_method: "¿Cómo prefieres pagar tu reserva?",
                 pay_cash_only: "Efectivo",
                 pay_transfer: "Transferencia Bancaria",
+                label_bank_details: "Detalles del Banco (Nombre del banco / Tarjeta)",
                 notice_bold: "IMPORTANTE:",
                 notice_text: "Al enviar esta solicitud, nos comunicaremos contigo para enviarte los datos según tu método de pago elegido.",
                 label_id_photo: "Foto Cédula o Pasaporte (múltiple o PDF)",
@@ -339,6 +348,7 @@ $total = $subtotal + $cleaningFee;
                 label_payment_method: "How would you like to pay?",
                 pay_cash_only: "Cash",
                 pay_transfer: "Bank Transfer",
+                label_bank_details: "Bank Details (Bank Name / Card)",
                 notice_bold: "IMPORTANT:",
                 notice_text: "After sending this request, we will contact you with the payment details based on your selection.",
                 label_id_photo: "ID or Passport Photo (Multiple or PDF)",
@@ -392,6 +402,27 @@ $total = $subtotal + $cleaningFee;
             `;
             container.appendChild(newRow);
         }
+
+        function toggleBankInput(radio) {
+            const container = document.getElementById('bank-input-container');
+            if (container) {
+                 if (radio.value === 'transferencia' && radio.checked) {
+                    container.classList.remove('hidden');
+                 } else {
+                    container.classList.add('hidden');
+                 }
+            }
+        }
+        
+        // Agregar listener para el radio de efectivo para ocultar el input
+        document.querySelector('input[value="efectivo"]').addEventListener('change', function() {
+            const container = document.getElementById('bank-input-container');
+            if (container) {
+                container.classList.add('hidden');
+                const input = container.querySelector('input');
+                if (input) input.value = '';
+            }
+        });
 
         function updateFileList(input) {
             const list = document.getElementById('file-list');

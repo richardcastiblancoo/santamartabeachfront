@@ -254,8 +254,16 @@ if ($id_apartamento > 0) {
                 </div>
                 <div class="flex gap-3">
                     <button onclick="shareApartment()" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#111618] text-white border border-[#111618] text-sm font-bold hover:bg-black/90 transition-colors shadow-lg">
-                        <span class="material-symbols-outlined text-[20px]">share</span> <span data-i18n="Compartir">Compartir</span>
+                        <span class="material-symbols-outlined text-[20px]">share</span>
+                        <span data-i18n="Compartir">Compartir</span>
                     </button>
+
+                    <?php if (!empty($apartamento['pdf'])): ?>
+                    <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-[#111618] border border-[#111618] text-sm font-bold hover:bg-gray-100 transition-colors shadow-lg">
+                        <span class="material-symbols-outlined text-[20px]">visibility</span>
+                        <a href="/assets/pdf/<?php echo htmlspecialchars($apartamento['pdf']); ?>" target="_blank" title="Descarga el PDF de este hermoso apartamento" class="text-[#111618] hover:underline">Descarga el PDF de este hermoso apartamento</a>
+                    </button>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -329,7 +337,7 @@ if ($id_apartamento > 0) {
                 <div class="lg:col-span-2">
                     <div class="border-b border-slate-200 dark:border-slate-800 pb-6 mb-8">
                         <h2 class="text-2xl font-bold mb-2">Alojamiento Completo: <?php echo $apartamento['titulo']; ?></h2>
-                        <p class="text-[#617c89] dark:text-slate-400"><?php echo $apartamento['capacidad']; ?> Huéspedes · <?php echo $apartamento['habitaciones']; ?> habitaciones · 6 camas . <?php echo $apartamento['banos']; ?> Baños</p>
+                        <p class="text-[#617c89] dark:text-slate-400"><?php echo $apartamento['capacidad']; ?> Huéspedes · <?php echo $apartamento['habitaciones']; ?> habitaciones · <?php echo isset($apartamento['cama']) ? $apartamento['cama'] : 0; ?> camas . <?php echo $apartamento['banos']; ?> Baños</p>
                     </div>
                     <section class="mb-10">
                         <h3 class="text-xl font-bold mb-4">Sobre este apartamento</h3>
@@ -1075,17 +1083,17 @@ if ($id_apartamento > 0) {
                     calculatePrice();
                     // Cuando se completan las fechas, ya no mostramos advertencia
                     isDatePickerOpen = false;
-                    
+
                     // Actualizar calendario personalizado
-                    if(document.getElementById('status-text')) document.getElementById('status-text').innerText = "¡Listo!";
+                    if (document.getElementById('status-text')) document.getElementById('status-text').innerText = "¡Listo!";
                 } else {
                     selectedDates.checkin = dates[0] || null;
                     selectedDates.checkout = null;
                     document.getElementById('checkout-input').value = "";
                     document.getElementById('price-breakdown').classList.add('hidden');
-                    
+
                     // Actualizar texto estado
-                    if(document.getElementById('status-text')) document.getElementById('status-text').innerText = selectedDates.checkin ? "Seleccione su salida" : "Seleccione su llegada";
+                    if (document.getElementById('status-text')) document.getElementById('status-text').innerText = selectedDates.checkin ? "Seleccione su salida" : "Seleccione su llegada";
                 }
                 // Siempre renderizar el calendario para mostrar selección
                 if (typeof renderCustomCalendar === 'function') {
@@ -1382,7 +1390,7 @@ if ($id_apartamento > 0) {
         function handleCustomDateClick(date) {
             // Lógica para actualizar Flatpickr
             // Flatpickr se encargará de validar rangos ocupados a través de su config 'disable'
-            
+
             let newCheckin = selectedDates.checkin;
             let newCheckout = selectedDates.checkout;
 

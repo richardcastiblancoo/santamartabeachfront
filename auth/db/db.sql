@@ -31,6 +31,9 @@ CREATE TABLE IF NOT EXISTS apartamentos (
     fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+ALTER TABLE apartamentos ADD COLUMN cama INT(3) DEFAULT 0;
+ALTER TABLE apartamentos ADD COLUMN pdf VARCHAR(255) DEFAULT NULL;
+
 -- 1. Crear la columna
 ALTER TABLE apartamentos ADD COLUMN slug VARCHAR(255) UNIQUE AFTER nombre;
 
@@ -72,6 +75,8 @@ CREATE TABLE IF NOT EXISTS reservas (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ALTER TABLE reservas ADD COLUMN metodo_pago VARCHAR(50) DEFAULT 'No especificado';
 
+ALTER TABLE reservas ADD COLUMN identificacion VARCHAR(50) DEFAULT NULL;
+ALTER TABLE reservas ADD COLUMN banco_detalle VARCHAR(100) DEFAULT NULL;
 
 -- 6. Tabla de Reseñas
 CREATE TABLE IF NOT EXISTS resenas (

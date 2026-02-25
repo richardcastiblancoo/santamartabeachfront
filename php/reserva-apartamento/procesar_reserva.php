@@ -36,7 +36,9 @@ $nombre          = trim($_POST['nombre'] ?? '');
 $apellido        = trim($_POST['apellido'] ?? ''); // Corregido el "apellido!" anterior
 $email           = trim($_POST['email'] ?? '');
 $telefono        = trim($_POST['telefono'] ?? '');
+$identificacion  = trim($_POST['identificacion'] ?? ''); // Nuevo campo
 $cuenta_banco    = trim($_POST['cuenta_devolucion'] ?? '');
+$banco_detalle   = trim($_POST['banco_detalle'] ?? ''); // Nuevo campo
 
 // 2. Procesar Lista de Huéspedes
 $lista_huespedes = isset($_POST['huespedes']) ? $_POST['huespedes'] : [];
@@ -80,23 +82,25 @@ if ($overlapCount > 0) {
     exit;
 }
 
-// 5. Insertar en BD (17 parámetros)
+// 5. Insertar en BD (19 parámetros)
 $estado = 'pendiente';
-$insertSql = "INSERT INTO reservas (apartamento_id, nombre_cliente, apellido_cliente, email_cliente, telefono, huespedes_nombres, documento_ruta, cuenta_devolucion, fecha_checkin, fecha_checkout, adultos, ninos, bebes, perro_guia, precio_total, estado, metodo_pago) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$insertSql = "INSERT INTO reservas (apartamento_id, nombre_cliente, apellido_cliente, email_cliente, telefono, identificacion, huespedes_nombres, documento_ruta, cuenta_devolucion, banco_detalle, fecha_checkin, fecha_checkout, adultos, ninos, bebes, perro_guia, precio_total, estado, metodo_pago) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $insertStmt = $conn->prepare($insertSql);
 
 if ($insertStmt) {
     $insertStmt->bind_param(
-        'isssssssssiiiidss',
+        'isssssssssssiiiidss',
         $id_apartamento,
         $nombre,
         $apellido,
         $email,
         $telefono,
+        $identificacion,
         $huespedes_nombres,
         $documento_ruta_db,
         $cuenta_banco,
+        $banco_detalle,
         $checkin,
         $checkout,
         $adults,
@@ -163,6 +167,11 @@ if ($insertStmt) {
                                 <td style='padding: 12px 0; border-bottom: 1px solid #edf2f7;'><strong>Método de pago:</strong></td>
                                 <td style='padding: 12px 0; border-bottom: 1px solid #edf2f7; text-align: right;'>" . ucfirst($metodo_pago) . "</td>
                             </tr>
+                            " . ($metodo_pago === 'transferencia' ? "
+                            <tr>
+                                <td style='padding: 12px 0; border-bottom: 1px solid #edf2f7;'><strong>Detalle Banco:</strong></td>
+                                <td style='padding: 12px 0; border-bottom: 1px solid #edf2f7; text-align: right;'>$banco_detalle</td>
+                            </tr>" : "") . "
                             <tr>
                                 <td style='padding: 20px 0; font-size: 18px; color: #0a2f42;'><strong>Total:</strong></td>
                                 <td style='padding: 20px 0; font-size: 18px; color: #0a2f42; text-align: right;'><strong>$" . number_format($total_price, 0, ',', '.') . "</strong></td>
@@ -224,6 +233,7 @@ if ($insertStmt) {
                         <h2 style='font-size: 16px; color: #0a2f42; border-bottom: 2px solid #edf2f7; padding-bottom: 8px;'>Información del Huésped</h2>
                         <div style='margin-bottom: 25px; line-height: 1.6;'>
                             <p style='margin: 5px 0;'><strong>Titular:</strong> $nombre $apellido</p>
+                            <p style='margin: 5px 0;'><strong>Identificación:</strong> $identificacion</p>
                             <p style='margin: 5px 0;'><strong>Email:</strong> <a href='mailto:$email' style='color: #3182ce; text-decoration: none;'>$email</a></p>
                             <p style='margin: 5px 0;'><strong>WhatsApp:</strong> $telefono</p>
                             <p style='margin: 5px 0;'><strong>Acompañantes:</strong> $huespedes_nombres</p>
@@ -234,6 +244,7 @@ if ($insertStmt) {
                         <div style='margin-bottom: 30px; line-height: 1.6;'>
                             <p style='margin: 5px 0;'><strong>Precio Total:</strong> $" . number_format($total_price, 0, ',', '.') . "</p>
                             <p style='margin: 5px 0;'><strong>Método de Pago:</strong> " . strtoupper($metodo_pago) . "</p>
+                            " . ($metodo_pago === 'transferencia' ? "<p style='margin: 5px 0;'><strong>Detalle Banco:</strong> $banco_detalle</p>" : "") . "
                             <p style='margin: 5px 0;'><strong>Cuenta Reembolso:</strong> $cuenta_banco</p>
                         </div>
 

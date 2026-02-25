@@ -244,12 +244,12 @@ include '../../auth/conexion_be.php';
                             <p class="text-text-secondary text-sm mt-1">Gestiona los detalles, precios, multimedia y disponibilidad.</p>
                         </div>
                         <div class="flex gap-3">
-                           
+
                             <a class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white px-5 py-2.5 rounded-lg font-semibold transition-all shadow-lg shadow-primary/30" href="#apartment-modal" onclick="limpiarFormulario()">
                                 <span class="material-symbols-outlined text-xl">add</span>
                                 <span>Añadir Nuevo</span>
                             </a>
-                          
+
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-4">
@@ -360,6 +360,17 @@ include '../../auth/conexion_be.php';
                             </section>
 
                             <section class="space-y-4">
+                                <h4 class="text-sm font-bold text-text-main dark:text-white uppercase tracking-wider">Documentos (Opcional)</h4>
+                                <div class="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-background-light dark:hover:bg-gray-800 transition-colors group">
+                                    <input type="file" name="pdf" accept=".pdf" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
+                                    <p class="mt-2 text-xs text-text-secondary">Selecciona un archivo PDF.</p>
+                                </div>
+                                <div id="pdf-existente" class="mt-2 text-sm text-text-main dark:text-white">
+                                    <!-- El PDF existente se mostrará aquí -->
+                                </div>
+                            </section>
+
+                            <section class="space-y-4">
                                 <h4 class="text-sm font-bold text-text-main dark:text-white uppercase tracking-wider">Detalles Generales</h4>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="space-y-2">
@@ -370,7 +381,7 @@ include '../../auth/conexion_be.php';
                                         <label class="text-xs font-semibold text-text-secondary">Precio por Noche</label>
                                         <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 px-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Ej: 450000" type="number" name="precio" required />
                                     </div>
-                                    
+
                                     <div class="space-y-2 md:col-span-2">
                                         <label class="text-xs font-semibold text-text-secondary">Ubicación</label>
                                         <div class="relative">
@@ -378,7 +389,7 @@ include '../../auth/conexion_be.php';
                                             <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" placeholder="Ej: Edificio Rodadero Real, Piso 12" type="text" name="ubicacion" required />
                                         </div>
                                     </div>
-                                   
+
                                     <div class="space-y-2 md:col-span-2">
                                         <label class="text-xs font-semibold text-text-secondary">Descripción</label>
                                         <textarea class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white h-24 resize-none" placeholder="Describe las características principales..." name="descripcion" required></textarea>
@@ -434,7 +445,7 @@ include '../../auth/conexion_be.php';
 
                             <section class="space-y-4">
                                 <h4 class="text-sm font-bold text-text-main dark:text-white uppercase tracking-wider">Características</h4>
-                                <div class="grid grid-cols-3 gap-4">
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div class="space-y-2">
                                         <label class="text-xs font-semibold text-text-secondary">Habitaciones</label>
                                         <div class="relative">
@@ -454,6 +465,13 @@ include '../../auth/conexion_be.php';
                                         <div class="relative">
                                             <span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-sm">group</span>
                                             <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" type="number" name="capacidad" required />
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-xs font-semibold text-text-secondary">Camas</label>
+                                        <div class="relative">
+                                            <span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-sm">bed</span>
+                                            <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" type="number" name="cama" required />
                                         </div>
                                     </div>
                                 </div>
@@ -491,7 +509,7 @@ include '../../auth/conexion_be.php';
             </div>
 
             <div class="p-6 md:p-8 overflow-y-auto">
-                <div class="grid grid-cols-3 gap-4 mb-8">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
                     <div class="bg-background-light dark:bg-gray-800 p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2">
                         <span class="material-symbols-outlined text-primary text-3xl">bed</span>
                         <span class="font-bold text-text-main dark:text-white" id="preview-habitaciones"></span>
@@ -503,6 +521,10 @@ include '../../auth/conexion_be.php';
                     <div class="bg-background-light dark:bg-gray-800 p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2">
                         <span class="material-symbols-outlined text-primary text-3xl">group</span>
                         <span class="font-bold text-text-main dark:text-white" id="preview-capacidad"></span>
+                    </div>
+                    <div class="bg-background-light dark:bg-gray-800 p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-3xl">single_bed</span>
+                        <span class="font-bold text-text-main dark:text-white" id="preview-cama"></span>
                     </div>
                 </div>
 
