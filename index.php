@@ -253,7 +253,7 @@
                                         <span class="text-2xl font-black text-white">$<?php echo number_format($row['precio'], 0, ',', '.'); ?></span>
                                         <span class="text-gray-500 text-[10px] block">por noche</span>
                                     </div>
-                                    <a href="/php/reserva-apartamento/apartamento.php?id=<?php echo $row['id']; ?>"
+                                    <a href="<?php echo $row['slug'] ? '/apartamento/' . $row['slug'] : '/php/reserva-apartamento/apartamento.php?id=' . $row['id']; ?>"
                                         class="bg-blue-500 text-white hover:bg-blue-400 px-5 py-2.5 rounded-xl font-bold text-[11px] transition-all shadow-lg shadow-blue-500/20">
                                         Ver Galería
                                     </a>

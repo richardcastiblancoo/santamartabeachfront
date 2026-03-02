@@ -23,6 +23,7 @@ include '../../auth/conexion_be.php';
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css" />
     <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.js"></script>
     <script id="tailwind-config">
@@ -293,6 +294,9 @@ include '../../auth/conexion_be.php';
                                                     <a class="p-2 text-text-secondary hover:text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer" onclick='editarApartamento(<?php echo $row_json; ?>)' href="#apartment-modal" title="Editar">
                                                         <span class="material-symbols-outlined">edit</span>
                                                     </a>
+                                                    <a class="p-2 text-text-secondary hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors cursor-pointer" onclick="eliminarApartamento(<?php echo $row['id']; ?>)" title="Eliminar">
+                                                        <span class="material-symbols-outlined">delete</span>
+                                                    </a>
                                                 </div>
                                             </div>
                                             <div class="mt-4 pt-4 border-t border-[#f0f3f4] dark:border-gray-800 flex justify-between items-center">
@@ -464,7 +468,7 @@ include '../../auth/conexion_be.php';
                                         <label class="text-xs font-semibold text-text-secondary">Capacidad (Pax)</label>
                                         <div class="relative">
                                             <span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-sm">group</span>
-                                            <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" type="number" name="capacidad" required />
+                                            <input class="w-full bg-background-light dark:bg-gray-800 border-none rounded-lg h-10 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary/50 text-text-main dark:text-white" type="text" name="capacidad" required />
                                         </div>
                                     </div>
                                     <div class="space-y-2">

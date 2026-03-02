@@ -142,14 +142,14 @@ try {
     // Ignorar error si la columna ya existe
 }
 
-// Verificar si existe el usuario admin por defecto
-$usuario_admin = "admin";
-$email_admin = "admin@santamarta.com";
-$check_admin = "SELECT * FROM usuarios WHERE usuario = '$usuario_admin' OR email = '$email_admin'";
+// Verificar si existe algún usuario admin
+$check_admin = "SELECT * FROM usuarios WHERE rol = 'Admin' OR rol = 'admin' LIMIT 1";
 $result = $conn->query($check_admin);
 
 if ($result->num_rows == 0) {
-    // Crear usuario admin por defecto
+    // Crear usuario admin por defecto si no hay ninguno
+    $usuario_admin = "admin";
+    $email_admin = "admin@santamarta.com";
     $password_admin = password_hash("123456", PASSWORD_DEFAULT);
     $sql_admin = "INSERT INTO usuarios (nombre, apellido, usuario, email, password, rol)
     VALUES ('Carlos', 'Admin', '$usuario_admin', '$email_admin', '$password_admin', 'Admin')";

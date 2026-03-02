@@ -250,6 +250,10 @@ function editarApartamento(apartamento) {
   cargarGaleria(apartamento.id);
 }
 
+// Variables globales para instancias de Sortable
+let sortableImagenes = null;
+let sortableVideos = null;
+
 function cargarGaleria(id) {
   const containerImg = document.getElementById("galeria-imagenes-existentes");
   const containerVid = document.getElementById("galeria-videos-existentes");
@@ -278,25 +282,34 @@ function cargarGaleria(id) {
 
       data.forEach((item) => {
         const div = document.createElement("div");
+        div.setAttribute('data-id', item.id); // ID para ordenamiento
         div.className =
-          "relative group rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700";
+          "relative group rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 cursor-move bg-card-light dark:bg-card-dark shadow-sm hover:shadow-md transition-all";
 
         if (item.tipo === "imagen") {
           hayImagenes = true;
           div.innerHTML = `
-                                <img src="../../assets/img/apartamentos/${item.ruta}" class="w-full h-24 object-cover" alt="Galería">
-                                <button type="button" onclick="eliminarMultimedia(${item.id}, this)" class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <img src="../../assets/img/apartamentos/${item.ruta}" class="w-full h-24 object-cover pointer-events-none" alt="Galería">
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none"></div>
+                                <button type="button" onclick="eliminarMultimedia(${item.id}, this)" class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 cursor-pointer">
                                     <span class="material-symbols-outlined text-xs">close</span>
                                 </button>
+                                <div class="absolute top-1 left-1 bg-black/50 text-white rounded p-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                    <span class="material-symbols-outlined text-xs">drag_indicator</span>
+                                </div>
                             `;
           containerImg.appendChild(div);
         } else if (item.tipo === "video") {
           hayVideos = true;
           div.innerHTML = `
-                                <video src="../../assets/video/apartamentos/${item.ruta}" class="w-full h-32 object-cover bg-black" controls></video>
-                                <button type="button" onclick="eliminarMultimedia(${item.id}, this)" class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <video src="../../assets/video/apartamentos/${item.ruta}" class="w-full h-32 object-cover bg-black pointer-events-none"></video>
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none"></div>
+                                <button type="button" onclick="eliminarMultimedia(${item.id}, this)" class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                                     <span class="material-symbols-outlined text-xs">close</span>
                                 </button>
+                                <div class="absolute top-1 left-1 bg-black/50 text-white rounded p-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                    <span class="material-symbols-outlined text-xs">drag_indicator</span>
+                                </div>
                             `;
           containerVid.appendChild(div);
         }
@@ -305,9 +318,32 @@ function cargarGaleria(id) {
       if (!hayImagenes)
         containerImg.innerHTML =
           '<div class="col-span-full text-center text-xs text-text-secondary">No hay imágenes adicionales.</div>';
+      else {
+        // Inicializar Sortable para imágenes
+        if (sortableImagenes) sortableImagenes.destroy();
+        sortableImagenes = new Sortable(containerImg, {
+            animation: 150,
+            ghostClass: 'opacity-50',
+            onEnd: function (evt) {
+                actualizarOrden('imagen');
+            }
+        });
+      }
+
       if (!hayVideos)
         containerVid.innerHTML =
           '<div class="col-span-full text-center text-xs text-text-secondary">No hay videos.</div>';
+      else {
+        // Inicializar Sortable para videos
+        if (sortableVideos) sortableVideos.destroy();
+        sortableVideos = new Sortable(containerVid, {
+            animation: 150,
+            ghostClass: 'opacity-50',
+            onEnd: function (evt) {
+                actualizarOrden('video');
+            }
+        });
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -316,6 +352,62 @@ function cargarGaleria(id) {
       containerVid.innerHTML =
         '<div class="col-span-full text-center text-red-500 text-xs">Error al cargar videos.</div>';
     });
+}
+
+function actualizarOrden(tipo) {
+    let container;
+    if (tipo === 'imagen') {
+        container = document.getElementById("galeria-imagenes-existentes");
+    } else {
+        container = document.getElementById("galeria-videos-existentes");
+    }
+
+    const items = container.querySelectorAll('div[data-id]');
+    const orden = [];
+    items.forEach((item, index) => {
+        orden.push({
+            id: item.getAttribute('data-id'),
+            posicion: index
+        });
+    });
+
+    // Solo enviar si hay items
+    if (orden.length > 0) {
+        fetch('actualizar_orden_galeria_be.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orden: orden })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    },
+                    customClass: {
+                        popup: "dark:bg-[#1a2c35] dark:text-white",
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Orden actualizado'
+                })
+            } else {
+                console.error('Error actualizando orden:', data.message);
+            }
+        })
+        .catch(error => console.error('Error de red:', error));
+    }
 }
 
 function eliminarMultimedia(id, btnElement) {
@@ -394,27 +486,26 @@ function eliminarApartamento(id) {
   });
 }
 
-// Limpiar formulario al abrir modal para nuevo apartamento
-document
-  .querySelector('a[href="#apartment-modal"]')
-  .addEventListener("click", function () {
-    if (!this.getAttribute("onclick")) {
-      // Solo si no es el botón de editar
-      document.getElementById("form-apartamento").reset();
-      document.getElementById("modal-title").innerText = "Nuevo Apartamento";
-      document.getElementById("apartamento_id").value = "";
-      document.getElementById("imagen_input").required = true;
+function limpiarFormulario() {
+  document.getElementById("form-apartamento").reset();
+  document.getElementById("modal-title").innerText = "Nuevo Apartamento";
+  document.getElementById("apartamento_id").value = "";
+  document.getElementById("imagen_input").required = true;
 
-      // Limpiar galería visual
-      document.getElementById("galeria-imagenes-existentes").innerHTML = "";
-      document.getElementById("galeria-videos-existentes").innerHTML = "";
-      document.getElementById("pdf-existente").innerHTML = "";
+  // Limpiar galería visual
+  const galeriaImagenes = document.getElementById("galeria-imagenes-existentes");
+  if (galeriaImagenes) galeriaImagenes.innerHTML = "";
 
-      // Resetear checkboxes de servicios
-      document
-        .querySelectorAll('input[name="servicios[]"]')
-        .forEach((cb) => (cb.checked = false));
-    }
-  });
+  const galeriaVideos = document.getElementById("galeria-videos-existentes");
+  if (galeriaVideos) galeriaVideos.innerHTML = "";
+
+  const pdfExistente = document.getElementById("pdf-existente");
+  if (pdfExistente) pdfExistente.innerHTML = "";
+
+  // Resetear checkboxes de servicios
+  document
+    .querySelectorAll('input[name="servicios[]"]')
+    .forEach((cb) => (cb.checked = false));
+}
 //-----------------
 //tour

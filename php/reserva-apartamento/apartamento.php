@@ -9,8 +9,23 @@ include '../../auth/conexion_be.php';
 
 $isEmbed = isset($_GET['embed']) && $_GET['embed'] === '1';
 
-// Obtener y asegurar el ID del apartamento / Get and secure the apartment ID
-$id_apartamento = isset($_GET['id']) ? intval($_GET['id']) : 0;
+// Obtener y asegurar el ID del apartamento por ID o Slug
+$id_apartamento = 0;
+if (isset($_GET['id'])) {
+    // Si viene 'id', lo usamos directamente
+    $id_apartamento = intval($_GET['id']);
+} elseif (isset($_GET['slug'])) {
+    // Si viene 'slug', buscamos el ID correspondiente
+    $slug = $_GET['slug'];
+    $stmt_slug = $conn->prepare("SELECT id FROM apartamentos WHERE slug = ?");
+    $stmt_slug->bind_param("s", $slug);
+    $stmt_slug->execute();
+    $res_slug = $stmt_slug->get_result();
+    if ($row_slug = $res_slug->fetch_assoc()) {
+        $id_apartamento = $row_slug['id'];
+    }
+}
+
 
 // Inicialización de variables / Variable initialization
 $apartamento = null;
@@ -93,7 +108,7 @@ if ($id_apartamento > 0) {
         }
 
         // 5 y 6. Consultar Galería / Query Gallery (Imagen y Video en una sola consulta / Image and Video in a single query)
-        $stmt_g = $conn->prepare("SELECT ruta, tipo FROM galeria_apartamentos WHERE apartamento_id = ?");
+        $stmt_g = $conn->prepare("SELECT ruta, tipo FROM galeria_apartamentos WHERE apartamento_id = ? ORDER BY orden ASC");
         $stmt_g->bind_param("i", $id_apartamento);
         $stmt_g->execute();
         $res_galeria = $stmt_g->get_result();
@@ -705,7 +720,7 @@ if ($id_apartamento > 0) {
                         <button onclick="goToReservation()" class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 mb-4" data-i18n="Reservar ahora">
                             Reservar ahora
                         </button>
-                        <p class="text-center text-sm text-[#617c89] mb-6" data-i18n="No se te cobrará nada todavía">No se te cobrará nada todavía</p>
+                        <p class="text-center text-sm text-[#617c89] mb-6" data-i18n="No abra cargos todavía">No abra cargos todavía</p>
 
                         <div id="price-breakdown" class="hidden space-y-3 mb-6">
                             <div class="flex justify-between text-base">
@@ -1060,47 +1075,52 @@ if ($id_apartamento > 0) {
 
         // Variable para controlar si el datepicker está abierto
         let isDatePickerOpen = false;
+        let fp;
 
-        const fp = flatpickr("#checkin-input", {
-            locale: "es",
-            minDate: "today",
-            dateFormat: "Y-m-d",
-            altInput: true,
-            altFormat: "d/m/Y",
-            mode: "range",
-            disable: bookedRanges,
-            onOpen: function() {
-                isDatePickerOpen = true;
-            },
-            onClose: function() {
-                isDatePickerOpen = false;
-            },
-            onChange: function(dates) {
-                if (dates.length === 2) {
-                    selectedDates.checkin = dates[0];
-                    selectedDates.checkout = dates[1];
-                    document.getElementById('checkout-input').value = fp.formatDate(dates[1], "d/m/Y");
-                    calculatePrice();
-                    // Cuando se completan las fechas, ya no mostramos advertencia
+        if (typeof flatpickr !== 'undefined') {
+            fp = flatpickr("#checkin-input", {
+                locale: "es",
+                minDate: "today",
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                mode: "range",
+                disable: bookedRanges,
+                onOpen: function() {
+                    isDatePickerOpen = true;
+                },
+                onClose: function() {
                     isDatePickerOpen = false;
+                },
+                onChange: function(dates) {
+                    if (dates.length === 2) {
+                        selectedDates.checkin = dates[0];
+                        selectedDates.checkout = dates[1];
+                        document.getElementById('checkout-input').value = fp.formatDate(dates[1], "d/m/Y");
+                        calculatePrice();
+                        // Cuando se completan las fechas, ya no mostramos advertencia
+                        isDatePickerOpen = false;
 
-                    // Actualizar calendario personalizado
-                    if (document.getElementById('status-text')) document.getElementById('status-text').innerText = "¡Listo!";
-                } else {
-                    selectedDates.checkin = dates[0] || null;
-                    selectedDates.checkout = null;
-                    document.getElementById('checkout-input').value = "";
-                    document.getElementById('price-breakdown').classList.add('hidden');
+                        // Actualizar calendario personalizado
+                        if (document.getElementById('status-text')) document.getElementById('status-text').innerText = "¡Listo!";
+                    } else {
+                        selectedDates.checkin = dates[0] || null;
+                        selectedDates.checkout = null;
+                        document.getElementById('checkout-input').value = "";
+                        document.getElementById('price-breakdown').classList.add('hidden');
 
-                    // Actualizar texto estado
-                    if (document.getElementById('status-text')) document.getElementById('status-text').innerText = selectedDates.checkin ? "Seleccione su salida" : "Seleccione su llegada";
+                        // Actualizar texto estado
+                        if (document.getElementById('status-text')) document.getElementById('status-text').innerText = selectedDates.checkin ? "Seleccione su salida" : "Seleccione su llegada";
+                    }
+                    // Siempre renderizar el calendario para mostrar selección
+                    if (typeof renderCustomCalendar === 'function') {
+                        renderCustomCalendar(currMonth, currYear);
+                    }
                 }
-                // Siempre renderizar el calendario para mostrar selección
-                if (typeof renderCustomCalendar === 'function') {
-                    renderCustomCalendar(currMonth, currYear);
-                }
-            }
-        });
+            });
+        } else {
+            console.error("Librería flatpickr no encontrada");
+        }
 
         // Evento para prevenir que el usuario salga mientras selecciona fechas
         window.addEventListener('beforeunload', function(e) {
@@ -1111,7 +1131,9 @@ if ($id_apartamento > 0) {
             }
         });
 
-        document.getElementById('checkout-container').addEventListener('click', () => fp.open());
+        document.getElementById('checkout-container').addEventListener('click', () => {
+            if (fp) fp.open();
+        });
 
         // Manejo de desplegable de huéspedes
         const guestTrigger = document.getElementById('guest-selector-trigger');
@@ -1218,29 +1240,48 @@ if ($id_apartamento > 0) {
         }
 
         function goToReservation() {
+            // Verificación de seguridad para flatpickr
+            if (typeof fp === 'undefined') {
+                console.error("Flatpickr no inicializado");
+                alert("Error: El sistema de reservas no se ha cargado correctamente. Por favor recarga la página.");
+                return;
+            }
+
             if (!selectedDates.checkin || !selectedDates.checkout) {
                 const lang = localStorage.getItem('preferredLang') || 'es';
-                const alertMsg = (translations[lang] && translations[lang]['Por favor, selecciona las fechas de llegada y salida.']) || 'Por favor, selecciona las fechas de llegada y salida.';
+                let alertMsg = 'Por favor, selecciona las fechas de llegada y salida.';
+                
+                if (typeof translations !== 'undefined' && translations[lang] && translations[lang]['Por favor, selecciona las fechas de llegada y salida.']) {
+                    alertMsg = translations[lang]['Por favor, selecciona las fechas de llegada y salida.'];
+                }
+                
                 alert(alertMsg);
                 fp.open();
                 return;
             }
 
-            const params = new URLSearchParams({
-                id: <?php echo $id_apartamento; ?>,
-                checkin: fp.formatDate(selectedDates.checkin, "Y-m-d"),
-                checkout: fp.formatDate(selectedDates.checkout, "Y-m-d"),
-                adults: guests.adults,
-                children: guests.children,
-                infants: guests.infants,
-                guideDog: guests.guideDog
-            });
+            try {
+                const params = new URLSearchParams({
+                    id: <?php echo $id_apartamento; ?>,
+                    checkin: fp.formatDate(selectedDates.checkin, "Y-m-d"),
+                    checkout: fp.formatDate(selectedDates.checkout, "Y-m-d"),
+                    adults: guests.adults,
+                    children: guests.children,
+                    infants: guests.infants,
+                    guideDog: guests.guideDog
+                });
 
-            <?php if ($isEmbed): ?>
-                params.set('embed', '1');
-            <?php endif; ?>
+                <?php if ($isEmbed): ?>
+                    params.set('embed', '1');
+                <?php endif; ?>
 
-            window.location.href = 'reservar.php?' + params.toString();
+                // Redirección explícita
+                console.log("Redirigiendo a reservar.php con params:", params.toString());
+                window.location.href = '/php/reserva-apartamento/reservar.php?' + params.toString();
+            } catch (e) {
+                console.error("Error al procesar reserva:", e);
+                alert("Ocurrió un error al procesar la solicitud. Intenta nuevamente.");
+            }
         }
 
         // --- 4. SISTEMA DE RESEÑAS ---
@@ -1304,7 +1345,7 @@ if ($id_apartamento > 0) {
 
             if (resetBtn) resetBtn.addEventListener('click', () => {
                 // Limpiar Flatpickr también limpiará el calendario personalizado a través de onChange
-                fp.clear();
+                if (fp) fp.clear();
                 statusText.innerText = "Seleccione su llegada";
             });
         }
@@ -1388,6 +1429,8 @@ if ($id_apartamento > 0) {
         }
 
         function handleCustomDateClick(date) {
+            if (!fp) return;
+
             // Lógica para actualizar Flatpickr
             // Flatpickr se encargará de validar rangos ocupados a través de su config 'disable'
 

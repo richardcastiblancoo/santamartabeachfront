@@ -65,7 +65,7 @@ if (!empty($_FILES['documento_id']['name'][0])) {
 }
 $documento_ruta_db = implode(",", $documentos_subidos);
 
-// 4. Validación de Disponibilidad (Overlap)
+// 4. Validación de Disponibilidad (Overlap) y Obtención del nombre del apartamento
 $overlapStmt = $conn->prepare("SELECT COUNT(*) FROM reservas WHERE apartamento_id = ? AND estado <> 'cancelada' AND fecha_checkin < ? AND fecha_checkout > ?");
 $overlapStmt->bind_param('iss', $id_apartamento, $checkout, $checkin);
 $overlapStmt->execute();
@@ -81,6 +81,15 @@ if ($overlapCount > 0) {
     }
     exit;
 }
+
+// Obtener nombre del apartamento
+$stmtApto = $conn->prepare("SELECT titulo FROM apartamentos WHERE id = ?");
+$stmtApto->bind_param("i", $id_apartamento);
+$stmtApto->execute();
+$resApto = $stmtApto->get_result();
+$rowApto = $resApto->fetch_assoc();
+$nombre_apartamento = $rowApto ? $rowApto['titulo'] : 'Apartamento';
+$stmtApto->close();
 
 // 5. Insertar en BD (19 parámetros)
 $estado = 'pendiente';
@@ -143,7 +152,7 @@ if ($insertStmt) {
                     <div style='padding: 40px 35px;'>
                         <h2 style='color: #0a2f42; font-size: 24px; margin-top: 0;'>¡Hola $nombre!</h2>
                         <p style='font-size: 16px; line-height: 1.6; color: #4a5568;'>
-                            Gracias por elegir <strong>Santamartabeachfront</strong>. Hemos recibido tu solicitud para disfrutar de una estancia en el <strong>Apartamento 1730 reserva del mar 1</strong>.
+                            Gracias por elegir <strong>Santamartabeachfront</strong>. Hemos recibido tu solicitud para disfrutar de una estancia en el <strong>" . htmlspecialchars($nombre_apartamento) . "</strong>.
                         </p>
 
                         <div style='background-color: #f8fafc; border-left: 4px solid #13a4ec; padding: 20px; margin: 25px 0; border-radius: 4px;'>
@@ -197,7 +206,7 @@ if ($insertStmt) {
 
             // --- CORREO AL ADMINISTRADOR ---
             $mail->clearAddresses();
-            $mail->addAddress('17clouds@gmail.com');
+            $mail->addAddress('richardcastiblanco4@gmail.com');
             $mail->Subject = "NUEVA RESERVA #$id_reserva - " . strtoupper($metodo_pago);
 
             // Adjuntar todos los archivos
@@ -212,7 +221,10 @@ if ($insertStmt) {
                     <div style='background-color: #0a2f42; padding: 30px 20px; text-align: center;'>
                         <img src='https://santamartabeachfront.com/public/img/logo-def-Photoroom.png' alt='Logo Santamartabeachfront' style='max-width: 140px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;'>
                         <h1 style='margin: 0; font-size: 20px; color: #ffffff; letter-spacing: 1px; font-weight: 600;'>NUEVA SOLICITUD DE RESERVA</h1>
-                        <p style='margin: 8px 0 0 0; color: #90CDF4; font-size: 14px;'>Apartamento 1730 reserva del mar 1</p>
+                        <p style='margin: 8px 0 0 0; color: #90CDF4; font-size: 14px;'>" . htmlspecialchars($nombre_apartamento) . "</p>
+                        <div style='margin-top: 15px; display: inline-block; background-color: #2b6cb0; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold;'>
+                            Solicitado el: " . date('d/m/Y H:i') . "
+                        </div>
                     </div>
 
                     <div style='padding: 30px;'>

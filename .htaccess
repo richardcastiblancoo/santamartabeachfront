@@ -1,6 +1,11 @@
 # Activar reescritura de URL
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    
+    # Redirigir URL amigable a apartamento.php
+    # Ejemplo: /apartamento/apartamento-beachfront-santa-marta -> /php/reserva-apartamento/apartamento.php?slug=apartamento-beachfront-santa-marta
+    RewriteRule ^apartamento/([a-zA-Z0-9-]+)$ php/reserva-apartamento/apartamento.php?slug=$1 [L,QSA]
+
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php?route=$1 [L,QSA]

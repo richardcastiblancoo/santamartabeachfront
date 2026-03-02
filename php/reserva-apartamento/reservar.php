@@ -51,7 +51,7 @@ $total = $subtotal + $cleaningFee;
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reserva Segura - Apartamento 1730 reserva del mar 1</title>
+    <title>Reserva Segura - <?php echo htmlspecialchars($apartamento['titulo']); ?></title>
     <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -119,7 +119,7 @@ $total = $subtotal + $cleaningFee;
                     <img src="https://flagcdn.com/w40/co.png" onclick="setLanguage('es')" id="btn-es" class="lang-btn active w-6 h-4 object-cover rounded-sm">
                     <img src="https://flagcdn.com/w40/us.png" onclick="setLanguage('en')" id="btn-en" class="lang-btn w-6 h-4 object-cover rounded-sm">
                 </div>
-                <span class="text-xs font-black uppercase tracking-widest opacity-50">Apartamento 1730 reserva del mar 1</span>
+                <span class="text-xs font-black uppercase tracking-widest opacity-50"><?php echo htmlspecialchars($apartamento['titulo']); ?></span>
             </div>
         </div>
 
@@ -186,7 +186,7 @@ $total = $subtotal + $cleaningFee;
 
                     <div class="tab-content" id="step2">
                         <div class="bg-white dark:bg-slate-900 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-xl space-y-6">
-                            <h2 class="text-2xl font-black" data-key="h2_guests">Lista de Acompañantes</h2>
+                            <h2 class="text-2xl font-black" data-key="h2_guests">Lista de Acompañantes (en tu grupo)</h2>
                             <p class="text-slate-500 text-sm" data-key="p_guests_desc">Escribe el nombre completo de cada persona.</p>
                             <div id="huespedes-container" class="space-y-4">
                                 <div class="flex gap-3">
@@ -234,7 +234,7 @@ $total = $subtotal + $cleaningFee;
                                 <div class="space-y-3">
                                     <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_id_photo">Foto Cédula o Pasaporte (puedes subir varios archivos o PDF)</label>
                                     <div class="relative border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl p-8 text-center hover:border-primary transition-colors">
-                                        <input type="file" name="documento_id[]" required multiple accept="image/*,.pdf" onchange="updateFileList(this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                        <input type="file" name="documento_id[]" multiple accept="image/*,.pdf" onchange="updateFileList(this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                                         <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">cloud_upload</span>
                                         <p class="text-xs text-slate-400 font-bold" id="file-label" data-key="file_upload_text">Sube tus documentos aquí</p>
                                         <div id="file-list" class="mt-2 text-[10px] text-primary font-bold"></div>
@@ -261,7 +261,7 @@ $total = $subtotal + $cleaningFee;
                     <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-xl">
                         <img src="/assets/img/apartamentos/<?php echo $apartamento['imagen_principal']; ?>" class="w-full h-44 object-cover rounded-2xl mb-6">
                         <div class="space-y-4">
-                            <h3 class="font-black text-lg leading-tight">Apartamento 1730 reserva del mar 1</h3>
+                            <h3 class="font-black text-lg leading-tight"><?php echo htmlspecialchars($apartamento['titulo']); ?></h3>
                             <div class="py-4 border-y border-slate-50 dark:border-slate-800 space-y-3">
                                 <div class="flex justify-between text-xs font-bold">
                                     <span class="text-slate-400" data-key="summary_arrival">Llegada</span>
@@ -306,7 +306,7 @@ $total = $subtotal + $cleaningFee;
                 label_email: "Correo Electrónico",
                 label_phone: "Teléfono",
                 btn_next: "Siguiente Paso",
-                h2_guests: "Lista de Acompañantes",
+                h2_guests: "Lista de Acompañantes (en tu grupo)",
                 p_guests_desc: "Escribe el nombre completo de cada persona.",
                 btn_back: "Atrás",
                 btn_continue: "Continuar",
@@ -340,7 +340,7 @@ $total = $subtotal + $cleaningFee;
                 label_email: "Email",
                 label_phone: "Phone",
                 btn_next: "Next Step",
-                h2_guests: "Guest List",
+                h2_guests: "Guest List (in your group)",
                 p_guests_desc: "Write the full name of each person.",
                 btn_back: "Back",
                 btn_continue: "Continue",
@@ -406,14 +406,14 @@ $total = $subtotal + $cleaningFee;
         function toggleBankInput(radio) {
             const container = document.getElementById('bank-input-container');
             if (container) {
-                 if (radio.value === 'transferencia' && radio.checked) {
+                if (radio.value === 'transferencia' && radio.checked) {
                     container.classList.remove('hidden');
-                 } else {
+                } else {
                     container.classList.add('hidden');
-                 }
+                }
             }
         }
-        
+
         // Agregar listener para el radio de efectivo para ocultar el input
         document.querySelector('input[value="efectivo"]').addEventListener('change', function() {
             const container = document.getElementById('bank-input-container');

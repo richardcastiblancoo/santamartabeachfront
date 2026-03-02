@@ -152,11 +152,11 @@ $sugerencias_res = $conn->query($sugerencias_query);
             </div>
 
             <div class="p-4 border-t border-gray-800">
-                <div class="flex items-center gap-3 bg-gray-900/50 p-3 rounded-xl border border-gray-800">
-                    <img class="size-10 rounded-full object-cover" src="<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://ui-avatars.com/api/?name=Admin'; ?>">
-                    <div class="overflow-hidden">
-                        <p class="text-xs font-bold text-white truncate"><?php echo $_SESSION['nombre']; ?></p>
-                        <p class="text-[10px] text-gray-500 truncate"><?php echo $_SESSION['email']; ?></p>
+                <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM'; ?>");'></div>
+                    <div class="flex flex-col overflow-hidden">
+                        <span class="text-sm font-bold truncate dark:text-white"><?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
+                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo $_SESSION['email']; ?></span>
                     </div>
                 </div>
             </div>
@@ -212,7 +212,7 @@ $sugerencias_res = $conn->query($sugerencias_query);
                                         <tr class="suggestion-row group hover:bg-primary/5 transition-all">
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center gap-3">
-                                                    <img class="w-9 h-9 rounded-full object-cover border border-gray-700" src="<?php echo $img; ?>">
+                                                    <img class="w-9 h-9 rounded-full object-cover border border-gray-700" src="<?php echo $img; ?>" alt="Perfil">
                                                     <span class="text-sm font-bold text-gray-200 user-name"><?php echo $sug['nombre'] . ' ' . $sug['apellido']; ?></span>
                                                 </div>
                                             </td>
@@ -273,7 +273,7 @@ $sugerencias_res = $conn->query($sugerencias_query);
             </div>
             <div class="p-6 space-y-4">
                 <div class="flex items-center gap-4">
-                    <img id="modalImg" class="w-14 h-14 rounded-full border-2 border-primary/20">
+                    <img id="modalImg" class="w-14 h-14 rounded-full object-cover border border-gray-700" alt="Perfil">
                     <div>
                         <h3 id="modalName" class="font-bold text-white text-lg"></h3>
                         <p id="modalDate" class="text-xs text-primary font-medium"></p>

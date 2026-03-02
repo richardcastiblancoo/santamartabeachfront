@@ -5,7 +5,7 @@ if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
     $galeria = array();
 
-    $sql = "SELECT id, tipo, ruta FROM galeria_apartamentos WHERE apartamento_id = ?";
+    $sql = "SELECT id, tipo, ruta, orden FROM galeria_apartamentos WHERE apartamento_id = ? ORDER BY orden ASC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
     $stmt->execute();
