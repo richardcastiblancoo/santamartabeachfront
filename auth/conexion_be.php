@@ -49,6 +49,7 @@ if ($conn->query($sql) !== TRUE) {
 $sql_apartamentos = "CREATE TABLE IF NOT EXISTS apartamentos (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
+    slug VARCHAR(255) UNIQUE DEFAULT NULL,
     descripcion TEXT NOT NULL,
     precio DECIMAL(10, 2) NOT NULL,
     ubicacion VARCHAR(100) NOT NULL,
@@ -63,12 +64,39 @@ if ($conn->query($sql_apartamentos) !== TRUE) {
     echo "Error creando tabla apartamentos: " . $conn->error;
 }
 
+// Intentar añadir la columna 'slug' si la tabla ya existía sin ella
+try {
+    $conn->query("ALTER TABLE apartamentos ADD COLUMN slug VARCHAR(255) UNIQUE DEFAULT NULL AFTER titulo");
+} catch (Exception $e) {
+    // Ignorar error si la columna ya existe
+}
+
 // Intentar añadir la columna 'video' si la tabla ya existía sin ella
 try {
     $conn->query("ALTER TABLE apartamentos ADD COLUMN video VARCHAR(255) DEFAULT NULL AFTER imagen_principal");
 } catch (Exception $e) {
     // Ignorar error si la columna ya existe
 }
+
+// Intentar añadir la columna 'cama' si la tabla ya existía sin ella
+try {
+    $conn->query("ALTER TABLE apartamentos ADD COLUMN cama INT(3) DEFAULT 0 AFTER capacidad");
+} catch (Exception $e) {}
+
+// Intentar añadir la columna 'pdf' si la tabla ya existía sin ella
+try {
+    $conn->query("ALTER TABLE apartamentos ADD COLUMN pdf VARCHAR(255) DEFAULT NULL AFTER video");
+} catch (Exception $e) {}
+
+// Intentar añadir la columna 'servicios' si la tabla ya existía sin ella
+try {
+    $conn->query("ALTER TABLE apartamentos ADD COLUMN servicios TEXT DEFAULT NULL");
+} catch (Exception $e) {}
+
+// Intentar modificar 'capacidad' a VARCHAR(50) para permitir rangos
+try {
+    $conn->query("ALTER TABLE apartamentos MODIFY COLUMN capacidad VARCHAR(50)");
+} catch (Exception $e) {}
 
 // Crear tabla de reseñas si no existe
 $sql_resenas = "CREATE TABLE IF NOT EXISTS resenas (
