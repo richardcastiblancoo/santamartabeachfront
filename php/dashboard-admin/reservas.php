@@ -1,68 +1,20 @@
 <?php
-// Habilitar visualización de errores para depuración
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
-
-// Verificar si el usuario está logueado y es admin
-if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
-    echo '<script>alert("Acceso denegado. Por favor, inicia sesión como administrador."); window.location = "../../auth/login.php";</script>';
-    die();
-}
-
 include '../../auth/conexion_be.php';
 
-// Verificar conexión
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
-}
+// 1. OBTENER ESTADÍSTICAS REALES
+$total_res = $conn->query("SELECT COUNT(*) as total FROM reservas")->fetch_assoc()['total'];
+$pendientes = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'pendiente'")->fetch_assoc()['total'];
+$confirmadas = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'confirmada'")->fetch_assoc()['total'];
+$canceladas = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'cancelada'")->fetch_assoc()['total'];
+$finalizadas = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'finalizada'")->fetch_assoc()['total'];
 
-// 1. OBTENER ESTADÍSTICAS REALES - CON VERIFICACIÓN DE ERRORES
-$total_res = 0;
-$pendientes = 0;
-$confirmadas = 0;
-$canceladas = 0;
-$finalizadas = 0;
-
-$result = $conn->query("SELECT COUNT(*) as total FROM reservas");
-if ($result) {
-    $total_res = $result->fetch_assoc()['total'];
-}
-
-$result = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'pendiente'");
-if ($result) {
-    $pendientes = $result->fetch_assoc()['total'];
-}
-
-$result = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'confirmada'");
-if ($result) {
-    $confirmadas = $result->fetch_assoc()['total'];
-}
-
-$result = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'cancelada'");
-if ($result) {
-    $canceladas = $result->fetch_assoc()['total'];
-}
-
-$result = $conn->query("SELECT COUNT(*) as total FROM reservas WHERE estado = 'finalizada'");
-if ($result) {
-    $finalizadas = $result->fetch_assoc()['total'];
-}
-
-// 2. CONSULTA DE RESERVAS - CORREGIDA SEGÚN LOS CAMPOS REALES DE TU BD
-// IMPORTANTE: Ajusta estos campos según los nombres reales en tu tabla 'reservas'
+// 2. CONSULTA DE RESERVAS
 $sql = "SELECT r.*, a.titulo as apto_nombre, a.imagen_principal 
         FROM reservas r 
         LEFT JOIN apartamentos a ON r.apartamento_id = a.id 
-        ORDER BY r.id DESC";
+        ORDER BY r.creado_en DESC";
 $resultado = $conn->query($sql);
-
-// Verificar si la consulta tuvo éxito
-if (!$resultado) {
-    die("Error en la consulta: " . $conn->error);
-}
 ?>
 <!DOCTYPE html>
 <html class="dark" lang="es">
@@ -194,10 +146,10 @@ if (!$resultado) {
 
             <div class="p-4 border-t border-[#f0f3f4] dark:border-gray-800">
                 <div class="flex items-center gap-3 bg-background-light dark:bg-gray-800 p-3 rounded-lg">
-                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['nombre']); ?>");'></div>
+                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0" style='background-image: url("<?php echo !empty($_SESSION['imagen']) ? '../../assets/img/usuarios/' . $_SESSION['imagen'] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzvH7sb1-qStnSjyW_73yFZuyDV7-Ez2-2LB3V9LiRgrVaP0tp_Kk2bt9RvnuHLpnRQe7JiDm7bwq_2wnzXuXZ-R-5XcOiQI8b3n76MYdNVwUFnHzbUBz8DnJ3mOJqVBJB3XZLkdjkLWIA3bK2AZVnmo-mlgAWRk_hf_1QVYuCIa9mk0_SN_rZwpFYSMXx9CGSEZ-Q5GtTTRX-vx3RJZ8qzgct2lexQnXKpF0xitcnMVaPElXaFz5LeT0rtCIzJ-EXlYRcbDbwcMM'; ?>");'></div>
                     <div class="flex flex-col overflow-hidden">
-                        <span class="text-sm font-bold truncate dark:text-white"><?php echo htmlspecialchars($_SESSION['nombre'] . ' ' . $_SESSION['apellido']); ?></span>
-                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo htmlspecialchars($_SESSION['email']); ?></span>
+                        <span class="text-sm font-bold truncate dark:text-white"><?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
+                        <span class="text-xs text-text-secondary dark:text-gray-400 truncate"><?php echo $_SESSION['email']; ?></span>
                     </div>
                 </div>
             </div>
@@ -217,6 +169,17 @@ if (!$resultado) {
                 </div>
 
                 <div class="flex items-center gap-3">
+                    <!-- Notificaciones 
+                    <div class="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors" id="tour-notif">
+                        <span class="material-symbols-outlined text-text-secondary">notifications</span>
+                        <?php if ($pendientes > 0): ?>
+                            <span class="absolute top-1 right-1 size-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-card-light dark:border-card-dark notif-active">
+                                <?php echo $pendientes; ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                    -->
+
                     <button onclick="startTour()"
                         class="group flex items-center gap-2 bg-[#4a4a4a] hover:bg-[#333333] text-white px-4 py-2 rounded-full transition-all duration-300 ease-in-out shadow-[0_4px_12px_rgba(0,0,0,0.2)] hover:shadow-[0_6px_18px_rgba(0,0,0,0.3)] active:scale-95 border border-white/10"
                         title="Ayuda">
@@ -281,7 +244,7 @@ if (!$resultado) {
                             <thead>
                                 <tr class="bg-background-light dark:bg-gray-800/50 text-text-secondary dark:text-gray-400 text-xs uppercase tracking-wider">
                                     <th class="px-6 py-4 font-bold">ID</th>
-                                    <th class="px-6 py-4 font-bold">Cliente</th>
+                                    <th class="px-6 py-4 font-bold">Huésped</th>
                                     <th class="px-6 py-4 font-bold">Apartamento</th>
                                     <th class="px-6 py-4 font-bold">Fechas</th>
                                     <th class="px-6 py-4 font-bold">Total</th>
@@ -290,70 +253,47 @@ if (!$resultado) {
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-[#f0f3f4] dark:divide-gray-800 text-sm">
-                                <?php if ($resultado && $resultado->num_rows > 0): ?>
-                                    <?php while ($row = $resultado->fetch_assoc()):
-                                        // Verificar que los campos existan antes de usarlos
-                                        $nombre_completo = isset($row['nombre_cliente']) && isset($row['apellido_cliente'])
-                                            ? $row['nombre_cliente'] . " " . $row['apellido_cliente']
-                                            : (isset($row['usuario_id']) ? "Usuario #" . $row['usuario_id'] : "Cliente no especificado");
-
-                                        $email = isset($row['email_cliente']) ? $row['email_cliente'] : 'Email no disponible';
-                                        $apto_nombre = isset($row['apto_nombre']) ? $row['apto_nombre'] : 'No asignado';
-                                        $estado = isset($row['estado']) ? $row['estado'] : 'pendiente';
-
-                                        $row_json = json_encode($row);
-                                        $status_color = match ($estado) {
-                                            'confirmada' => "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-                                            'cancelada' => "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
-                                            'finalizada' => "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-                                            default => "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
-                                        };
-                                        $dot_color = match ($estado) {
-                                            'confirmada' => "bg-green-500",
-                                            'cancelada' => "bg-red-500",
-                                            'finalizada' => "bg-blue-500",
-                                            default => "bg-orange-500",
-                                        };
-                                    ?>
-                                        <tr class="reserva-row group hover:bg-background-light/50 dark:hover:bg-gray-800/50 transition-colors">
-                                            <td class="px-6 py-4 font-mono text-xs">#RS-<?php echo str_pad($row['id'], 4, '0', STR_PAD_LEFT); ?></td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex flex-col">
-                                                    <span class="font-bold"><?php echo htmlspecialchars($nombre_completo); ?></span>
-                                                    <span class="text-xs text-text-secondary"><?php echo htmlspecialchars($email); ?></span>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-sm font-medium"><?php echo htmlspecialchars($apto_nombre); ?></td>
-                                            <td class="px-6 py-4 text-xs font-semibold">
-                                                <?php
-                                                $fecha_in = isset($row['fecha_checkin']) ? date('d M', strtotime($row['fecha_checkin'])) : 'N/A';
-                                                $fecha_out = isset($row['fecha_checkout']) ? date('d M', strtotime($row['fecha_checkout'])) : 'N/A';
-                                                echo $fecha_in . ' - ' . $fecha_out;
-                                                ?>
-                                            </td>
-                                            <td class="px-6 py-4 font-bold text-sm">
-                                                $<?php echo isset($row['precio_total']) ? number_format($row['precio_total'], 0, ',', '.') : '0'; ?>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase <?php echo $status_color; ?>">
-                                                    <span class="size-1.5 <?php echo $dot_color; ?> rounded-full mr-1.5"></span>
-                                                    <?php echo $estado; ?>
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 text-center">
-                                                <button onclick='verDetalle(<?php echo htmlspecialchars($row_json, ENT_QUOTES, 'UTF-8'); ?>)' class="size-8 inline-flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary hover:text-primary transition-colors">
-                                                    <span class="material-symbols-outlined text-lg">visibility</span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="7" class="px-6 py-8 text-center text-text-secondary">
-                                            No hay reservas registradas
+                                <?php while ($row = $resultado->fetch_assoc()):
+                                    $row_json = json_encode($row);
+                                    $status_color = match ($row['estado']) {
+                                        'confirmada' => "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+                                        'cancelada' => "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+                                        'finalizada' => "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+                                        default => "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
+                                    };
+                                    $dot_color = match ($row['estado']) {
+                                        'confirmada' => "bg-green-500",
+                                        'cancelada' => "bg-red-500",
+                                        'finalizada' => "bg-blue-500",
+                                        default => "bg-orange-500",
+                                    };
+                                ?>
+                                    <tr class="reserva-row group hover:bg-background-light/50 dark:hover:bg-gray-800/50 transition-colors">
+                                        <td class="px-6 py-4 font-mono text-xs">#RS-<?php echo str_pad($row['id'], 4, '0', STR_PAD_LEFT); ?></td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-col">
+                                                <span class="font-bold"><?php echo htmlspecialchars($row['nombre_cliente'] . " " . $row['apellido_cliente']); ?></span>
+                                                <span class="text-xs text-text-secondary"><?php echo htmlspecialchars($row['email_cliente']); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm font-medium"><?php echo htmlspecialchars($row['apto_nombre'] ?? 'No asignado'); ?></td>
+                                        <td class="px-6 py-4 text-xs font-semibold">
+                                            <?php echo date('d M', strtotime($row['fecha_checkin'])); ?> - <?php echo date('d M', strtotime($row['fecha_checkout'])); ?>
+                                        </td>
+                                        <td class="px-6 py-4 font-bold text-sm">$<?php echo number_format($row['precio_total'], 0, ',', '.'); ?></td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase <?php echo $status_color; ?>">
+                                                <span class="size-1.5 <?php echo $dot_color; ?> rounded-full mr-1.5"></span>
+                                                <?php echo $row['estado']; ?>
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <button onclick='verDetalle(<?php echo htmlspecialchars($row_json, ENT_QUOTES, 'UTF-8'); ?>)' class="size-8 inline-flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-text-secondary hover:text-primary transition-colors">
+                                                <span class="material-symbols-outlined text-lg">visibility</span>
+                                            </button>
                                         </td>
                                     </tr>
-                                <?php endif; ?>
+                                <?php endwhile; ?>
                             </tbody>
                         </table>
                     </div>
@@ -408,6 +348,13 @@ if (!$resultado) {
                     }
                 },
                 {
+                    element: '#tour-notif',
+                    popover: {
+                        title: 'Notificaciones',
+                        description: 'Aquí verás las reservas que están pendientes por confirmar.'
+                    }
+                },
+                {
                     element: '#tour-stats',
                     popover: {
                         title: 'Estadísticas Rápidas',
@@ -428,6 +375,12 @@ if (!$resultado) {
             driverObj.drive();
         }
 
+        // Iniciar tour automáticamente la primera vez (opcional)
+        if (!localStorage.getItem('tour_visto')) {
+            startTour();
+            localStorage.setItem('tour_visto', 'true');
+        }
+
         // 2. BUSCADOR EN TIEMPO REAL
         function filterTable() {
             const input = document.getElementById('searchInput');
@@ -446,92 +399,145 @@ if (!$resultado) {
             const contenido = document.getElementById('m-contenido');
             const codigo = document.getElementById('m-codigo');
 
-            // Verificar que la reserva tenga los datos necesarios
-            if (!reserva) {
-                alert('Error: Datos de reserva no disponibles');
-                return;
-            }
+            const opciones = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            const fIn = new Date(reserva.fecha_checkin).toLocaleDateString('es-ES', opciones);
+            const fOut = new Date(reserva.fecha_checkout).toLocaleDateString('es-ES', opciones);
+            const precio = new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                maximumFractionDigits: 0
+            }).format(reserva.precio_total);
 
-            const id = reserva.id || 'N/A';
-            codigo.innerText = `Reserva #RS-${id.toString().padStart(4, '0')}`;
+            codigo.innerText = `Reserva #RS-${reserva.id.toString().padStart(4, '0')}`;
 
-            // Formatear fechas si existen
-            let fechaIn = 'No disponible';
-            let fechaOut = 'No disponible';
-
-            if (reserva.fecha_checkin) {
-                try {
-                    fechaIn = new Date(reserva.fecha_checkin).toLocaleDateString('es-ES', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                } catch (e) {
-                    fechaIn = reserva.fecha_checkin;
-                }
-            }
-
-            if (reserva.fecha_checkout) {
-                try {
-                    fechaOut = new Date(reserva.fecha_checkout).toLocaleDateString('es-ES', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                } catch (e) {
-                    fechaOut = reserva.fecha_checkout;
-                }
-            }
-
-            const precio = reserva.precio_total ?
-                new Intl.NumberFormat('es-CO', {
-                    style: 'currency',
-                    currency: 'COP',
-                    maximumFractionDigits: 0
-                })
-                .format(reserva.precio_total) :
-                '$0';
-
-            const nombreCliente = (reserva.nombre_cliente && reserva.apellido_cliente) ?
-                `${reserva.nombre_cliente} ${reserva.apellido_cliente}` :
-                (reserva.nombre_cliente || 'Cliente no especificado');
+            // Lógica para el documento
+            const linkDocumento = reserva.documento_ruta ?
+                `<a href="../../uploads/documentos/${reserva.documento_ruta}" target="_blank" class="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl border border-blue-100 dark:border-blue-800 hover:scale-[1.02] transition-transform">
+            <span class="material-symbols-outlined">visibility</span>
+            <span class="text-xs font-bold uppercase">Ver Documento ID</span>
+           </a>` :
+                `<div class="p-3 bg-gray-100 dark:bg-gray-800 text-gray-400 rounded-xl text-center text-xs font-bold italic">Sin documento cargado</div>`;
 
             contenido.innerHTML = `
-                <div class="space-y-4">
-                    <div class="p-4 bg-gray-50 dark:bg-gray-800/40 rounded-xl">
-                        <p class="text-xs font-bold text-primary mb-2">DATOS DEL CLIENTE</p>
-                        <p class="font-bold">${nombreCliente}</p>
-                        <p class="text-sm text-text-secondary">${reserva.email_cliente || 'Email no disponible'}</p>
-                        <p class="text-sm text-text-secondary">${reserva.telefono || 'Teléfono no disponible'}</p>
-                    </div>
-                    
-                    <div class="p-4 bg-gray-50 dark:bg-gray-800/40 rounded-xl">
-                        <p class="text-xs font-bold text-primary mb-2">APARTAMENTO</p>
-                        <p class="font-bold">${reserva.apto_nombre || 'No asignado'}</p>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4 bg-gray-50 dark:bg-gray-800/40 rounded-xl">
-                            <p class="text-xs font-bold text-primary mb-2">ENTRADA</p>
-                            <p class="text-sm">${fechaIn}</p>
-                        </div>
-                        <div class="p-4 bg-gray-50 dark:bg-gray-800/40 rounded-xl">
-                            <p class="text-xs font-bold text-primary mb-2">SALIDA</p>
-                            <p class="text-sm">${fechaOut}</p>
-                        </div>
-                    </div>
-                    
-                    <div class="p-4 bg-primary text-white rounded-xl">
-                        <p class="text-xs font-bold mb-1">TOTAL</p>
-                        <p class="text-2xl font-black">${precio}</p>
-                    </div>
-                </div>
-            `;
+    <div class="space-y-5 max-h-[70vh] overflow-y-auto pr-2">
+        <div class="flex items-center gap-4 p-4 bg-primary/5 rounded-xl border border-primary/10">
+            <div class="size-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">apartment</span>
+            </div>
+            <div>
+                <p class="text-[10px] uppercase font-bold text-primary tracking-widest">Alojamiento</p>
+                <p class="font-bold text-text-main dark:text-white leading-tight">${reserva.apto_nombre || 'No asignado'}</p>
+            </div>
+        </div>
 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 bg-gray-50 dark:bg-gray-800/40 rounded-xl">
+                <p class="text-[10px] uppercase font-bold text-text-secondary mb-1 tracking-tighter">Contacto Principal</p>
+                <p class="font-bold text-sm">${reserva.nombre_cliente} ${reserva.apellido_cliente}</p>
+                <p class="text-[11px] text-text-secondary font-medium">${reserva.email_cliente}</p>
+                <p class="text-[11px] text-primary font-bold mt-1">${reserva.telefono || 'Sin teléfono'}</p>
+            </div>
+            <div class="p-4 bg-gray-50 dark:bg-gray-800/40 rounded-xl">
+                <p class="text-[10px] uppercase font-bold text-text-secondary mb-1 tracking-tighter">Devolución de Depósito</p>
+                <p class="text-xs font-bold text-gray-700 dark:text-gray-300">${reserva.cuenta_devolucion || 'No proporcionada'}</p>
+            </div>
+        </div>
+
+        <div class="space-y-3">
+            <p class="text-[10px] uppercase font-black text-text-secondary tracking-widest">Verificación y Huéspedes</p>
+            ${linkDocumento}
+            
+            <div class="p-4 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
+                <div class="flex items-center gap-2 mb-2 text-primary">
+                    <span class="material-symbols-outlined text-sm">groups</span>
+                    <span class="text-[10px] font-black uppercase">Lista de Acompañantes</span>
+                </div>
+                <p class="text-xs leading-relaxed text-gray-600 dark:text-gray-400 italic">
+                    ${reserva.huespedes_nombres ? reserva.huespedes_nombres : 'Solo el titular registrado.'}
+                </p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 divide-x divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden">
+            <div class="p-4 text-center">
+                <p class="text-[10px] uppercase font-black text-text-secondary mb-1">Entrada</p>
+                <p class="text-xs font-bold text-primary capitalize">${fIn}</p>
+            </div>
+            <div class="p-4 text-center">
+                <p class="text-[10px] uppercase font-black text-text-secondary mb-1">Salida</p>
+                <p class="text-xs font-bold text-red-500 capitalize">${fOut}</p>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px] font-bold">${reserva.adultos} Adultos</span>
+            <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px] font-bold">${reserva.ninos} Niños</span>
+            ${reserva.bebes > 0 ? `<span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 rounded-full text-[10px] font-bold">${reserva.bebes} Bebés</span>` : ''}
+            ${reserva.perro_guia == 1 ? `<span class="px-3 py-1 bg-amber-100 dark:bg-amber-900 text-amber-600 rounded-full text-[10px] font-bold">🐶 Perro Guía</span>` : ''}
+        </div>
+
+        <div class="pt-4 border-t dark:border-gray-800">
+            <p class="text-[10px] uppercase font-bold text-text-secondary mb-3 text-center tracking-widest">Cambiar estado de reserva</p>
+            <div class="grid grid-cols-4 gap-2">
+                <button onclick="actualizarEstado(${reserva.id}, 'pendiente')" class="flex flex-col items-center gap-1 p-2 rounded-xl border dark:border-gray-800 hover:bg-orange-500 hover:text-white transition-all group">
+                    <span class="material-symbols-outlined text-orange-500 group-hover:text-white text-sm">pending_actions</span>
+                    <span class="text-[8px] font-bold uppercase">Espera</span>
+                </button>
+                <button onclick="actualizarEstado(${reserva.id}, 'confirmada')" class="flex flex-col items-center gap-1 p-2 rounded-xl border dark:border-gray-800 hover:bg-green-600 hover:text-white transition-all group">
+                    <span class="material-symbols-outlined text-green-500 group-hover:text-white text-sm">check_circle</span>
+                    <span class="text-[8px] font-bold uppercase">Aceptar</span>
+                </button>
+                <button onclick="actualizarEstado(${reserva.id}, 'cancelada')" class="flex flex-col items-center gap-1 p-2 rounded-xl border dark:border-gray-800 hover:bg-red-600 hover:text-white transition-all group">
+                    <span class="material-symbols-outlined text-red-500 group-hover:text-white text-sm">cancel</span>
+                    <span class="text-[8px] font-bold uppercase">Anular</span>
+                </button>
+                <button onclick="actualizarEstado(${reserva.id}, 'finalizada')" class="flex flex-col items-center gap-1 p-2 rounded-xl border dark:border-gray-800 hover:bg-blue-600 hover:text-white transition-all group">
+                    <span class="material-symbols-outlined text-blue-500 group-hover:text-white text-sm">task_alt</span>
+                    <span class="text-[8px] font-bold uppercase">Cerrar</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center p-4 bg-primary text-white rounded-2xl shadow-lg shadow-primary/20">
+            <p class="text-[10px] uppercase font-bold opacity-80 italic tracking-widest">Monto Total Recaudado</p>
+            <p class="text-2xl font-black">${precio}</p>
+        </div>
+    </div>
+    `;
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+        }
+
+        function actualizarEstado(id, nuevoEstado) {
+            if (confirm(`¿Cambiar estado a ${nuevoEstado.toUpperCase()}?`)) {
+                const formData = new URLSearchParams();
+                formData.append('id', id);
+                formData.append('estado', nuevoEstado);
+                fetch('actualizar_estado_reserva.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: formData.toString()
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert('Error de conexión.');
+                    });
+            }
         }
 
         function cerrarModal() {
@@ -542,24 +548,11 @@ if (!$resultado) {
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-
             sidebar.classList.toggle('-translate-x-full');
-
-            if (window.innerWidth < 768) {
-                overlay.classList.toggle('hidden');
-                setTimeout(() => {
-                    overlay.classList.toggle('opacity-0');
-                    overlay.classList.toggle('opacity-100');
-                }, 10);
+            overlay.classList.toggle('hidden');
+            if (!overlay.classList.contains('hidden')) {
+                overlay.classList.add('opacity-100');
             }
-        }
-
-        // Iniciar tour automáticamente la primera vez (opcional)
-        if (!localStorage.getItem('tour_visto')) {
-            setTimeout(() => {
-                startTour();
-                localStorage.setItem('tour_visto', 'true');
-            }, 1000);
         }
     </script>
 </body>

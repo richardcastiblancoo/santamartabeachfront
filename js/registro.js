@@ -6,7 +6,7 @@ const translations = {
     "hero-desc":
       "Gestiona tus reservas, planifica tus vacaciones o administra tus propiedades frente al mar en Santa Marta de forma segura.",
     "social-proof": "+100 Usuarios confían en nosotros",
-    "reg-title": "Crea tu cuenta",
+    "reg-title": "Crea tu cuenta de hospedaje",
     "reg-subtitle": "Únete a nuestra comunidad para empezar.",
     "tab-login": "Iniciar Sesión",
     "tab-register": "Registrarse",
@@ -26,7 +26,7 @@ const translations = {
     "hero-desc":
       "Manage your reservations, plan your vacations, or manage your beachfront properties in Santa Marta securely.",
     "social-proof": "+100 Users trust us",
-    "reg-title": "Create your account",
+    "reg-title": "Create your hosting account",
     "reg-subtitle": "Join our community to get started.",
     "tab-login": "Login",
     "tab-register": "Sign Up",

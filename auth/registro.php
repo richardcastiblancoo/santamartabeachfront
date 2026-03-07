@@ -114,7 +114,7 @@
         <div class="flex w-full lg:w-1/2 flex-col justify-center items-center p-6 sm:p-12 lg:p-24 bg-white dark:bg-background-dark pt-24 md:pt-12">
             <div class="w-full max-w-[480px] flex flex-col gap-6">
                 <div class="flex flex-col gap-2">
-                    <h2 data-key="reg-title" class="text-3xl font-bold tracking-tight text-[#111618] dark:text-white">Crea tu cuenta</h2>
+                    <h2 data-key="reg-title" class="text-3xl font-bold tracking-tight text-[#111618] dark:text-white">Crea tu cuenta de hospedaje</h2>
                     <p data-key="reg-subtitle" class="text-[#617c89] dark:text-gray-400">Únete a nuestra comunidad para empezar.</p>
                 </div>
 

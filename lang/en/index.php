@@ -271,7 +271,7 @@
                 width: 700px !important;
             }
         }
- 
+
         .cal-instruction {
             text-align: center;
             padding: 15px 0;
@@ -808,20 +808,11 @@
     <!-- apartamento -->
     <section class="py-20 bg-[#101c22] overflow-hidden" id="apartamentos">
         <div class="px-6 md:px-20 mb-10 text-center">
-            <h2 class="text-3xl font-bold text-white mb-2">Stunning Apartments!</h2>
+            <h2 class="text-3xl font-bold text-white mb-2">Extraordinary Apartments!</h2>
             <p class="text-gray-400 text-sm">Our best properties for an unforgettable stay</p>
         </div>
 
         <div class="relative max-w-[1600px] mx-auto px-4">
-
-            <div class="hidden 2xl:block absolute -left-20 top-1/2 -translate-y-1/2 w-[450px] pointer-events-none z-0">
-                <img src="/public/img/logo-def-Photoroom.png" alt="Logo Marca" class="w-full h-auto">
-            </div>
-
-            <div class="hidden 2xl:block absolute -right-20 top-1/2 -translate-y-1/2 w-[450px] pointer-events-none z-0">
-                <img src="/public/img/logo-def-Photoroom.png" alt="Logo Marca" class="w-full h-auto">
-            </div>
-
             <div class="flex flex-wrap justify-center gap-8 relative z-10">
                 <?php
                 $ruta_conexion = 'auth/conexion_be.php';
@@ -835,65 +826,107 @@
                 include_once $ruta_conexion;
 
                 $sql = "SELECT a.*, COALESCE(AVG(r.calificacion), 0) as promedio_calificacion 
-                FROM apartamentos a 
-                LEFT JOIN resenas r ON a.id = r.apartamento_id 
-                GROUP BY a.id 
-                ORDER BY a.fecha_creacion DESC LIMIT 6";
+                    FROM apartamentos a 
+                    LEFT JOIN resenas r ON a.id = r.apartamento_id 
+                    GROUP BY a.id 
+                    ORDER BY a.fecha_creacion DESC LIMIT 6";
                 $result = $conn->query($sql);
 
                 if ($result && $result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
+                        // Optimized gallery query
+                        $sql_galeria = "SELECT ruta FROM galeria_apartamentos WHERE apartamento_id = " . $row['id'] . " AND tipo = 'imagen' ORDER BY orden ASC LIMIT 3";
+                        $result_galeria = $conn->query($sql_galeria);
+                        $galeria_imgs = [];
+                        if ($result_galeria) {
+                            while ($img = $result_galeria->fetch_assoc()) {
+                                $galeria_imgs[] = '/assets/img/apartamentos/' . $img['ruta'];
+                            }
+                        }
                 ?>
-                        <article class="max-w-[360px] w-full bg-[#1e2930]/60 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl group border border-white/10 transition-all duration-500 hover:border-blue-500/50 hover:-translate-y-2">
+                        <article class="flex-1 min-w-[320px] max-w-full bg-[#1e2930]/60 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl group border border-white/10 transition-all duration-500 hover:border-blue-500/50 hover:-translate-y-2">
 
-                            <div class="relative h-64 overflow-hidden">
-                                <div class="absolute top-3 right-3 z-10 bg-[#101c22]/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold text-white flex items-center gap-1 border border-white/10">
-                                    <span class="material-symbols-outlined text-yellow-500 text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-                                    <?php echo number_format($row['promedio_calificacion'], 1); ?>
+                            <div class="grid grid-cols-4 gap-1 h-64 sm:h-72 lg:h-80 overflow-hidden bg-white/5">
+
+                                <div class="col-span-3 relative overflow-hidden group/img">
+                                    <div class="absolute top-4 left-4 z-10 bg-[#101c22]/80 backdrop-blur-md px-3 py-1.5 rounded-full text-[11px] font-bold text-white flex items-center gap-1.5 border border-white/10">
+                                        <span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                                        <?php echo number_format($row['promedio_calificacion'], 1); ?>
+                                    </div>
+
+                                    <?php $ruta_web_img = '/assets/img/apartamentos/' . $row['imagen_principal']; ?>
+                                    <div class="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover/img:scale-110"
+                                        style="background-image: url('<?php echo $ruta_web_img; ?>');">
+                                    </div>
+
+                                    <div class="absolute inset-0 bg-gradient-to-t from-[#101c22] via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                                        <button class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-widest shadow-xl transition-all">
+                                            Book Now
+                                        </button>
+                                    </div>
                                 </div>
 
-                                <?php $ruta_web_img = '/assets/img/apartamentos/' . $row['imagen_principal']; ?>
-
-                                <div class="h-full w-full bg-cover bg-center group-hover:scale-110 transition-transform duration-700"
-                                    style="background-image: url('<?php echo $ruta_web_img; ?>');">
-                                </div>
-
-                                <div class="absolute inset-0 bg-gradient-to-t from-[#101c22] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
-                                    <button class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-widest shadow-xl transition-colors">
-                                        Book Now
-                                    </button>
+                                <div class="col-span-1 flex flex-col gap-1 h-full">
+                                    <?php
+                                    for ($i = 0; $i < 3; $i++):
+                                        if (isset($galeria_imgs[$i])):
+                                    ?>
+                                            <div class="flex-1 bg-cover bg-center transition-opacity hover:opacity-80"
+                                                style="background-image: url('<?php echo $galeria_imgs[$i]; ?>');">
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="flex-1 bg-white/5 flex items-center justify-center">
+                                                <span class="material-symbols-outlined text-white/10 text-lg">image</span>
+                                            </div>
+                                    <?php endif;
+                                    endfor; ?>
                                 </div>
                             </div>
 
                             <div class="p-6">
-                                <div class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1"><?php echo $row['ubicacion']; ?></div>
-                                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors"><?php echo $row['titulo']; ?></h3>
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <div class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">
+                                            <?php echo $row['ubicacion']; ?>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                                            <?php echo $row['titulo']; ?>
+                                        </h3>
+                                    </div>
+                                </div>
+
                                 <p class="text-gray-400 text-xs mb-6 leading-relaxed line-clamp-2">
                                     <?php echo $row['descripcion']; ?>
                                 </p>
 
-                                <div class="grid grid-cols-3 gap-3 text-[10px] text-gray-300 mb-6">
-                                    <div class="flex flex-col items-center gap-1 p-3 bg-white/5 rounded-2xl border border-white/5">
-                                        <span class="material-symbols-outlined text-blue-400 text-xl">bed</span>
-                                        <span><?php echo $row['habitaciones']; ?> Bds</span>
+                                <div class="grid grid-cols-4 gap-2 mb-6">
+                                    <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                                        <span class="material-symbols-outlined text-blue-400 text-lg">bed</span>
+                                        <span class="text-[10px] text-gray-300"><?php echo $row['habitaciones']; ?> Rooms</span>
                                     </div>
-                                    <div class="flex flex-col items-center gap-1 p-3 bg-white/5 rounded-2xl border border-white/5">
-                                        <span class="material-symbols-outlined text-blue-400 text-xl">shower</span>
-                                        <span><?php echo $row['banos']; ?> Baths</span>
+                                    <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                                        <span class="material-symbols-outlined text-blue-400 text-lg">shower</span>
+                                        <span class="text-[10px] text-gray-300"><?php echo $row['banos']; ?> Baths</span>
                                     </div>
-                                    <div class="flex flex-col items-center gap-1 p-3 bg-white/5 rounded-2xl border border-white/5">
-                                        <span class="material-symbols-outlined text-blue-400 text-xl">groups</span>
-                                        <span><?php echo $row['capacidad']; ?> Guests</span>
+                                    <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                                        <span class="material-symbols-outlined text-blue-400 text-lg">groups</span>
+                                        <span class="text-[10px] text-gray-300"><?php echo $row['capacidad']; ?> Guests</span>
+                                    </div>
+                                    <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                                        <span class="material-symbols-outlined text-blue-400 text-lg">single_bed</span>
+                                        <span class="text-[10px] text-gray-300"><?php echo $row['cama']; ?> Beds</span>
                                     </div>
                                 </div>
 
                                 <div class="flex items-center justify-between pt-5 border-t border-white/10">
                                     <div>
-                                        <span class="text-2xl font-black text-white">$<?php echo number_format($row['precio'], 0, ',', '.'); ?></span>
-                                        <span class="text-gray-500 text-[10px] block">per night</span>
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="text-2xl font-black text-white">$<?php echo number_format($row['precio'], 0, ',', '.'); ?></span>
+                                            <span class="text-gray-500 text-[10px]">/night</span>
+                                        </div>
                                     </div>
-                                    <a href="/php/reserva-apartamento/apartamento.php?id=<?php echo $row['id']; ?>"
-                                        class="bg-blue-500 text-white hover:bg-blue-400 px-5 py-2.5 rounded-xl font-bold text-[11px] transition-all shadow-lg shadow-blue-500/20">
+                                    <a href="<?php echo $row['slug'] ? '/apartamento/' . $row['slug'] : '/php/reserva-apartamento/apartamento.php?id=' . $row['id']; ?>"
+                                        class="bg-blue-500/10 hover:bg-blue-500 text-blue-400 hover:text-white border border-blue-500/20 px-6 py-2.5 rounded-xl font-bold text-[11px] transition-all shadow-lg">
                                         View Gallery
                                     </a>
                                 </div>
@@ -902,7 +935,7 @@
                 <?php
                     }
                 } else {
-                    echo '<div class="w-full text-center py-20"><p class="text-gray-500 text-lg italic">No apartments available at this time.</p></div>';
+                    echo '<div class="w-full text-center py-20"><p class="text-gray-500 text-lg italic">There are no apartments available at this moment.</p></div>';
                 }
                 ?>
             </div>
