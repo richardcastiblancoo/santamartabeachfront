@@ -35,39 +35,14 @@
     <style type="text/tailwindcss">
         body { font-family: "Plus Jakarta Sans", sans-serif; }
 
-        /*  */
-         /* ---------------------------------- */
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #13a4ec; border-radius: 0px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0f8bc7; }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #13a4ec;
-            /* Blue primary color */
-            border-radius: 0px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #0f8bc7;
-        }
-
-        /* --------------- */
-        
-        /* Grid Simétrico */
         .grid-symmetric {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -85,9 +60,9 @@
 
         .pic-panoramic { @apply w-full rounded-premium overflow-hidden cursor-zoom-in shadow-lg mb-6; }
         
-        /* Ajuste de tamaño de logo en Header */
-        .logo-header img { height: 50px; width: auto; }
-        @media (min-width: 768px) { .logo-header img { height: 65px; } }
+        /* Ajuste de logo a 120px con espaciado mínimo al texto */
+        .logo-header img { height: 90px; width: auto; @apply transition-transform duration-300; }
+        @media (min-width: 768px) { .logo-header img { height: 120px; } }
         
         .modal-active { overflow: hidden; }
         .nav-modal-btn { @apply absolute top-1/2 -translate-y-1/2 text-white/40 hover:text-white text-6xl transition-all z-[120] px-4 cursor-pointer select-none hidden lg:block; }
@@ -109,10 +84,9 @@
     </div>
 
     <header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-white/5">
-        <div class="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-3 logo-header">
-                <img src="/public/img/logo-def-Photoroom.png" alt="Logo">
-                <h1 class="text-white text-lg font-black tracking-tighter uppercase hidden sm:block">
+        <div class="max-w-[1600px] mx-auto px-6 h-32 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-1 logo-header"> <img src="/public/img/logo-def-Photoroom.png" alt="Logo">
+                <h1 class="text-white text-xl font-black tracking-tighter uppercase hidden sm:block -ml-2">
                     Santamarta<span class="text-blue-400">beachfront</span>
                 </h1>
             </a>
@@ -161,28 +135,37 @@
         <div class="grid-symmetric">
             <div onclick="openGallery(5)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-5.webp" loading="lazy"></div>
             <div onclick="openGallery(6)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-6.webp" loading="lazy"></div>
-            <div onclick="openGallery(7)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-7.webp" loading="lazy"></div>
-            <div onclick="openGallery(8)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-8.webp" loading="lazy"></div>
-            <div onclick="openGallery(9)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-9.webp" loading="lazy"></div>
             <div onclick="openGallery(10)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-10.webp" loading="lazy"></div>
+
+            <div onclick="openGallery(8)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-8.webp" loading="lazy"></div>
+            <div onclick="openGallery(7)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-7.webp" loading="lazy"></div>
+            <div onclick="openGallery(9)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-9.webp" loading="lazy"></div>
+
             <div onclick="openGallery(11)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-11.webp" loading="lazy"></div>
-            <div onclick="openGallery(12)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-12.webp" loading="lazy"></div>
-            <div onclick="openGallery(13)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-13.webp" loading="lazy"></div>
-            <div onclick="openGallery(14)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-14.webp" loading="lazy"></div>
-            <div onclick="openGallery(15)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-15.webp" loading="lazy"></div>
-            <div onclick="openGallery(16)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-16.webp" loading="lazy"></div>
-            <div onclick="openGallery(17)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-17.webp" loading="lazy"></div>
-            <div onclick="openGallery(18)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-18.webp" loading="lazy"></div>
             <div onclick="openGallery(19)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-19.webp" loading="lazy"></div>
-            <div onclick="openGallery(20)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-20.webp" loading="lazy"></div>
+            <div onclick="openGallery(13)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-13.webp" loading="lazy"></div>
+
+            <div onclick="openGallery(14)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-14.webp" loading="lazy"></div>
+            <div onclick="openGallery(16)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-16.webp" loading="lazy"></div>
+            <div onclick="openGallery(15)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-15.webp" loading="lazy"></div>
+
+
+            <div onclick="openGallery(18)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-18.webp" loading="lazy"></div>
+            <div onclick="openGallery(17)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-17.webp" loading="lazy"></div>
+            <div onclick="openGallery(12)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-12.webp" loading="lazy"></div>
+
+            <div onclick="openGallery(35)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront.com©️35.png" loading="lazy"></div>
             <div onclick="openGallery(21)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-21.webp" loading="lazy"></div>
             <div onclick="openGallery(22)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-22.webp" loading="lazy"></div>
+
             <div onclick="openGallery(23)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-23.webp" loading="lazy"></div>
-            <div onclick="openGallery(24)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-24.webp" loading="lazy"></div>
+            <div onclick="openGallery(34)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront.com©️34.png" loading="lazy"></div>
             <div onclick="openGallery(25)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-25.webp" loading="lazy"></div>
+
             <div onclick="openGallery(26)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-26.webp" loading="lazy"></div>
-            <div onclick="openGallery(27)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-27.webp" loading="lazy"></div>
             <div onclick="openGallery(28)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-28.webp" loading="lazy"></div>
+            <div onclick="openGallery(27)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-27.webp" loading="lazy"></div>
+
             <div onclick="openGallery(29)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-29.webp" loading="lazy"></div>
             <div onclick="openGallery(30)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-30.webp" loading="lazy"></div>
             <div onclick="openGallery(31)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-31.webp" loading="lazy"></div>
@@ -208,16 +191,13 @@
 
                 <section class="flex flex-col items-center md:items-start text-center md:text-left">
                     <a href="/" class="flex items-center gap-1 group w-fit mb-6">
-
                         <div class="w-24 h-24 md:w-32 md:h-32 shrink-0">
                             <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="w-full h-full object-contain">
                         </div>
-
                         <span class="text-xl md:text-2xl font-bold text-white tracking-tighter -ml-2 md:-ml-4">
                             Santamarta<span class="text-blue-400">beachfront</span>
                         </span>
                     </a>
-
                     <p class="text-gray-300 text-sm leading-relaxed max-w-xs md:pl-5 md:border-l md:border-blue-400/20" data-i18n="footer-desc">
                         La plataforma líder en alquileres vacacionales de lujo en Santa Marta. Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
                     </p>

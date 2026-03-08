@@ -6,7 +6,7 @@ const translations = {
     "hero-desc":
       "Gestiona tus reservas, planifica tus vacaciones o administra tus propiedades frente al mar en Santa Marta de forma segura.",
     "social-proof": "+100 Usuarios confían en nosotros",
-    "form-title": "Acceso a la plataforma",
+    "form-title": "Acceso a la plataforma de Huéspedes",
     "form-subtitle": "Ingresa tus datos para continuar explorando.",
     "tab-login": "Iniciar Sesión",
     "tab-register": "Registrarse",
@@ -25,7 +25,7 @@ const translations = {
     "hero-desc":
       "Manage your reservations, plan your vacations, or manage your beachfront properties in Santa Marta securely.",
     "social-proof": "+100 Users trust us",
-    "form-title": "Platform Access",
+    "form-title": "Access to the Guests platform",
     "form-subtitle": "Enter your details to continue exploring.",
     "tab-login": "Login",
     "tab-register": "Register",

@@ -110,7 +110,7 @@
                         <a href="/" class="flex items-center group logo-container">
                             <img src="/public/img/logo-def-Photoroom.png" alt="Logo">
                             <h1 class="brand-text text-black dark:text-white text-base md:text-lg font-black tracking-tighter uppercase hidden md:inline-block">
-                                Santamarta<span class="text-blue-400">beachfront</span>
+                                Santamarta<span class="text-blue-600">beachfront</span>
                             </h1>
                         </a>
                     </div>

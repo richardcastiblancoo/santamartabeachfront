@@ -115,7 +115,7 @@
         <div class="flex w-full lg:w-1/2 flex-col justify-center items-center p-6 sm:p-12 lg:p-24 bg-white dark:bg-background-dark">
             <div class="w-full max-w-[480px] flex flex-col gap-8">
                 <div class="flex flex-col gap-2">
-                    <h2 data-key="form-title" class="text-3xl font-bold tracking-tight text-[#111618] dark:text-white">Acceso a la plataforma</h2>
+                    <h2 data-key="form-title" class="text-3xl font-bold tracking-tight text-[#111618] dark:text-white">Acceso a la plataforma de Huéspedes</h2>
                     <p data-key="form-subtitle" class="text-[#617c89] dark:text-gray-400">Ingresa tus datos para continuar explorando.</p>
                 </div>
 

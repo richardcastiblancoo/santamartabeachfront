@@ -1,56 +1,171 @@
-// 1. Configuración de los elementos de la galería
-const mediaItems = [];
-
-// Llenamos el array con la lógica de tus archivos (1-32 fotos)
-// Nota: El video está en la posición 4 (index 4) según tu HTML original
-for (let i = 1; i <= 32; i++) {
-  if (i === 5) {
-    // Si el archivo 5 es el video especial
-    mediaItems.push({
-      type: "video",
-      src: "/public/video/video-reserva-del-mar.mp4",
-    });
-  }
-  mediaItems.push({
+// 1. Configuración manual de los elementos para evitar errores de carga
+const mediaItems = [
+  {
     type: "image",
-    src: `/public/img/©️SantaMartaBeachFront-compressed-${i}.webp`,
-  });
-}
+    src: "/public/img/©️SantaMartaBeachFront-compressed-1.webp",
+  }, // 0
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-2.webp",
+  }, // 1
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-3.webp",
+  }, // 2
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-4.webp",
+  }, // 3
+  { type: "video", src: "/public/video/video-reserva-del-mar.mp4" }, // 4
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-5.webp",
+  }, // 5
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-6.webp",
+  }, // 6
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-7.webp",
+  }, // 7
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-8.webp",
+  }, // 8
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-9.webp",
+  }, // 9
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-10.webp",
+  }, // 10
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-11.webp",
+  }, // 11
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-12.webp",
+  }, // 12
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-13.webp",
+  }, // 13
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-14.webp",
+  }, // 14
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-15.webp",
+  }, // 15
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-16.webp",
+  }, // 16
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-17.webp",
+  }, // 17
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-18.webp",
+  }, // 18
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-19.webp",
+  }, // 19
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-20.webp",
+  }, // 20
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-21.webp",
+  }, // 21
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-22.webp",
+  }, // 22
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-23.webp",
+  }, // 23
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-24.webp",
+  }, // 24
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-25.webp",
+  }, // 25
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-26.webp",
+  }, // 26
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-27.webp",
+  }, // 27
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-28.webp",
+  }, // 28
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-29.webp",
+  }, // 29
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-30.webp",
+  }, // 30
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-31.webp",
+  }, // 31
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-32.webp",
+  }, // 32
+  {
+    type: "image",
+    src: "/public/img/©️SantaMartaBeachFront-compressed-33.webp",
+  }, // 33
+  { type: "image", src: "/public/img/©️SantaMartaBeachFront.com©️34.png" }, // 34
+  { type: "image", src: "/public/img/©️SantaMartaBeachFront.com©️35.png" }, // 35
+];
 
 let currentIndex = 0;
 
-// 2. Función para abrir el modal
 function openGallery(index) {
   currentIndex = index;
   updateModal();
-  document.getElementById("gallery-modal").classList.remove("hidden");
-  document.body.classList.add("modal-active"); // Evita el scroll de fondo
+  const modal = document.getElementById("gallery-modal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    document.body.classList.add("modal-active");
+  }
 }
 
-// 3. Función para actualizar el contenido del modal
 function updateModal() {
   const item = mediaItems[currentIndex];
   const content = document.getElementById("modal-content");
+  if (!content || !item) return;
 
-  // Efecto suave de transición
   content.style.opacity = "0";
 
   setTimeout(() => {
     if (item.type === "image") {
-      content.innerHTML = `
-                    <img src="${item.src}" 
-                         class="max-w-[95vw] max-h-[85vh] object-contain animate-zoom rounded-xl shadow-2xl">`;
+      content.innerHTML = `<img src="${item.src}" class="max-w-[95vw] max-h-[85vh] object-contain animate-zoom rounded-xl shadow-2xl">`;
     } else {
-      content.innerHTML = `
-                    <video controls autoplay class="max-w-[95vw] max-h-[80vh] rounded-xl shadow-2xl">
-                        <source src="${item.src}" type="video/mp4">
-                    </video>`;
+      content.innerHTML = `<video controls autoplay class="max-w-[95vw] max-h-[80vh] rounded-xl shadow-2xl"><source src="${item.src}" type="video/mp4"></video>`;
     }
     content.style.opacity = "1";
   }, 150);
 }
 
-// 4. Controles de navegación
 function nextMedia() {
   currentIndex = (currentIndex + 1) % mediaItems.length;
   updateModal();
@@ -64,24 +179,19 @@ function prevMedia() {
 function closeModal() {
   document.getElementById("gallery-modal").classList.add("hidden");
   document.body.classList.remove("modal-active");
-
-  // Pausar cualquier video que se esté reproduciendo al cerrar
-  const content = document.getElementById("modal-content");
-  content.innerHTML = "";
+  document.getElementById("modal-content").innerHTML = "";
 }
 
-// 5. Atajos de teclado
+// Atajos de teclado
 document.addEventListener("keydown", (e) => {
-  if (document.getElementById("gallery-modal").classList.contains("hidden"))
-    return;
-
+  const modal = document.getElementById("gallery-modal");
+  if (!modal || modal.classList.contains("hidden")) return;
   if (e.key === "Escape") closeModal();
   if (e.key === "ArrowRight") nextMedia();
   if (e.key === "ArrowLeft") prevMedia();
 });
-//-----------------------------
 
-// 1. Diccionario de traducciones
+// --- Lógica de Idiomas (Tu código original funciona bien) ---
 const translations = {
   es: {
     "nav-home": "Inicio",
@@ -115,37 +225,22 @@ const translations = {
   },
 };
 
-// 2. Función para cambiar el idioma
 function changeLang(lang) {
-  // Guardar preferencia en el navegador
   localStorage.setItem("preferredLang", lang);
-
-  // Actualizar todos los elementos con el atributo data-i18n
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    if (translations[lang][key]) {
-      el.textContent = translations[lang][key];
-    }
+    if (translations[lang][key]) el.textContent = translations[lang][key];
   });
-
-  // También actualizar los que usan data-key (si usaste esa variante en los links legales)
   document.querySelectorAll("[data-key]").forEach((el) => {
     const key = el.getAttribute("data-key");
-    if (translations[lang][key]) {
-      el.textContent = translations[lang][key];
-    }
+    if (translations[lang][key]) el.textContent = translations[lang][key];
   });
-
-  // Actualizar estado visual de las banderas
-  document.getElementById("btn-es").classList.remove("flag-active");
-  document.getElementById("btn-en").classList.remove("flag-active");
-  document.getElementById(`btn-${lang}`).classList.add("flag-active");
-
-  // Opcional: Cambiar el atributo lang del HTML para SEO
+  document.getElementById("btn-es")?.classList.remove("flag-active");
+  document.getElementById("btn-en")?.classList.remove("flag-active");
+  document.getElementById(`btn-${lang}`)?.classList.add("flag-active");
   document.documentElement.lang = lang;
 }
 
-// 3. Cargar idioma preferido al iniciar la página
 document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("preferredLang") || "es";
   changeLang(savedLang);
