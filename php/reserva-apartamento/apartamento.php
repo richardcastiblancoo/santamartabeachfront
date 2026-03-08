@@ -352,7 +352,7 @@ if ($id_apartamento > 0) {
                 <div class="lg:col-span-2">
                     <div class="border-b border-slate-200 dark:border-slate-800 pb-6 mb-8">
                         <h2 class="text-2xl font-bold mb-2">Alojamiento Completo: <?php echo $apartamento['titulo']; ?></h2>
-                        <p class="text-[#617c89] dark:text-slate-400"><?php echo $apartamento['capacidad']; ?> Huéspedes · <?php echo $apartamento['habitaciones']; ?> habitaciones · <?php echo isset($apartamento['cama']) ? $apartamento['cama'] : 0; ?> camas . <?php echo $apartamento['banos']; ?> Baños</p>
+                        <p class="text-[#617c89] dark:text-slate-400">6 - <?php echo $apartamento['capacidad']; ?> Huéspedes · <?php echo $apartamento['habitaciones']; ?> habitaciones · <?php echo isset($apartamento['cama']) ? $apartamento['cama'] : 0; ?> camas . <?php echo $apartamento['banos']; ?> Baños</p>
                     </div>
                     <section class="mb-10">
                         <h3 class="text-xl font-bold mb-4">Sobre este apartamento</h3>
