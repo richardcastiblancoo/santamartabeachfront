@@ -264,7 +264,7 @@ if ($id_apartamento > 0) {
                     <h1 class="text-[#111618] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]"><?php echo $apartamento['titulo']; ?></h1>
                     <div class="flex items-center gap-2 text-[#617c89] dark:text-slate-400">
                         <span class="material-symbols-outlined text-sm">location_on</span>
-                        <p class="text-base font-normal">Torre 4 - Reserva del Mar 1 Calle 22 # 1 - 67 Playa Salguero, Santa Marta· ★ <?php echo $apartamento['total_resenas'] > 0 ? number_format($apartamento['promedio_calificacion'], 1) : '0 (Sin reseñas)'; ?> (<?php echo $apartamento['total_resenas']; ?> reseñas)</p>
+                        <p class="text-base font-normal"><?php echo $apartamento['ubicacion']; ?> · ★ <?php echo $apartamento['total_resenas'] > 0 ? number_format($apartamento['promedio_calificacion'], 1) : '0 (Sin reseñas)'; ?> (<?php echo $apartamento['total_resenas']; ?> reseñas)</p>
                     </div>
                 </div>
                 <div class="flex gap-3">
@@ -273,12 +273,7 @@ if ($id_apartamento > 0) {
                         <span data-i18n="Compartir">Compartir</span>
                     </button>
 
-                    <?php if (!empty($apartamento['pdf'])): ?>
-                    <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-[#111618] border border-[#111618] text-sm font-bold hover:bg-gray-100 transition-colors shadow-lg">
-                        <span class="material-symbols-outlined text-[20px]">visibility</span>
-                        <a href="/assets/pdf/<?php echo htmlspecialchars($apartamento['pdf']); ?>" target="_blank" title="Descarga el PDF de este hermoso apartamento" class="text-[#111618] hover:underline">Descarga el PDF de este hermoso apartamento</a>
-                    </button>
-                    <?php endif; ?>
+
                 </div>
             </div>
 
@@ -796,7 +791,14 @@ if ($id_apartamento > 0) {
                                     </span>
                                 </li>
                             </ul>
+
                         </address>
+                        <?php if (!empty($apartamento['pdf'])): ?>
+                            <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-[#111618] border border-[#111618] text-sm font-bold hover:bg-gray-100 transition-colors shadow-lg">
+                                <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                <a href="/assets/pdf/<?php echo htmlspecialchars($apartamento['pdf']); ?>" target="_blank" title="Descarga el PDF de este hermoso apartamento" class="text-[#111618] hover:underline">Descarga el PDF de este hermoso apartamento</a>
+                            </button>
+                        <?php endif; ?>
                     </section>
 
                     <section class="lg:items-end flex flex-col">
@@ -1250,11 +1252,11 @@ if ($id_apartamento > 0) {
             if (!selectedDates.checkin || !selectedDates.checkout) {
                 const lang = localStorage.getItem('preferredLang') || 'es';
                 let alertMsg = 'Por favor, selecciona las fechas de llegada y salida.';
-                
+
                 if (typeof translations !== 'undefined' && translations[lang] && translations[lang]['Por favor, selecciona las fechas de llegada y salida.']) {
                     alertMsg = translations[lang]['Por favor, selecciona las fechas de llegada y salida.'];
                 }
-                
+
                 alert(alertMsg);
                 fp.open();
                 return;

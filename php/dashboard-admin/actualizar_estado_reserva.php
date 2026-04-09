@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../../auth/conexion_be.php';
+require_once __DIR__ . '/../reserva-apartamento/reserva_mailer.php';
 
 // 1. Verificar si es administrador
 if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 'Admin') {
@@ -23,10 +24,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
-        $query = "UPDATE reservas SET estado = '$estado' WHERE id = $id";
-        
-        if (mysqli_query($conn, $query)) {
-            echo json_encode(['success' => true, 'message' => 'Estado actualizado']);
+        $stmtReserva = $conn->prepare("
+            SELECT r.id, r.estado, r.nombre_cliente, r.apellido_cliente, r.email_cliente, r.telefono,
+                   r.fecha_checkin, r.fecha_checkout, r.precio_total, a.titulo AS nombre_apartamento
+            FROM reservas r
+            LEFT JOIN apartamentos a ON r.apartamento_id = a.id
+            WHERE r.id = ?
+            LIMIT 1
+        ");
+
+        if (!$stmtReserva) {
+            echo json_encode(['success' => false, 'message' => 'No se pudo preparar la consulta de la reserva']);
+            exit;
+        }
+
+        $stmtReserva->bind_param('i', $id);
+        $stmtReserva->execute();
+        $resultadoReserva = $stmtReserva->get_result();
+        $reserva = $resultadoReserva ? $resultadoReserva->fetch_assoc() : null;
+        $stmtReserva->close();
+
+        if (!$reserva) {
+            echo json_encode(['success' => false, 'message' => 'Reserva no encontrada']);
+            exit;
+        }
+
+        if ($reserva['estado'] === $estado) {
+            echo json_encode(['success' => true, 'message' => 'La reserva ya tenía ese estado']);
+            exit;
+        }
+
+        $stmtUpdate = $conn->prepare("UPDATE reservas SET estado = ? WHERE id = ?");
+        if (!$stmtUpdate) {
+            echo json_encode(['success' => false, 'message' => 'No se pudo preparar la actualización']);
+            exit;
+        }
+
+        $stmtUpdate->bind_param('si', $estado, $id);
+        $actualizado = $stmtUpdate->execute();
+        $stmtUpdate->close();
+
+        if ($actualizado) {
+            $correoEnviado = true;
+            if (in_array($estado, ['confirmada', 'cancelada'], true)) {
+                $correoEnviado = enviarCorreoEstadoReservaHuesped($reserva, $estado);
+                if (!$correoEnviado) {
+                    error_log('No se pudo enviar el correo de estado para la reserva #' . $id);
+                }
+            }
+
+            $mensaje = $correoEnviado
+                ? 'Estado actualizado'
+                : 'Estado actualizado, pero no se pudo enviar el correo al huésped';
+
+            echo json_encode(['success' => true, 'message' => $mensaje]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Error SQL: ' . mysqli_error($conn)]);
         }

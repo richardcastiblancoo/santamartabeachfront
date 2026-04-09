@@ -218,7 +218,7 @@ $total = $subtotal + $cleaningFee;
                                     </label>
                                 </div>
                                 <div id="bank-input-container" class="hidden mt-3 animate-fadeIn">
-                                    <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_bank_details">Detalles del Banco (Nombre del banco / Tarjeta)</label>
+                                    <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_bank_details">Detalles del Banco (Nombre del banco / Tarjeta de crédito)</label>
                                     <input type="text" name="banco_detalle" class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="Ej: Bancolombia, Davivienda, Visa, Mastercard...">
                                 </div>
                             </div>
@@ -242,7 +242,7 @@ $total = $subtotal + $cleaningFee;
                                 </div>
 
                                 <div class="space-y-2">
-                                    <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_bank">Cuenta para devolución de depósito</label>
+                                    <label class="text-[10px] font-black uppercase text-slate-400" data-key="label_bank">Cuenta bancaria del cliente </label>
                                     <input type="text" name="cuenta_devolucion" class="w-full rounded-2xl border-slate-200 dark:bg-slate-800 dark:border-slate-700 p-4" placeholder="Ej: Ahorros Bancolombia #...">
                                 </div>
                             </div>
@@ -314,12 +314,12 @@ $total = $subtotal + $cleaningFee;
                 label_payment_method: "¿Cómo prefieres pagar tu reserva?",
                 pay_cash_only: "Efectivo",
                 pay_transfer: "Transferencia Bancaria",
-                label_bank_details: "Detalles del Banco (Nombre del banco / Tarjeta)",
+                label_bank_details: "Detalles del Banco (Nombre del banco / Tarjeta de crédito)",
                 notice_bold: "IMPORTANTE:",
                 notice_text: "Al enviar esta solicitud, nos comunicaremos contigo para enviarte los datos según tu método de pago elegido.",
                 label_id_photo: "Foto Cédula o Pasaporte (múltiple o PDF)",
                 file_upload_text: "Sube tus documentos aquí",
-                label_bank: "Cuenta para devolución de depósito",
+                label_bank: "Cuenta bancaria del cliente ",
                 btn_back_2: "Atrás",
                 btn_submit: "Enviar Mi Reserva",
                 summary_arrival: "Llegada",
@@ -348,12 +348,12 @@ $total = $subtotal + $cleaningFee;
                 label_payment_method: "How would you like to pay?",
                 pay_cash_only: "Cash",
                 pay_transfer: "Bank Transfer",
-                label_bank_details: "Bank Details (Bank Name / Card)",
+                label_bank_details: "Bank Details (Bank Name / Credit Card)",
                 notice_bold: "IMPORTANT:",
                 notice_text: "After sending this request, we will contact you with the payment details based on your selection.",
                 label_id_photo: "ID or Passport Photo (Multiple or PDF)",
                 file_upload_text: "Upload your documents here",
-                label_bank: "Account for deposit refund",
+                label_bank: "Client's bank account",
                 btn_back_2: "Back",
                 btn_submit: "Send My Booking",
                 summary_arrival: "Arrival",
