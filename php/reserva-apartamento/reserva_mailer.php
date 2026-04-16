@@ -13,8 +13,8 @@ const RESERVA_SMTP_USER = 'richard_12345@santamartabeachfront.com';
 const RESERVA_SMTP_PASS = 'Richardcastiblanco_1234567890';
 const RESERVA_FROM_EMAIL = 'richard_12345@santamartabeachfront.com';
 const RESERVA_FROM_NAME = 'Santamartabeachfront';
-const RESERVA_ADMIN_EMAIL = '17clouds@gmail.com';
-const RESERVA_CONTACT_EMAIL = '17clouds@gmail.com';
+const RESERVA_ADMIN_EMAIL = 'richardcastiblanco4@gmail.com';
+const RESERVA_CONTACT_EMAIL = 'richardcastiblanco4@gmail.com';
 const RESERVA_WHATSAPP = '+57 318 3813381';
 
 function crearMailerReserva(): PHPMailer
