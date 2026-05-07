@@ -269,7 +269,7 @@
 
     <nav class="hidden md:flex items-center gap-8 h-full">
         <ul class="flex items-center gap-6 list-none">
-            <li><a class="nav-link" href="/php/bienvenidosantamarta.php">¡Bienvenidos a Santa Marta!</a></li>
+            
             <li><a class="nav-link" href="#apartamentos">Apartamento</a></li>
             <li><a class="nav-link" href="#ubicacion">Ubicación</a></li>
             <li><a class="nav-link" href="/php/gastronomia.php">Guía Gastronómica</a></li>
