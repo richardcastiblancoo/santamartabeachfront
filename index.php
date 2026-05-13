@@ -4,7 +4,6 @@
 <head>
     <!-- metadata -->
     <meta charset="utf-8" />
-    <meta name="google-site-verification" content="IDhyCffWXQsrQTiv-slQDbuucmEaHWi30CMcsSzbNSY" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta name="keywords" content="`reserva del mar 1, Santamartabeachfront, apartamentos, beachfront, mar, reserva, Santa Marta Colombia, Playa Salguero, El Rodadero, sur de Santa Marta, sector exclusivo Playa Salguero, edificios frente al mar, zona turística, cerca del Aeropuerto Santa Marta, salida directa al mar, zona residencial tranquila, renta vacacional Playa Salguero, condominios de lujo, alojamiento cerca de Arrecife, vista al mar Caribe, atardeceres en Santa Marta, vacaciones frente al océano, apartamentos modernos con vista, experiencia premium, despertar frente al mar, turismo de sol y playa Colombia, lujo asequible, confort y mar, piscina con vista al mar, edificio con jacuzzi y sauna, gimnasio frente al mar, zona BBQ, parqueadero privado, seguridad 24 horas, acceso privado a la playa,  salón social, zonas verdes, vigilancia permanente, apartamentos familiares, vacaciones con niños, alojamiento para grupos, apartamentos pet-friendly, cocina equipada, alojamiento seguro, alquiler por días, estancias largas, nómadas digitales, retiro de fin de semana, hospedaje para parejas, buceo Santa Marta, restaurantes Playa Salguero, vida nocturna El Rodadero,  Marina de Santa Marta, centro histórico, gastronomía costeña, guía turística, kayak, alquiler vacacional, Airbnb Santa Marta, Booking Reserva del Mar 1, apartamentos amoblados, renta por temporada, short term rentals, luxury rentals Colombia, best beachfront condos, holiday rentals, inmobiliaria Santa Marta, condominio Reserva del Mar 1, apartamentos turísticos, propiedad raíz, La Perla de América, playas de Santa Marta, Caribe Colombiano vacaciones, clima Santa Marta, playas tranquilas, Sierra Nevada de Santa Marta, experiencia caribeña auténtica, Reserva del Mar 1 Colombia`">
     <meta name="author" content="Santamartabeachfront , Mauro perlaza, harold perlaza">
@@ -26,10 +25,9 @@
     <meta property="twitter:image" content="https://santamartabeachfront.com/public/img/logo-definitivo.webp">
     <!-- links -->
     <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link rel="manifest" href="manifest.json">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+   
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
@@ -555,7 +553,7 @@
                 <p>
                     © <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront.
                     <span data-i18n="foo_rights">Todos los derechos reservados.</span> |
-                    Hecho por <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" class="font-bold hover:text-white">Richard Castiblanco</a>
+                    Diseñado por <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" class="font-bold hover:text-white">Richard Castiblanco</a>
                 </p>
 
                 <nav aria-label="Enlaces legales">

@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -154,6 +155,9 @@
                     <span data-key="no-account">¿No tienes una cuenta?</span>
                     <a data-key="link-register" class="text-primary font-bold hover:underline" href="/auth/registro.php">Regístrate aquí</a>
                 </p>
+
+                <!-- verify reCAPTCHA -->
+
             </div>
         </div>
     </div>
