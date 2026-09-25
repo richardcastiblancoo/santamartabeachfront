@@ -28,8 +28,8 @@
                         <span class="material-symbols-outlined text-3xl">child_care</span>
                     </div>
                 </div>
-                <h3 class="text-lg font-bold mb-2 text-white">Piscinas de Adultos y Niños</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">
+                <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card2_t">Piscinas de Adultos y Niños</h3>
+                <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card2_d">
                     Piscina principal con vistas panorámicas y área infantil segura diseñada para la diversión familiar.
                 </p>
             </article>
@@ -43,8 +43,8 @@
                         <span class="material-symbols-outlined text-3xl">spa</span>
                     </div>
                 </div>
-                <h3 class="text-lg font-bold mb-2 text-white">Jacuzzi y Wellness</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">
+                <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card3_t">Jacuzzi y Bienestar</h3>
+                <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card3_d">
                     Relajación total con hidromasaje, sauna finlandesa y baño turco de lujo para tu salud y bienestar.
                 </p>
             </article>
@@ -54,7 +54,7 @@
                     <span class="material-symbols-outlined text-3xl">fitness_center</span>
                 </div>
                 <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card6_t">Gimnasio 24/7</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Equipamiento moderno de cardio y fuerza disponible a cualquier hora del día.</p>
+                <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card6_d">Equipamiento moderno de cardio y fuerza disponible a cualquier hora del día.</p>
             </article>
 
             <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
@@ -62,7 +62,7 @@
                     <span class="material-symbols-outlined text-3xl">local_bar</span>
                 </div>
                 <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card7_t">Sky Bar</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Bar en la azotea con coctelería premium y la mejor vista panorámica de la costa.</p>
+                <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card7_d">Bar en la azotea con coctelería premium y la mejor vista panorámica de la costa.</p>
             </article>
 
             <article class="bg-[#1e2930]/30 p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 hover:bg-[#1e2930]/50 transition-all duration-300 group">
@@ -70,7 +70,7 @@
                     <span class="material-symbols-outlined text-3xl">verified_user</span>
                 </div>
                 <h3 class="text-lg font-bold mb-2 text-white" data-i18n="am_card8_t">Seguridad 24/7</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Vigilancia profesional y control de acceso constante para tu total tranquilidad.</p>
+                <p class="text-gray-400 text-sm leading-relaxed" data-i18n="am_card8_d">Vigilancia profesional y control de acceso constante para tu total tranquilidad.</p>
             </article>
         </div>
 
@@ -93,4 +93,5 @@
             </div>
         </div>
     </div>
+    
 </section>

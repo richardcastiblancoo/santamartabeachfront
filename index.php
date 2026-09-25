@@ -2,6 +2,24 @@
 <html class="dark" lang="es-CO">
 
 <head>
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-WWFXJJRB');
+    </script>
+    <!-- End Google Tag Manager -->
     <!-- metadata -->
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -9,6 +27,7 @@
     <meta name="author" content="Santamartabeachfront , Mauro perlaza, harold perlaza">
     <meta name="robots" content="index, follow">
     <meta name="description" content="Reserva del Mar 1: Apartamentos de lujo frente al mar en Playa Salguero, Santa Marta. Piscina infinita, acceso directo a la playa y confort total. ¡Reserva ya!">
+    <link rel="canonical" href="https://santamartabeachfront.com/">
     <!-- titulo -->
     <title>Santamartabeachfront - reserva del mar 1</title>
     <!-- opengraf -->
@@ -27,7 +46,7 @@
     <link rel="shortcut icon" href="/public/img/logo-def-Photoroom.png" type="image/x-icon">
     <link rel="manifest" href="manifest.json">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-   
+
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
@@ -86,9 +105,15 @@
             transition: all 0.2s ease;
         }
     </style>
+
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
+    
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WWFXJJRB"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <!-- header -->
     <?php include 'include/header.php'; ?>
@@ -96,6 +121,73 @@
 
     <!-- amenidades -->
     <?php include 'include/serviciosofresidos.php'; ?>
+
+    <!-- ❄️ Efecto de nieve 
+    <div id="snow-container" aria-hidden="true"
+        class="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
+    </div>
+
+    <script>
+        const snowContainer = document.getElementById("snow-container");
+
+        const snowflakes = 80;
+
+        for (let i = 0; i < snowflakes; i++) {
+            const snowflake = document.createElement("span");
+
+            snowflake.innerHTML = "❄";
+
+            snowflake.className = `
+            absolute
+            text-white
+            opacity-70
+            select-none
+        `;
+
+            const size = Math.random() * 12 + 8;
+            const left = Math.random() * 100;
+            const duration = Math.random() * 8 + 7;
+            const delay = Math.random() * 10;
+            const drift = Math.random() * 200 - 100;
+
+            snowflake.style.fontSize = `${size}px`;
+            snowflake.style.left = `${left}%`;
+            snowflake.style.top = `-${size}px`;
+            snowflake.style.animation = `snowfall ${duration}s linear ${delay}s infinite`;
+            snowflake.style.setProperty("--drift", `${drift}px`);
+
+            snowContainer.appendChild(snowflake);
+        }
+    </script>
+
+    <style>
+        @keyframes snowfall {
+            0% {
+                transform: translate3d(0, -20px, 0) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: translate3d(var(--drift), 50vh, 0) rotate(180deg);
+            }
+
+            100% {
+                transform: translate3d(calc(var(--drift) * -0.5), 110vh, 0) rotate(360deg);
+                opacity: 0.2;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #snow-container {
+                display: none;
+            }
+        }
+    </style>
+    -->
 
     <!-- disponible? -->
     <section class="py-16 px-6 md:px-20 bg-[#101c22]" id="disponibilidad">
@@ -478,93 +570,252 @@
     <!-- footer -->
     <footer class="bg-[#101c22] text-white pt-10 pb-10 mt-[-2rem]" id="contacto">
         <div class="max-w-7xl mx-auto px-6 md:px-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-24 py-16 items-start border-t border-white/5">
 
-                <section class="flex flex-col items-center md:items-start text-center md:text-left">
+            <!-- CONTENIDO PRINCIPAL -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-y-14 gap-x-10 xl:gap-x-16 py-16 items-start border-t border-white/5">
+
+                <!-- LOGO -->
+                <section class="lg:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
                     <a href="/" class="flex items-center gap-1 group w-fit mb-6">
 
                         <div class="w-24 h-24 md:w-32 md:h-32 shrink-0">
-                            <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="w-full h-full object-contain">
+                            <img
+                                src="/public/img/logo-def-Photoroom.png"
+                                alt="logo"
+                                class="w-full h-full object-contain">
                         </div>
 
                         <span class="text-xl md:text-2xl font-bold text-white tracking-tighter -ml-2 md:-ml-4">
                             Santamarta<span class="text-blue-400">beachfront</span>
                         </span>
+
                     </a>
 
-                    <p class="text-gray-300 text-sm leading-relaxed max-w-xs md:pl-5 md:border-l md:border-blue-400/20" data-i18n="footer-desc">
-                        La plataforma líder en alquileres vacacionales de lujo en Santa Marta. Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
+                    <p
+                        class="text-gray-300 text-sm leading-relaxed max-w-xs md:pl-5 md:border-l md:border-blue-400/20"
+                        data-i18n="footer-desc">
+                        La plataforma líder en alquileres vacacionales de lujo en Santa Marta.
+                        Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
                     </p>
                 </section>
 
-                <section class="lg:pl-12 flex flex-col items-center md:items-start">
-                    <h2 class="font-bold mb-8 text-white uppercase tracking-widest text-xs" data-i18n="footer-contact-title">Información de Contacto</h2>
+
+                <!-- CONTACTO -->
+                <section class="lg:col-span-4 flex flex-col items-center md:items-start">
+
+                    <h2
+                        class="font-bold mb-8 text-white uppercase tracking-widest text-xs"
+                        data-i18n="footer-contact-title">
+                        Información de Contacto
+                    </h2>
+
                     <address class="not-italic">
+
                         <ul class="space-y-5 text-sm text-gray-300 text-center md:text-left">
+
                             <li>
-                                <a href="mailto:17clouds@gmail.com" class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
-                                    <span class="material-symbols-outlined text-blue-400">mail</span> 17clouds@gmail.com
+                                <a
+                                    href="mailto:17clouds@gmail.com"
+                                    class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
+                                    <span class="material-symbols-outlined text-blue-400">
+                                        mail
+                                    </span>
+
+                                    17clouds@gmail.com
                                 </a>
                             </li>
+
                             <li>
-                                <a href="https://wa.me/573183813381" class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
-                                    <span class="material-symbols-outlined text-blue-400">call</span> +57 318 3813381
+                                <a
+                                    href="https://wa.me/573183813381"
+                                    class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
+                                    <span class="material-symbols-outlined text-blue-400">
+                                        call
+                                    </span>
+
+                                    +57 318 3813381
                                 </a>
                             </li>
+
                             <li class="flex items-start justify-center md:justify-start gap-3">
-                                <span class="material-symbols-outlined text-blue-400 shrink-0">location_on</span>
+
+                                <span class="material-symbols-outlined text-blue-400 shrink-0">
+                                    location_on
+                                </span>
+
                                 <span>
                                     Apartamento 1730 - Torre 4 - Reserva del Mar 1<br>
                                     Calle 22 # 1 - 67 Playa Salguero,<br>
                                     Santa Marta, Colombia
                                 </span>
+
                             </li>
+
                         </ul>
+
                     </address>
+
                 </section>
 
-                <section class="lg:items-end flex flex-col">
-                    <div class="w-fit lg:text-right">
-                        <h2 class="font-bold mb-8 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Síguenos</h2>
-                        <nav aria-label="Redes sociales">
-                            <ul class="flex gap-4 list-none p-0 lg:justify-end">
-                                <li>
-                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
-                                        <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
-                                        <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
-                                        <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+
+                <!-- REDES SOCIALES -->
+                <section class="lg:col-span-2 flex flex-col items-center lg:items-start">
+
+                    <h2
+                        class="font-bold mb-8 text-white uppercase tracking-wider text-xs"
+                        data-i18n="foo_social_title">
+                        Síguenos
+                    </h2>
+
+                    <nav aria-label="Redes sociales">
+
+                        <ul class="flex gap-4 list-none p-0">
+
+                            <li>
+                                <a
+                                    class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group"
+                                    href="#"
+                                    target="_blank"
+                                    rel="noopener"
+                                    aria-label="Instagram">
+                                    <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group"
+                                    href="#"
+                                    target="_blank"
+                                    rel="noopener"
+                                    aria-label="Twitter">
+                                    <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group"
+                                    href="#"
+                                    target="_blank"
+                                    rel="noopener"
+                                    aria-label="TikTok">
+                                    <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </nav>
+
                 </section>
+
+
+                <!-- QR / RESEÑAS -->
+                <section class="lg:col-span-2 flex flex-col items-center lg:items-start text-center lg:text-left">
+
+                    <h2 class="font-bold mb-5 text-white uppercase tracking-wider text-xs">
+                        Comparte y califícanos
+                    </h2>
+
+                    <div class="bg-white p-3 rounded-2xl shadow-xl">
+                        <div id="qrcode-footer"></div>
+                    </div>
+
+                    <p class="text-gray-300 text-xs leading-relaxed mt-4 max-w-[180px]">
+                        Escanea el código QR para visitar nuestro perfil en Google y
+                        <span class="text-blue-400 font-semibold">
+                            dejar tu reseña.
+                        </span>
+                    </p>
+
+
+
+                </section>
+
             </div>
 
-            <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-xs text-gray-400 text-center gap-4">
+
+            <!-- PARTE INFERIOR -->
+            <aside
+                class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-xs text-gray-400 text-center gap-4">
+
                 <p>
-                    © <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront.
-                    <span data-i18n="foo_rights">Todos los derechos reservados.</span> |
-                    Diseñado por <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" class="font-bold hover:text-white">Richard Castiblanco</a>
+                    ©
+                    <time id="current-year" datetime="2026">2026</time>
+                    Santamarta Beachfront.
+
+                    <span data-i18n="foo_rights">
+                        Todos los derechos reservados.
+                    </span>
+                    |
+                    Hecho por
+                    <a
+                        href="https://richardcastiblanco.xyz/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-bold hover:text-white">
+                        Richard Castiblanco
+                    </a>
                 </p>
 
+
                 <nav aria-label="Enlaces legales">
-                    <ul class="flex gap-8 list-none p-0">
-                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_privacy">Políticas de Privacidad</a></li>
-                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_terms">Términos y Condiciones</a></li>
+
+                    <ul class="flex flex-wrap justify-center gap-x-8 gap-y-3 list-none p-0">
+
+                        <li>
+                            <a
+                                class="hover:text-white transition-colors"
+                                href="/php/politica-terminos/politica-privacidad.php"
+                                data-key="foo_privacy">
+                                Políticas de Privacidad
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                class="hover:text-white transition-colors"
+                                href="/php/politica-terminos/politica-privacidad.php"
+                                data-key="foo_terms">
+                                Términos y Condiciones
+                            </a>
+                        </li>
+
                     </ul>
+
                 </nav>
+
             </aside>
+
         </div>
+
     </footer>
+
+
+    <!-- LIBRERÍA QR -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+
+    <!-- GENERACIÓN DEL QR -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const qrContainer = document.getElementById("qrcode-footer");
+
+            if (qrContainer) {
+                new QRCode(qrContainer, {
+                    text: "https://share.google/7p47kpoNR6FN3WJRe",
+                    width: 150,
+                    height: 150,
+                    colorDark: "#101c22",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+
+        });
+    </script>
 
 
     <!-- scripst -->
