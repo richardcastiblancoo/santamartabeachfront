@@ -409,7 +409,7 @@
     </script>
 
     <!-- Script Principal Gastronomía -->
-    
+    <script src="/js/gastronomia.js"></script>
 </body>
 
 </html>
