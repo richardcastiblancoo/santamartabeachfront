@@ -282,9 +282,71 @@
                     <span>ES</span>
                     <span class="material-symbols-outlined text-sm">expand_more</span>
                 </button>
-                <ul id="langMenu" class="lang-dropdown absolute top-full right-0 mt-1 w-32 bg-slate-900 border border-white/10 rounded-xl py-2 shadow-2xl">
-                    <li><a href="index.php" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ESPAÑOL</a></li>
-                    <li><a href="/lang/en/index.php" class="block w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600">ENGLISH</a></li>
+                <ul id="langMenu" class="lang-dropdown absolute top-full right-0 mt-1 w-40 bg-slate-900 border border-white/10 rounded-xl py-2 shadow-2xl">
+                    <li>
+                        <a href="index.php" class="flex items-center gap-2.5 w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600 transition-colors">
+                            <!-- Bandera Colombia -->
+                            <svg class="w-5 h-3.5 rounded-sm flex-shrink-0" viewBox="0 0 900 600">
+                                <rect width="900" height="300" fill="#FCD116" />
+                                <rect width="900" height="150" y="300" fill="#003893" />
+                                <rect width="900" height="150" y="450" fill="#CE1126" />
+                            </svg>
+                            <span>ESPAÑOL</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/lang/en/index.php" class="flex items-center gap-2.5 w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600 transition-colors">
+                            <!-- Bandera EE.UU. / Inglés -->
+                            <svg class="w-5 h-3.5 rounded-sm flex-shrink-0" viewBox="0 0 741 390">
+                                <rect width="741" height="390" fill="#b22234" />
+                                <path d="M0 30h741M0 90h741M0 150h741M0 210h741M0 270h741M0 330h741" stroke="#fff" stroke-width="30" />
+                                <rect width="296.4" height="210" fill="#3c3b6e" />
+                            </svg>
+                            <span>ENGLISH</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/lang/fran/index.php" class="flex items-center gap-2.5 w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600 transition-colors">
+                            <!-- Bandera Francia -->
+                            <svg class="w-5 h-3.5 rounded-sm flex-shrink-0" viewBox="0 0 3 2">
+                                <rect width="1" height="2" fill="#002395" />
+                                <rect width="1" height="2" x="1" fill="#fff" />
+                                <rect width="1" height="2" x="2" fill="#ed2939" />
+                            </svg>
+                            <span>FRANÇAIS</span>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <!-- Bandera Italia 
+                        <a href="#" class="flex items-center gap-2.5 w-full text-left px-4 py-2 text-[11px] text-white font-bold hover:bg-blue-600 transition-colors">
+                            
+                            <svg class="w-5 h-3.5 rounded-sm flex-shrink-0" viewBox="0 0 3 2">
+                                <rect width="1" height="2" fill="#009246" />
+                                <rect width="1" height="2" x="1" fill="#fff" />
+                                <rect width="1" height="2" x="2" fill="#ce2b37" />
+                            </svg>
+                            <span>ITALIANO</span>
+                        </a>
+                        -->
+                    </li>
+                    
+                    <li>
+                        <!--
+                        <a href="#" class="flex items-center gap-2.5 px-4 py-2 text-white text-[11px] font-bold hover:bg-blue-600 transition-colors">
+                            <svg class="w-5 h-5 rounded-full object-cover flex-shrink-0" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="240" height="400" fill="#006600" />
+                                <rect x="240" width="360" height="400" fill="#FF0000" />
+                                <circle cx="240" cy="200" r="80" fill="#FFCC00" />
+                                <circle cx="240" cy="200" r="65" fill="none" stroke="#000000" stroke-width="6" />
+                                <path d="M 215,160 L 265,160 L 265,215 A 25,25 0 0,1 215,215 Z" fill="#DA291C" stroke="#FFFFFF" stroke-width="4" />
+                                <path d="M 225,170 L 255,170 L 255,205 A 15,15 0 0,1 225,205 Z" fill="#FFFFFF" />       
+                                <path d="M 235,182 L 245,182 L 245,195 A 5,5 0 0,1 235,195 Z" fill="#003893" />
+                            </svg>
+                            <span>PORTUGUÊS</span>
+                            -->
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -298,12 +360,84 @@
 <div id="mobile-menu" class="fixed inset-0 bg-slate-950/98 backdrop-blur-xl z-[100] flex flex-col md:hidden">
     <div class="flex justify-between items-center p-6 border-b border-white/10">
         <div class="relative">
+            <!-- Botón del selector de idioma móvil -->
             <button onclick="toggleLangMobile(event)" id="langBtnMobile" class="flex items-center gap-2 text-white text-[11px] font-bold">
-                <img class="w-4 h-4 rounded-full" src="https://flagcdn.com/w40/co.png" alt="ES"> ES
+                <!-- Bandera Colombia en el botón -->
+                <svg class="w-4 h-4 rounded-full object-cover flex-shrink-0" viewBox="0 0 900 600">
+                    <rect width="900" height="300" fill="#FCD116" />
+                    <rect width="900" height="150" y="300" fill="#003893" />
+                    <rect width="900" height="150" y="450" fill="#CE1126" />
+                </svg>
+                ES
             </button>
-            <ul id="langMenuMobile" class="lang-dropdown absolute left-0 mt-2 w-32 bg-slate-900 border border-white/10 rounded-xl py-2">
-                <li><a href="index.php" class="block px-4 py-2 text-white text-[11px]">ESPAÑOL</a></li>
-                <li><a href="/lang/en/index.php" class="block px-4 py-2 text-white text-[11px]">ENGLISH</a></li>
+
+            <!-- Menú desplegable móvil con los 5 idiomas y banderas SVG -->
+            <ul id="langMenuMobile" class="lang-dropdown absolute left-0 mt-2 w-40 bg-slate-900 border border-white/10 rounded-xl py-2 shadow-2xl">
+                <li>
+                    <a href="index.php" class="flex items-center gap-2.5 px-4 py-2 text-white text-[11px] font-bold hover:bg-blue-600 transition-colors">
+                        <!-- Bandera Colombia -->
+                        <svg class="w-5 h-3.5 rounded-sm flex-shrink-0" viewBox="0 0 900 600">
+                            <rect width="900" height="300" fill="#FCD116" />
+                            <rect width="900" height="150" y="300" fill="#003893" />
+                            <rect width="900" height="150" y="450" fill="#CE1126" />
+                        </svg>
+                        <span>ESPAÑOL</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/lang/en/index.php" class="flex items-center gap-2.5 px-4 py-2 text-white text-[11px] font-bold hover:bg-blue-600 transition-colors">
+                        <!-- Bandera EE.UU. -->
+                        <svg class="w-5 h-3.5 rounded-sm flex-shrink-0" viewBox="0 0 741 390">
+                            <rect width="741" height="390" fill="#b22234" />
+                            <path d="M0 30h741M0 90h741M0 150h741M0 210h741M0 270h741M0 330h741" stroke="#fff" stroke-width="30" />
+                            <rect width="296.4" height="210" fill="#3c3b6e" />
+                        </svg>
+                        <span>ENGLISH</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/lang/fr/index.php" class="flex items-center gap-2.5 px-4 py-2 text-white text-[11px] font-bold hover:bg-blue-600 transition-colors">
+                        <!-- Bandera Francia -->
+                        <svg class="w-5 h-3.5 rounded-sm flex-shrink-0" viewBox="0 0 3 2">
+                            <rect width="1" height="2" fill="#002395" />
+                            <rect width="1" height="2" x="1" fill="#fff" />
+                            <rect width="1" height="2" x="2" fill="#ed2939" />
+                        </svg>
+                        <span>FRANÇAIS</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/lang/it/index.php" class="flex items-center gap-2.5 px-4 py-2 text-white text-[11px] font-bold hover:bg-blue-600 transition-colors">
+                        <!-- Bandera Italia -->
+                        <svg class="w-5 h-3.5 rounded-sm flex-shrink-0" viewBox="0 0 3 2">
+                            <rect width="1" height="2" fill="#009246" />
+                            <rect width="1" height="2" x="1" fill="#fff" />
+                            <rect width="1" height="2" x="2" fill="#ce2b37" />
+                        </svg>
+                        <span>ITALIANO</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/lang/pt/index.php" class="flex items-center gap-2.5 px-4 py-2 text-white text-[11px] font-bold hover:bg-blue-600 transition-colors">
+                        <!-- Bandera Portugal (Verde, Rojo y Esfera Armilar con Escudo) -->
+                        <svg class="w-5 h-5 rounded-full object-cover flex-shrink-0" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Fondo Verde (2/5 partes) -->
+                            <rect width="240" height="400" fill="#006600" />
+                            <!-- Fondo Rojo (3/5 partes) -->
+                            <rect x="240" width="360" height="400" fill="#FF0000" />
+                            <!-- Esfera Armilar (Círculo Dorado) -->
+                            <circle cx="240" cy="200" r="80" fill="#FFCC00" />
+                            <circle cx="240" cy="200" r="65" fill="none" stroke="#000000" stroke-width="6" />
+                            <!-- Escudo Exterior (Rojo) -->
+                            <path d="M 215,160 L 265,160 L 265,215 A 25,25 0 0,1 215,215 Z" fill="#DA291C" stroke="#FFFFFF" stroke-width="4" />
+                            <!-- Escudo Interior (Blanco) -->
+                            <path d="M 225,170 L 255,170 L 255,205 A 15,15 0 0,1 225,205 Z" fill="#FFFFFF" />
+                            <!-- Quina central (Azul) -->
+                            <path d="M 235,182 L 245,182 L 245,195 A 5,5 0 0,1 235,195 Z" fill="#003893" />
+                        </svg>
+                        <span>PORTUGUÊS</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <button onclick="toggleMobileMenu(false)" class="text-white">

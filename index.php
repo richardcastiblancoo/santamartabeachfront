@@ -109,20 +109,12 @@
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white transition-colors duration-200">
-    
+
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WWFXJJRB"
             height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-
-    <!-- header -->
-    <?php include 'include/header.php'; ?>
-
-
-    <!-- amenidades -->
-    <?php include 'include/serviciosofresidos.php'; ?>
-
-    <!-- ❄️ Efecto de nieve 
+    
     <div id="snow-container" aria-hidden="true"
         class="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
     </div>
@@ -187,7 +179,16 @@
             }
         }
     </style>
-    -->
+    
+
+    <!-- header -->
+    <?php include 'include/header.php'; ?>
+
+
+    <!-- amenidades -->
+    <?php include 'include/serviciosofresidos.php'; ?>
+
+
 
     <!-- disponible? -->
     <section class="py-16 px-6 md:px-20 bg-[#101c22]" id="disponibilidad">
@@ -351,11 +352,11 @@
                                         </h3>
                                     </div>
                                 </div>
-
+                                <!-- Descripcion 
                                 <p class="text-gray-400 text-xs mb-6 leading-relaxed line-clamp-2">
                                     <?php echo $row['descripcion']; ?>
                                 </p>
-
+                                    -->
                                 <div class="grid grid-cols-4 gap-2 mb-6">
                                     <div class="flex flex-col items-center gap-1 p-2 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
                                         <span class="material-symbols-outlined text-blue-400 text-lg">bed</span>
@@ -792,10 +793,8 @@
 
     </footer>
 
-
     <!-- LIBRERÍA QR -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
 
     <!-- GENERACIÓN DEL QR -->
     <script>
@@ -816,7 +815,6 @@
 
         });
     </script>
-
 
     <!-- scripst -->
     <script src="js/main.js"></script>

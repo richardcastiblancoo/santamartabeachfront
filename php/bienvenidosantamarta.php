@@ -60,14 +60,11 @@
 
         .pic-panoramic { @apply w-full rounded-premium overflow-hidden cursor-zoom-in shadow-lg mb-6; }
         
-        /* Ajuste de logo a 120px con espaciado mínimo al texto */
         .logo-header img { height: 90px; width: auto; @apply transition-transform duration-300; }
         @media (min-width: 768px) { .logo-header img { height: 120px; } }
         
         .modal-active { overflow: hidden; }
         .nav-modal-btn { @apply absolute top-1/2 -translate-y-1/2 text-white/40 hover:text-white text-6xl transition-all z-[120] px-4 cursor-pointer select-none hidden lg:block; }
-        .flag-btn { @apply w-8 h-8 rounded-full overflow-hidden border-2 border-transparent hover:border-primary transition-all cursor-pointer; }
-        .flag-active { @apply border-primary scale-110; }
         
         @keyframes zoom { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .animate-zoom { animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
@@ -84,20 +81,103 @@
     </div>
 
     <header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-white/5">
-        <div class="max-w-[1600px] mx-auto px-6 h-32 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-1 logo-header"> <img src="/public/img/logo-def-Photoroom.png" alt="Logo">
-                <h1 class="text-white text-xl font-black tracking-tighter uppercase hidden sm:block -ml-2">
+        <div class="max-w-[1600px] mx-auto px-6 h-24 md:h-32 flex items-center justify-between">
+
+            <!-- Logo -->
+            <a href="/" class="flex items-center gap-1 logo-header">
+                <img src="/public/img/logo-def-Photoroom.png" alt="Logo" class="h-12 md:h-16 w-auto object-contain">
+                <h1 class="text-white text-lg md:text-xl font-black tracking-tighter uppercase hidden sm:block -ml-2">
                     Santamarta<span class="text-blue-400">beachfront</span>
                 </h1>
             </a>
-            <div class="flex items-center gap-6">
+
+            <!-- Menú Desktop (Visión de escritorio) -->
+            <div class="hidden md:flex items-center gap-6">
                 <a href="/" class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors">
                     <span class="material-symbols-outlined">home</span> <span data-i18n="nav-home">Inicio</span>
                 </a>
-                <div class="flex gap-3 border-l border-white/10 pl-6">
-                    <button onclick="changeLang('es')" id="btn-es" class="flag-btn flag-active"><img src="https://flagcdn.com/w80/co.png" class="w-full h-full object-cover"></button>
-                    <button onclick="changeLang('en')" id="btn-en" class="flag-btn"><img src="https://flagcdn.com/w80/us.png" class="w-full h-full object-cover"></button>
+
+                <!-- Desplegable de Idiomas (Desktop) -->
+                <div class="relative border-l border-white/10 pl-6">
+                    <button id="lang-menu-btn" onclick="toggleLangMenu()" class="flex items-center gap-2.5 bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-white px-3.5 py-2 rounded-full transition-all text-xs font-semibold shadow-lg backdrop-blur-sm">
+                        <img id="active-flag" src="https://flagcdn.com/w80/co.png" class="w-5 h-5 rounded-full object-cover shrink-0 shadow-inner" alt="Bandera">
+                        <span id="active-lang-text" class="tracking-wide">Español</span>
+                        <span class="material-symbols-outlined text-sm text-slate-400 transition-transform duration-300" id="lang-arrow">expand_more</span>
+                    </button>
+
+                    <!-- Menú Flotante Idiomas -->
+                    <div id="lang-dropdown" class="hidden absolute right-0 mt-3 w-44 bg-[#101c22]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl z-50 overflow-hidden transform opacity-0 scale-95 transition-all duration-200">
+                        <div class="py-1.5">
+                            <button onclick="changeLang('es')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-primary/20 transition-colors">
+                                <img src="https://flagcdn.com/w80/co.png" class="w-5 h-5 rounded-full object-cover shrink-0" alt="ES">
+                                <span>Español</span>
+                            </button>
+                            <button onclick="changeLang('en')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-primary/20 transition-colors">
+                                <img src="https://flagcdn.com/w80/us.png" class="w-5 h-5 rounded-full object-cover shrink-0" alt="EN">
+                                <span>English</span>
+                            </button>
+                            <button onclick="changeLang('fr')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-primary/20 transition-colors">
+                                <img src="https://flagcdn.com/w80/fr.png" class="w-5 h-5 rounded-full object-cover shrink-0" alt="FR">
+                                <span>Français</span>
+                            </button>
+                            <button onclick="changeLang('it')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-primary/20 transition-colors">
+                                <img src="https://flagcdn.com/w80/it.png" class="w-5 h-5 rounded-full object-cover shrink-0" alt="IT">
+                                <span>Italiano</span>
+                            </button>
+                            <button onclick="changeLang('pt')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-primary/20 transition-colors">
+                                <img src="https://flagcdn.com/w80/pt.png" class="w-5 h-5 rounded-full object-cover shrink-0" alt="PT">
+                                <span>Português</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Botón Menú Hamburguesa (Mobile) -->
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-white p-2 focus:outline-none flex items-center justify-center">
+                <span id="mobile-menu-icon" class="material-symbols-outlined text-3xl transition-transform duration-300">menu</span>
+            </button>
+
+        </div>
+
+        <!-- Panel Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#101c22]/98 border-b border-white/10 backdrop-blur-2xl transition-all duration-300 opacity-0 -translate-y-2">
+            <div class="px-6 py-6 space-y-6">
+
+                <!-- Link Inicio -->
+                <a href="/" class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-white hover:text-blue-400 transition-colors">
+                    <span class="material-symbols-outlined">home</span>
+                    <span data-i18n="nav-home">Inicio</span>
+                </a>
+
+                <div class="border-t border-white/10 pt-4">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3">Seleccionar Idioma</p>
+
+                    <!-- Lista de Idiomas Móvil -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="selectMobileLang('es')" class="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5 text-xs text-slate-200 hover:bg-primary/20 transition-all">
+                            <img src="https://flagcdn.com/w80/co.png" class="w-5 h-5 rounded-full object-cover" alt="ES">
+                            <span>Español</span>
+                        </button>
+                        <button onclick="selectMobileLang('en')" class="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5 text-xs text-slate-200 hover:bg-primary/20 transition-all">
+                            <img src="https://flagcdn.com/w80/us.png" class="w-5 h-5 rounded-full object-cover" alt="EN">
+                            <span>English</span>
+                        </button>
+                        <button onclick="selectMobileLang('fr')" class="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5 text-xs text-slate-200 hover:bg-primary/20 transition-all">
+                            <img src="https://flagcdn.com/w80/fr.png" class="w-5 h-5 rounded-full object-cover" alt="FR">
+                            <span>Français</span>
+                        </button>
+                        <button onclick="selectMobileLang('it')" class="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5 text-xs text-slate-200 hover:bg-primary/20 transition-all">
+                            <img src="https://flagcdn.com/w80/it.png" class="w-5 h-5 rounded-full object-cover" alt="IT">
+                            <span>Italiano</span>
+                        </button>
+                        <button onclick="selectMobileLang('pt')" class="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5 text-xs text-slate-200 hover:bg-primary/20 transition-all col-span-2">
+                            <img src="https://flagcdn.com/w80/pt.png" class="w-5 h-5 rounded-full object-cover" alt="PT">
+                            <span>Português</span>
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </header>
@@ -149,7 +229,6 @@
             <div onclick="openGallery(16)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-16.webp" loading="lazy"></div>
             <div onclick="openGallery(15)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-15.webp" loading="lazy"></div>
 
-
             <div onclick="openGallery(18)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-18.webp" loading="lazy"></div>
             <div onclick="openGallery(17)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-17.webp" loading="lazy"></div>
             <div onclick="openGallery(12)" class="gallery-card"><img src="/public/img/©️SantaMartaBeachFront-compressed-12.webp" loading="lazy"></div>
@@ -178,18 +257,21 @@
                     <p class="text-slate-600 dark:text-slate-400 text-base md:text-lg" data-i18n="cta-desc">Reserva tu estancia en la Torre 4 de Reserva del Mar 1 y despierta frente al mar Caribe.</p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                    <a href="https://wa.me/573183813381" target="_blank" class="bg-primary text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold uppercase tracking-widest text-[10px] md:text-xs hover:bg-blue-500 transition-all shadow-xl shadow-primary/20 text-center">Reservar por WhatsApp</a>
+                    <a href="https://wa.me/573183813381" target="_blank" class="bg-primary text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold uppercase tracking-widest text-[10px] md:text-xs hover:bg-blue-500 transition-all shadow-xl shadow-primary/20 text-center" data-i18n="btn-ws">Reservar por WhatsApp</a>
                     <a href="tel:+573183813381" class="bg-white/10 text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold uppercase tracking-widest text-[10px] md:text-xs text-center" data-i18n="btn-call">Llamar ahora</a>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- footer -->
     <footer class="bg-[#101c22] text-white pt-10 pb-10 mt-[-2rem]" id="contacto">
         <div class="max-w-7xl mx-auto px-6 md:px-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-24 py-16 items-start border-t border-white/5">
 
-                <section class="flex flex-col items-center md:items-start text-center md:text-left">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-y-14 gap-x-10 xl:gap-x-16 py-16 items-start border-t border-white/5">
+
+                <!-- LOGO -->
+                <section class="lg:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
                     <a href="/" class="flex items-center gap-1 group w-fit mb-6">
                         <div class="w-24 h-24 md:w-32 md:h-32 shrink-0">
                             <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="w-full h-full object-contain">
@@ -203,18 +285,23 @@
                     </p>
                 </section>
 
-                <section class="lg:pl-12 flex flex-col items-center md:items-start">
-                    <h2 class="font-bold mb-8 text-white uppercase tracking-widest text-xs" data-i18n="footer-contact-title">Información de Contacto</h2>
+                <!-- CONTACTO -->
+                <section class="lg:col-span-4 flex flex-col items-center md:items-start">
+                    <h2 class="font-bold mb-8 text-white uppercase tracking-widest text-xs" data-i18n="footer-contact-title">
+                        Información de Contacto
+                    </h2>
                     <address class="not-italic">
                         <ul class="space-y-5 text-sm text-gray-300 text-center md:text-left">
                             <li>
                                 <a href="mailto:17clouds@gmail.com" class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
-                                    <span class="material-symbols-outlined text-blue-400">mail</span> 17clouds@gmail.com
+                                    <span class="material-symbols-outlined text-blue-400">mail</span>
+                                    17clouds@gmail.com
                                 </a>
                             </li>
                             <li>
                                 <a href="https://wa.me/573183813381" class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
-                                    <span class="material-symbols-outlined text-blue-400">call</span> +57 318 3813381
+                                    <span class="material-symbols-outlined text-blue-400">call</span>
+                                    +57 318 3813381
                                 </a>
                             </li>
                             <li class="flex items-start justify-center md:justify-start gap-3">
@@ -229,49 +316,127 @@
                     </address>
                 </section>
 
-                <section class="lg:items-end flex flex-col">
-                    <div class="w-fit lg:text-right">
-                        <h2 class="font-bold mb-8 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Síguenos</h2>
-                        <nav aria-label="Redes sociales">
-                            <ul class="flex gap-4 list-none p-0 lg:justify-end">
-                                <li>
-                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
-                                        <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
-                                        <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
-                                        <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+                <!-- REDES SOCIALES -->
+                <section class="lg:col-span-2 flex flex-col items-center lg:items-start">
+                    <h2 class="font-bold mb-8 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">
+                        Síguenos
+                    </h2>
+                    <nav aria-label="Redes sociales">
+                        <ul class="flex gap-4 list-none p-0">
+                            <li>
+                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
+                                    <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
+                                    <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
+                                    <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </section>
+
+                <!-- QR / RESEÑAS -->
+                <section class="lg:col-span-2 flex flex-col items-center lg:items-start text-center lg:text-left">
+                    <h2 class="font-bold mb-5 text-white uppercase tracking-wider text-xs" data-i18n="qr-title">
+                        Comparte y califícanos
+                    </h2>
+                    <div class="bg-white p-3 rounded-2xl shadow-xl">
+                        <div id="qrcode-footer"></div>
+                    </div>
+                    <p class="text-gray-300 text-xs leading-relaxed mt-4 max-w-[180px]">
+                        <span data-i18n="qr-desc-1">Escanea el código QR para visitar nuestro perfil en Google y</span>
+                        <span class="text-blue-400 font-semibold block mt-1" data-i18n="qr-desc-2">dejar tu reseña.</span>
+                    </p>
+                </section>
+
             </div>
 
+            <!-- PARTE INFERIOR -->
             <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-xs text-gray-400 text-center gap-4">
                 <p>
                     © <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront.
                     <span data-i18n="foo_rights">Todos los derechos reservados.</span> |
-                    Hecho por <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" class="font-bold hover:text-white">Richard Castiblanco</a>
+                    <span data-i18n="foo_made_by">Hecho por</span>
+                    <a href="https://richardcastiblanco.xyz/" target="_blank" rel="noopener noreferrer" class="font-bold hover:text-white">Richard Castiblanco</a>
                 </p>
 
                 <nav aria-label="Enlaces legales">
-                    <ul class="flex gap-8 list-none p-0">
-                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_privacy">Políticas de Privacidad</a></li>
-                        <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-key="foo_terms">Términos y Condiciones</a></li>
+                    <ul class="flex flex-wrap justify-center gap-x-8 gap-y-3 list-none p-0">
+                        <li>
+                            <a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_privacy">
+                                Políticas de Privacidad
+                            </a>
+                        </li>
+                        <li>
+                            <a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_terms">
+                                Términos y Condiciones
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </aside>
+
         </div>
     </footer>
 
+    <!-- LIBRERÍA QR -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+    <!-- GENERACIÓN DEL QR -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const qrContainer = document.getElementById("qrcode-footer");
+            if (qrContainer) {
+                new QRCode(qrContainer, {
+                    text: "https://share.google/7p47kpoNR6FN3WJRe",
+                    width: 150,
+                    height: 150,
+                    colorDark: "#101c22",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+        });
+    </script>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+
+            if (menu.classList.contains('hidden')) {
+                // Abrir menú
+                menu.classList.remove('hidden');
+                setTimeout(() => {
+                    menu.classList.remove('opacity-0', '-translate-y-2');
+                    menu.classList.add('opacity-100', 'translate-y-0');
+                }, 10);
+                icon.textContent = 'close';
+            } else {
+                // Cerrar menú
+                menu.classList.remove('opacity-100', 'translate-y-0');
+                menu.classList.add('opacity-0', '-translate-y-2');
+                setTimeout(() => {
+                    menu.classList.add('hidden');
+                }, 300);
+                icon.textContent = 'menu';
+            }
+        }
+
+        function selectMobileLang(lang) {
+            changeLang(lang); // Reutiliza tu función original para cambiar de idioma
+            toggleMobileMenu(); // Cierra el menú al seleccionar un idioma
+        }
+    </script>
+
+    <!-- IMPORTACIÓN DE SCRIPT -->
     <script src="/js/galeria.js"></script>
 </body>
 

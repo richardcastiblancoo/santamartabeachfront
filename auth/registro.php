@@ -48,43 +48,89 @@
 
 <body class="bg-background-light dark:bg-background-dark text-[#111618] dark:text-white min-h-screen flex flex-col font-display antialiased overflow-x-hidden">
 
-    <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-end px-6 py-4 md:px-10">
-        <div class="hidden md:flex items-center gap-4 bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-lg">
-            <button onclick="changeLanguage('es')" class="btn-es lang-transition flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg">
-                <img src="https://flagcdn.com/w40/co.png" class="w-4 h-4 rounded-full object-cover" alt="ES"> ES
-            </button>
-            <button onclick="changeLanguage('en')" class="btn-en lang-transition flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg">
-                <img src="https://flagcdn.com/w40/us.png" class="w-4 h-4 rounded-full object-cover" alt="EN"> EN
+    <!-- Header con selector de idioma desplegable en escritorio (solo iniciales) -->
+    <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-10 pointer-events-none">
+        <div></div>
+
+        <div class="flex items-center gap-4 pointer-events-auto">
+            <!-- Menú desplegable de idiomas para Escritorio -->
+            <div class="relative group hidden md:block">
+                <button class="flex items-center gap-2 px-3.5 py-2 text-xs font-bold rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg text-white hover:bg-white/20 transition">
+                    <img src="https://flagcdn.com/w40/co.png" class="w-4 h-4 rounded-full object-cover btn-flag-current" alt="ES">
+                    <span class="btn-text-current uppercase">ES</span>
+                    <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                </button>
+
+                <!-- Lista desplegable -->
+                <div class="absolute right-0 mt-2 w-32 py-2 bg-slate-900/90 backdrop-blur-xl border border-white/15 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top scale-95 group-hover:scale-100 flex flex-col gap-1">
+                    <button onclick="changeLanguage('es')" class="btn-es lang-transition flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold text-white hover:bg-white/10 transition text-left">
+                        <img src="https://flagcdn.com/w40/co.png" class="w-4 h-4 rounded-full object-cover" alt="ES"> ES
+                    </button>
+                    <button onclick="changeLanguage('en')" class="btn-en lang-transition flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold text-white hover:bg-white/10 transition text-left">
+                        <img src="https://flagcdn.com/w40/us.png" class="w-4 h-4 rounded-full object-cover" alt="EN"> EN
+                    </button>
+                    <button onclick="changeLanguage('fr')" class="btn-fr lang-transition flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold text-white hover:bg-white/10 transition text-left">
+                        <img src="https://flagcdn.com/w40/fr.png" class="w-4 h-4 rounded-full object-cover" alt="FR"> FR
+                    </button>
+                    <button onclick="changeLanguage('it')" class="btn-it lang-transition flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold text-white hover:bg-white/10 transition text-left">
+                        <img src="https://flagcdn.com/w40/it.png" class="w-4 h-4 rounded-full object-cover" alt="IT"> IT
+                    </button>
+                    <button onclick="changeLanguage('pt')" class="btn-pt lang-transition flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold text-white hover:bg-white/10 transition text-left">
+                        <img src="https://flagcdn.com/w40/pt.png" class="w-4 h-4 rounded-full object-cover" alt="PT"> PT
+                    </button>
+                </div>
+            </div>
+
+            <!-- Botón del menú móvil -->
+            <button id="menuBtn" class="md:hidden p-2 text-primary bg-white dark:bg-gray-800 rounded-lg shadow-md z-[60] pointer-events-auto">
+                <span id="menuIcon" class="material-symbols-outlined text-2xl">menu</span>
             </button>
         </div>
-
-        <button id="menuBtn" class="md:hidden p-2 text-primary bg-white dark:bg-gray-800 rounded-lg shadow-md z-[60]">
-            <span id="menuIcon" class="material-symbols-outlined text-2xl">menu</span>
-        </button>
     </header>
 
-    <div id="mobileMenu" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col items-center justify-center gap-8 text-white md:hidden backdrop-blur-lg">
+    <!-- Menú móvil organizado -->
+    <div id="mobileMenu" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col items-center justify-center gap-6 text-white md:hidden backdrop-blur-lg px-6">
         <a href="/" data-key="nav-home" class="text-2xl font-bold hover:text-primary transition">Inicio</a>
 
-        <div class="flex flex-col items-center gap-4 w-full px-10">
-            <hr class="w-full border-white/10 mb-4">
+        <div class="flex flex-col items-center gap-3 w-full max-w-sm">
+            <hr class="w-full border-white/10 mb-2">
             <p class="text-xs font-bold tracking-widest text-white/50 uppercase">Seleccionar Idioma</p>
-            <div class="flex gap-4">
-                <button onclick="changeLanguage('es')" class="btn-es lang-transition flex items-center gap-3 px-6 py-3 rounded-2xl border border-white/20 bg-white/5">
-                    <img src="https://flagcdn.com/w40/co.png" class="w-6 h-6 rounded-full object-cover" alt="ES"> <span class="text-lg font-bold">ES</span>
+
+            <div class="grid grid-cols-2 gap-3 w-full">
+                <button onclick="changeLanguage('es')" class="btn-es lang-transition flex items-center justify-center gap-3 px-4 py-3 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 transition">
+                    <img src="https://flagcdn.com/w40/co.png" class="w-6 h-6 rounded-full object-cover" alt="ES">
+                    <span class="text-base font-bold">ES</span>
                 </button>
-                <button onclick="changeLanguage('en')" class="btn-en lang-transition flex items-center gap-3 px-6 py-3 rounded-2xl border border-white/20 bg-white/5">
-                    <img src="https://flagcdn.com/w40/us.png" class="w-6 h-6 rounded-full object-cover" alt="EN"> <span class="text-lg font-bold">EN</span>
+
+                <button onclick="changeLanguage('en')" class="btn-en lang-transition flex items-center justify-center gap-3 px-4 py-3 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 transition">
+                    <img src="https://flagcdn.com/w40/us.png" class="w-6 h-6 rounded-full object-cover" alt="EN">
+                    <span class="text-base font-bold">EN</span>
+                </button>
+
+                <button onclick="changeLanguage('fr')" class="btn-fr lang-transition flex items-center justify-center gap-3 px-4 py-3 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 transition">
+                    <img src="https://flagcdn.com/w40/fr.png" class="w-6 h-6 rounded-full object-cover" alt="FR">
+                    <span class="text-base font-bold">FR</span>
+                </button>
+
+                <button onclick="changeLanguage('it')" class="btn-it lang-transition flex items-center justify-center gap-3 px-4 py-3 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 transition">
+                    <img src="https://flagcdn.com/w40/it.png" class="w-6 h-6 rounded-full object-cover" alt="IT">
+                    <span class="text-base font-bold">IT</span>
+                </button>
+
+                <button onclick="changeLanguage('pt')" class="btn-pt lang-transition col-span-2 flex items-center justify-center gap-3 px-4 py-3 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 transition">
+                    <img src="https://flagcdn.com/w40/pt.png" class="w-6 h-6 rounded-full object-cover" alt="PT">
+                    <span class="text-base font-bold">PT</span>
                 </button>
             </div>
         </div>
 
-        <button onclick="toggleMenu()" class="mt-8 px-8 py-2 border border-white/30 rounded-full text-sm font-bold">
+        <button onclick="toggleMenu()" class="mt-4 px-8 py-2.5 border border-white/30 rounded-full text-sm font-bold hover:bg-white/10 transition">
             <span data-key="btn-close">Cerrar</span>
         </button>
     </div>
 
     <div class="flex flex-1 w-full min-h-screen">
+        <!-- Columna izquierda (Imagen y branding) -->
         <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gray-900">
             <img src="/public/img/portada-reserva.webp" alt="Santamartabeachfront" class="absolute inset-0 w-full h-full object-cover opacity-60">
             <div class="absolute inset-0 bg-gradient-to-t from-[#101c22] via-[#101c22]/30 to-transparent"></div>
@@ -111,6 +157,7 @@
             </div>
         </div>
 
+        <!-- Columna derecha (Formulario de registro) -->
         <div class="flex w-full lg:w-1/2 flex-col justify-center items-center p-6 sm:p-12 lg:p-24 bg-white dark:bg-background-dark pt-24 md:pt-12">
             <div class="w-full max-w-[480px] flex flex-col gap-6">
                 <div class="flex flex-col gap-2">

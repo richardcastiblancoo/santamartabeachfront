@@ -39,9 +39,79 @@ const translations = {
     "have-account": "Already have an account?",
     "link-login": "Login here",
   },
+  fr: {
+    "nav-home": "Accueil",
+    "btn-close": "Fermer",
+    "hero-title": "Bienvenue au paradis",
+    "hero-desc":
+      "Gérez vos réservations, planifiez vos vacances ou gérez vos propriétés en bord de mer à Santa Marta en toute sécurité.",
+    "social-proof": "+100 utilisateurs nous font confiance",
+    "reg-title": "Créez votre compte d'hébergement",
+    "reg-subtitle": "Rejoignez notre communauté pour commencer.",
+    "tab-login": "Connexion",
+    "tab-register": "S'inscrire",
+    "label-name": "Prénom",
+    "label-lastname": "Nom",
+    "label-username": "Nom d'utilisateur",
+    "label-email": "Courriel",
+    "label-pass": "Mot de passe",
+    "btn-create": "Créer un compte",
+    "have-account": "Vous avez déjà un compte ?",
+    "link-login": "Connectez-vous ici",
+  },
+  it: {
+    "nav-home": "Home",
+    "btn-close": "Chiudi",
+    "hero-title": "Benvenuto in paradiso",
+    "hero-desc":
+      "Gestisci le tue prenotazioni, pianifica le tue vacanze o gestisci le tue proprietà sulla spiaggia a Santa Marta in sicurezza.",
+    "social-proof": "+100 utenti si fidano di noi",
+    "reg-title": "Crea il tuo account di hosting",
+    "reg-subtitle": "Unisciti alla nostra community per iniziare.",
+    "tab-login": "Accedi",
+    "tab-register": "Registrati",
+    "label-name": "Nome",
+    "label-lastname": "Cognome",
+    "label-username": "Nome utente",
+    "label-email": "Posta elettronica",
+    "label-pass": "Password",
+    "btn-create": "Crea account",
+    "have-account": "Hai già un account?",
+    "link-login": "Accedi qui",
+  },
+  pt: {
+    "nav-home": "Início",
+    "btn-close": "Fechar",
+    "hero-title": "Bem-vindo ao paraíso",
+    "hero-desc":
+      "Gerencie suas reservas, planeje suas férias ou administre suas propriedades à beira-mar em Santa Marta com segurança.",
+    "social-proof": "+100 usuários confiam em nós",
+    "reg-title": "Crie sua conta de hospedagem",
+    "reg-subtitle": "Junte-se à nossa comunidade para começar.",
+    "tab-login": "Entrar",
+    "tab-register": "Cadastre-se",
+    "label-name": "Nome",
+    "label-lastname": "Sobrenome",
+    "label-username": "Nome de usuário",
+    "label-email": "E-mail",
+    "label-pass": "Senha",
+    "btn-create": "Criar conta",
+    "have-account": "Já tem uma conta?",
+    "link-login": "Entre aqui",
+  },
+};
+
+const langFlags = {
+  es: "https://flagcdn.com/w40/co.png",
+  en: "https://flagcdn.com/w40/us.png",
+  fr: "https://flagcdn.com/w40/fr.png",
+  it: "https://flagcdn.com/w40/it.png",
+  pt: "https://flagcdn.com/w40/pt.png",
 };
 
 function changeLanguage(lang) {
+  if (!translations[lang]) lang = "es";
+
   localStorage.setItem("selectedLang", lang);
 
   // Traducir todos los elementos marcados con data-key
@@ -54,36 +124,15 @@ function changeLanguage(lang) {
     }
   });
 
-  // Actualizar estilos de los botones (Escritorio + Móvil)
-  const allBtnEs = document.querySelectorAll(".btn-es");
-  const allBtnEn = document.querySelectorAll(".btn-en");
-
-  const activeClasses = ["bg-primary", "text-white", "shadow-md"];
-  const inactiveClasses = ["text-gray-500", "bg-transparent"];
-
-  if (lang === "es") {
-    allBtnEs.forEach((btn) => {
-      btn.classList.add(...activeClasses);
-      btn.classList.remove(...inactiveClasses);
-    });
-    allBtnEn.forEach((btn) => {
-      btn.classList.remove(...activeClasses);
-      btn.classList.add(...inactiveClasses);
-    });
-  } else {
-    allBtnEn.forEach((btn) => {
-      btn.classList.add(...activeClasses);
-      btn.classList.remove(...inactiveClasses);
-    });
-    allBtnEs.forEach((btn) => {
-      btn.classList.remove(...activeClasses);
-      btn.classList.add(...inactiveClasses);
-    });
-  }
+  // Actualizar la bandera y el texto del botón principal del dropdown de escritorio
+  const currentFlag = document.querySelector(".btn-flag-current");
+  const currentText = document.querySelector(".btn-text-current");
+  if (currentFlag) currentFlag.src = langFlags[lang];
+  if (currentText) currentText.innerText = lang.toUpperCase();
 
   // Cerrar el menú móvil si está abierto
   const menu = document.getElementById("mobileMenu");
-  if (!menu.classList.contains("hidden")) {
+  if (menu && !menu.classList.contains("hidden")) {
     setTimeout(toggleMenu, 300);
   }
 }
@@ -105,12 +154,14 @@ function toggleMenu() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Escuchar el clic del botón menú
-  document.getElementById("menuBtn").addEventListener("click", toggleMenu);
+  const menuBtn = document.getElementById("menuBtn");
+  if (menuBtn) {
+    menuBtn.addEventListener("click", toggleMenu);
+  }
 
-  // Cargar idioma guardado o por defecto
   const savedLang =
     localStorage.getItem("selectedLang") ||
     (navigator.language.startsWith("es") ? "es" : "en");
+
   changeLanguage(savedLang);
 });

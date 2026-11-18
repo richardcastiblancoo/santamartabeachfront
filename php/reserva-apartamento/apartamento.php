@@ -576,8 +576,8 @@ if ($id_apartamento > 0) {
                         <div class="mt-5 flex items-start gap-3">
                             <span class="material-symbols-outlined text-blue-500 mt-1">location_on</span>
                             <div>
-                                <p class="font-bold text-lg text-slate-900 dark:text-white leading-tight" data-i18n="">Apartamento 1730 - Torre 4 - Reserva del Mar 1</p>
-                                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1" data-i18n="">
+                                <p class="font-bold text-lg text-slate-900 dark:text-white leading-tight">Apartamento 1730 - Torre 4 - Reserva del Mar 1</p>
+                                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
                                     Calle 22 # 1 - 67 Playa Salguero, Santa Marta
                                 </p>
                             </div>
@@ -592,12 +592,13 @@ if ($id_apartamento > 0) {
                             // Inicializar mapa sin zoom de scroll molesto
                             const map = L.map('map', {
                                 scrollWheelZoom: false,
-                                zoomControl: false // Opcional: quita los botones +/- para un look más limpio
+                                zoomControl: false
                             }).setView([lat, lng], 16);
 
-                            // Capa de Mapa "Voyager": Colores suaves y amigables
-                            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                                attribution: '© CartoDB'
+                            // Capa de Google Maps (Estándar/Calles)
+                            L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                                maxZoom: 20,
+                                attribution: '&copy; Google Maps'
                             }).addTo(map);
 
                             // Añadir control de zoom en una posición menos invasiva
@@ -605,11 +606,13 @@ if ($id_apartamento > 0) {
                                 position: 'topright'
                             }).addTo(map);
 
-                            // Marcador con un estilo azul amigable
+                            // Marcador y textos seguros
                             const marker = L.marker([lat, lng]).addTo(map);
                             const lang = localStorage.getItem('preferredLang') || 'es';
-                            const towerText = (translations[lang] && translations[lang]['Torre 4']) || 'Torre 4';
-                            const resText = (translations[lang] && translations[lang]['Reserva del Mar 1']) || 'Reserva del Mar 1';
+
+                            const towerText = (typeof translations !== 'undefined' && translations[lang] && translations[lang]['Torre 4']) || 'Torre 4';
+                            const resText = (typeof translations !== 'undefined' && translations[lang] && translations[lang]['Reserva del Mar 1']) || 'Reserva del Mar 1';
+
                             marker.bindPopup(`<b style='font-family: sans-serif;'>${resText}</b><br>${towerText}`).openPopup();
                         });
                     </script>
@@ -746,103 +749,255 @@ if ($id_apartamento > 0) {
     </main>
 
     <?php if ($apartamento): ?>
+
+
         <!-- footer -->
         <footer class="bg-[#101c22] text-white pt-10 pb-10 mt-[-2rem]" id="contacto">
             <div class="max-w-7xl mx-auto px-6 md:px-10">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-24 py-16 items-start border-t border-white/5">
 
-                    <section class="flex flex-col items-center md:items-start text-center md:text-left">
+                <!-- CONTENIDO PRINCIPAL -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-y-14 gap-x-10 xl:gap-x-16 py-16 items-start border-t border-white/5">
+
+                    <!-- LOGO -->
+                    <section class="lg:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
                         <a href="/" class="flex items-center gap-1 group w-fit mb-6">
 
                             <div class="w-24 h-24 md:w-32 md:h-32 shrink-0">
-                                <img src="/public/img/logo-def-Photoroom.png" alt="logo" class="w-full h-full object-contain">
+                                <img
+                                    src="/public/img/logo-def-Photoroom.png"
+                                    alt="logo"
+                                    class="w-full h-full object-contain">
                             </div>
 
                             <span class="text-xl md:text-2xl font-bold text-white tracking-tighter -ml-2 md:-ml-4">
                                 Santamarta<span class="text-blue-400">beachfront</span>
                             </span>
+
                         </a>
 
-                        <p class="text-gray-300 text-sm leading-relaxed max-w-xs md:pl-5 md:border-l md:border-blue-400/20" data-i18n="footer-desc">
-                            La plataforma líder en alquileres vacacionales de lujo en Santa Marta. Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
+                        <p
+                            class="text-gray-300 text-sm leading-relaxed max-w-xs md:pl-5 md:border-l md:border-blue-400/20"
+                            data-i18n="footer-desc">
+                            La plataforma líder en alquileres vacacionales de lujo en Santa Marta.
+                            Experiencias únicas, confort superior y las mejores vistas del Caribe colombiano.
                         </p>
                     </section>
 
-                    <section class="lg:pl-12 flex flex-col items-center md:items-start">
-                        <h2 class="font-bold mb-8 text-white uppercase tracking-widest text-xs" data-i18n="footer-contact-title">Información de Contacto</h2>
+
+                    <!-- CONTACTO -->
+                    <section class="lg:col-span-4 flex flex-col items-center md:items-start">
+
+                        <h2
+                            class="font-bold mb-8 text-white uppercase tracking-widest text-xs"
+                            data-i18n="footer-contact-title">
+                            Información de Contacto
+                        </h2>
+
                         <address class="not-italic">
+
                             <ul class="space-y-5 text-sm text-gray-300 text-center md:text-left">
+
                                 <li>
-                                    <a href="mailto:17clouds@gmail.com" class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
-                                        <span class="material-symbols-outlined text-blue-400">mail</span> 17clouds@gmail.com
+                                    <a
+                                        href="mailto:17clouds@gmail.com"
+                                        class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
+                                        <span class="material-symbols-outlined text-blue-400">
+                                            mail
+                                        </span>
+
+                                        17clouds@gmail.com
                                     </a>
                                 </li>
+
                                 <li>
-                                    <a href="https://wa.me/573183813381" class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
-                                        <span class="material-symbols-outlined text-blue-400">call</span> +57 318 3813381
+                                    <a
+                                        href="https://wa.me/573183813381"
+                                        class="flex items-center justify-center md:justify-start gap-3 hover:text-blue-400 transition-colors">
+                                        <span class="material-symbols-outlined text-blue-400">
+                                            call
+                                        </span>
+
+                                        +57 318 3813381
                                     </a>
                                 </li>
+
                                 <li class="flex items-start justify-center md:justify-start gap-3">
-                                    <span class="material-symbols-outlined text-blue-400 shrink-0">location_on</span>
+
+                                    <span class="material-symbols-outlined text-blue-400 shrink-0">
+                                        location_on
+                                    </span>
+
                                     <span>
                                         Apartamento 1730 - Torre 4 - Reserva del Mar 1<br>
                                         Calle 22 # 1 - 67 Playa Salguero,<br>
                                         Santa Marta, Colombia
                                     </span>
+
                                 </li>
+
                             </ul>
 
                         </address>
-                        <?php if (!empty($apartamento['pdf'])): ?>
-                            <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-[#111618] border border-[#111618] text-sm font-bold hover:bg-gray-100 transition-colors shadow-lg">
-                                <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                <a href="/assets/pdf/<?php echo htmlspecialchars($apartamento['pdf']); ?>" target="_blank" title="Descarga el PDF de este hermoso apartamento" class="text-[#111618] hover:underline">Descarga el PDF de este hermoso apartamento</a>
-                            </button>
-                        <?php endif; ?>
+
                     </section>
 
-                    <section class="lg:items-end flex flex-col">
-                        <div class="w-fit lg:text-right">
-                            <h2 class="font-bold mb-8 text-white uppercase tracking-wider text-xs" data-i18n="foo_social_title">Síguenos</h2>
-                            <nav aria-label="Redes sociales">
-                                <ul class="flex gap-4 list-none p-0 lg:justify-end">
-                                    <li>
-                                        <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Instagram">
-                                            <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="Twitter">
-                                            <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group" href="#" target="_blank" rel="noopener" aria-label="TikTok">
-                                            <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
+
+                    <!-- REDES SOCIALES -->
+                    <section class="lg:col-span-2 flex flex-col items-center lg:items-start">
+
+                        <h2
+                            class="font-bold mb-8 text-white uppercase tracking-wider text-xs"
+                            data-i18n="foo_social_title">
+                            Síguenos
+                        </h2>
+
+                        <nav aria-label="Redes sociales">
+
+                            <ul class="flex gap-4 list-none p-0">
+
+                                <li>
+                                    <a
+                                        class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all duration-300 group"
+                                        href="#"
+                                        target="_blank"
+                                        rel="noopener"
+                                        aria-label="Instagram">
+                                        <i class="fa-brands fa-instagram text-xl text-gray-300 group-hover:text-white"></i>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a
+                                        class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-black transition-all duration-300 group"
+                                        href="#"
+                                        target="_blank"
+                                        rel="noopener"
+                                        aria-label="Twitter">
+                                        <i class="fa-brands fa-x-twitter text-xl text-gray-300 group-hover:text-white"></i>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a
+                                        class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#ff0050] transition-all duration-300 group"
+                                        href="#"
+                                        target="_blank"
+                                        rel="noopener"
+                                        aria-label="TikTok">
+                                        <i class="fa-brands fa-tiktok text-xl text-gray-300 group-hover:text-white"></i>
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </nav>
+
                     </section>
+
+
+                    <!-- QR / RESEÑAS -->
+                    <section class="lg:col-span-2 flex flex-col items-center lg:items-start text-center lg:text-left">
+
+                        <h2 class="font-bold mb-5 text-white uppercase tracking-wider text-xs">
+                            Comparte y califícanos
+                        </h2>
+
+                        <div class="bg-white p-3 rounded-2xl shadow-xl">
+                            <div id="qrcode-footer"></div>
+                        </div>
+
+                        <p class="text-gray-300 text-xs leading-relaxed mt-4 max-w-[180px]">
+                            Escanea el código QR para visitar nuestro perfil en Google y
+                            <span class="text-blue-400 font-semibold">
+                                dejar tu reseña.
+                            </span>
+                        </p>
+
+
+
+                    </section>
+
                 </div>
 
-                <aside class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-xs text-gray-400 text-center gap-4">
+
+                <!-- PARTE INFERIOR -->
+                <aside
+                    class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 text-xs text-gray-400 text-center gap-4">
+
                     <p>
-                        © <time id="current-year" datetime="2026">2026</time> Santamarta Beachfront.
-                        <span data-i18n="foo_rights">Todos los derechos reservados.</span> |
-                        <span data-i18n="Hecho por">Hecho por</span> <a href="https://richardcastiblanco.vercel.app/" target="_blank" rel="noopener noreferrer" class="font-bold hover:text-white">Richard Castiblanco</a>
+                        ©
+                        <time id="current-year" datetime="2026">2026</time>
+                        Santamarta Beachfront.
+
+                        <span data-i18n="foo_rights">
+                            Todos los derechos reservados.
+                        </span>
+                        |
+                        Hecho por
+                        <a
+                            href="https://richardcastiblanco.xyz/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="font-bold hover:text-white">
+                            Richard Castiblanco
+                        </a>
                     </p>
 
+
                     <nav aria-label="Enlaces legales">
-                        <ul class="flex gap-8 list-none p-0">
-                            <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_privacy">Políticas de Privacidad</a></li>
-                            <li><a class="hover:text-white transition-colors" href="/php/politica-terminos/politica-privacidad.php" data-i18n="foo_terms">Términos y Condiciones</a></li>
+
+                        <ul class="flex flex-wrap justify-center gap-x-8 gap-y-3 list-none p-0">
+
+                            <li>
+                                <a
+                                    class="hover:text-white transition-colors"
+                                    href="/php/politica-terminos/politica-privacidad.php"
+                                    data-key="foo_privacy">
+                                    Políticas de Privacidad
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    class="hover:text-white transition-colors"
+                                    href="/php/politica-terminos/politica-privacidad.php"
+                                    data-key="foo_terms">
+                                    Términos y Condiciones
+                                </a>
+                            </li>
+
                         </ul>
+
                     </nav>
+
                 </aside>
+
             </div>
+
         </footer>
+
+        <!-- LIBRERÍA QR -->
+        <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+        <!-- GENERACIÓN DEL QR -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+
+                const qrContainer = document.getElementById("qrcode-footer");
+
+                if (qrContainer) {
+                    new QRCode(qrContainer, {
+                        text: "https://share.google/7p47kpoNR6FN3WJRe",
+                        width: 150,
+                        height: 150,
+                        colorDark: "#101c22",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                }
+
+            });
+        </script>
 
         <script>
             const yearElement = document.getElementById('current-year');
